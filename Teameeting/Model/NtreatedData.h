@@ -22,9 +22,10 @@ typedef enum  ActionType {
 @interface NtreatedData : NSObject<NSCoding>
 
 
-@property(nonatomic,retain)NSDate *lastModifyDate;
+@property(nonatomic,strong)NSDate *lastModifyDate;
 @property(nonatomic,assign)ActionType actionType;
-@property(nonatomic,retain)RoomItem* item;
+@property(nonatomic,strong)RoomItem* item;
 @property(nonatomic,assign)BOOL isPrivate;
-@property(nonatomic,retain)NSString *udid;
+@property(nonatomic,strong)NSString *udid;
+@property (nonatomic,assign)BOOL isNotification;
 @end
