@@ -13,8 +13,18 @@
 
 @implementation ChatModel
 
+
+- (id)init {
+    
+    if (self = [super init]) {
+        
+        self.dataSource = [NSMutableArray array];
+    }
+    return self;
+}
+
 - (void)populateRandomDataSource {
-    self.dataSource = [NSMutableArray array];
+    
     [self.dataSource addObjectsFromArray:[self additems:10]];
 }
 
@@ -25,29 +35,44 @@
     }
 }
 
-// 添加自己的item
-- (void)addSpecifiedItem:(NSDictionary *)dic
+- (void)addOtherItem:(NSDictionary *)dic
 {
     UUMessageFrame *messageFrame = [[UUMessageFrame alloc]init];
     UUMessage *message = [[UUMessage alloc] init];
     NSMutableDictionary *dataDic = [NSMutableDictionary dictionaryWithDictionary:dic];
     
-    NSString *URLStr = @"http://img0.bdstatic.com/img/image/shouye/xinshouye/mingxing16.jpg";
-    [dataDic setObject:@(UUMessageFromMe) forKey:@"from"];
+    [dataDic setObject:@(UUMessageFromOther) forKey:@"from"];
     [dataDic setObject:[[NSDate date] description] forKey:@"strTime"];
     [dataDic setObject:@"Hello,Sister" forKey:@"strName"];
-    [dataDic setObject:URLStr forKey:@"strIcon"];
     
     [message setWithDict:dataDic];
     [message minuteOffSetStart:previousTime end:dataDic[@"strTime"]];
-    messageFrame.showTime = message.showDateLabel;
+    messageFrame.showTime = YES;
     [messageFrame setMessage:message];
+    previousTime = dataDic[@"strTime"];
     
-    if (message.showDateLabel) {
-        previousTime = dataDic[@"strTime"];
-    }
     [self.dataSource addObject:messageFrame];
 }
+
+- (void)addMySeleItem:(NSDictionary *)dic
+{
+    UUMessageFrame *messageFrame = [[UUMessageFrame alloc]init];
+    UUMessage *message = [[UUMessage alloc] init];
+    NSMutableDictionary *dataDic = [NSMutableDictionary dictionaryWithDictionary:dic];
+    
+    [dataDic setObject:@(UUMessageFromMe) forKey:@"from"];
+    [dataDic setObject:[[NSDate date] description] forKey:@"strTime"];
+    [dataDic setObject:@"Hello,Sister" forKey:@"strName"];
+    
+    [message setWithDict:dataDic];
+    [message minuteOffSetStart:previousTime end:dataDic[@"strTime"]];
+    messageFrame.showTime = YES;
+    [messageFrame setMessage:message];
+    previousTime = dataDic[@"strTime"];
+    
+    [self.dataSource addObject:messageFrame];
+}
+
 
 // 添加聊天item（一个cell内容）
 static NSString *previousTime = nil;

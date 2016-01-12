@@ -104,19 +104,19 @@
     [_localVideoView addGestureRecognizer:singleTapGestureRecognizer];
     [self.view addSubview:_localVideoView];
 
-    [ASHUD showHUDWithStayLoadingStyleInView:self.view belowView:nil content:@"接听中。。。"];
+    //[ASHUD showHUDWithStayLoadingStyleInView:self.view belowView:nil content:@"接听中。。。"];
     [self.view addSubview:self.videosScrollView];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationWillResignActive) name:UIApplicationWillResignActiveNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidBecomeActive) name:UIApplicationDidBecomeActiveNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(fullSreenNoti:) name:@"FULLSCREEN" object:nil];
 
-    {//@Eric - Publish myself
-        PublishParams *pramas = [[PublishParams alloc]init];
-        [pramas setEnableVideo:true];
-        [pramas setEnableRecord:false];
-        [pramas setStreamType:kSTRtc];
-        [_client Publish:pramas];
-    }
+//    {//@Eric - Publish myself
+//        PublishParams *pramas = [[PublishParams alloc]init];
+//        [pramas setEnableVideo:true];
+//        [pramas setEnableRecord:false];
+//        [pramas setStreamType:kSTRtc];
+//        [_client Publish:pramas];
+//    }
 }
 
 - (void)fullSreenNoti:(NSNotification *)noti {

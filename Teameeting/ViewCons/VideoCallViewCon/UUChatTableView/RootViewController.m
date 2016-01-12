@@ -14,7 +14,7 @@
 #import "UUMessageFrame.h"
 #import "UUMessage.h"
 #import "TMMessageManage.h"
-@interface RootViewController ()<UUInputFunctionViewDelegate,UUMessageCellDelegate,UITableViewDataSource,UITableViewDelegate>
+@interface RootViewController ()<UUInputFunctionViewDelegate,UUMessageCellDelegate,UITableViewDataSource,UITableViewDelegate,tmMessageReceive>
 
 //@property (strong, nonatomic) MJRefreshHeader *head;
 @property (strong, nonatomic) ChatModel *chatModel;
@@ -22,6 +22,7 @@
 @property (weak, nonatomic) IBOutlet UITableView *chatTableView;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *bottomConstraint;
 @property (assign,nonatomic) BOOL isViewLoad;
+@property (assign,nonatomic) BOOL receiveEnable;
 @end
 
 @implementation RootViewController{
@@ -35,10 +36,12 @@
     if (self.isViewLoad)
         return;
     self.isViewLoad = YES;
+    self.receiveEnable = YES;
     [self addRefreshViews];
     [self loadBaseViewsAndData];
-    self.view.backgroundColor = [UIColor clearColor];
+    [[TMMessageManage sharedManager] registerMessageListener:self];
     self.chatTableView.backgroundColor = [UIColor colorWithWhite:0.1 alpha:0.5];
+    self.view.backgroundColor = [UIColor clearColor];
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(keyboardChange:) name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(keyboardChange:) name:UIKeyboardWillHideNotification object:nil];
@@ -47,7 +50,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-
+    
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -72,6 +75,26 @@
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemOrganize target:nil action:nil];
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemSearch target:self action:nil];
 }
+
+- (void)messageDidReceiveWithContent:(NSString *)content messageTime:(NSString *)time {
+    
+    NSDictionary *dic = @{@"strContent": content,
+                          @"type": @(UUMessageTypeText)};
+    [self.chatModel addOtherItem:dic];
+    [self.chatTableView reloadData];
+    [self performSelector:@selector(tableViewScrollToBottom) withObject:nil afterDelay:0.3];
+}
+
+- (BOOL)receiveMessageEnable {
+    
+    return self.receiveEnable;
+}
+
+- (void)setReceiveMessageEnable:(BOOL)enable {
+    
+    self.receiveEnable = enable;
+}
+
 - (void)segmentChanged:(UISegmentedControl *)segment
 {
     self.chatModel.isGroupChat = segment.selectedSegmentIndex;
@@ -82,52 +105,19 @@
 
 - (void)addRefreshViews
 {
-    
-    return;
-    __weak typeof(self) weakSelf = self;
-    
-    //load more
-    int pageNum = 3;
-    
-    self.chatTableView.header= [MJRefreshNormalHeader headerWithRefreshingBlock:^{
-        // 模拟延迟加载数据，因此2秒后才调用（真实开发中，可以移除这段gcd代码）
-        [weakSelf.chatModel addRandomItemsToDataSource:pageNum];
-        
-        if (weakSelf.chatModel.dataSource.count > pageNum) {
-            NSIndexPath *indexPath = [NSIndexPath indexPathForRow:pageNum inSection:0];
-            
-            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                [weakSelf.chatTableView reloadData];
-                [weakSelf.chatTableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionTop animated:NO];
-            });
-        }
-        [weakSelf.chatTableView.header endRefreshing];
-    }];
 
-    
-//    _head = [MJRefreshHeader header];
-//    _head.scrollView = self.chatTableView;
-//    _head.refreshingBlock = ^(MJRefreshBaseView *refreshView) {
-//        
-//        [weakSelf.chatModel addRandomItemsToDataSource:pageNum];
-//        
-//        if (weakSelf.chatModel.dataSource.count > pageNum) {
-//            NSIndexPath *indexPath = [NSIndexPath indexPathForRow:pageNum inSection:0];
-//            
-//            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-//                [weakSelf.chatTableView reloadData];
-//                [weakSelf.chatTableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionTop animated:NO];
-//            });
-//        }
-//        [weakSelf.head endRefreshing];
-//    };
+    __weak typeof(self) weakSelf = self;
+    self.chatTableView.header= [MJRefreshNormalHeader headerWithRefreshingBlock:^{
+        
+        [weakSelf.chatTableView.header endRefreshing];
+        
+    }];
 }
 
 - (void)loadBaseViewsAndData
 {
     self.chatModel = [[ChatModel alloc]init];
     self.chatModel.isGroupChat = NO;
-    [self.chatModel populateRandomDataSource];
     
     IFView = [[UUInputFunctionView alloc]initWithSuperVC:self];
     IFView.delegate = self;
@@ -243,9 +233,9 @@
 
 - (void)dealTheFunctionData:(NSDictionary *)dic
 {
-    [self.chatModel addSpecifiedItem:dic];
+    [self.chatModel addMySeleItem:dic];
     [self.chatTableView reloadData];
-    [self performSelector:@selector(tableViewScrollToBottom) withObject:nil afterDelay:1];
+    [self performSelector:@selector(tableViewScrollToBottom) withObject:nil afterDelay:0.3];
 }
 
 #pragma mark - tableView delegate & datasource

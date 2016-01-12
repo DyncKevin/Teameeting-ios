@@ -18,6 +18,7 @@
 @property(nonatomic,strong)NSManagedObjectContext *managedObjectContext;
 @property(nonatomic,strong)NSManagedObjectModel *managedObjectModel;
 @property(nonatomic,strong)NSPersistentStoreCoordinator *persistentStoreCoordinator;
+@property(nonatomic,strong)NSMutableArray *messageListeners;
 - (void)saveCoreData;
 - (NSURL *)applicationDocumentsDirectory;
 - (void)deleteDataFromMessageTableWithKey:(NSString *)key;
@@ -40,6 +41,7 @@
     if (self = [super init]) {
         
         _msg = [[TMMsgSender alloc] init];
+        _messageListeners = [NSMutableArray array];
     }
     return self;
 }
@@ -55,6 +57,13 @@
     
 }
 
+- (void)registerMessageListener:(id<tmMessageReceive>)listener {
+    
+    if (![self.messageListeners containsObject:listener]) {
+        
+        [self.messageListeners addObject:listener];
+    }
+}
 
 #pragma CoreDataAction
 
@@ -108,12 +117,12 @@
     return _persistentStoreCoordinator;
 }
 
-- (void)insertMeeageDataWtihBelog:(NSString *)belong
+- (void)insertMeeageDataWtihBelog:(NSString *)belong content:(NSString *)content
 {
     NSManagedObjectContext *context = [self managedObjectContext];
     Message *message = [NSEntityDescription insertNewObjectForEntityForName:@"Message" inManagedObjectContext:context];
     message.belong = belong;
-    message.content = @"TEST";
+    message.content = content;
     NSError *error;
     if(![context save:&error])
     {
@@ -284,9 +293,24 @@
 }
 
 //接收消息
-- (void) OnReqSndMsgMsg:(NSString*) msg {
+- (void) OnReqSndMsgMsg:(NSString *) msg {
     
-    NSLog(@"fds");
+    dispatch_async(dispatch_get_main_queue(), ^{
+       
+        for (id<tmMessageReceive> object in self.messageListeners) {
+            
+            NSDictionary *messageDic = [NSJSONSerialization JSONObjectWithData:[msg dataUsingEncoding:NSUTF8StringEncoding] options:NSJSONReadingMutableLeaves error:nil];
+            if ([object respondsToSelector:@selector(messageDidReceiveWithContent:messageTime:)] && [object receiveMessageEnable]) {
+            
+                [object messageDidReceiveWithContent:[messageDic objectForKey:@"cont"] messageTime:[messageDic objectForKey:@"ntime"]];
+                
+            } else {
+                
+                [[TMMessageManage sharedManager] insertMeeageDataWtihBelog:[messageDic objectForKey:@"roomid"] content:[messageDic objectForKey:@"cont"]];
+            }
+        }
+    
+    });
 }
 
 //发送状态
@@ -320,6 +344,7 @@
     if ([ServerVisit shead].authorization.length != 0) {
        
         [_msg tMLoginUserid:[SvUDIDTools UDID] pass:[ServerVisit shead].authorization];
+        
     }
 }
 

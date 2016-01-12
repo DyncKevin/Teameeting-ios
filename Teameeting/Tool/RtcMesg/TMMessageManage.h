@@ -10,6 +10,13 @@
 #import <CoreData/CoreData.h>
 #import "TMMsgSender.h"
 
+@protocol tmMessageReceive <NSObject>
+
+- (void)messageDidReceiveWithContent:(NSString *)content messageTime:(NSString *)time;
+- (BOOL)receiveMessageEnable;
+@end
+
+
 @interface TMMessageManage : NSObject
 
 
@@ -25,8 +32,9 @@
             pass:(NSString*) pass
           roomid:(NSString*) roomid
           remain:(NSString*) remain;
+- (void)registerMessageListener:(id<tmMessageReceive>)listener;
 #pragma CoreDataAction
-- (void)insertMeeageDataWtihBelog:(NSString *)belong;
+- (void)insertMeeageDataWtihBelog:(NSString *)belong content:(NSString *)content;
 - (void)insertRoomDataWithKey:(NSString *)key;
 - (NSMutableArray*)selectDataFromMessageTableWithKey:(NSString *)key pageSize:(NSUInteger)size currentPage:(NSInteger)page;
 - (NSMutableArray*)selectDataFromRoomTableWithKey:(NSString *)key pageSize:(NSUInteger)size currentPage:(NSInteger)page;
