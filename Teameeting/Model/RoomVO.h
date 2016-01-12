@@ -8,17 +8,17 @@
 
 #import <Foundation/Foundation.h>
 @interface RoomItem : NSObject <NSCoding>
-@property (nonatomic, strong) NSString *roomName;           // 会议名字
-@property (nonatomic, strong) NSString *roomID;             // 会议id
-@property (nonatomic, strong) NSString *userID;             // 会议创建者
-@property (nonatomic, strong) NSString *canNotification;    // 是否可以推送
-@property (nonatomic, assign) long jointime;                // 开会时间
-@property (nonatomic, assign) long createTime;              // 创建时间
-@property (nonatomic, strong) NSString *mettingNum;         // 入会人员
-@property (nonatomic, assign) NSInteger mettingType;        // 会议类型
-@property (nonatomic, strong) NSString *mettingDesc;        // 会议描述
-@property (nonatomic, assign) NSInteger mettingState;       // 会议状态  0:不可用  1：可用   2：私密会议
-@property (nonatomic, assign) BOOL isOwn;                   // 是否属于自己  1：是自己的会议  0：他人的会议室
+@property (nonatomic, strong) NSString *roomName;           // meeting name
+@property (nonatomic, strong) NSString *roomID;             // meeting id
+@property (nonatomic, strong) NSString *userID;             // meeting own user id
+@property (nonatomic, strong) NSString *canNotification;    // can notification
+@property (nonatomic, assign) long jointime;                // meeting last time
+@property (nonatomic, assign) long createTime;              // create meeting time
+@property (nonatomic, strong) NSString *mettingNum;         // in meeting person num
+@property (nonatomic, assign) NSInteger mettingType;        // meeting type
+@property (nonatomic, strong) NSString *mettingDesc;        // meeting desc
+@property (nonatomic, assign) NSInteger mettingState;       // meeting state  0:no enable  1：can enable   2：private meeting
+@property (nonatomic, assign) BOOL isOwn;                   // is own  1：own  0：other
 
 
 - (id)initWithParams:(NSDictionary *)params;

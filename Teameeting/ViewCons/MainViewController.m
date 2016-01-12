@@ -419,6 +419,7 @@ static NSString *kRoomCellID = @"RoomCell";
     [self.getRoomView showGetRoomView];
     
     RoomItem *roomItem = [[RoomItem alloc] init];
+    roomItem.userID = [SvUDIDTools UDID];
     [dataArray insertObject:roomItem atIndex:0];
     // 先把数据添加上，在搞下面的
     
@@ -732,7 +733,7 @@ static NSString *kRoomCellID = @"RoomCell";
                             item.userID = [roomInfo objectForKey:@"userid"];
                             item.canNotification = [[roomInfo objectForKey:@"pushable"] stringValue];
                             [ToolUtils shead].meetingID = nil;
-                            [weakSelf addItemAndEnterMetting:item];
+                            [weakSelf insertUserMeetingRoomWithID:item];
                         }
                     }
                 }else{

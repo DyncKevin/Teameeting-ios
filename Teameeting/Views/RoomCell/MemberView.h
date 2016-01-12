@@ -7,8 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "RoomVO.h"
 
 @interface MemberView : UIView
 
-- (void)setNum:(NSString*)num;
+- (void)setRoomItem:(RoomItem*)roomItem;
 @end
