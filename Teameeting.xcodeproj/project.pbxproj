@@ -7,6 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		781F6E0E1C44A33F00026160 /* meeting_num@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 781F6E0A1C44A33F00026160 /* meeting_num@2x.png */; };
+		781F6E0F1C44A33F00026160 /* meeting_num@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 781F6E0B1C44A33F00026160 /* meeting_num@3x.png */; };
+		781F6E101C44A33F00026160 /* meeting_private@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 781F6E0C1C44A33F00026160 /* meeting_private@2x.png */; };
+		781F6E111C44A33F00026160 /* meeting_private@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 781F6E0D1C44A33F00026160 /* meeting_private@3x.png */; };
+		781F6E141C44C5E200026160 /* RoomNameView.m in Sources */ = {isa = PBXBuildFile; fileRef = 781F6E131C44C5E200026160 /* RoomNameView.m */; };
+		781F6E171C44CCA600026160 /* NSString+Category.m in Sources */ = {isa = PBXBuildFile; fileRef = 781F6E161C44CCA600026160 /* NSString+Category.m */; };
+		781F6E1A1C44DA5300026160 /* metting_nonotification@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 781F6E181C44DA5300026160 /* metting_nonotification@2x.png */; };
+		781F6E1B1C44DA5300026160 /* metting_nonotification@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 781F6E191C44DA5300026160 /* metting_nonotification@3x.png */; };
 		783701361C43DDFB006C80DE /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 783701351C43DDFB006C80DE /* main.m */; };
 		7837013F1C43DDFB006C80DE /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7837013D1C43DDFB006C80DE /* Main.storyboard */; };
 		783701411C43DDFB006C80DE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 783701401C43DDFB006C80DE /* Assets.xcassets */; };
@@ -215,6 +223,16 @@
 /* Begin PBXFileReference section */
 		2E4CBCA8C81B4B1BFCC1872C /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		4FC9F3D7C32580F380F2F34B /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
+		781F6E0A1C44A33F00026160 /* meeting_num@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "meeting_num@2x.png"; sourceTree = "<group>"; };
+		781F6E0B1C44A33F00026160 /* meeting_num@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "meeting_num@3x.png"; sourceTree = "<group>"; };
+		781F6E0C1C44A33F00026160 /* meeting_private@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "meeting_private@2x.png"; sourceTree = "<group>"; };
+		781F6E0D1C44A33F00026160 /* meeting_private@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "meeting_private@3x.png"; sourceTree = "<group>"; };
+		781F6E121C44C5E200026160 /* RoomNameView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoomNameView.h; sourceTree = "<group>"; };
+		781F6E131C44C5E200026160 /* RoomNameView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RoomNameView.m; sourceTree = "<group>"; };
+		781F6E151C44CCA600026160 /* NSString+Category.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+Category.h"; sourceTree = "<group>"; };
+		781F6E161C44CCA600026160 /* NSString+Category.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+Category.m"; sourceTree = "<group>"; };
+		781F6E181C44DA5300026160 /* metting_nonotification@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "metting_nonotification@2x.png"; sourceTree = "<group>"; };
+		781F6E191C44DA5300026160 /* metting_nonotification@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "metting_nonotification@3x.png"; sourceTree = "<group>"; };
 		783701311C43DDFB006C80DE /* Teameeting.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Teameeting.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		783701351C43DDFB006C80DE /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		7837013E1C43DDFB006C80DE /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -640,6 +658,12 @@
 		783701741C43DF64006C80DE /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				781F6E181C44DA5300026160 /* metting_nonotification@2x.png */,
+				781F6E191C44DA5300026160 /* metting_nonotification@3x.png */,
+				781F6E0A1C44A33F00026160 /* meeting_num@2x.png */,
+				781F6E0B1C44A33F00026160 /* meeting_num@3x.png */,
+				781F6E0C1C44A33F00026160 /* meeting_private@2x.png */,
+				781F6E0D1C44A33F00026160 /* meeting_private@3x.png */,
 				783701751C43DF64006C80DE /* cancelChat@2x.png */,
 				783701761C43DF64006C80DE /* changeSelectVideo@2x.png */,
 				783701771C43DF64006C80DE /* changeSelectVideo@3x.png */,
@@ -789,6 +813,8 @@
 				783701D41C43DF64006C80DE /* UINavigationBar+Category.m */,
 				783701D51C43DF64006C80DE /* UIView+Category.h */,
 				783701D61C43DF64006C80DE /* UIView+Category.m */,
+				781F6E151C44CCA600026160 /* NSString+Category.h */,
+				781F6E161C44CCA600026160 /* NSString+Category.m */,
 			);
 			path = Category;
 			sourceTree = "<group>";
@@ -1214,6 +1240,8 @@
 				783702871C43DF64006C80DE /* MemberView.m */,
 				783702881C43DF64006C80DE /* RoomViewCell.h */,
 				783702891C43DF64006C80DE /* RoomViewCell.m */,
+				781F6E121C44C5E200026160 /* RoomNameView.h */,
+				781F6E131C44C5E200026160 /* RoomNameView.m */,
 			);
 			path = RoomCell;
 			sourceTree = "<group>";
@@ -1365,6 +1393,7 @@
 				783703221C43DF64006C80DE /* RootViewController.xib in Resources */,
 				783702B01C43DF64006C80DE /* mailInvite@2x.png in Resources */,
 				783702961C43DF64006C80DE /* close_enter@2x.png in Resources */,
+				781F6E101C44A33F00026160 /* meeting_private@2x.png in Resources */,
 				7837029C1C43DF64006C80DE /* Default-Landscape@2x~ipad.png in Resources */,
 				783703151C43DF64006C80DE /* 0.jpeg in Resources */,
 				783702AF1C43DF64006C80DE /* mail_main@3x.png in Resources */,
@@ -1409,6 +1438,7 @@
 				783703121C43DF64006C80DE /* chatfrom_bg_normal.png in Resources */,
 				783702921C43DF64006C80DE /* changeVideo@2x.png in Resources */,
 				7837030F1C43DF64006C80DE /* chat_send_message.png in Resources */,
+				781F6E1A1C44DA5300026160 /* metting_nonotification@2x.png in Resources */,
 				783702D11C43DF64006C80DE /* video@2x.png in Resources */,
 				783703081C43DF64006C80DE /* chat_animation3.png in Resources */,
 				783702B21C43DF64006C80DE /* menucancel@2x.png in Resources */,
@@ -1418,8 +1448,10 @@
 				783702A81C43DF64006C80DE /* hangup@3x.png in Resources */,
 				783702FF1C43DF64006C80DE /* expression_custom.plist in Resources */,
 				783702A31C43DF64006C80DE /* enter_go@2x.png in Resources */,
+				781F6E111C44A33F00026160 /* meeting_private@3x.png in Resources */,
 				7837030E1C43DF64006C80DE /* Chat_record_circle.png in Resources */,
 				7837030A1C43DF64006C80DE /* chat_animation_white2.png in Resources */,
+				781F6E0E1C44A33F00026160 /* meeting_num@2x.png in Resources */,
 				783702D41C43DF64006C80DE /* weixin_main@2x.png in Resources */,
 				783702B81C43DF64006C80DE /* mic@2x.png in Resources */,
 				783702A61C43DF64006C80DE /* enter_main@3x.png in Resources */,
@@ -1437,6 +1469,7 @@
 				7837030D1C43DF64006C80DE /* chat_message_back.png in Resources */,
 				7837029B1C43DF64006C80DE /* Default-736h@3x.png in Resources */,
 				783702951C43DF64006C80DE /* chat@3x.png in Resources */,
+				781F6E0F1C44A33F00026160 /* meeting_num@3x.png in Resources */,
 				783702A21C43DF64006C80DE /* delegate_main@3x.png in Resources */,
 				783702A51C43DF64006C80DE /* enter_main@2x.png in Resources */,
 				783703311C43DF97006C80DE /* PushConfig.plist in Resources */,
@@ -1447,6 +1480,7 @@
 				783702911C43DF64006C80DE /* changeSelectVideo@3x.png in Resources */,
 				783702971C43DF64006C80DE /* close_enter@3x.png in Resources */,
 				783702C41C43DF64006C80DE /* noMicselect@2x.png in Resources */,
+				781F6E1B1C44DA5300026160 /* metting_nonotification@3x.png in Resources */,
 				783702C11C43DF64006C80DE /* no_room@3x.png in Resources */,
 				783702AA1C43DF64006C80DE /* hangupselect@3x.png in Resources */,
 				783702C21C43DF64006C80DE /* noMic@2x.png in Resources */,
@@ -1587,7 +1621,9 @@
 				783702E51C43DF64006C80DE /* ASNetwork.m in Sources */,
 				7837031F1C43DF64006C80DE /* UUProgressHUD.m in Sources */,
 				783702E21C43DF64006C80DE /* FORScrollViewEmptyAssistant.m in Sources */,
+				781F6E171C44CCA600026160 /* NSString+Category.m in Sources */,
 				783702F21C43DF64006C80DE /* WXApiManager.m in Sources */,
+				781F6E141C44C5E200026160 /* RoomNameView.m in Sources */,
 				783703291C43DF64006C80DE /* NavView.m in Sources */,
 				783702E01C43DF64006C80DE /* EmptyViewFactory.m in Sources */,
 				783702E71C43DF64006C80DE /* ServerVisit.m in Sources */,

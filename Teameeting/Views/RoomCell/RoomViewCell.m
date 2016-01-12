@@ -9,15 +9,15 @@
 #import "RoomViewCell.h"
 #import "TimeManager.h"
 #import "MemberView.h"
+#import "RoomNameView.h"
 
 #define cellHeight  60
 
 @interface RoomViewCell()
 
-@property (nonatomic, strong) UILabel *roomNameLabel;;
+@property (nonatomic, strong) RoomNameView *roomNameView;
 @property (nonatomic, strong) UILabel *timeLabel;
 @property (nonatomic, strong) MemberView *memberView;
-@property (nonatomic, strong) UIImageView *notificationImageView;
 @property (nonatomic, strong) UIButton *settingButton;
 @property (nonatomic, strong) UIImageView *toplineImageView;
 @property (nonatomic, strong) UIImageView *lineImageView;
@@ -27,7 +27,7 @@
 
 @implementation RoomViewCell
 
-@synthesize timeLabel,roomNameLabel,memberView,notificationImageView,settingButton,toplineImageView,lineImageView;
+@synthesize timeLabel,roomNameView,memberView,settingButton,toplineImageView,lineImageView;
 @synthesize delegate;
 @synthesize parIndexPath;
 
@@ -47,29 +47,20 @@
 
 - (void)initSubviews
 {
-    self.roomNameLabel = [UILabel new];
-    self.roomNameLabel.backgroundColor = [UIColor clearColor];
-    self.roomNameLabel.numberOfLines = 0;
-    self.roomNameLabel.lineBreakMode = NSLineBreakByWordWrapping;
-    self.roomNameLabel.font = [UIFont boldSystemFontOfSize:17];
-    self.roomNameLabel.textColor = [UIColor whiteColor];
-    [self.contentView addSubview:self.roomNameLabel];
+    self.roomNameView = [RoomNameView new];
+    self.roomNameView.backgroundColor = [UIColor clearColor];
+    [self.contentView addSubview:self.roomNameView];
     
     self.timeLabel = [UILabel new];
     self.timeLabel.backgroundColor = [UIColor clearColor];
     self.timeLabel.numberOfLines = 0;
-    self.timeLabel.lineBreakMode = NSLineBreakByWordWrapping;
-    self.timeLabel.font = [UIFont systemFontOfSize:14];
+    self.timeLabel.lineBreakMode = NSLineBreakByTruncatingTail;
+    self.timeLabel.font = [UIFont systemFontOfSize:13];
     self.timeLabel.textColor = [UIColor colorWithRed:186.0/255.0 green:180.0/255.0 blue:189.0/255.0 alpha:1.0];
     [self.contentView addSubview:self.timeLabel];
     
     self.memberView = [MemberView new];
     [self.contentView addSubview:self.memberView];
-    
-    self.notificationImageView = [UIImageView new];
-    self.notificationImageView.image = [UIImage imageNamed:@"notification_not_main"];
-    self.notificationImageView.backgroundColor = [UIColor clearColor];
-    [self.contentView addSubview:self.notificationImageView];
     
     self.settingButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [self.settingButton setImage:[UIImage imageNamed:@"setting_main_point"] forState:UIControlStateNormal];
@@ -109,21 +100,21 @@
     
     NSLayoutConstraint * constraint1 = [NSLayoutConstraint constraintWithItem:self.settingButton attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0f constant:40.0f];
     
-     NSLayoutConstraint * constraint2 = [NSLayoutConstraint constraintWithItem:self.settingButton attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0f constant:20.0f];
+     NSLayoutConstraint * constraint2 = [NSLayoutConstraint constraintWithItem:self.settingButton attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0f constant:30.0f];
     
     NSLayoutConstraint * constraint3 = [NSLayoutConstraint constraintWithItem:self.settingButton attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:self.contentView attribute:NSLayoutAttributeCenterY multiplier:1.0f constant:0.f];
 
 
-    NSLayoutConstraint * constraint4 = [NSLayoutConstraint constraintWithItem:self.roomNameLabel attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self.contentView attribute:NSLayoutAttributeTop multiplier:1.0f constant:offset];
+    NSLayoutConstraint * constraint4 = [NSLayoutConstraint constraintWithItem:self.roomNameView attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self.contentView attribute:NSLayoutAttributeTop multiplier:1.0f constant:offset];
     
-    NSLayoutConstraint * constraint5 = [NSLayoutConstraint constraintWithItem:self.roomNameLabel attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:self.contentView attribute:NSLayoutAttributeLeft multiplier:1.0f constant:15.0f];
+    NSLayoutConstraint * constraint5 = [NSLayoutConstraint constraintWithItem:self.roomNameView attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:self.contentView attribute:NSLayoutAttributeLeft multiplier:1.0f constant:15.0f];
     
-    NSLayoutConstraint * constraint6 = [NSLayoutConstraint constraintWithItem:self.roomNameLabel attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:self.contentView attribute:NSLayoutAttributeWidth multiplier:0.5f constant:0.0f];
+    NSLayoutConstraint * constraint6 = [NSLayoutConstraint constraintWithItem:self.roomNameView attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:self.contentView attribute:NSLayoutAttributeWidth multiplier:0.5f constant:0.0f];
     
-    NSLayoutConstraint * constraint7 = [NSLayoutConstraint constraintWithItem:self.roomNameLabel attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:self.contentView attribute:NSLayoutAttributeHeight multiplier:0.3f constant:0.f];
+    NSLayoutConstraint * constraint7 = [NSLayoutConstraint constraintWithItem:self.roomNameView attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:self.contentView attribute:NSLayoutAttributeHeight multiplier:0.3f constant:0.f];
     
 
-    NSLayoutConstraint * constraint8 = [NSLayoutConstraint constraintWithItem:self.timeLabel attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self.roomNameLabel attribute:NSLayoutAttributeBottom multiplier:1.0f constant:offset/3];
+    NSLayoutConstraint * constraint8 = [NSLayoutConstraint constraintWithItem:self.timeLabel attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self.roomNameView attribute:NSLayoutAttributeBottom multiplier:1.0f constant:offset/3];
     
     NSLayoutConstraint * constraint9 = [NSLayoutConstraint constraintWithItem:self.timeLabel attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:self.contentView attribute:NSLayoutAttributeLeft multiplier:1.0f constant:15.0f];
     
@@ -135,16 +126,6 @@
     NSLayoutConstraint * constraint12 = [NSLayoutConstraint constraintWithItem:self.activityIndicatorView attribute:NSLayoutAttributeRight relatedBy:NSLayoutRelationEqual toItem:self.contentView attribute:NSLayoutAttributeRight multiplier:1.0f constant:-20.0f];
     
     NSLayoutConstraint * constraint13 = [NSLayoutConstraint constraintWithItem:self.activityIndicatorView attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:self.contentView attribute:NSLayoutAttributeCenterY multiplier:1.0f constant:0.f];
-    
-    
-    NSLayoutConstraint * constraint14 = [NSLayoutConstraint constraintWithItem:self.notificationImageView attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0f constant:30.0f];
-    
-    NSLayoutConstraint * constraint15 = [NSLayoutConstraint constraintWithItem:self.notificationImageView attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0f constant:30.0f];
-    
-    NSLayoutConstraint * constraint16 = [NSLayoutConstraint constraintWithItem:self.notificationImageView attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:self.contentView attribute:NSLayoutAttributeCenterY multiplier:1.f constant:0.0f];
-    
-    NSLayoutConstraint * constraint17 = [NSLayoutConstraint constraintWithItem:self.notificationImageView attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:self.settingButton attribute:NSLayoutAttributeLeft multiplier:1.0f constant:-30.f];
-    
 
     NSLayoutConstraint * constraint18 = [NSLayoutConstraint constraintWithItem:self.memberView attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0f constant:60.0f];
     
@@ -168,10 +149,6 @@
     [self.contentView addConstraint:constraint11];
     [self.contentView addConstraint:constraint12];
     [self.contentView addConstraint:constraint13];
-    [self.contentView addConstraint:constraint14];
-    [self.contentView addConstraint:constraint15];
-    [self.contentView addConstraint:constraint16];
-    [self.contentView addConstraint:constraint17];
     
     [self.contentView addConstraint:constraint18];
     [self.contentView addConstraint:constraint19];
@@ -196,43 +173,19 @@
         [self.activityIndicatorView stopAnimating];
         self.settingButton.hidden = NO;
     }
+    [self.roomNameView setItem:item];
+    [self.memberView setRoomItem:item];
+    // 是不是已经有会议了
+    if ([item.roomName isEqualToString:@""]) {
+        self.timeLabel.text = @"";
+    }else{
+        self.timeLabel.text = [NSString stringWithFormat:@"创建:%@",[[TimeManager shead] friendTimeWithTimesTamp:item.jointime]];
+    }
 }
 
 - (void)setItem:(RoomItem*)item
 {
-    if ([item.roomName isEqualToString:@""]) {
-        
-        self.roomNameLabel.text = @"";
-        self.timeLabel.text = @"";
-
-        [self setShow:item];
-        
-        self.memberView.hidden = YES;
-        self.notificationImageView.hidden = YES;
-       
-    }else{
-        [self setShow:item];
-        
-        self.roomNameLabel.text = item.roomName;
-        self.timeLabel.text = [NSString stringWithFormat:@"创建:%@",[[TimeManager shead] friendTimeWithTimesTamp:item.jointime]];
-        if ([item.mettingNum isEqualToString:@"0"]) {
-            self.memberView.hidden = YES;
-            if ([item.canNotification isEqualToString:@"1"]) {
-                self.notificationImageView.hidden = YES;
-            }else{
-                self.notificationImageView.hidden = NO;
-            }
-        }else{
-            self.memberView.hidden = NO;
-            if ([item.canNotification isEqualToString:@"1"]) {
-                self.notificationImageView.hidden = YES;
-            }else{
-                self.notificationImageView.hidden = NO;
-            }
-        }
-       
-
-    }
+     [self setShow:item];
     
 }
 

@@ -21,7 +21,7 @@
  ****/
 // 3YB54BC6QT为开发者的App Identifier前十位
 static const char kKeychainUDIDItemIdentifier[]  = "UUID";
-static const char kKeyChainUDIDAccessGroup[] = "3YB54BC6QT.com.avcon.Room";
+static const char kKeyChainUDIDAccessGroup[] = "3YB54BC6QT.com.avcon.teameeting";
 
 @implementation SvUDIDTools
 

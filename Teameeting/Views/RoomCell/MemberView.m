@@ -10,6 +10,7 @@
 
 @interface MemberView()
 @property (nonatomic, strong) UIImageView *imageView;
+@property (nonatomic, strong) UIImageView *notificationImageView;
 @property (nonatomic, strong) UILabel *numberLabel;
 - (void)layout;
 @end
@@ -20,15 +21,21 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
+        self.backgroundColor = [UIColor clearColor];
         self.imageView = [[UIImageView alloc] init];
         [self addSubview:self.imageView];
-        self.imageView.backgroundColor = [UIColor redColor];
+        self.imageView.image = [UIImage imageNamed:@"meeting_num"];
+        
+        self.notificationImageView = [[UIImageView alloc] init];
+        [self addSubview:self.notificationImageView];
+        self.notificationImageView.image = [UIImage imageNamed:@"metting_nonotification"];
+        self.notificationImageView.hidden = YES;
         
         self.numberLabel = [UILabel new];
         [self addSubview:self.numberLabel];
         self.numberLabel.textAlignment = NSTextAlignmentLeft;
         self.numberLabel.textColor = [UIColor whiteColor];
-        self.numberLabel.backgroundColor = [UIColor grayColor];
+        self.numberLabel.backgroundColor = [UIColor clearColor];
         [self layout];
     }
     return self;
@@ -37,6 +44,7 @@
 {
     self.imageView.translatesAutoresizingMaskIntoConstraints = NO;
     self.numberLabel.translatesAutoresizingMaskIntoConstraints = NO;
+    self.notificationImageView.translatesAutoresizingMaskIntoConstraints = NO;
     
     NSLayoutConstraint * constraint = [NSLayoutConstraint constraintWithItem:_imageView attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeTop multiplier:1.0f constant:0.f];
     
@@ -54,6 +62,14 @@
     
     NSLayoutConstraint * constraint7 = [NSLayoutConstraint constraintWithItem:_numberLabel attribute:NSLayoutAttributeRight relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeRight multiplier:1.0f constant:.0f];
     
+    NSLayoutConstraint * constraint8 = [NSLayoutConstraint constraintWithItem:_notificationImageView attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeHeight multiplier:0.85f constant:0.f];
+    
+    NSLayoutConstraint * constraint9 = [NSLayoutConstraint constraintWithItem:_notificationImageView attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeHeight multiplier:1.0f constant: .0f];
+    
+    NSLayoutConstraint * constraint10 = [NSLayoutConstraint constraintWithItem:_notificationImageView attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeCenterX multiplier:1.0f constant:0];
+    
+    NSLayoutConstraint * constraint11 = [NSLayoutConstraint constraintWithItem:_notificationImageView attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeCenterY multiplier:1.0f constant:.0f];
+    
     
     [self addConstraint:constraint];
     [self addConstraint:constraint1];
@@ -63,12 +79,29 @@
     [self addConstraint:constraint5];
     [self addConstraint:constraint6];
     [self addConstraint:constraint7];
+    [self addConstraint:constraint8];
+    [self addConstraint:constraint9];
+    [self addConstraint:constraint10];
+    [self addConstraint:constraint11];
     
 }
 
-- (void)setNum:(NSString*)num
+- (void)setRoomItem:(RoomItem*)roomItem
 {
-    self.numberLabel.text = num;
+    if ([roomItem.mettingNum isEqualToString:@"0"]) {
+        self.numberLabel.hidden = YES;
+        self.imageView.hidden = YES;
+        if ([roomItem.canNotification isEqualToString:@"1"]) {
+            self.notificationImageView.hidden = YES;
+        }else{
+            self.notificationImageView.hidden = NO;
+        }
+    }else{
+        self.numberLabel.hidden = NO;
+        self.imageView.hidden = NO;
+        self.notificationImageView.hidden = YES;
+        self.numberLabel.text = roomItem.mettingNum;
+    }
 }
 
 /*
