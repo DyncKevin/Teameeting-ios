@@ -14,6 +14,7 @@
 #import "UUMessageFrame.h"
 #import "UUMessage.h"
 #import "TMMessageManage.h"
+#import "VideoCallViewController.h"
 @interface RootViewController ()<UUInputFunctionViewDelegate,UUMessageCellDelegate,UITableViewDataSource,UITableViewDelegate,tmMessageReceive>
 
 //@property (strong, nonatomic) MJRefreshHeader *head;
@@ -213,7 +214,8 @@
     funcView.TextViewInput.text = @"";
     [funcView changeSendBtnWithPhoto:YES];
     [self dealTheFunctionData:dic];
-    [[TMMessageManage sharedManager] sendMsgUserid:nil pass:nil roomid:@"123" msg:message];
+    VideoCallViewController *videoCon = (VideoCallViewController *)self.parentViewCon;
+    [[TMMessageManage sharedManager] sendMsgUserid:nil pass:nil roomid:videoCon.roomItem.roomID msg:message];
 }
 
 - (void)UUInputFunctionView:(UUInputFunctionView *)funcView sendPicture:(UIImage *)image

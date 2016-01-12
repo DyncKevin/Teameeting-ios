@@ -273,7 +273,7 @@
               roomid:(NSString*) roomid
                  msg:(NSString*) msg {
     
-   return [self.msg tMSndMsgUserid:[SvUDIDTools UDID] pass:[ServerVisit shead].authorization roomid:@"123" msg:msg];
+   return [self.msg tMSndMsgUserid:[SvUDIDTools UDID] pass:[ServerVisit shead].authorization roomid:roomid msg:msg];
 }
 
 - (int)tmRoomCmd:(TMMEETCMD)cmd Userid:(NSString *)userid pass:(NSString *)pass roomid:(NSString *)roomid remain:(NSString *)remain {

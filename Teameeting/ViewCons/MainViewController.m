@@ -496,7 +496,7 @@ static NSString *kRoomCellID = @"RoomCell";
                 [weakSelf updataDataWithServerResponse:[dict objectForKey:@"meetingInfo"]];
                  [[NtreatedDataManage sharedManager] removeData:data];
                 [weakSelf.push showWithType:PushViewTypeDefault withObject:roomItem withIndex:0];
-                [[TMMessageManage sharedManager] tmRoomCmd:TMCMD_CREATE Userid:nil pass:[ServerVisit shead].authorization roomid:roomItem.roomID remain:@""];
+                [[TMMessageManage sharedManager] tmRoomCmd:TMCMD_CREATE Userid:nil pass:[ServerVisit shead].authorization roomid:[NSString stringWithFormat:@"%@",[[dict objectForKey:@"meetingInfo"] objectForKey:@"meetingid"]] remain:@""];
             }
         }
        
