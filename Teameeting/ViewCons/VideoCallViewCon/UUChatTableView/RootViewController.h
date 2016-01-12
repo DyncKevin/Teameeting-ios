@@ -15,4 +15,5 @@
 - (void)resetInputFrame:(CGRect)rect;
 - (void)hidenInput;
 - (void)resginKeyBord;
+- (void)setReceiveMessageEnable:(BOOL)enable;
 @end

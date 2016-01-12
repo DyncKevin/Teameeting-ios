@@ -153,7 +153,7 @@ typedef enum ViewState {
 - (void)viewDidLoad {
     
     [super viewDidLoad];
-    [[TMMessageManage sharedManager] tmRoomCmd:TMCMD_ENTER Userid:nil pass:nil roomid:@"123" remain:@""];
+    [[TMMessageManage sharedManager] tmRoomCmd:TMCMD_ENTER Userid:nil pass:nil roomid:self.roomItem.roomID remain:@""];
 }
 
 - (void)loadTableView {
@@ -645,6 +645,7 @@ typedef enum ViewState {
 
 - (void)closeChatView {
     
+    [[[[UIApplication sharedApplication] delegate] window] setUserInteractionEnabled:NO];
     [UIView animateWithDuration:0.2 animations:^{
         
         [self initBar];
@@ -654,10 +655,12 @@ typedef enum ViewState {
         
     } completion:^(BOOL finished) {
         
+        [[[[UIApplication sharedApplication] delegate] window] setUserInteractionEnabled:YES];
         [self.rootView.view setHidden:YES];
         [self.videoGroudImage setHidden:YES];
         
     }];
+    [self.rootView setReceiveMessageEnable:NO];
 
 }
 
@@ -672,12 +675,14 @@ typedef enum ViewState {
                 [self.rootView.view setFrame:CGRectMake(0,self.rootView.view.frame.origin.y, self.rootView.view.bounds.size.width, self.rootView.view.bounds.size.height)];
                 [self.menuView setCenter:CGPointMake(self.view.bounds.size.width/2 + self.view.bounds.size.width/4, self.menuView.center.y)];
                 [self.noUserTip setCenter:CGPointMake(self.view.bounds.size.width/2 + self.view.bounds.size.width/4, self.noUserTip.center.y)];
+                [self.rootView setReceiveMessageEnable:YES];
                 
             } else {
                 
                 [self.rootView.view setFrame:CGRectMake(0 - self.rootView.view.bounds.size.width,self.rootView.view.frame.origin.y, self.rootView.view.bounds.size.width, self.rootView.view.bounds.size.height)];
                 [self.menuView setCenter:CGPointMake(self.view.bounds.size.width/2, self.menuView.center.y)];
                 [self.noUserTip setCenter:CGPointMake(self.view.bounds.size.width/2, self.noUserTip.center.y)];
+                [self.rootView setReceiveMessageEnable:NO];
             }
             
         }];
@@ -688,6 +693,7 @@ typedef enum ViewState {
             
             [self.rootView.view setHidden:NO];
             [self.videoGroudImage setHidden:NO];
+            
             [UIView animateWithDuration:0.2 animations:^{
                 
                 [self initChatBar];
@@ -695,10 +701,10 @@ typedef enum ViewState {
                 [self.rootView.view setAlpha:1];
                 [self.videoGroudImage setAlpha:1];
             }];
+            [self.rootView setReceiveMessageEnable:YES];
             
         } else {
-            
-            
+        
             [UIView animateWithDuration:0.2 animations:^{
                 
                 [self initBar];
@@ -712,6 +718,7 @@ typedef enum ViewState {
                 [self.videoGroudImage setHidden:YES];
                 
             }];
+            [self.rootView setReceiveMessageEnable:NO];
             
         }
     }

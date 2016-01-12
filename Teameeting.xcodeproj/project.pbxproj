@@ -135,7 +135,6 @@
 		783702F91C43DF64006C80DE /* EnterMeetingIDViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7837021F1C43DF64006C80DE /* EnterMeetingIDViewController.m */; };
 		783702FA1C43DF64006C80DE /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 783702211C43DF64006C80DE /* MainViewController.m */; };
 		783702FB1C43DF64006C80DE /* BaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 783702241C43DF64006C80DE /* BaseViewController.m */; };
-		783702FC1C43DF64006C80DE /* libanrtcsdk.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 783702291C43DF64006C80DE /* libanrtcsdk.a */; };
 		783702FD1C43DF64006C80DE /* ReceiveCallViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7837022D1C43DF64006C80DE /* ReceiveCallViewController.m */; };
 		783702FE1C43DF64006C80DE /* ConvertToCommonEmoticonsHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 783702311C43DF64006C80DE /* ConvertToCommonEmoticonsHelper.m */; };
 		783702FF1C43DF64006C80DE /* expression_custom.plist in Resources */ = {isa = PBXBuildFile; fileRef = 783702321C43DF64006C80DE /* expression_custom.plist */; };
@@ -201,6 +200,7 @@
 		7837034B1C43E3FC006C80DE /* libstdc++.6.0.9.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 7837034A1C43E3FC006C80DE /* libstdc++.6.0.9.tbd */; };
 		7837034D1C43E405006C80DE /* libicucore.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 7837034C1C43E405006C80DE /* libicucore.tbd */; };
 		EC157AD0B3A13035EAD046BB /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2E4CBCA8C81B4B1BFCC1872C /* libPods.a */; };
+		FCA4D5971C44F94D005CDF99 /* libanrtcsdk.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FCA4D5961C44F94D005CDF99 /* libanrtcsdk.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -409,10 +409,6 @@
 		783702211C43DF64006C80DE /* MainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainViewController.m; sourceTree = "<group>"; };
 		783702231C43DF64006C80DE /* BaseViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseViewController.h; sourceTree = "<group>"; };
 		783702241C43DF64006C80DE /* BaseViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BaseViewController.m; sourceTree = "<group>"; };
-		783702271C43DF64006C80DE /* AnyrtcM2Mutlier.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AnyrtcM2Mutlier.h; sourceTree = "<group>"; };
-		783702281C43DF64006C80DE /* AnyrtcVideoCallView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AnyrtcVideoCallView.h; sourceTree = "<group>"; };
-		783702291C43DF64006C80DE /* libanrtcsdk.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libanrtcsdk.a; sourceTree = "<group>"; };
-		7837022A1C43DF64006C80DE /* M2MPublisher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = M2MPublisher.h; sourceTree = "<group>"; };
 		7837022C1C43DF64006C80DE /* ReceiveCallViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReceiveCallViewController.h; sourceTree = "<group>"; };
 		7837022D1C43DF64006C80DE /* ReceiveCallViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReceiveCallViewController.m; sourceTree = "<group>"; };
 		783702301C43DF64006C80DE /* ConvertToCommonEmoticonsHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConvertToCommonEmoticonsHelper.h; sourceTree = "<group>"; };
@@ -507,6 +503,10 @@
 		7837034A1C43E3FC006C80DE /* libstdc++.6.0.9.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libstdc++.6.0.9.tbd"; path = "usr/lib/libstdc++.6.0.9.tbd"; sourceTree = SDKROOT; };
 		7837034C1C43E405006C80DE /* libicucore.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libicucore.tbd; path = usr/lib/libicucore.tbd; sourceTree = SDKROOT; };
 		DFBC29C224EA228C97676A8B /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
+		FCA4D5961C44F94D005CDF99 /* libanrtcsdk.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libanrtcsdk.a; sourceTree = "<group>"; };
+		FCBC48571C44A6B300A9A63F /* AnyrtcM2Mutlier.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AnyrtcM2Mutlier.h; sourceTree = "<group>"; };
+		FCBC48581C44A6B300A9A63F /* AnyrtcVideoCallView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AnyrtcVideoCallView.h; sourceTree = "<group>"; };
+		FCBC485A1C44A6B300A9A63F /* M2MPublisher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = M2MPublisher.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -521,6 +521,7 @@
 				783703451C43E3E7006C80DE /* GLKit.framework in Frameworks */,
 				783703431C43E3DF006C80DE /* VideoToolbox.framework in Frameworks */,
 				783703411C43E3D6006C80DE /* CoreTelephony.framework in Frameworks */,
+				FCA4D5971C44F94D005CDF99 /* libanrtcsdk.a in Frameworks */,
 				7837033F1C43E3CE006C80DE /* SystemConfiguration.framework in Frameworks */,
 				7837033D1C43E3C4006C80DE /* libsqlite3.0.tbd in Frameworks */,
 				7837033B1C43E3BE006C80DE /* Accelerate.framework in Frameworks */,
@@ -528,7 +529,6 @@
 				783703371C43E3B2006C80DE /* CoreGraphics.framework in Frameworks */,
 				783703351C43E3AD006C80DE /* Security.framework in Frameworks */,
 				783703331C43E3A6006C80DE /* CoreData.framework in Frameworks */,
-				783702FC1C43DF64006C80DE /* libanrtcsdk.a in Frameworks */,
 				783702E81C43DF64006C80DE /* libSdkMsgClientTmIos.a in Frameworks */,
 				783702D61C43DF64006C80DE /* libPushSDK-1.8.8.a in Frameworks */,
 				783702F81C43DF64006C80DE /* libWeChatSDK.a in Frameworks */,
@@ -1001,7 +1001,7 @@
 		783702251C43DF64006C80DE /* VideoCallViewCon */ = {
 			isa = PBXGroup;
 			children = (
-				783702261C43DF64006C80DE /* AnyrtcSDK */,
+				FCBC48561C44A6B300A9A63F /* AnyrtcSDK */,
 				7837022B1C43DF64006C80DE /* Call */,
 				7837022E1C43DF64006C80DE /* MessageTip */,
 				783702401C43DF64006C80DE /* OtherResources */,
@@ -1011,17 +1011,6 @@
 				7837026E1C43DF64006C80DE /* VideoCallViewController.m */,
 			);
 			path = VideoCallViewCon;
-			sourceTree = "<group>";
-		};
-		783702261C43DF64006C80DE /* AnyrtcSDK */ = {
-			isa = PBXGroup;
-			children = (
-				783702271C43DF64006C80DE /* AnyrtcM2Mutlier.h */,
-				783702281C43DF64006C80DE /* AnyrtcVideoCallView.h */,
-				783702291C43DF64006C80DE /* libanrtcsdk.a */,
-				7837022A1C43DF64006C80DE /* M2MPublisher.h */,
-			);
-			path = AnyrtcSDK;
 			sourceTree = "<group>";
 		};
 		7837022B1C43DF64006C80DE /* Call */ = {
@@ -1275,6 +1264,17 @@
 				2E4CBCA8C81B4B1BFCC1872C /* libPods.a */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		FCBC48561C44A6B300A9A63F /* AnyrtcSDK */ = {
+			isa = PBXGroup;
+			children = (
+				FCA4D5961C44F94D005CDF99 /* libanrtcsdk.a */,
+				FCBC48571C44A6B300A9A63F /* AnyrtcM2Mutlier.h */,
+				FCBC48581C44A6B300A9A63F /* AnyrtcVideoCallView.h */,
+				FCBC485A1C44A6B300A9A63F /* M2MPublisher.h */,
+			);
+			path = AnyrtcSDK;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1769,6 +1769,8 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_ENTITLEMENTS = KeychainAccessGroups.plist;
+				CODE_SIGN_IDENTITY = "iPhone Developer: yangyang wang (3VG6DLPKJ2)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: yangyang wang (3VG6DLPKJ2)";
 				ENABLE_BITCODE = NO;
 				GCC_PREFIX_HEADER = "$(SRCROOT)/Teameeting-Prefix.pch";
 				INFOPLIST_FILE = Teameeting/Info.plist;
@@ -1808,7 +1810,7 @@
 					"\"lame\"",
 					"-w",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.avcon.Teameeting;
+				PRODUCT_BUNDLE_IDENTIFIER = com.dync.teameeting;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -1821,6 +1823,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_ENTITLEMENTS = KeychainAccessGroups.plist;
+				CODE_SIGN_IDENTITY = "iPhone Developer: yangyang wang (3VG6DLPKJ2)";
 				ENABLE_BITCODE = NO;
 				GCC_PREFIX_HEADER = "$(SRCROOT)/Teameeting-Prefix.pch";
 				INFOPLIST_FILE = Teameeting/Info.plist;
@@ -1860,7 +1863,7 @@
 					"\"lame\"",
 					"-w",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.avcon.Teameeting;
+				PRODUCT_BUNDLE_IDENTIFIER = com.dync.teameeting;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
