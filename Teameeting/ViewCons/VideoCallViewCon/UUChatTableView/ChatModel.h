@@ -18,6 +18,8 @@
 
 - (void)addRandomItemsToDataSource:(NSInteger)number;
 
-- (void)addSpecifiedItem:(NSDictionary *)dic;
+- (void)addOtherItem:(NSDictionary *)dic;
+
+- (void)addMySeleItem:(NSDictionary *)dic;
 
 @end
