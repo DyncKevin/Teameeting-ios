@@ -17,5 +17,6 @@
 @dynamic title;
 @dynamic content;
 @dynamic belong;
+@dynamic time;
 
 @end

@@ -13,7 +13,7 @@
 #import "ASHUD.h"
 #import "TMMessageManage.h"
 
-@interface ReceiveCallViewController ()<AnyrtcM2MDelegate,UIGestureRecognizerDelegate>
+@interface ReceiveCallViewController ()<AnyrtcM2MDelegate,UIGestureRecognizerDelegate,tmMessageReceive>
 {
     AvcAudioRouteMgr *_audioManager;
     AnyrtcVideoCallView *_localVideoView;
@@ -118,6 +118,12 @@
         [pramas setStreamType:kSTRtc];
         [_client Publish:pramas];
     }
+    [[TMMessageManage sharedManager] registerMessageListener:self];
+}
+
+- (void)videoSubscribeWith:(NSString *)roomId {
+    
+    [_client Subscribe:roomId andEnableVideo:YES];
 }
 
 - (void)fullSreenNoti:(NSNotification *)noti {
@@ -504,6 +510,8 @@
         if (buttonIndex == 1) {
             [ASHUD showHUDWithStayLoadingStyleInView:self.view belowView:nil content:@"正在退出。。。"];
             [_client CloseAll];
+            [_client UnSubscribe:self.roomID];
+            [[TMMessageManage sharedManager] tmRoomCmd:MCMeetCmdLEAVE roomid:self.roomID remain:@""];
         }
     }
     
@@ -518,8 +526,7 @@
 - (void) OnRtcPublishOK:(NSString*)strPublishId withRtmpUrl:(NSString*)strRtmpUtl withHlsUrl:(NSString*)strHlsUrl
 {
     [ASHUD hideHUD];
-    
-    //[_client Subscribe:strPublishId andEnableVideo:YES];
+
     [[TMMessageManage sharedManager] tMNotifyMsgRoomid:roomID withMessage:strPublishId];
 }
 /** 发布失败

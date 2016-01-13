@@ -116,7 +116,7 @@
     return _persistentStoreCoordinator;
 }
 
-- (void)insertMeeageDataWtihBelog:(NSString *)belong content:(NSString *)content
+- (void)insertMeeageDataWtihBelog:(NSString *)belong content:(NSString *)content messageTime:(NSString *)time
 {
     NSManagedObjectContext *context = [self managedObjectContext];
     Message *message = [NSEntityDescription insertNewObjectForEntityForName:@"Message" inManagedObjectContext:context];
@@ -142,7 +142,7 @@
     
 }
 
-- (NSUInteger)getUnreadCountByRoomKey:(NSString *)key {
+- (NSUInteger)getUnreadCountByRoomKey:(NSString *)key lasetTime:(NSString **)time{
     
     NSMutableArray *messages = [NSMutableArray array];
     NSArray *searchResult = [self selectDataFromMessageTableWithKey:key pageSize:20 currentPage:0];
@@ -154,11 +154,36 @@
         searchResult = [self selectDataFromMessageTableWithKey:key pageSize:20 currentPage:index];
         [messages addObjectsFromArray:searchResult];
     }
+    Message *lastMessage = [messages lastObject];
+    *time = lastMessage.time;
     return [messages count];
+}
+
+- (NSDictionary *)getUnreadCountByRoomKeys:(NSString *)key, ... {
+    
+    NSMutableDictionary *messageDic = [[NSMutableDictionary alloc] init];
+    va_list args;
+    va_start(args, key);
+    NSString *lastTime = nil;
+    NSUInteger count = [self getUnreadCountByRoomKey:key lasetTime:&lastTime];
+    [messageDic setObject:[NSArray arrayWithObjects:[NSNumber numberWithInteger:count], lastTime,nil] forKey:key];
+    
+    if (key)
+    {
+        NSString *otherString;
+        while ((otherString = va_arg(args, NSString *)))
+        {
+            NSUInteger count = [self getUnreadCountByRoomKey:otherString lasetTime:&lastTime];
+            [messageDic setObject:[NSArray arrayWithObjects:[NSNumber numberWithInteger:count], lastTime,nil] forKey:otherString];
+        }
+    }
+    va_end(args);
+    return messageDic;
 }
 
 - (NSMutableArray*)selectDataFromMessageTableWithKey:(NSString *)key pageSize:(NSUInteger)size currentPage:(NSInteger)page
 {
+
     NSManagedObjectContext *context = [self managedObjectContext];
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
     
@@ -269,7 +294,7 @@
     Message *item = [result firstObject];
     if ([context save:&error]) {
         
-        
+        NSLog(@"%@",item.description);
     }
 }
 
@@ -309,7 +334,7 @@
                 
                 if ([object respondsToSelector:@selector(messageDidReceiveWithContent:messageTime:)] && [object receiveMessageEnable]) {
                     
-                    if (![[messageDic objectForKey:@"from"] isEqualToString:[ServerVisit shead].authorization]) {
+                    if (![[messageDic objectForKey:@"from"] isEqualToString:[SvUDIDTools UDID]]) {
                         
                         [object messageDidReceiveWithContent:[messageDic objectForKey:@"cont"] messageTime:[messageDic objectForKey:@"ntime"]];
                     }
@@ -319,15 +344,16 @@
                 }
 
             }
-            if (!searchTag) {
+            if (!searchTag && ![[messageDic objectForKey:@"from"] isEqualToString:[SvUDIDTools UDID]]) {
                 
-                [[TMMessageManage sharedManager] insertMeeageDataWtihBelog:[messageDic objectForKey:@"room"] content:[messageDic objectForKey:@"cont"]];
+                [[TMMessageManage sharedManager] insertMeeageDataWtihBelog:[messageDic objectForKey:@"room"] content:[messageDic objectForKey:@"cont"] messageTime:[messageDic objectForKey:@"ntime"]];
                 for (id<tmMessageReceive> object in self.messageListeners) {
                     
-                    if ([object respondsToSelector:@selector(roomListUnreadMessageChangeWithRoomID:totalCount:)] && [object receiveMessageEnable]) {
+                    if ([object respondsToSelector:@selector(roomListUnreadMessageChangeWithRoomID:totalCount:lastMessageTime:)] && [object receiveMessageEnable]) {
                         
-                        NSInteger messageCount = [[TMMessageManage sharedManager] getUnreadCountByRoomKey:[messageDic objectForKey:@"room"]];
-                        [object roomListUnreadMessageChangeWithRoomID:[messageDic objectForKey:@"room"] totalCount:messageCount];
+                        NSString *lastMessageTime = nil;
+                        NSInteger messageCount = [[TMMessageManage sharedManager] getUnreadCountByRoomKey:[messageDic objectForKey:@"room"] lasetTime:&lastMessageTime];
+                        [object roomListUnreadMessageChangeWithRoomID:[messageDic objectForKey:@"room"] totalCount:messageCount lastMessageTime:lastMessageTime];
                         
                     }
                 }
@@ -335,11 +361,23 @@
             
         } else if ([[messageDic objectForKey:@"cmd"] intValue] == 1 || [[messageDic objectForKey:@"cmd"] intValue] == 2) {
             
+            if ([[messageDic objectForKey:@"tags"] intValue] == 4 && [[messageDic objectForKey:@"cmd"] intValue] == 1) {
+                
+                for (id<tmMessageReceive> object in self.messageListeners) {
+                    
+                    if ([object respondsToSelector:@selector(videoSubscribeWith:)] && [object receiveMessageEnable]) {
+                        
+                        [object videoSubscribeWith:[messageDic objectForKey:@"room"]];
+                    }
+                }
+                return;
+            }
+            
             for (id<tmMessageReceive> object in self.messageListeners) {
                 
                 if ([object respondsToSelector:@selector(roomListMemberChangeWithRoomID:changeState:)] && [object receiveMessageEnable]) {
                     
-                    if (![[messageDic objectForKey:@"from"] isEqualToString:[ServerVisit shead].authorization]) {
+                    if (![[messageDic objectForKey:@"from"] isEqualToString:[SvUDIDTools UDID]]) {
                         
                         [object roomListMemberChangeWithRoomID:[messageDic objectForKey:@"room"] changeState:[[messageDic objectForKey:@"cmd"] intValue]];
                     }
@@ -350,6 +388,11 @@
         }
         
     });
+}
+
+- (BOOL)connectEnable {
+    
+    return [self.msg tMConnStatus] == MCConnStateCONNECTED ? YES : NO;
 }
 
 - (void) OnGetMsgMsg:(NSString*) msg {
