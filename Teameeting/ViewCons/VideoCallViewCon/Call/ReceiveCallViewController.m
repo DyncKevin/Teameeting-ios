@@ -126,6 +126,11 @@
     [_client Subscribe:roomId andEnableVideo:YES];
 }
 
+-(BOOL)receiveMessageEnable {
+    
+    return YES;
+}
+
 - (void)fullSreenNoti:(NSNotification *)noti {
     
     NSNumber *object = [noti object];
