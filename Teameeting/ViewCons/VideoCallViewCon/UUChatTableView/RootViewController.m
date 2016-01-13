@@ -215,7 +215,7 @@
     [funcView changeSendBtnWithPhoto:YES];
     [self dealTheFunctionData:dic];
     VideoCallViewController *videoCon = (VideoCallViewController *)self.parentViewCon;
-    [[TMMessageManage sharedManager] sendMsgUserid:nil pass:nil roomid:videoCon.roomItem.roomID msg:message];
+    [[TMMessageManage sharedManager]sendMsgWithRoomid:videoCon.roomItem.roomID msg:message];
 }
 
 - (void)UUInputFunctionView:(UUInputFunctionView *)funcView sendPicture:(UIImage *)image
