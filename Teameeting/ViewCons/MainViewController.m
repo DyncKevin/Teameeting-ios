@@ -336,6 +336,8 @@ static NSString *kRoomCellID = @"RoomCell";
                 if ([ToolUtils shead].meetingID != nil) {
                     [weakSelf addItemAndEnterMettingWithID:[ToolUtils shead].meetingID];
                 }
+                // get not read message num
+                [weakSelf getNotReadMessageNum];
                 AppDelegate *apple = [RoomApp shead].appDelgate;
                 UIView *initView = [apple.window.rootViewController.view viewWithTag:400];
                 if (initView) {
@@ -348,6 +350,24 @@ static NSString *kRoomCellID = @"RoomCell";
             }
         }
     }];
+}
+
+- (void)getNotReadMessageNum
+{
+    @synchronized(dataArray) {
+        if (dataArray.count != 0) {
+            for (RoomItem *item in dataArray) {
+                NSDictionary *dict = [[TMMessageManage sharedManager] getUnreadCountByRoomKeys:item.roomID,nil];
+
+                    NSArray *array = [dict objectForKey:item.roomID];
+                if (array.count>1) {
+                    item.messageNum = [[array objectAtIndex:0] integerValue];
+                    item.lastMessagTime = [array objectAtIndex:1];
+                }
+            }
+            [self.roomList reloadData];
+        }
+    }
 }
 
 - (void)setBackGroundImageView
@@ -604,6 +624,11 @@ static NSString *kRoomCellID = @"RoomCell";
     [[NtreatedDataManage sharedManager] addData:data];
     
     [dataArray removeObject:item];
+    if (dataArray.count == 0) {
+        
+        [EmptyViewFactory emptyMainView:self.roomList];
+        
+    }
     
     NSMutableArray *indexPaths = [[NSMutableArray alloc] init];
     
@@ -1057,12 +1082,39 @@ static NSString *kRoomCellID = @"RoomCell";
 //state 1 in  2:leave
 - (void)roomListMemberChangeWithRoomID:(NSString *)roomID changeState:(NSInteger)state
 {
-    
+    @synchronized(dataArray) {
+        for (RoomItem *item in dataArray) {
+            if ([item.roomID isEqualToString:roomID]) {
+                if (state == 1) {
+                    item.mettingNum = item.mettingNum + 1;
+                    [self.roomList reloadData];
+                    break;
+                }else{
+                    if (item.mettingNum == 0) {
+                        break;
+                    }else{
+                        item.mettingNum = item.mettingNum -1;
+                        [self.roomList reloadData];
+                        break;
+                    }
+                }
+            }
+        }
+    }
 }
 // count: not read message num
 - (void)roomListUnreadMessageChangeWithRoomID:(NSString *)roomID totalCount:(NSInteger)count lastMessageTime:(NSString *)time
 {
-    
+    @synchronized(dataArray) {
+        for (RoomItem *item in dataArray) {
+            if ([item.roomID isEqualToString:roomID]) {
+                item.messageNum = count;
+                item.lastMessagTime = time;
+                [self.roomList reloadData];
+                break;
+            }
+        }
+    }
 }
 - (BOOL)receiveMessageEnable
 {
