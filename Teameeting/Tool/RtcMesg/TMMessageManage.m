@@ -122,6 +122,7 @@
     Message *message = [NSEntityDescription insertNewObjectForEntityForName:@"Message" inManagedObjectContext:context];
     message.belong = belong;
     message.content = content;
+    message.time = time;
     NSError *error;
     if(![context save:&error])
     {
@@ -151,7 +152,7 @@
     while ([searchResult count] != 0) {
         
         index ++;
-        searchResult = [self selectDataFromMessageTableWithKey:key pageSize:20 currentPage:index];
+        searchResult = [self selectDataFromMessageTableWithKey:key pageSize:20 currentPage:[searchResult count]];
         [messages addObjectsFromArray:searchResult];
     }
     Message *lastMessage = [messages lastObject];
