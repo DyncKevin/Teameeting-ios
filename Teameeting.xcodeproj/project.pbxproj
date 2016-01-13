@@ -201,6 +201,7 @@
 		7837034B1C43E3FC006C80DE /* libstdc++.6.0.9.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 7837034A1C43E3FC006C80DE /* libstdc++.6.0.9.tbd */; };
 		7837034D1C43E405006C80DE /* libicucore.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 7837034C1C43E405006C80DE /* libicucore.tbd */; };
 		EC157AD0B3A13035EAD046BB /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2E4CBCA8C81B4B1BFCC1872C /* libPods.a */; };
+		FC6A0F4A1C464B9400D8C56D /* TMessage.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = FC6A0F481C464B9400D8C56D /* TMessage.xcdatamodeld */; };
 		FCA4D5971C44F94D005CDF99 /* libanrtcsdk.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FCA4D5961C44F94D005CDF99 /* libanrtcsdk.a */; };
 /* End PBXBuildFile section */
 
@@ -505,6 +506,7 @@
 		7837034A1C43E3FC006C80DE /* libstdc++.6.0.9.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libstdc++.6.0.9.tbd"; path = "usr/lib/libstdc++.6.0.9.tbd"; sourceTree = SDKROOT; };
 		7837034C1C43E405006C80DE /* libicucore.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libicucore.tbd; path = usr/lib/libicucore.tbd; sourceTree = SDKROOT; };
 		DFBC29C224EA228C97676A8B /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
+		FC6A0F491C464B9400D8C56D /* TMessage.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = TMessage.xcdatamodel; sourceTree = "<group>"; };
 		FCA4D5961C44F94D005CDF99 /* libanrtcsdk.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libanrtcsdk.a; sourceTree = "<group>"; };
 		FCBC48571C44A6B300A9A63F /* AnyrtcM2Mutlier.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AnyrtcM2Mutlier.h; sourceTree = "<group>"; };
 		FCBC48581C44A6B300A9A63F /* AnyrtcVideoCallView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AnyrtcVideoCallView.h; sourceTree = "<group>"; };
@@ -558,6 +560,7 @@
 		783701281C43DDFB006C80DE = {
 			isa = PBXGroup;
 			children = (
+				FC6A0F481C464B9400D8C56D /* TMessage.xcdatamodeld */,
 				7837032D1C43DF97006C80DE /* KeychainAccessGroups.plist */,
 				7837032E1C43DF97006C80DE /* PushConfig.plist */,
 				7837032F1C43DF97006C80DE /* Teameeting-Prefix.pch */,
@@ -1621,6 +1624,7 @@
 				783703261C43DF64006C80DE /* FackNavView.m in Sources */,
 				783702DC1C43DF64006C80DE /* UIImage+Category.m in Sources */,
 				783702F41C43DF64006C80DE /* WXApiResponseHandler.m in Sources */,
+				FC6A0F4A1C464B9400D8C56D /* TMessage.xcdatamodeld in Sources */,
 				783703211C43DF64006C80DE /* RootViewController.m in Sources */,
 				783702E51C43DF64006C80DE /* ASNetwork.m in Sources */,
 				7837031F1C43DF64006C80DE /* UUProgressHUD.m in Sources */,
@@ -1961,6 +1965,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		FC6A0F481C464B9400D8C56D /* TMessage.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				FC6A0F491C464B9400D8C56D /* TMessage.xcdatamodel */,
+			);
+			currentVersion = FC6A0F491C464B9400D8C56D /* TMessage.xcdatamodel */;
+			path = TMessage.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 783701291C43DDFB006C80DE /* Project object */;
 }
