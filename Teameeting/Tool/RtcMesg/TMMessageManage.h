@@ -38,6 +38,8 @@
 - (int)tMNotifyMsgRoomid:(NSString*)roomid
              withMessage:(NSString*)meg;
 
+- (BOOL)connectEnable;
+
 - (void)registerMessageListener:(id<tmMessageReceive>)listener;
 #pragma CoreDataAction
 - (NSUInteger)getUnreadCountByRoomKey:(NSString *)key lasetTime:(NSString **)time;
