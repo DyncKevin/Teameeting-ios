@@ -510,6 +510,8 @@
         if (buttonIndex == 1) {
             [ASHUD showHUDWithStayLoadingStyleInView:self.view belowView:nil content:@"正在退出。。。"];
             [_client CloseAll];
+            [_client UnSubscribe:self.roomID];
+            [[TMMessageManage sharedManager] tmRoomCmd:MCMeetCmdLEAVE roomid:self.roomID remain:@""];
         }
     }
     
