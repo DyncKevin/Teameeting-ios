@@ -14,11 +14,13 @@
 @property (nonatomic, strong) NSString *canNotification;    // can notification
 @property (nonatomic, assign) long jointime;                // meeting last time
 @property (nonatomic, assign) long createTime;              // create meeting time
-@property (nonatomic, strong) NSString *mettingNum;         // in meeting person num
+@property (nonatomic, assign) NSInteger mettingNum;         // in meeting person num
 @property (nonatomic, assign) NSInteger mettingType;        // meeting type
 @property (nonatomic, strong) NSString *mettingDesc;        // meeting desc
 @property (nonatomic, assign) NSInteger mettingState;       // meeting state  0:no enable  1：can enable   2：private meeting
 @property (nonatomic, assign) BOOL isOwn;                   // is own  1：own  0：other
+@property (nonatomic, assign) NSInteger messageNum;         // no read message num
+@property (nonatomic, strong) NSString *lastMessagTime;     // last message time
 
 
 - (id)initWithParams:(NSDictionary *)params;

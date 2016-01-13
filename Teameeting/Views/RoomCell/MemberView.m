@@ -88,20 +88,27 @@
 
 - (void)setRoomItem:(RoomItem*)roomItem
 {
-    if ([roomItem.mettingNum isEqualToString:@"0"]) {
+    if ([roomItem.roomName isEqualToString:@""]) {
         self.numberLabel.hidden = YES;
         self.imageView.hidden = YES;
-        if ([roomItem.canNotification isEqualToString:@"1"]) {
-            self.notificationImageView.hidden = YES;
-        }else{
-            self.notificationImageView.hidden = NO;
-        }
-    }else{
-        self.numberLabel.hidden = NO;
-        self.imageView.hidden = NO;
         self.notificationImageView.hidden = YES;
-        self.numberLabel.text = roomItem.mettingNum;
+    }else{
+        if (roomItem.mettingNum == 0) {
+            self.numberLabel.hidden = YES;
+            self.imageView.hidden = YES;
+            if ([roomItem.canNotification isEqualToString:@"1"]) {
+                self.notificationImageView.hidden = YES;
+            }else{
+                self.notificationImageView.hidden = NO;
+            }
+        }else{
+            self.numberLabel.hidden = NO;
+            self.imageView.hidden = NO;
+            self.notificationImageView.hidden = YES;
+            self.numberLabel.text =  [NSString stringWithFormat:@"%ld",(long)roomItem.mettingNum];
+        }
     }
+    
 }
 
 /*

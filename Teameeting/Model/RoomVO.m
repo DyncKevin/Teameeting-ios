@@ -16,11 +16,12 @@
     if (self) {
         self.roomID = @"";
         self.roomName = @"";
-        self.mettingNum = @"0";
         self.canNotification = [self canPush];
         self.mettingState = 0;
         self.jointime = [[TimeManager shead] timeTransformationTimestamp];
         self.createTime = [[TimeManager shead] timeTransformationTimestamp];
+        self.messageNum = 0;
+        
     }
     return self;
 }
@@ -33,7 +34,7 @@
             self.jointime = [[params valueForKey:@"jointime"] longValue];
             self.createTime = [[params valueForKey:@"createtime"] longValue];
             self.mettingDesc = [params valueForKey:@"meetdesc"];
-            self.mettingNum = [[params valueForKey:@"memnumber"] stringValue];
+            self.mettingNum = [[params valueForKey:@"memnumber"] integerValue];
             self.mettingType = [[params valueForKey:@"meettype"] integerValue];
             self.mettingState = [[params valueForKey:@"meetusable"] integerValue];
             self.userID = [params valueForKey:@"meetinguserid"];
@@ -61,7 +62,7 @@
     [aCoder encodeObject:self.canNotification forKey:@"canNotification"];
     [aCoder encodeInt:self.jointime forKey:@"jointime"];
     [aCoder encodeInt:self.createTime forKey:@"createtime"];
-    [aCoder encodeObject:self.mettingNum forKey:@"mettingNum"];
+    [aCoder encodeInt:self.mettingNum forKey:@"mettingNum"];
     [aCoder encodeInteger:self.mettingType forKey:@"mettingType"];
     [aCoder encodeObject:self.mettingDesc forKey:@"mettingDesc"];
     [aCoder encodeInteger:self.mettingState forKey:@"mettingState"];
@@ -79,7 +80,7 @@
         _canNotification = [aDecoder decodeObjectForKey:@"canNotification"];
         _jointime = [aDecoder decodeIntForKey:@"jointime"];
         _createTime = [aDecoder decodeIntForKey:@"createtime"];
-        _mettingNum = [aDecoder decodeObjectForKey:@"mettingNum"];
+        _mettingNum = [aDecoder decodeIntForKey:@"mettingNum"];
         _mettingType = [aDecoder decodeIntegerForKey:@"mettingType"];
         _mettingDesc = [aDecoder decodeObjectForKey:@"mettingDesc"];
         _mettingState = [aDecoder decodeIntegerForKey:@"mettingState"];

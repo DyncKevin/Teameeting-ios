@@ -635,11 +635,11 @@ typedef enum ViewState {
 - (void)weChatShare {
     
     
-    [WXApiRequestHandler sendLinkURL:[NSString stringWithFormat:@"http://115.28.70.232/share_meetingRoom#%@",self.roomItem.roomID]
+    [WXApiRequestHandler sendLinkURL:[NSString stringWithFormat:@"http://115.28.70.232/share_meetingRoom/#%@",self.roomItem.roomID]
                              TagName:nil
                                Title:@"Teameeting"
                          Description:@"视频邀请"
-                          ThumbImage:nil
+                          ThumbImage:[UIImage imageNamed:@"Icon-1"]
                              InScene:WXSceneSession];
 }
 
