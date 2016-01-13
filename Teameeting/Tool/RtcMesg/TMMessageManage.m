@@ -294,7 +294,7 @@
     Message *item = [result firstObject];
     if ([context save:&error]) {
         
-        
+        NSLog(@"%@",item.description);
     }
 }
 
