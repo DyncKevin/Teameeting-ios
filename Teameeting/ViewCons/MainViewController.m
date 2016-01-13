@@ -36,7 +36,7 @@ static NSString *kRoomCellID = @"RoomCell";
 
 #define IPADLISTWIDTH 320
 
-@interface MainViewController ()<UITableViewDelegate,UITableViewDataSource,RoomViewCellDelegate,GetRoomViewDelegate,PushViewDelegate,MFMessageComposeViewControllerDelegate,UIAlertViewDelegate>
+@interface MainViewController ()<UITableViewDelegate,UITableViewDataSource,RoomViewCellDelegate,GetRoomViewDelegate,PushViewDelegate,MFMessageComposeViewControllerDelegate,UIAlertViewDelegate,tmMessageReceive>
 
 {
     UIRefreshControl *refreshControl;
@@ -70,6 +70,9 @@ static NSString *kRoomCellID = @"RoomCell";
 - (void)viewDidLoad {
     
     [super viewDidLoad];
+    
+    [[TMMessageManage sharedManager] registerMessageListener:self];
+    
     self.oldInterface = self.interfaceOrientation;
     self.view.backgroundColor = [UIColor clearColor];
     
@@ -1050,7 +1053,21 @@ static NSString *kRoomCellID = @"RoomCell";
     }
     
 }
-
+#pragma mark -  tmMessageReceive
+//state 1 in  2:leave
+- (void)roomListMemberChangeWithRoomID:(NSString *)roomID changeState:(NSInteger)state
+{
+    
+}
+// count: not read message num
+- (void)roomListUnreadMessageChangeWithRoomID:(NSString *)roomID totalCount:(NSInteger)count
+{
+    
+}
+- (BOOL)receiveMessageEnable
+{
+    return YES;
+}
 #pragma mark - monitor the network status
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
