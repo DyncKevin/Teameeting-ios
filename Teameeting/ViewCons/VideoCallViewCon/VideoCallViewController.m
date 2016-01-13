@@ -95,7 +95,7 @@ typedef enum ViewState {
     self.state = VIDEOSTATE;
     [self initBar];
     self.callViewCon = [[ReceiveCallViewController alloc] init];
-    self.callViewCon.roomID = @"123";
+    self.callViewCon.roomID = self.roomItem.roomID;
     self.callViewCon.view.frame = self.view.bounds;
     self.talkView = [[TalkView alloc] initWithFrame:self.view.bounds];
     self.talkView.userInteractionEnabled = NO;
@@ -153,7 +153,7 @@ typedef enum ViewState {
 - (void)viewDidLoad {
     
     [super viewDidLoad];
-    [[TMMessageManage sharedManager] tmRoomCmd:MCMeetCmdENTER Userid:nil pass:nil roomid:self.roomItem.roomID remain:@""];
+    [[TMMessageManage sharedManager] tmRoomCmd:MCMeetCmdENTER roomid:self.roomItem.roomID remain:@""];
 }
 
 - (void)loadTableView {
@@ -635,11 +635,11 @@ typedef enum ViewState {
 - (void)weChatShare {
     
     
-    [WXApiRequestHandler sendLinkURL:[NSString stringWithFormat:@"http://115.28.70.232/share_meetingRoom#%@",self.roomItem.roomID]
+    [WXApiRequestHandler sendLinkURL:[NSString stringWithFormat:@"http://115.28.70.232/share_meetingRoom/#%@",self.roomItem.roomID]
                              TagName:nil
                                Title:@"Teameeting"
                          Description:@"视频邀请"
-                          ThumbImage:nil
+                          ThumbImage:[UIImage imageNamed:@"Icon-1"]
                              InScene:WXSceneSession];
 }
 

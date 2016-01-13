@@ -53,7 +53,6 @@
 
 - (void)inintTMMessage {
     
-    //[_msg tMInitMsgProtocol:self server:@"192.168.7.39" port:9210];
     [_msg tMInitMsgProtocol:self uid:[SvUDIDTools UDID] token:[ServerVisit shead].authorization server:@"192.168.7.39" port:9210];
 }
 
@@ -117,12 +116,13 @@
     return _persistentStoreCoordinator;
 }
 
-- (void)insertMeeageDataWtihBelog:(NSString *)belong content:(NSString *)content
+- (void)insertMeeageDataWtihBelog:(NSString *)belong content:(NSString *)content messageTime:(NSString *)time
 {
     NSManagedObjectContext *context = [self managedObjectContext];
     Message *message = [NSEntityDescription insertNewObjectForEntityForName:@"Message" inManagedObjectContext:context];
     message.belong = belong;
     message.content = content;
+    message.time = [NSString stringWithFormat:@"%@",time];
     NSError *error;
     if(![context save:&error])
     {
@@ -143,8 +143,48 @@
     
 }
 
+- (NSUInteger)getUnreadCountByRoomKey:(NSString *)key lasetTime:(NSString **)time{
+    
+    NSMutableArray *messages = [NSMutableArray array];
+    NSArray *searchResult = [self selectDataFromMessageTableWithKey:key pageSize:20 currentPage:0];
+    [messages addObjectsFromArray:searchResult];
+    int index = 0;
+    while ([searchResult count] != 0) {
+        
+        index ++;
+        searchResult = [self selectDataFromMessageTableWithKey:key pageSize:20 currentPage:[searchResult count]];
+        [messages addObjectsFromArray:searchResult];
+    }
+    Message *lastMessage = [messages lastObject];
+    *time = lastMessage.time;
+    return [messages count];
+}
+
+- (NSDictionary *)getUnreadCountByRoomKeys:(NSString *)key, ... {
+    
+    NSMutableDictionary *messageDic = [[NSMutableDictionary alloc] init];
+    va_list args;
+    va_start(args, key);
+    NSString *lastTime = nil;
+    NSUInteger count = [self getUnreadCountByRoomKey:key lasetTime:&lastTime];
+    [messageDic setObject:[NSArray arrayWithObjects:[NSNumber numberWithInteger:count], lastTime,nil] forKey:key];
+    
+    if (key)
+    {
+        NSString *otherString;
+        while ((otherString = va_arg(args, NSString *)))
+        {
+            NSUInteger count = [self getUnreadCountByRoomKey:otherString lasetTime:&lastTime];
+            [messageDic setObject:[NSArray arrayWithObjects:[NSNumber numberWithInteger:count], lastTime,nil] forKey:otherString];
+        }
+    }
+    va_end(args);
+    return messageDic;
+}
+
 - (NSMutableArray*)selectDataFromMessageTableWithKey:(NSString *)key pageSize:(NSUInteger)size currentPage:(NSInteger)page
 {
+
     NSManagedObjectContext *context = [self managedObjectContext];
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
     
@@ -253,10 +293,9 @@
     NSError *error = nil;
     NSArray *result = [context executeFetchRequest:request error:&error];
     Message *item = [result firstObject];
-    
     if ([context save:&error]) {
         
-        
+        NSLog(@"%@",item.description);
     }
 }
 
@@ -268,30 +307,19 @@
 #pragma mark TMessage Action
 
 
-- (int)sendMsgUserid:(NSString*) userid
-                pass:(NSString*) pass
-              roomid:(NSString*) roomid
-                 msg:(NSString*) msg {
+- (int)sendMsgWithRoomid:(NSString *)roomid msg:(NSString *)msg {
     
-   //return [self.msg tMSndMsgUserid:[SvUDIDTools UDID] pass:[ServerVisit shead].authorization roomid:roomid msg:msg];
    return [self.msg tMSndMsgRoomid:roomid msg:msg];
 }
 
-- (int)tmRoomCmd:(MCMeetCmd)cmd Userid:(NSString *)userid pass:(NSString *)pass roomid:(NSString *)roomid remain:(NSString *)remain {
-    
-    
-    //return [self.msg tMOptRoomCmd:cmd Userid:[SvUDIDTools UDID] pass:[ServerVisit shead].authorization roomid:roomid remain:remain];
+- (int)tmRoomCmd:(MCMeetCmd)cmd roomid:(NSString *)roomid remain:(NSString *)remain {
+
     return [self.msg tMOptRoomCmd:cmd roomid:roomid remain:remain];
 }
 
-- (void) OnReqLoginCode:(int) code status:(NSString*) status userid:(NSString*)userid {
-
-    
-}
-
-- (void) OnRespLoginCode:(int) code status:(NSString*) status userid:(NSString*)userid {
-    
-    
+- (int)tMNotifyMsgRoomid:(NSString*)roomid withMessage:(NSString*)meg
+{
+    return [self.msg tMNotifyMsgRoomid:roomid msg:meg];
 }
 
 //接收消息
@@ -299,20 +327,73 @@
     
     dispatch_async(dispatch_get_main_queue(), ^{
        
-        for (id<tmMessageReceive> object in self.messageListeners) {
+        NSDictionary *messageDic = [NSJSONSerialization JSONObjectWithData:[msg dataUsingEncoding:NSUTF8StringEncoding] options:NSJSONReadingMutableLeaves error:nil];
+        if ([[messageDic objectForKey:@"cmd"] intValue] == 3) {
             
-            NSDictionary *messageDic = [NSJSONSerialization JSONObjectWithData:[msg dataUsingEncoding:NSUTF8StringEncoding] options:NSJSONReadingMutableLeaves error:nil];
-            if ([object respondsToSelector:@selector(messageDidReceiveWithContent:messageTime:)] && [object receiveMessageEnable]) {
-            
-                [object messageDidReceiveWithContent:[messageDic objectForKey:@"cont"] messageTime:[messageDic objectForKey:@"ntime"]];
+            BOOL searchTag = NO;
+            for (id<tmMessageReceive> object in self.messageListeners) {
                 
-            } else {
-                
-                [[TMMessageManage sharedManager] insertMeeageDataWtihBelog:[messageDic objectForKey:@"roomid"] content:[messageDic objectForKey:@"cont"]];
+                if ([object respondsToSelector:@selector(messageDidReceiveWithContent:messageTime:)] && [object receiveMessageEnable]) {
+                    
+                    if (![[messageDic objectForKey:@"from"] isEqualToString:[SvUDIDTools UDID]]) {
+                        
+                        [object messageDidReceiveWithContent:[messageDic objectForKey:@"cont"] messageTime:[messageDic objectForKey:@"ntime"]];
+                    }
+                    
+                    searchTag = YES;
+                    break;
+                }
+
             }
+            if (!searchTag && ![[messageDic objectForKey:@"from"] isEqualToString:[SvUDIDTools UDID]]) {
+                
+                [[TMMessageManage sharedManager] insertMeeageDataWtihBelog:[messageDic objectForKey:@"room"] content:[messageDic objectForKey:@"cont"] messageTime:[messageDic objectForKey:@"ntime"]];
+                for (id<tmMessageReceive> object in self.messageListeners) {
+                    
+                    if ([object respondsToSelector:@selector(roomListUnreadMessageChangeWithRoomID:totalCount:lastMessageTime:)] && [object receiveMessageEnable]) {
+                        
+                        NSString *lastMessageTime = nil;
+                        NSInteger messageCount = [[TMMessageManage sharedManager] getUnreadCountByRoomKey:[messageDic objectForKey:@"room"] lasetTime:&lastMessageTime];
+                        [object roomListUnreadMessageChangeWithRoomID:[messageDic objectForKey:@"room"] totalCount:messageCount lastMessageTime:lastMessageTime];
+                        
+                    }
+                }
+            }
+            
+        } else if ([[messageDic objectForKey:@"cmd"] intValue] == 1 || [[messageDic objectForKey:@"cmd"] intValue] == 2) {
+            
+            if ([[messageDic objectForKey:@"tags"] intValue] == 4 && [[messageDic objectForKey:@"cmd"] intValue] == 1) {
+                
+                for (id<tmMessageReceive> object in self.messageListeners) {
+                    
+                    if ([object respondsToSelector:@selector(videoSubscribeWith:)] && [object receiveMessageEnable]) {
+                        
+                        [object videoSubscribeWith:[messageDic objectForKey:@"cont"]];
+                    }
+                }
+                return;
+            }
+            
+            for (id<tmMessageReceive> object in self.messageListeners) {
+                
+                if ([object respondsToSelector:@selector(roomListMemberChangeWithRoomID:changeState:)] && [object receiveMessageEnable]) {
+                    
+                    if (![[messageDic objectForKey:@"from"] isEqualToString:[SvUDIDTools UDID]]) {
+                        
+                        [object roomListMemberChangeWithRoomID:[messageDic objectForKey:@"room"] changeState:[[messageDic objectForKey:@"cmd"] intValue]];
+                    }
+                    
+                }
+            }
+
         }
-    
+        
     });
+}
+
+- (BOOL)connectEnable {
+    
+    return [self.msg tMConnStatus] == MCConnStateCONNECTED ? YES : NO;
 }
 
 - (void) OnGetMsgMsg:(NSString*) msg {
@@ -323,11 +404,7 @@
 
 - (void) OnMsgServerConnected {
     
-    if ([ServerVisit shead].authorization.length != 0) {
-       
-        //[_msg tMLoginUserid:[SvUDIDTools UDID] pass:[ServerVisit shead].authorization];
-        
-    }
+    NSLog(@"ok");
 }
 
 - (void) OnMsgServerDisconnect {
@@ -343,7 +420,7 @@
 - (void) OnMsgServerStateConnState:(MCConnState) state {
     //the connection state between client and server
     //when the state has changed, this callback will be invoked
-    NSLog(@"OnMsgServerStateConnState state:%ld", state);
+   // NSLog(@"OnMsgServerStateConnState state:%ld", state);
 }
 
 @end
