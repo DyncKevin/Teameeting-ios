@@ -122,7 +122,7 @@
     Message *message = [NSEntityDescription insertNewObjectForEntityForName:@"Message" inManagedObjectContext:context];
     message.belong = belong;
     message.content = content;
-    message.time = time;
+    message.time = [NSString stringWithFormat:@"%@",time];
     NSError *error;
     if(![context save:&error])
     {
