@@ -209,6 +209,9 @@
 #pragma mark - InputFunctionViewDelegate
 - (void)UUInputFunctionView:(UUInputFunctionView *)funcView sendMessage:(NSString *)message
 {
+    if (![[TMMessageManage sharedManager] connectEnable]) {
+        return;
+    }
     NSDictionary *dic = @{@"strContent": message,
                           @"type": @(UUMessageTypeText)};
     funcView.TextViewInput.text = @"";
