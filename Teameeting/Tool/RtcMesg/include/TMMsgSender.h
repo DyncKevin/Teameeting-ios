@@ -9,45 +9,84 @@
 #ifndef MsgClientIos_TMMsgSender_h
 #define MsgClientIos_TMMsgSender_h
 #import "MsgClientProtocol.h"
+#import "TMClientType.h"
+
+/**
+ * TMMsgSender is used to send msg to other
+ **/
 
 @interface TMMsgSender : NSObject
 
+/**
+ * init
+ *
+ * params:
+ *      protocol: the callback for msgclient
+ *      uid:user identifier, it can be uuid or device id
+ *      token:token from http server
+ *      server:server ip
+ *      port:server port
+ **/
 - (int) tMInitMsgProtocol:(id<MsgClientProtocol>)protocol
+                      uid:(NSString*) uid
+                    token:(NSString*) token
                    server:(NSString*) server
                     port :(int) port;
+/**
+ * unin
+ **/
 - (int) tMUint;
 
-- (int) tMConnStatus;
+/**
+ * the status of connection between msgclient and msgserver
+ **/
+- (MCConnState) tMConnStatus;
 
-- (int) tMLoginUserid:(NSString*) userid
-                 pass:(NSString*) pass;
-
-- (int) tMSndMsgUserid:(NSString*) userid
-                  pass:(NSString*) pass
-                roomid:(NSString*) roomid
+/**
+ * send msg to all member in the meeting room
+ * params:
+ *      roomid:the room id
+ *      msg:the msg to send
+ **/
+- (int) tMSndMsgRoomid:(NSString*) roomid
                    msg:(NSString*) msg;
 
-- (int) tMGetMsgUserid:(NSString*) userid
-                  pass:(NSString*) pass;
+/**
+ * get msg from server
+ * params:
+        cmd:
+ **/
+- (int) tMGetMsgCmd:(MCGetCmd) cmd;
 
-- (int) tMLogoutUserid:(NSString*) userid
-                  pass:(NSString*) pass;
-
-- (int) tMOptRoomCmd:(TMMEETCMD) cmd
-              Userid:(NSString*) userid
-                pass:(NSString*) pass
+/**
+ * operation for room
+ * params:
+ *      cmd:the cmd for room, enter or leave
+ *      roomid:the room id
+ *      remain:remain
+ **/
+- (int) tMOptRoomCmd:(MCMeetCmd) cmd
               roomid:(NSString*) roomid
               remain:(NSString*) remain;
 
-- (int) tMSndMsgToUserid:(NSString*) userid
-                    pass:(NSString*) pass
-                  roomid:(NSString*) roomid
+/**
+ * send msg to some member in meeting room(not used now)
+ * params:
+ *      roomid:the room id
+ *      msg:the msg to send
+ *      ulist:the members to send to
+ **/
+- (int) tMSndMsgToRoomid:(NSString*) roomid
                      msg:(NSString*) msg
                    ulist:(NSArray*) ulist;
 
-- (int) tMNotifyMsgUserid:(NSString*) userid
-                  pass:(NSString*) pass
-                roomid:(NSString*) roomid
+/**
+ * notify others with self publish id
+ * params:
+ *      roomid:the room id
+ *      msg:the publish id
+ **/
+- (int) tMNotifyMsgRoomid:(NSString*) roomid
                    msg:(NSString*) msg;
 
 @end

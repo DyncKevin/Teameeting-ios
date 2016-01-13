@@ -27,7 +27,7 @@
                pass:(NSString*) pass
              roomid:(NSString*) roomid
                 msg:(NSString*) msg;
-- (int)tmRoomCmd:(TMMEETCMD) cmd
+- (int)tmRoomCmd:(MCMeetCmd) cmd
           Userid:(NSString*) userid
             pass:(NSString*) pass
           roomid:(NSString*) roomid

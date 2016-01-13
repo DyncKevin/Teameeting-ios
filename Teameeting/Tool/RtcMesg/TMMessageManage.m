@@ -53,8 +53,8 @@
 
 - (void)inintTMMessage {
     
-    [_msg tMInitMsgProtocol:self server:@"192.168.7.39" port:9210];
-    
+    //[_msg tMInitMsgProtocol:self server:@"192.168.7.39" port:9210];
+    [_msg tMInitMsgProtocol:self uid:[SvUDIDTools UDID] token:[ServerVisit shead].authorization server:@"192.168.7.39" port:9210];
 }
 
 - (void)registerMessageListener:(id<tmMessageReceive>)listener {
@@ -273,13 +273,15 @@
               roomid:(NSString*) roomid
                  msg:(NSString*) msg {
     
-   return [self.msg tMSndMsgUserid:[SvUDIDTools UDID] pass:[ServerVisit shead].authorization roomid:roomid msg:msg];
+   //return [self.msg tMSndMsgUserid:[SvUDIDTools UDID] pass:[ServerVisit shead].authorization roomid:roomid msg:msg];
+   return [self.msg tMSndMsgRoomid:roomid msg:msg];
 }
 
-- (int)tmRoomCmd:(TMMEETCMD)cmd Userid:(NSString *)userid pass:(NSString *)pass roomid:(NSString *)roomid remain:(NSString *)remain {
+- (int)tmRoomCmd:(MCMeetCmd)cmd Userid:(NSString *)userid pass:(NSString *)pass roomid:(NSString *)roomid remain:(NSString *)remain {
     
     
-    return [self.msg tMOptRoomCmd:cmd Userid:[SvUDIDTools UDID] pass:[ServerVisit shead].authorization roomid:roomid remain:remain];
+    //return [self.msg tMOptRoomCmd:cmd Userid:[SvUDIDTools UDID] pass:[ServerVisit shead].authorization roomid:roomid remain:remain];
+    return [self.msg tMOptRoomCmd:cmd roomid:roomid remain:remain];
 }
 
 - (void) OnReqLoginCode:(int) code status:(NSString*) status userid:(NSString*)userid {
@@ -293,7 +295,7 @@
 }
 
 //接收消息
-- (void) OnReqSndMsgMsg:(NSString *) msg {
+- (void) OnSndMsgMsg:(NSString *) msg {
     
     dispatch_async(dispatch_get_main_queue(), ^{
        
@@ -313,37 +315,17 @@
     });
 }
 
-//发送状态
-- (void) OnRespSndMsgMsg:(NSString*) msg {
-    
-    NSLog(@"fds");
-}
-
-- (void) OnReqGetMsgMsg:(NSString*) msg {
+- (void) OnGetMsgMsg:(NSString*) msg {
     
     
 }
 
-- (void) OnRespGetMsgMsg:(NSString*) msg {
-    
-    
-}
-
-- (void) OnReqLogoutCode:(int) code status:(NSString*) status userid:(NSString*)userid {
-    
-    
-}
-
-- (void) OnRespLogoutCode:(int) code status:(NSString*) status userid:(NSString*)userid {
-    
-    
-}
 
 - (void) OnMsgServerConnected {
     
     if ([ServerVisit shead].authorization.length != 0) {
        
-        [_msg tMLoginUserid:[SvUDIDTools UDID] pass:[ServerVisit shead].authorization];
+        //[_msg tMLoginUserid:[SvUDIDTools UDID] pass:[ServerVisit shead].authorization];
         
     }
 }
@@ -356,6 +338,12 @@
 - (void) OnMsgServerConnectionFailure {
     
     
+}
+
+- (void) OnMsgServerStateConnState:(MCConnState) state {
+    //the connection state between client and server
+    //when the state has changed, this callback will be invoked
+    NSLog(@"OnMsgServerStateConnState state:%ld", state);
 }
 
 @end
