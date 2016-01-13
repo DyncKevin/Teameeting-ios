@@ -30,15 +30,17 @@
 #import "EnterMeetingIDViewController.h"
 #import "UIImage+Category.h"
 #import "TMMessageManage.h"
+#import "WXApiRequestHandler.h"
 
 static NSString *kRoomCellID = @"RoomCell";
 
 #define IPADLISTWIDTH 320
 
-@interface MainViewController ()<UITableViewDelegate,UITableViewDataSource,RoomViewCellDelegate,GetRoomViewDelegate,PushViewDelegate,MFMessageComposeViewControllerDelegate>
+@interface MainViewController ()<UITableViewDelegate,UITableViewDataSource,RoomViewCellDelegate,GetRoomViewDelegate,PushViewDelegate,MFMessageComposeViewControllerDelegate,UIAlertViewDelegate>
 
 {
     UIRefreshControl *refreshControl;
+    RoomItem *tempRoomItem;
 }
 
 @property (nonatomic, strong) UIButton *getRoomButton;
@@ -399,7 +401,7 @@ static NSString *kRoomCellID = @"RoomCell";
     
     MFMessageComposeViewController *picker = [[MFMessageComposeViewController alloc] init];
     picker.messageComposeDelegate =self;
-    NSString *smsBody =[NSString stringWithFormat:@"让我们在会议中见!👉 http://115.28.70.232/share_meetingRoom#%@",roomID];
+    NSString *smsBody =[NSString stringWithFormat:@"让我们在会议中见!👉 http://115.28.70.232/share_meetingRoom/#%@",roomID];
     
     picker.body=smsBody;
     
@@ -408,7 +410,36 @@ static NSString *kRoomCellID = @"RoomCell";
     }];
 }
 
-
+- (void)enterMeetingWithItem:(RoomItem*)item withIndex:(NSInteger)index
+{
+    if (item.mettingState == 0) {
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:@"该会议暂不可用" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+        [alertView show];
+        return;
+    }
+    __weak MainViewController *weakSelf = self;
+    [ServerVisit getMeetingInfoWithId:item.roomID completion:^(AFHTTPRequestOperation *operation, id responseData, NSError *error) {
+        if (!error) {
+            NSDictionary *dict = (NSDictionary*)responseData;
+            if ([[dict objectForKey:@"code"] integerValue] == 400) {
+                //该会议已经被持有人删除
+                [ASHUD showHUDWithCompleteStyleInView:self.view content:@"该会议已经被持有人删除" icon:nil];
+                [weakSelf deleteRoomWithItem:item withIndex:index];
+            }else if ([[dict objectForKey:@"code"] integerValue] == 200){
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    VideoCallViewController *video = [[VideoCallViewController alloc] init];
+                    video.roomItem = item;
+                    UINavigationController *nai = [[UINavigationController alloc] initWithRootViewController:video];
+                    [self presentViewController:nai animated:YES completion:^{
+                        
+                    }];
+                });
+            }
+        }else{
+            [ASHUD showHUDWithCompleteStyleInView:self.view content:@"进入会议出现异常" icon:nil];
+        }
+    }];
+}
 
 #pragma mark - button events
 - (void)getRoomButtonEvent:(UIButton*)button
@@ -456,6 +487,7 @@ static NSString *kRoomCellID = @"RoomCell";
     UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:enterMeetingController];
     [self presentViewController:nav animated:NO completion:nil];
 }
+
 #pragma mark - publish server methods
 - (void)updataDataWithServerResponse:(NSDictionary*)dict
 {
@@ -555,7 +587,15 @@ static NSString *kRoomCellID = @"RoomCell";
 // delete room
 - (void)deleteRoomWithItem:(RoomItem*)item withIndex:(NSInteger)index
 {
-    
+    if (index<0) {
+        for (NSInteger i=0;i<dataArray.count;i++) {
+            RoomItem *roomItem = [dataArray objectAtIndex:i];
+            if ([roomItem.roomID isEqualToString:item.roomID]) {
+                index = i;
+                break;
+            }
+        }
+    }
     NtreatedData *data = [[NtreatedData alloc] init];
     data.actionType = ModifyRoomName;
     data.item = item;
@@ -588,6 +628,7 @@ static NSString *kRoomCellID = @"RoomCell";
             }
         }
     }];
+    
 }
 // update room can notification
 - (void)updateNotification:(RoomItem*)item withClose:(BOOL)close withIndex:(NSInteger)index
@@ -697,6 +738,11 @@ static NSString *kRoomCellID = @"RoomCell";
                 
             }
         }];
+    }else{
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:@"该会议在列表中已经存在，是否直接进会" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
+        alertView.tag = 900;
+        tempRoomItem = item;
+        [alertView show];
     }
 }
 
@@ -797,33 +843,7 @@ static NSString *kRoomCellID = @"RoomCell";
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
         RoomItem *item = [dataArray objectAtIndex:indexPath.row];
-        if (item.mettingState == 0) {
-            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:@"该会议暂不可用" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
-            [alertView show];
-            return;
-        }
-        __weak MainViewController *weakSelf = self;
-        [ServerVisit getMeetingInfoWithId:item.roomID completion:^(AFHTTPRequestOperation *operation, id responseData, NSError *error) {
-            if (!error) {
-                NSDictionary *dict = (NSDictionary*)responseData;
-                if ([[dict objectForKey:@"code"] integerValue] == 400) {
-                    //该会议已经被持有人删除
-                    [ASHUD showHUDWithCompleteStyleInView:self.view content:@"该会议已经被持有人删除" icon:nil];
-                    [weakSelf deleteRoomWithItem:item withIndex:indexPath.row];
-                }else if ([[dict objectForKey:@"code"] integerValue] == 200){
-                    dispatch_async(dispatch_get_main_queue(), ^{
-                        VideoCallViewController *video = [[VideoCallViewController alloc] init];
-                        video.roomItem = [dataArray objectAtIndex:indexPath.row];
-                        UINavigationController *nai = [[UINavigationController alloc] initWithRootViewController:video];
-                        [self presentViewController:nai animated:YES completion:^{
-                            
-                        }];
-                    });
-                }
-            }else{
-                [ASHUD showHUDWithCompleteStyleInView:self.view content:@"进入会议出现异常" icon:nil];
-            }
-        }];
+        [self enterMeetingWithItem:item withIndex:indexPath.row];
 }
 
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
@@ -845,6 +865,17 @@ static NSString *kRoomCellID = @"RoomCell";
 -(NSString*)tableView:(UITableView*)tableView titleForDeleteConfirmationButtonForRowAtIndexPath:(NSIndexPath*)indexpath
 {
     return @"删除";
+}
+#pragma mark - UIAlertViewDelegate
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (alertView.tag == 900) {
+        if (buttonIndex == 1) {
+            // 直接进入会议
+            [self enterMeetingWithItem:tempRoomItem withIndex:-1];
+        }
+        tempRoomItem = nil;
+    }
 }
 
 #pragma mark - RoomViewCellDelegate
@@ -933,12 +964,17 @@ static NSString *kRoomCellID = @"RoomCell";
 
 - (void)pushViewInviteViaWeiXin:(RoomItem*)obj
 {
-    
+    [WXApiRequestHandler sendLinkURL:[NSString stringWithFormat:@"http://115.28.70.232/share_meetingRoom/#%@",obj.roomID]
+                             TagName:nil
+                               Title:@"Teameeting"
+                         Description:@"视频邀请"
+                          ThumbImage:[UIImage imageNamed:@"Icon-1"]
+                             InScene:WXSceneSession];
 }
 - (void)pushViewInviteViaLink:(RoomItem*)obj
 {
     UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
-    pasteboard.string = @"www.baidu.com";
+    pasteboard.string = [NSString stringWithFormat:@"http://115.28.70.232/share_meetingRoom/#%@",obj.roomID];
     [ASHUD showHUDWithCompleteStyleInView:self.view content:@"拷贝成功" icon:@"messageInvite"];
 }
 

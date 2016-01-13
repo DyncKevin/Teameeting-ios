@@ -15,6 +15,7 @@
 		781F6E171C44CCA600026160 /* NSString+Category.m in Sources */ = {isa = PBXBuildFile; fileRef = 781F6E161C44CCA600026160 /* NSString+Category.m */; };
 		781F6E1A1C44DA5300026160 /* metting_nonotification@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 781F6E181C44DA5300026160 /* metting_nonotification@2x.png */; };
 		781F6E1B1C44DA5300026160 /* metting_nonotification@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 781F6E191C44DA5300026160 /* metting_nonotification@3x.png */; };
+		782807A41C463AED0061D6CD /* Icon-1@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 782807A31C463AED0061D6CD /* Icon-1@2x.png */; };
 		783701361C43DDFB006C80DE /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 783701351C43DDFB006C80DE /* main.m */; };
 		7837013F1C43DDFB006C80DE /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7837013D1C43DDFB006C80DE /* Main.storyboard */; };
 		783701411C43DDFB006C80DE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 783701401C43DDFB006C80DE /* Assets.xcassets */; };
@@ -233,6 +234,7 @@
 		781F6E161C44CCA600026160 /* NSString+Category.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+Category.m"; sourceTree = "<group>"; };
 		781F6E181C44DA5300026160 /* metting_nonotification@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "metting_nonotification@2x.png"; sourceTree = "<group>"; };
 		781F6E191C44DA5300026160 /* metting_nonotification@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "metting_nonotification@3x.png"; sourceTree = "<group>"; };
+		782807A31C463AED0061D6CD /* Icon-1@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-1@2x.png"; sourceTree = "<group>"; };
 		783701311C43DDFB006C80DE /* Teameeting.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Teameeting.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		783701351C43DDFB006C80DE /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		7837013E1C43DDFB006C80DE /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -658,6 +660,7 @@
 		783701741C43DF64006C80DE /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				782807A31C463AED0061D6CD /* Icon-1@2x.png */,
 				781F6E181C44DA5300026160 /* metting_nonotification@2x.png */,
 				781F6E191C44DA5300026160 /* metting_nonotification@3x.png */,
 				781F6E0A1C44A33F00026160 /* meeting_num@2x.png */,
@@ -1440,6 +1443,7 @@
 				7837030F1C43DF64006C80DE /* chat_send_message.png in Resources */,
 				781F6E1A1C44DA5300026160 /* metting_nonotification@2x.png in Resources */,
 				783702D11C43DF64006C80DE /* video@2x.png in Resources */,
+				782807A41C463AED0061D6CD /* Icon-1@2x.png in Resources */,
 				783703081C43DF64006C80DE /* chat_animation3.png in Resources */,
 				783702B21C43DF64006C80DE /* menucancel@2x.png in Resources */,
 				783702CD1C43DF64006C80DE /* setting_main_point@3x.png in Resources */,
