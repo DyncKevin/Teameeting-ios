@@ -519,7 +519,7 @@
 {
     [ASHUD hideHUD];
     
-  //  [_client Subscribe:strPublishId andEnableVideo:YES];
+    //[_client Subscribe:strPublishId andEnableVideo:YES];
     [[TMMessageManage sharedManager] tMNotifyMsgRoomid:roomID withMessage:strPublishId];
 }
 /** 发布失败

@@ -303,7 +303,6 @@ static NSString *kRoomCellID = @"RoomCell";
                     [ServerVisit shead].authorization = [dict objectForKey:@"authorization"];
                     [weakSelf getData];
                     [[TMMessageManage sharedManager] inintTMMessage];
-                    [[TMMessageManage sharedManager] OnMsgServerConnected];
                     
                 }else{
                     

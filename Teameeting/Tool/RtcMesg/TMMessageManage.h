@@ -12,7 +12,12 @@
 
 @protocol tmMessageReceive <NSObject>
 
+//for Chat
 - (void)messageDidReceiveWithContent:(NSString *)content messageTime:(NSString *)time;
+
+//for RoomList
+- (void)roomListMemberChangeWithRoomID:(NSString *)roomID changeState:(NSInteger)state;
+- (void)roomListUnreadMessageChangeWithRoomID:(NSString *)roomID totalCount:(NSInteger)count;
 - (BOOL)receiveMessageEnable;
 @end
 
@@ -22,14 +27,9 @@
 
 + (TMMessageManage *)sharedManager;
 - (void)inintTMMessage;
-- (void)OnMsgServerConnected;
-- (int)sendMsgUserid:(NSString*) userid
-               pass:(NSString*) pass
-             roomid:(NSString*) roomid
-                msg:(NSString*) msg;
+- (int)sendMsgWithRoomid:(NSString*) roomid
+                     msg:(NSString*) msg;
 - (int)tmRoomCmd:(MCMeetCmd) cmd
-          Userid:(NSString*) userid
-            pass:(NSString*) pass
           roomid:(NSString*) roomid
           remain:(NSString*) remain;
 
@@ -38,6 +38,7 @@
 
 - (void)registerMessageListener:(id<tmMessageReceive>)listener;
 #pragma CoreDataAction
+- (NSUInteger)getUnreadCountByRoomKey:(NSString *)key;
 - (void)insertMeeageDataWtihBelog:(NSString *)belong content:(NSString *)content;
 - (void)insertRoomDataWithKey:(NSString *)key;
 - (NSMutableArray*)selectDataFromMessageTableWithKey:(NSString *)key pageSize:(NSUInteger)size currentPage:(NSInteger)page;
