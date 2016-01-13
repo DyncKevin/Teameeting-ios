@@ -1820,7 +1820,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.avcon.teameeting;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "f076ca58-afc7-4641-845c-bb68f67308ad";
+				PROVISIONING_PROFILE = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -1874,7 +1874,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.avcon.teameeting;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "f076ca58-afc7-4641-845c-bb68f67308ad";
+				PROVISIONING_PROFILE = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;

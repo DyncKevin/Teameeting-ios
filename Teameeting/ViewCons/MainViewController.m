@@ -1060,7 +1060,7 @@ static NSString *kRoomCellID = @"RoomCell";
     
 }
 // count: not read message num
-- (void)roomListUnreadMessageChangeWithRoomID:(NSString *)roomID totalCount:(NSInteger)count
+- (void)roomListUnreadMessageChangeWithRoomID:(NSString *)roomID totalCount:(NSInteger)count lastMessageTime:(NSString *)time
 {
     
 }
