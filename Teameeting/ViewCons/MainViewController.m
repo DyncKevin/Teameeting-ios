@@ -44,7 +44,7 @@ static NSString *kRoomCellID = @"RoomCell";
 @property (nonatomic, strong) UIButton *getRoomButton;
 @property (nonatomic, strong) PushView *push;
 @property (nonatomic, strong) GetRoomView *getRoomView;
-@property (nonatomic, strong) NSMutableArray *dataArray;
+
 @property (nonatomic, strong) NSMutableArray *tempDataArray; // temp data
 @property (nonatomic, strong) UIButton *cancleButton;    // cancle create room button
 @property (nonatomic, strong) UIButton *inputButton;
@@ -300,6 +300,7 @@ static NSString *kRoomCellID = @"RoomCell";
                 if ([[dict objectForKey:@"code"] integerValue] == 200) {
                     [ServerVisit shead].authorization = [dict objectForKey:@"authorization"];
                     [weakSelf getData];
+                    [[TMMessageManage sharedManager] inintTMMessage];
                     [[TMMessageManage sharedManager] OnMsgServerConnected];
                     
                 }else{
@@ -496,7 +497,8 @@ static NSString *kRoomCellID = @"RoomCell";
                 [weakSelf updataDataWithServerResponse:[dict objectForKey:@"meetingInfo"]];
                  [[NtreatedDataManage sharedManager] removeData:data];
                 [weakSelf.push showWithType:PushViewTypeDefault withObject:roomItem withIndex:0];
-                [[TMMessageManage sharedManager] tmRoomCmd:TMCMD_CREATE Userid:nil pass:[ServerVisit shead].authorization roomid:[NSString stringWithFormat:@"%@",[[dict objectForKey:@"meetingInfo"] objectForKey:@"meetingid"]] remain:@""];
+                //this TMCMD_CREATE has deprecated
+                //[[TMMessageManage sharedManager] tmRoomCmd:TMCMD_CREATE Userid:nil pass:[ServerVisit shead].authorization roomid:[NSString stringWithFormat:@"%@",[[dict objectForKey:@"meetingInfo"] objectForKey:@"meetingid"]] remain:@""];
             }
         }
        
@@ -590,6 +592,12 @@ static NSString *kRoomCellID = @"RoomCell";
 // update room can notification
 - (void)updateNotification:(RoomItem*)item withClose:(BOOL)close withIndex:(NSInteger)index
 {
+    NtreatedData *data = [[NtreatedData alloc] init];
+    data.actionType = SettingNotificationRoom;
+    data.isNotification = close;
+    data.item = item;
+    [[NtreatedDataManage sharedManager] addData:data];
+    
     [dataArray replaceObjectAtIndex:index withObject:item];
     
     NSMutableArray *indexPaths = [[NSMutableArray alloc] init];
@@ -608,14 +616,26 @@ static NSString *kRoomCellID = @"RoomCell";
         [self.roomList reloadData];
     });
     
-    
     [ServerVisit updateRoomPushableWithSign:[ServerVisit shead].authorization meetingID:item.roomID pushable:[NSString stringWithFormat:@"%d",close] completion:^(AFHTTPRequestOperation *operation, id responseData, NSError *error) {
         NSLog(@"open or close push");
+        NSDictionary *dict = (NSDictionary*)responseData;
+        if (!error) {
+            if ([[dict objectForKey:@"code"] intValue]== 200) {
+                [[NtreatedDataManage sharedManager] removeData:data];
+                
+            }
+        }
     }];
 }
 // setting room is private
 - (void)setPrivateMeeting:(RoomItem*)item withPrivate:(BOOL)private withIndex:(NSInteger)index
 {
+    NtreatedData *data = [[NtreatedData alloc] init];
+    data.actionType = SettingPrivateRoom;
+    data.isPrivate = private;
+    data.item = item;
+    [[NtreatedDataManage sharedManager] addData:data];
+    
     [dataArray replaceObjectAtIndex:index withObject:item];
     
     NSMutableArray *indexPaths = [[NSMutableArray alloc] init];
@@ -642,6 +662,13 @@ static NSString *kRoomCellID = @"RoomCell";
     }
     [ServerVisit updateRoomEnableWithSign:[ServerVisit shead].authorization meetingID:item.roomID enable:enable completion:^(AFHTTPRequestOperation *operation, id responseData, NSError *error) {
         NSLog(@"private meeting");
+        NSDictionary *dict = (NSDictionary*)responseData;
+        if (!error) {
+            if ([[dict objectForKey:@"code"] intValue]== 200) {
+                [[NtreatedDataManage sharedManager] removeData:data];
+                
+            }
+        }
     }];
 }
 // add others meeting in ours

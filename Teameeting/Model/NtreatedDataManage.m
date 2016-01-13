@@ -72,7 +72,7 @@
     return datas;
 }
 
-- (void)dealwithDataWithTarget:(id)target {
+- (void)dealwithDataWithTarget:(MainViewController*)target {
     
     NSMutableArray *datas = [self getData];
     [datas sortedArrayUsingComparator:^NSComparisonResult(id  _Nonnull obj1, id  _Nonnull obj2) {
@@ -120,6 +120,56 @@
             [ServerVisit deleteRoomWithSign:[ServerVisit shead].authorization meetingID:roomItem.roomID completion:^(AFHTTPRequestOperation *operation, id responseData, NSError *error) {
             }];
         
+        }else if (item.actionType == SettingNotificationRoom){
+            [ServerVisit updateRoomPushableWithSign:[ServerVisit shead].authorization meetingID:roomItem.roomID pushable:[NSString stringWithFormat:@"%d",item.isNotification] completion:^(AFHTTPRequestOperation *operation, id responseData, NSError *error) {
+                NSDictionary *dict = (NSDictionary*)responseData;
+                if (!error) {
+                    if ([[dict objectForKey:@"code"] intValue]== 200) {
+                        @synchronized(target.dataArray) {
+                            for (RoomItem *room in target.dataArray) {
+                                if ([room.roomID isEqualToString:roomItem.roomID]) {
+                                    if (item.isNotification) {
+                                        room.canNotification = @"1";
+                                    }else{
+                                        room.canNotification = @"0";
+                                    }
+                                    [target.roomList reloadData];
+                                    break;
+                                    
+                                }
+                            }
+                        }
+                    }
+                }
+            }];
+        }else if(item.actionType == SettingPrivateRoom){
+            NSString *enable;
+            if (item.isPrivate) {
+                enable = @"2";
+            }else{
+                enable = @"1";
+            }
+            [ServerVisit updateRoomEnableWithSign:[ServerVisit shead].authorization meetingID:roomItem.roomID enable:enable completion:^(AFHTTPRequestOperation *operation, id responseData, NSError *error) {
+                NSDictionary *dict = (NSDictionary*)responseData;
+                if (!error) {
+                    if ([[dict objectForKey:@"code"] intValue]== 200) {
+                        @synchronized(target.dataArray) {
+                            for (RoomItem *room in target.dataArray) {
+                                if ([room.roomID isEqualToString:roomItem.roomID]) {
+                                    if (item.isPrivate) {
+                                        room.mettingState = 2;
+                                    }else{
+                                        room.mettingState = 1;
+                                    }
+                                    [target.roomList reloadData];
+                                    break;
+                                    
+                                }
+                            }
+                        }
+                    }
+                }
+            }];
         }
     }
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,NSUserDomainMask,YES);

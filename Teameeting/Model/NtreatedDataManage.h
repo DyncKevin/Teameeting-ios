@@ -8,12 +8,14 @@
 
 #import <Foundation/Foundation.h>
 #import "NtreatedData.h"
+#import "MainViewController.h"
+
 @interface NtreatedDataManage : NSObject
 
 
 
 + (NtreatedDataManage *)sharedManager;
-- (void)dealwithDataWithTarget:(id)target;
+- (void)dealwithDataWithTarget:(MainViewController*)target;
 - (BOOL)addData:(NtreatedData *)data;
 - (BOOL)removeData:(NtreatedData *)data;
 - (NSMutableArray *)getData;

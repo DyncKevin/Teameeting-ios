@@ -95,7 +95,7 @@ typedef enum ViewState {
     self.state = VIDEOSTATE;
     [self initBar];
     self.callViewCon = [[ReceiveCallViewController alloc] init];
-    self.callViewCon.roomID = @"123";
+    self.callViewCon.roomID = self.roomItem.roomID;
     self.callViewCon.view.frame = self.view.bounds;
     self.talkView = [[TalkView alloc] initWithFrame:self.view.bounds];
     self.talkView.userInteractionEnabled = NO;
@@ -153,7 +153,7 @@ typedef enum ViewState {
 - (void)viewDidLoad {
     
     [super viewDidLoad];
-    [[TMMessageManage sharedManager] tmRoomCmd:TMCMD_ENTER Userid:nil pass:nil roomid:self.roomItem.roomID remain:@""];
+    [[TMMessageManage sharedManager] tmRoomCmd:MCMeetCmdENTER Userid:nil pass:nil roomid:self.roomItem.roomID remain:@""];
 }
 
 - (void)loadTableView {

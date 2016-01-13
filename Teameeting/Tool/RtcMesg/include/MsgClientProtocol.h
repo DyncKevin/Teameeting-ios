@@ -9,40 +9,52 @@
 #ifndef MsgClientIos_MsgClientProtocol_h
 #define MsgClientIos_MsgClientProtocol_h
 
-typedef enum _tmmeetcmd{
-    TMCMD_ENTER=1,
-    TMCMD_LEAVE,
-    TMCMD_CREATE,
-    TMCMD_DESTROY,
-    TMCMD_REFRESH,
-    TMCMD_DCOMM,
-    TMCMD_MEETCMD_INVALID
-}TMMEETCMD;
+#import "TMClientType.h"
 
 @protocol MsgClientProtocol <NSObject>
 
 @required
-- (void) OnReqLoginCode:(int) code status:(NSString*) status userid:(NSString*)userid;
 
-- (void) OnRespLoginCode:(int) code status:(NSString*) status userid:(NSString*)userid;
+/**
+ * when you invoke tMSndMsgRoomid, you will recv response on this callback
+ * you can alse recv msgs from others in this callback
+ * also you will recv all the 'SndMsg' callback here
+ * e.g. tMOptRoomCmd(MCMeetCmdENTER, @"roomid", @"")
+ * tMOptRoomCmd(MCMeetCmdLEAVE, @"roomid", @"")
+ **/
+- (void) OnSndMsgMsg:(NSString*) msg;
 
-- (void) OnReqSndMsgMsg:(NSString*) msg;
+/**
+ * this callback is not used now.
+ **/
+- (void) OnGetMsgMsg:(NSString*) msg;
 
-- (void) OnRespSndMsgMsg:(NSString*) msg;
-
-- (void) OnReqGetMsgMsg:(NSString*) msg;
-
-- (void) OnRespGetMsgMsg:(NSString*) msg;
-
-- (void) OnReqLogoutCode:(int) code status:(NSString*) status userid:(NSString*)userid;
-
-- (void) OnRespLogoutCode:(int) code status:(NSString*) status userid:(NSString*)userid;
-
+/**
+ * after the msgclient connect to server
+ * this callback will be invoked
+ **/
 - (void) OnMsgServerConnected;
 
+/**
+ * when the msgclient disconnect from server
+ * this callback will be invoked
+ **/
 - (void) OnMsgServerDisconnect;
 
+/**
+ * when the msgclient connect to server failed
+ * this callback will be invoked
+ **/
 - (void) OnMsgServerConnectionFailure;
+
+/**
+ * when the state between server and client has changed
+ * this callback will be invoked
+ *
+ * params:
+ *      state: the state of connection between msgclient and msgserver
+ **/
+- (void) OnMsgServerStateConnState:(MCConnState) state;
 
 @end
 

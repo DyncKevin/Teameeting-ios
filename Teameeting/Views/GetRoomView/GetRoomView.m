@@ -41,10 +41,14 @@
         parentsView = parview;
         
         self.backgroundColor = [UIColor clearColor];
-    
-        dismissButton= [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, frame.size.width, frame.size.height)];
-        [parview addSubview:dismissButton];
-//        [parview sendSubviewToBack:dismissButton];
+    //CGRectMake(0, 0, frame.size.width, frame.size.height)
+        dismissButton= [[UIImageView alloc] initWithFrame:CGRectZero];
+                [parview addSubview:dismissButton];
+        dismissButton.translatesAutoresizingMaskIntoConstraints = NO;
+        NSDictionary* views = NSDictionaryOfVariableBindings(dismissButton);
+        [parview addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-0-[dismissButton]-0-|" options:0 metrics:nil views:views]];
+        
+        [parview addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-0-[dismissButton]-0-|" options:0 metrics:nil views:views]];
         
         dismissButton.hidden = YES;
         if (ISIPAD) {

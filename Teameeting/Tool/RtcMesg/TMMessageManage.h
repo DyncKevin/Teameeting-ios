@@ -27,11 +27,15 @@
                pass:(NSString*) pass
              roomid:(NSString*) roomid
                 msg:(NSString*) msg;
-- (int)tmRoomCmd:(TMMEETCMD) cmd
+- (int)tmRoomCmd:(MCMeetCmd) cmd
           Userid:(NSString*) userid
             pass:(NSString*) pass
           roomid:(NSString*) roomid
           remain:(NSString*) remain;
+
+- (int)tMNotifyMsgRoomid:(NSString*)roomid
+             withMessage:(NSString*)meg;
+
 - (void)registerMessageListener:(id<tmMessageReceive>)listener;
 #pragma CoreDataAction
 - (void)insertMeeageDataWtihBelog:(NSString *)belong content:(NSString *)content;

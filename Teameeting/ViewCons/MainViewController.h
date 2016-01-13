@@ -14,6 +14,10 @@
 
 @property (nonatomic, strong) UITableView *roomList;
 
+@property (nonatomic, strong) NSMutableArray *dataArray;
+
 - (void)insertUserMeetingRoomWithID:(RoomItem*)item;
+
+- (void)updataDataWithServerResponse:(NSDictionary*)dict;
 
 @end

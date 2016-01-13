@@ -17,6 +17,7 @@
     [aCoder encodeObject:self.item forKey:@"item"];
     [aCoder encodeObject:self.udid forKey:@"udid"];
     [aCoder encodeBool:self.isPrivate forKey:@"isPrivate"];
+    [aCoder encodeBool:self.isNotification forKey:@"isNotification"];
 }
 
 - (nullable instancetype)initWithCoder:(NSCoder *)aDecoder {
@@ -28,6 +29,7 @@
        _item = [aDecoder decodeObjectForKey:@"item"];
        _udid = [aDecoder decodeObjectForKey:@"udid"];
        _isPrivate = [aDecoder decodeBoolForKey:@"isPrivate"];
+       _isNotification = [aDecoder decodeBoolForKey:@"isNotification"];
     }
     return self;
 }
