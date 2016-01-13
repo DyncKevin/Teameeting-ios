@@ -368,7 +368,7 @@
                     
                     if ([object respondsToSelector:@selector(videoSubscribeWith:)] && [object receiveMessageEnable]) {
                         
-                        [object videoSubscribeWith:[messageDic objectForKey:@"room"]];
+                        [object videoSubscribeWith:[messageDic objectForKey:@"cont"]];
                     }
                 }
                 return;
@@ -404,7 +404,7 @@
 
 - (void) OnMsgServerConnected {
     
-    
+    NSLog(@"ok");
 }
 
 - (void) OnMsgServerDisconnect {
