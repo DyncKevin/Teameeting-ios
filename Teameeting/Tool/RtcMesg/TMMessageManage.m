@@ -283,6 +283,10 @@
     //return [self.msg tMOptRoomCmd:cmd Userid:[SvUDIDTools UDID] pass:[ServerVisit shead].authorization roomid:roomid remain:remain];
     return [self.msg tMOptRoomCmd:cmd roomid:roomid remain:remain];
 }
+- (int)tMNotifyMsgRoomid:(NSString*)roomid withMessage:(NSString*)meg
+{
+    return [self.msg tMNotifyMsgRoomid:roomid msg:meg];
+}
 
 - (void) OnReqLoginCode:(int) code status:(NSString*) status userid:(NSString*)userid {
 
@@ -302,6 +306,8 @@
         for (id<tmMessageReceive> object in self.messageListeners) {
             
             NSDictionary *messageDic = [NSJSONSerialization JSONObjectWithData:[msg dataUsingEncoding:NSUTF8StringEncoding] options:NSJSONReadingMutableLeaves error:nil];
+            
+            
             if ([object respondsToSelector:@selector(messageDidReceiveWithContent:messageTime:)] && [object receiveMessageEnable]) {
             
                 [object messageDidReceiveWithContent:[messageDic objectForKey:@"cont"] messageTime:[messageDic objectForKey:@"ntime"]];
@@ -343,7 +349,7 @@
 - (void) OnMsgServerStateConnState:(MCConnState) state {
     //the connection state between client and server
     //when the state has changed, this callback will be invoked
-    NSLog(@"OnMsgServerStateConnState state:%ld", state);
+   // NSLog(@"OnMsgServerStateConnState state:%ld", state);
 }
 
 @end

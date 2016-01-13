@@ -300,6 +300,7 @@ static NSString *kRoomCellID = @"RoomCell";
                 if ([[dict objectForKey:@"code"] integerValue] == 200) {
                     [ServerVisit shead].authorization = [dict objectForKey:@"authorization"];
                     [weakSelf getData];
+                    [[TMMessageManage sharedManager] inintTMMessage];
                     [[TMMessageManage sharedManager] OnMsgServerConnected];
                     
                 }else{

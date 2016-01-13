@@ -32,6 +32,10 @@
             pass:(NSString*) pass
           roomid:(NSString*) roomid
           remain:(NSString*) remain;
+
+- (int)tMNotifyMsgRoomid:(NSString*)roomid
+             withMessage:(NSString*)meg;
+
 - (void)registerMessageListener:(id<tmMessageReceive>)listener;
 #pragma CoreDataAction
 - (void)insertMeeageDataWtihBelog:(NSString *)belong content:(NSString *)content;

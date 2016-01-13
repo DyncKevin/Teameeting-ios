@@ -11,6 +11,7 @@
 #import "AvcAudioRouteMgr.h"
 #import <AVFoundation/AVFoundation.h>
 #import "ASHUD.h"
+#import "TMMessageManage.h"
 
 @interface ReceiveCallViewController ()<AnyrtcM2MDelegate,UIGestureRecognizerDelegate>
 {
@@ -110,13 +111,13 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidBecomeActive) name:UIApplicationDidBecomeActiveNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(fullSreenNoti:) name:@"FULLSCREEN" object:nil];
 
-//    {//@Eric - Publish myself
-//        PublishParams *pramas = [[PublishParams alloc]init];
-//        [pramas setEnableVideo:true];
-//        [pramas setEnableRecord:false];
-//        [pramas setStreamType:kSTRtc];
-//        [_client Publish:pramas];
-//    }
+    {//@Eric - Publish myself
+        PublishParams *pramas = [[PublishParams alloc]init];
+        [pramas setEnableVideo:true];
+        [pramas setEnableRecord:false];
+        [pramas setStreamType:kSTRtc];
+        [_client Publish:pramas];
+    }
 }
 
 - (void)fullSreenNoti:(NSNotification *)noti {
@@ -517,7 +518,9 @@
 - (void) OnRtcPublishOK:(NSString*)strPublishId withRtmpUrl:(NSString*)strRtmpUtl withHlsUrl:(NSString*)strHlsUrl
 {
     [ASHUD hideHUD];
-    [_client Subscribe:strPublishId andEnableVideo:YES];
+    
+  //  [_client Subscribe:strPublishId andEnableVideo:YES];
+    [[TMMessageManage sharedManager] tMNotifyMsgRoomid:roomID withMessage:strPublishId];
 }
 /** 发布失败
  * @param nCode		失败的代码

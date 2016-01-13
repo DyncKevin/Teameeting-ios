@@ -95,7 +95,7 @@ typedef enum ViewState {
     self.state = VIDEOSTATE;
     [self initBar];
     self.callViewCon = [[ReceiveCallViewController alloc] init];
-    self.callViewCon.roomID = @"123";
+    self.callViewCon.roomID = self.roomItem.roomID;
     self.callViewCon.view.frame = self.view.bounds;
     self.talkView = [[TalkView alloc] initWithFrame:self.view.bounds];
     self.talkView.userInteractionEnabled = NO;
