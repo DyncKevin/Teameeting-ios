@@ -309,7 +309,11 @@
                 
                 if ([object respondsToSelector:@selector(messageDidReceiveWithContent:messageTime:)] && [object receiveMessageEnable]) {
                     
-                    [object messageDidReceiveWithContent:[messageDic objectForKey:@"cont"] messageTime:[messageDic objectForKey:@"ntime"]];
+                    if (![[messageDic objectForKey:@"from"] isEqualToString:[ServerVisit shead].authorization]) {
+                        
+                        [object messageDidReceiveWithContent:[messageDic objectForKey:@"cont"] messageTime:[messageDic objectForKey:@"ntime"]];
+                    }
+                    
                     searchTag = YES;
                     break;
                 }
@@ -335,7 +339,11 @@
                 
                 if ([object respondsToSelector:@selector(roomListMemberChangeWithRoomID:changeState:)] && [object receiveMessageEnable]) {
                     
-                    [object roomListMemberChangeWithRoomID:[messageDic objectForKey:@"room"] changeState:[[messageDic objectForKey:@"cmd"] intValue]];
+                    if (![[messageDic objectForKey:@"from"] isEqualToString:[ServerVisit shead].authorization]) {
+                        
+                        [object roomListMemberChangeWithRoomID:[messageDic objectForKey:@"room"] changeState:[[messageDic objectForKey:@"cmd"] intValue]];
+                    }
+                    
                 }
             }
 
