@@ -53,7 +53,6 @@
 
 - (void)inintTMMessage {
     
-    //[_msg tMInitMsgProtocol:self server:@"192.168.7.39" port:9210];
     [_msg tMInitMsgProtocol:self uid:[SvUDIDTools UDID] token:[ServerVisit shead].authorization server:@"192.168.7.39" port:9210];
 }
 
@@ -141,6 +140,21 @@
         NSLog(@"不能保存：%@",[error localizedDescription]);
     }
     
+}
+
+- (NSUInteger)getUnreadCountByRoomKey:(NSString *)key {
+    
+    NSMutableArray *messages = [NSMutableArray array];
+    NSArray *searchResult = [self selectDataFromMessageTableWithKey:key pageSize:20 currentPage:0];
+    [messages addObjectsFromArray:searchResult];
+    int index = 0;
+    while ([searchResult count] != 0) {
+        
+        index ++;
+        searchResult = [self selectDataFromMessageTableWithKey:key pageSize:20 currentPage:index];
+        [messages addObjectsFromArray:searchResult];
+    }
+    return [messages count];
 }
 
 - (NSMutableArray*)selectDataFromMessageTableWithKey:(NSString *)key pageSize:(NSUInteger)size currentPage:(NSInteger)page
@@ -253,7 +267,6 @@
     NSError *error = nil;
     NSArray *result = [context executeFetchRequest:request error:&error];
     Message *item = [result firstObject];
-    
     if ([context save:&error]) {
         
         
@@ -268,34 +281,19 @@
 #pragma mark TMessage Action
 
 
-- (int)sendMsgUserid:(NSString*) userid
-                pass:(NSString*) pass
-              roomid:(NSString*) roomid
-                 msg:(NSString*) msg {
+- (int)sendMsgWithRoomid:(NSString *)roomid msg:(NSString *)msg {
     
-   //return [self.msg tMSndMsgUserid:[SvUDIDTools UDID] pass:[ServerVisit shead].authorization roomid:roomid msg:msg];
    return [self.msg tMSndMsgRoomid:roomid msg:msg];
 }
 
-- (int)tmRoomCmd:(MCMeetCmd)cmd Userid:(NSString *)userid pass:(NSString *)pass roomid:(NSString *)roomid remain:(NSString *)remain {
-    
-    
-    //return [self.msg tMOptRoomCmd:cmd Userid:[SvUDIDTools UDID] pass:[ServerVisit shead].authorization roomid:roomid remain:remain];
+- (int)tmRoomCmd:(MCMeetCmd)cmd roomid:(NSString *)roomid remain:(NSString *)remain {
+
     return [self.msg tMOptRoomCmd:cmd roomid:roomid remain:remain];
 }
+
 - (int)tMNotifyMsgRoomid:(NSString*)roomid withMessage:(NSString*)meg
 {
     return [self.msg tMNotifyMsgRoomid:roomid msg:meg];
-}
-
-- (void) OnReqLoginCode:(int) code status:(NSString*) status userid:(NSString*)userid {
-
-    
-}
-
-- (void) OnRespLoginCode:(int) code status:(NSString*) status userid:(NSString*)userid {
-    
-    
 }
 
 //接收消息
@@ -303,21 +301,46 @@
     
     dispatch_async(dispatch_get_main_queue(), ^{
        
-        for (id<tmMessageReceive> object in self.messageListeners) {
+        NSDictionary *messageDic = [NSJSONSerialization JSONObjectWithData:[msg dataUsingEncoding:NSUTF8StringEncoding] options:NSJSONReadingMutableLeaves error:nil];
+        if ([[messageDic objectForKey:@"cmd"] intValue] == 3) {
             
-            NSDictionary *messageDic = [NSJSONSerialization JSONObjectWithData:[msg dataUsingEncoding:NSUTF8StringEncoding] options:NSJSONReadingMutableLeaves error:nil];
-            
-            
-            if ([object respondsToSelector:@selector(messageDidReceiveWithContent:messageTime:)] && [object receiveMessageEnable]) {
-            
-                [object messageDidReceiveWithContent:[messageDic objectForKey:@"cont"] messageTime:[messageDic objectForKey:@"ntime"]];
+            BOOL searchTag = NO;
+            for (id<tmMessageReceive> object in self.messageListeners) {
                 
-            } else {
-                
-                [[TMMessageManage sharedManager] insertMeeageDataWtihBelog:[messageDic objectForKey:@"roomid"] content:[messageDic objectForKey:@"cont"]];
+                if ([object respondsToSelector:@selector(messageDidReceiveWithContent:messageTime:)] && [object receiveMessageEnable]) {
+                    
+                    [object messageDidReceiveWithContent:[messageDic objectForKey:@"cont"] messageTime:[messageDic objectForKey:@"ntime"]];
+                    searchTag = YES;
+                    break;
+                }
+
             }
+            if (!searchTag) {
+                
+                [[TMMessageManage sharedManager] insertMeeageDataWtihBelog:[messageDic objectForKey:@"room"] content:[messageDic objectForKey:@"cont"]];
+                for (id<tmMessageReceive> object in self.messageListeners) {
+                    
+                    if ([object respondsToSelector:@selector(roomListUnreadMessageChangeWithRoomID:totalCount:)] && [object receiveMessageEnable]) {
+                        
+                        NSInteger messageCount = [[TMMessageManage sharedManager] getUnreadCountByRoomKey:[messageDic objectForKey:@"room"]];
+                        [object roomListUnreadMessageChangeWithRoomID:[messageDic objectForKey:@"room"] totalCount:messageCount];
+                        
+                    }
+                }
+            }
+            
+        } else if ([[messageDic objectForKey:@"cmd"] intValue] == 1 || [[messageDic objectForKey:@"cmd"] intValue] == 2) {
+            
+            for (id<tmMessageReceive> object in self.messageListeners) {
+                
+                if ([object respondsToSelector:@selector(roomListMemberChangeWithRoomID:changeState:)] && [object receiveMessageEnable]) {
+                    
+                    [object roomListMemberChangeWithRoomID:[messageDic objectForKey:@"room"] changeState:[[messageDic objectForKey:@"cmd"] intValue]];
+                }
+            }
+
         }
-    
+        
     });
 }
 
@@ -329,11 +352,7 @@
 
 - (void) OnMsgServerConnected {
     
-    if ([ServerVisit shead].authorization.length != 0) {
-       
-        //[_msg tMLoginUserid:[SvUDIDTools UDID] pass:[ServerVisit shead].authorization];
-        
-    }
+    
 }
 
 - (void) OnMsgServerDisconnect {
