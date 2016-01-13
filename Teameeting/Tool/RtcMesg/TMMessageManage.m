@@ -334,7 +334,7 @@
                 
                 if ([object respondsToSelector:@selector(messageDidReceiveWithContent:messageTime:)] && [object receiveMessageEnable]) {
                     
-                    if (![[messageDic objectForKey:@"from"] isEqualToString:[ServerVisit shead].authorization]) {
+                    if (![[messageDic objectForKey:@"from"] isEqualToString:[SvUDIDTools UDID]]) {
                         
                         [object messageDidReceiveWithContent:[messageDic objectForKey:@"cont"] messageTime:[messageDic objectForKey:@"ntime"]];
                     }
@@ -344,7 +344,7 @@
                 }
 
             }
-            if (!searchTag && ![[messageDic objectForKey:@"from"] isEqualToString:[ServerVisit shead].authorization]) {
+            if (!searchTag && ![[messageDic objectForKey:@"from"] isEqualToString:[SvUDIDTools UDID]]) {
                 
                 [[TMMessageManage sharedManager] insertMeeageDataWtihBelog:[messageDic objectForKey:@"room"] content:[messageDic objectForKey:@"cont"] messageTime:[messageDic objectForKey:@"ntime"]];
                 for (id<tmMessageReceive> object in self.messageListeners) {
@@ -377,7 +377,7 @@
                 
                 if ([object respondsToSelector:@selector(roomListMemberChangeWithRoomID:changeState:)] && [object receiveMessageEnable]) {
                     
-                    if (![[messageDic objectForKey:@"from"] isEqualToString:[ServerVisit shead].authorization]) {
+                    if (![[messageDic objectForKey:@"from"] isEqualToString:[SvUDIDTools UDID]]) {
                         
                         [object roomListMemberChangeWithRoomID:[messageDic objectForKey:@"room"] changeState:[[messageDic objectForKey:@"cmd"] intValue]];
                     }
@@ -388,6 +388,11 @@
         }
         
     });
+}
+
+- (BOOL)connectEnable {
+    
+    return [self.msg tMConnStatus] == MCConnStateCONNECTED ? YES : NO;
 }
 
 - (void) OnGetMsgMsg:(NSString*) msg {
