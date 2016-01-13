@@ -153,7 +153,7 @@ typedef enum ViewState {
 - (void)viewDidLoad {
     
     [super viewDidLoad];
-    [[TMMessageManage sharedManager] tmRoomCmd:TMCMD_ENTER Userid:nil pass:nil roomid:self.roomItem.roomID remain:@""];
+    [[TMMessageManage sharedManager] tmRoomCmd:MCMeetCmdENTER Userid:nil pass:nil roomid:self.roomItem.roomID remain:@""];
 }
 
 - (void)loadTableView {

@@ -9,25 +9,55 @@
 #ifndef MsgClientIos_TMClientType_h
 #define MsgClientIos_TMClientType_h
 
-typedef enum _client_status{
-    NOT_CONNECTED = 0,
-    RESOLVING = 1,
-    CONNECTTING = 2,
-    CONNECTED = 3
-}RTClientStatus;
+typedef NS_ENUM(NSInteger, MCConnState){
+    MCConnStateNOT_CONNECTED = 0,
+    MCConnStateRESOLVING = 1,
+    MCConnStateCONNECTTING = 2,
+    MCConnStateCONNECTED = 3
+};
 
-typedef enum _client_type{
-    code_ok = 0,
-    code_invparams,
-    code_errconninfo,
-    code_errmoduinfo,
-    code_errtojson,
-    code_nexistroom,
-    code_nexistmem,
-    code_existroom,
-    code_existmem,
-    code_invalid
-}RTClientType;
+typedef NS_ENUM(NSInteger, MCErrorType){
+    MCErrorTypeOK = 0,
+    MCErrorTypeINVPARAMS,
+    MCErrorTypeCONNINFO,
+    MCErrorTypeMODUINFO,
+    MCErrorTypeNEXISTROOM,
+    MCErrorTypeNEXISTMEM,
+    MCErrorTypeEXISTROOM,
+    MCErrorTypeEXISTMEM,
+    MCErrorTypeINVALID
+};
 
+typedef NS_ENUM(NSInteger, MCMeetCmd){
+    MCMeetCmdENTER=1,
+    MCMeetCmdLEAVE,
+    MCMeetCmdDCOMM,
+    MCMeetCmdINVALID
+};
+
+typedef NS_ENUM(NSInteger, MCDcommAction){
+    MCDcommActionMSEND=1,
+    MCDcommActionDSETT,
+    MCDcommActionSHARE,
+    MCDcommActionINVALID
+};
+
+typedef NS_ENUM(NSInteger, MCSendTags){
+    MCSendTagsTALK=1,
+    MCSendTagsCHAT,
+    MCSendTagsLVMSG,
+    MCSendTagsNOTIFY,
+    MCSendTagsINVALID
+};
+
+typedef NS_ENUM(NSInteger, MCMessageType){
+    MCMessageTypeREQUEST=1,
+    MCMessageTypeRESPONSE,
+    MCMessageTypeINVALID
+};
+
+typedef NS_ENUM(NSInteger, MCGetCmd){
+    MCGetCmdINVALID=1
+};
 
 #endif
