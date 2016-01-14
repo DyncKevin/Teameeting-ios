@@ -128,9 +128,17 @@
     }
 }
 
-- (void)videoSubscribeWith:(NSString *)roomId {
+- (void)videoSubscribeWith:(NSString *)publishId action:(NSInteger)action {
     
-    [_client Subscribe:roomId andEnableVideo:YES];
+    if (action == 4) {
+        
+        [_client Subscribe:publishId andEnableVideo:YES];
+        
+    } else {
+        
+        [_client UnSubscribe:publishId];
+    }
+    
 }
 
 -(BOOL)receiveMessageEnable {
@@ -196,9 +204,9 @@
         [_client CloseAll];
         [_client UnSubscribe:self.roomID];
         [[TMMessageManage sharedManager] tmRoomCmd:MCMeetCmdLEAVE roomid:self.roomID remain:@""];
-        
+        [[TMMessageManage sharedManager] removeMessageListener:self];
     }
-    [[TMMessageManage sharedManager] removeMessageListener:self];
+    
     return;
     _exitRoomAlertView = [[UIAlertView alloc] initWithTitle:nil message:@"你确定要退出吗？" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
     [_exitRoomAlertView show];

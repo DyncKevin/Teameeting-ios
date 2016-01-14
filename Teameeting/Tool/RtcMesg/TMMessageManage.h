@@ -15,7 +15,7 @@
 //for Chat
 - (void)messageDidReceiveWithContent:(NSString *)content messageTime:(NSString *)time;
 //for VideoSubscribe
-- (void)videoSubscribeWith:(NSString *)roomId;
+- (void)videoSubscribeWith:(NSString *)publishId action:(NSInteger)action;
 
 //for RoomList
 - (void)roomListMemberChangeWithRoomID:(NSString *)roomID changeState:(NSInteger)state;
