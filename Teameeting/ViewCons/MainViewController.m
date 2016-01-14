@@ -452,8 +452,12 @@ static NSString *kRoomCellID = @"RoomCell";
                     VideoCallViewController *video = [[VideoCallViewController alloc] init];
                     video.roomItem = item;
                     UINavigationController *nai = [[UINavigationController alloc] initWithRootViewController:video];
-                    [self presentViewController:nai animated:YES completion:^{
-                        
+                    [weakSelf presentViewController:nai animated:YES completion:^{
+                        [ServerVisit updateUserMeetingJointimeWithSign:[ServerVisit shead].authorization meetingID:item.roomID completion:^(AFHTTPRequestOperation *operation, id responseData, NSError *error) {
+                            NSDictionary *dict = (NSDictionary*)responseData;
+                            item.jointime = [[dict objectForKey:@"jointime"] longValue];
+                            [weakSelf updataMeetingTime:item];
+                        }];
                     }];
                 });
             }
@@ -462,7 +466,33 @@ static NSString *kRoomCellID = @"RoomCell";
         }
     }];
 }
+// 更新时间
+- (void)updataMeetingTime:(RoomItem*)item
+{
+    @synchronized(dataArray) {
+        for (RoomItem *roomItem in dataArray) {
+            if ([roomItem.roomID isEqualToString:item.roomID]) {
+                roomItem.jointime = item.jointime;
+                [self.roomList reloadData];
+                break;
+            }
+        }
+    }
+}
 
+- (void)updataDataWithServerResponse:(NSDictionary*)dict
+{
+    dispatch_async(dispatch_get_main_queue(), ^{
+        RoomItem *roomItem = [dataArray objectAtIndex:0];
+        roomItem.roomID = [dict objectForKey:@"meetingid"];
+        roomItem.jointime = [[dict objectForKey:@"jointime"] longValue];
+        roomItem.mettingType = [[dict objectForKey:@"meettype"] integerValue];
+        roomItem.mettingState = [[dict objectForKey:@"meetusable"] integerValue];
+        
+        [dataArray replaceObjectAtIndex:0 withObject:roomItem];
+        [self.roomList reloadData];
+    });
+}
 #pragma mark - button events
 - (void)getRoomButtonEvent:(UIButton*)button
 {
@@ -511,19 +541,7 @@ static NSString *kRoomCellID = @"RoomCell";
 }
 
 #pragma mark - publish server methods
-- (void)updataDataWithServerResponse:(NSDictionary*)dict
-{
-    dispatch_async(dispatch_get_main_queue(), ^{
-        RoomItem *roomItem = [dataArray objectAtIndex:0];
-        roomItem.roomID = [dict objectForKey:@"meetingid"];
-        roomItem.jointime = [[dict objectForKey:@"jointime"] longValue];
-        roomItem.mettingType = [[dict objectForKey:@"meettype"] integerValue];
-        roomItem.mettingState = [[dict objectForKey:@"meetusable"] integerValue];
-        
-        [dataArray replaceObjectAtIndex:0 withObject:roomItem];
-        [self.roomList reloadData];
-    });
-}
+
 // 添加
 - (void)addRoomWithRoomName:(NSString*)roomName withPrivate:(BOOL)isPrivate
 {

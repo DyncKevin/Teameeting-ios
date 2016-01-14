@@ -15,6 +15,9 @@
 //智能时间处理 传入时间戳
 -(NSString *)friendTimeWithTimesTamp:(long)timestamp;
 
+-(NSString *)friendTimeWithTimesTampStr:(NSString*)timestamp;
+
+
 // 目前时间转换为时间戳
 - (long)timeTransformationTimestamp;
 

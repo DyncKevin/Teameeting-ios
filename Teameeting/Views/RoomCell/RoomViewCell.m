@@ -180,9 +180,14 @@
         self.timeLabel.text = @"";
     }else{
         if (item.messageNum!=0) {
-            self.timeLabel.text = [NSString stringWithFormat:@"(%ld)新消息",(long)item.messageNum];
+            self.timeLabel.text = [NSString stringWithFormat:@"(%ld)新消息:%@",(long)item.messageNum,[[TimeManager shead] friendTimeWithTimesTampStr:item.lastMessagTime]];
         }else{
-            self.timeLabel.text = [NSString stringWithFormat:@"创建:%@",[[TimeManager shead] friendTimeWithTimesTamp:item.jointime]];
+            if (item.jointime>item.createTime) {
+                self.timeLabel.text = [NSString stringWithFormat:@"加入:%@",[[TimeManager shead] friendTimeWithTimesTamp:item.jointime]];
+            }else{
+              self.timeLabel.text = [NSString stringWithFormat:@"创建:%@",[[TimeManager shead] friendTimeWithTimesTamp:item.createTime]];
+            }
+            
         }
         
     }

@@ -20,6 +20,11 @@ static TimeManager *timeManger = nil;
     });
     return timeManger;
 }
+-(NSString *)friendTimeWithTimesTampStr:(NSString*)timestamp
+{
+    long time = [timestamp longLongValue];
+    return [self friendTimeWithTimesTamp:time];
+}
 
 //智能时间处理 传入时间戳
 -(NSString *)friendTimeWithTimesTamp:(long)timestamp
