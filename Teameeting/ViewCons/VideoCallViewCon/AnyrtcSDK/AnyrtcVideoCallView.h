@@ -39,7 +39,7 @@
 @interface AnyrtcVideoCallView : UIView
 
 @property(nonatomic, readonly) RTCEAGLVideoView *localVideoView;
-@property(nonatomic, strong) id<AnyrtcVideoCallViewDelegate> delegate;
+@property(nonatomic, assign) id<AnyrtcVideoCallViewDelegate> delegate;
 
 - (RTCEAGLVideoView *) remoteVideoView:(NSString *)strTag;
 - (void) remoteViewRemove:(NSString *)strTag;
