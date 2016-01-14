@@ -484,7 +484,7 @@ static NSString *kRoomCellID = @"RoomCell";
 {
     dispatch_async(dispatch_get_main_queue(), ^{
         RoomItem *roomItem = [dataArray objectAtIndex:0];
-        roomItem.roomID = [dict objectForKey:@"meetingid"];
+        roomItem.roomID = [NSString stringWithFormat:@"%@",[dict objectForKey:@"meetingid"]];
         roomItem.jointime = [[dict objectForKey:@"jointime"] longValue];
         roomItem.mettingType = [[dict objectForKey:@"meettype"] integerValue];
         roomItem.mettingState = [[dict objectForKey:@"meetusable"] integerValue];
@@ -541,23 +541,7 @@ static NSString *kRoomCellID = @"RoomCell";
 }
 
 #pragma mark - publish server methods
-<<<<<<< HEAD
-- (void)updataDataWithServerResponse:(NSDictionary*)dict
-{
-    dispatch_async(dispatch_get_main_queue(), ^{
-        RoomItem *roomItem = [dataArray objectAtIndex:0];
-        roomItem.roomID = [NSString stringWithFormat:@"%@",[dict objectForKey:@"meetingid"]];
-        roomItem.jointime = [[dict objectForKey:@"jointime"] longValue];
-        roomItem.mettingType = [[dict objectForKey:@"meettype"] integerValue];
-        roomItem.mettingState = [[dict objectForKey:@"meetusable"] integerValue];
-        
-        [dataArray replaceObjectAtIndex:0 withObject:roomItem];
-        [self.roomList reloadData];
-    });
-}
-=======
 
->>>>>>> Teameeting/master
 // 添加
 - (void)addRoomWithRoomName:(NSString*)roomName withPrivate:(BOOL)isPrivate
 {
