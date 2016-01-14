@@ -150,6 +150,10 @@ typedef enum ViewState {
     [self performSelector:@selector(loadTableView) withObject:nil afterDelay:0.1];
 }
 
+- (void)dealloc {
+    
+    self.callViewCon = nil;
+}
 - (void)viewDidLoad {
     
     [super viewDidLoad];
@@ -728,11 +732,13 @@ typedef enum ViewState {
 - (void)menuClick:(LockerButton *)item {
     
     if (item.tag == 10) {
-        
-        if (self.callViewCon) {
-            [self.callViewCon hangeUp];
-        }
-        [self dismissViewControllerAnimated:YES completion:nil];
+    
+        [self dismissViewControllerAnimated:YES completion:^{
+            
+            if (self.callViewCon) {
+                [self.callViewCon hangeUp];
+            }
+        }];
         
     } else if (item.tag == 20) {
         

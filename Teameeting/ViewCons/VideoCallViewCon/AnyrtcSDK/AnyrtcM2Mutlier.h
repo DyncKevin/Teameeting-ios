@@ -43,14 +43,32 @@
  * @param strPublishId	订阅的通道ID
  */
 - (void) OnRtcSubscribeClosed:(NSString*)strPublishId;
+/** 视频大小
+ * @param strPublishId	订阅的通道ID
+ */
+- (void) OnRtcVideoView:(UIView*)videoView didChangeVideoSize:(CGSize)size;
+/*! @brief 远程图像进入p2p会议
+ *
+ *  @param removeView 远程图像
+ *  @param strTag  该通道标识符
+ */
+- (void) OnRtcInRemoveView:(UIView *)removeView  withTag:(NSString *)strTag;
+
+/*! @brief 远程图像离开会议
+ *
+ *  @param removeView 远程图像
+ *  @param strTag  该通道标识符
+ */
+- (void)OnRtcLeaveRemoveView:(UIView *)removeView  withTag:(NSString *)strTag;
 @end
 
 @interface AnyrtcM2Mutlier : NSObject {
     
 }
 
-@property (nonatomic, strong) AnyrtcVideoCallView *videoCallView;
-@property (nonatomic, strong) id<AnyrtcM2MDelegate> delegate;
+@property (nonatomic, weak) UIView *localView;
+
+@property (nonatomic, weak) id<AnyrtcM2MDelegate> delegate;
 
 + (void) InitAnyRTC:(NSString*)strDeveloperId andToken:(NSString*)strToken andAESKey:(NSString*)strAESKey andAppId:(NSString*)strAppId;
 
@@ -65,6 +83,9 @@
 - (void) setLocalAudioEnable:(BOOL)enable;
 - (void) setLocalVideoEnable:(BOOL)enable;
 - (void) switchCamera;
+
+//big 0 small 3
+- (void) switchVideoBitsWithTag:(NSString*)tag withLeave:(int)level;
 
 @end
 
