@@ -337,7 +337,7 @@
     dispatch_async(dispatch_get_main_queue(), ^{
        
         NSDictionary *messageDic = [NSJSONSerialization JSONObjectWithData:[msg dataUsingEncoding:NSUTF8StringEncoding] options:NSJSONReadingMutableLeaves error:nil];
-        if ([[messageDic objectForKey:@"cmd"] intValue] == 3) {
+        if ([[messageDic objectForKey:@"tags"] intValue] == MCSendTagsTALK) {
             
             BOOL searchTag = NO;
             for (id<tmMessageReceive> object in self.messageListeners) {
@@ -369,32 +369,33 @@
                 }
             }
             
-        } else if ([[messageDic objectForKey:@"cmd"] intValue] == 1 || [[messageDic objectForKey:@"cmd"] intValue] == 2) {
-            
-            if ([[messageDic objectForKey:@"tags"] intValue] == 4 && [[messageDic objectForKey:@"cmd"] intValue] == 1 && ![[messageDic objectForKey:@"from"] isEqualToString:[SvUDIDTools UDID]]) {
-                
-                for (id <tmMessageReceive> object in self.messageListeners) {
-                    
-                    if ([object respondsToSelector:@selector(videoSubscribeWith:)] && [object receiveMessageEnable]) {
-                        
-                        [object videoSubscribeWith:[messageDic objectForKey:@"cont"]];
-                    }
-                }
-                return;
-            }
-            
+        } else if ([[messageDic objectForKey:@"tags"] intValue] == MCSendTagsENTER || [[messageDic objectForKey:@"tags"] intValue] == MCSendTagsLEAVE) {
+        
             for (id<tmMessageReceive> object in self.messageListeners) {
                 
                 if ([object respondsToSelector:@selector(roomListMemberChangeWithRoomID:changeState:)] && [object receiveMessageEnable]) {
                     
                     if (![[messageDic objectForKey:@"from"] isEqualToString:[SvUDIDTools UDID]]) {
                         
-                        [object roomListMemberChangeWithRoomID:[messageDic objectForKey:@"room"] changeState:[[messageDic objectForKey:@"cmd"] intValue]];
+                        [object roomListMemberChangeWithRoomID:[messageDic objectForKey:@"room"] changeState:[[messageDic objectForKey:@"nmem"] intValue]];
                     }
                     
                 }
             }
-
+            
+        } else if ([[messageDic objectForKey:@"tags"] intValue] == MCSendTagsSUBSCRIBE || [[messageDic objectForKey:@"tags"] intValue] == MCSendTagsUNSUBSCRIBE) {
+            
+            for (id <tmMessageReceive> object in self.messageListeners) {
+                
+                if ([object respondsToSelector:@selector(videoSubscribeWith:action:)] && [object receiveMessageEnable]) {
+                    
+                    if (![[messageDic objectForKey:@"from"] isEqualToString:[SvUDIDTools UDID]]) {
+                        
+                        [object videoSubscribeWith:[messageDic objectForKey:@"cont"] action:[[messageDic objectForKey:@"tags"] intValue]];
+                    }
+                    
+                }
+            }
         }
         
     });
