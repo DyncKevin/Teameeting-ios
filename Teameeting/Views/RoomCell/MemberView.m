@@ -58,9 +58,9 @@
     
     NSLayoutConstraint * constraint4 = [NSLayoutConstraint constraintWithItem:_numberLabel attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeTop multiplier:1.0f constant:0.f];
     
-    NSLayoutConstraint * constraint5 = [NSLayoutConstraint constraintWithItem:_numberLabel attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:_imageView attribute:NSLayoutAttributeRight multiplier:1.0f constant: .0f];
+    NSLayoutConstraint * constraint5 = [NSLayoutConstraint constraintWithItem:_numberLabel attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:_imageView attribute:NSLayoutAttributeRight multiplier:1.0f constant: 2.f];
     
-    NSLayoutConstraint * constraint6 = [NSLayoutConstraint constraintWithItem:_numberLabel attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:_imageView attribute:NSLayoutAttributeHeight multiplier:1.0f constant:0];
+    NSLayoutConstraint * constraint6 = [NSLayoutConstraint constraintWithItem:_numberLabel attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeHeight multiplier:1.0f constant:0];
     
     NSLayoutConstraint * constraint7 = [NSLayoutConstraint constraintWithItem:_numberLabel attribute:NSLayoutAttributeRight relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeRight multiplier:1.0f constant:.0f];
     
