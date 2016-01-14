@@ -175,6 +175,7 @@
     va_start(args, key);
     NSString *lastTime = nil;
     NSUInteger count = [self getUnreadCountByRoomKey:key lasetTime:&lastTime];
+
     [messageDic setObject:[NSArray arrayWithObjects:[NSNumber numberWithInteger:count], lastTime,nil] forKey:key];
     
     if (key)
