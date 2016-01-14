@@ -44,9 +44,10 @@ typedef NS_ENUM(NSInteger, MCDcommAction){
 
 typedef NS_ENUM(NSInteger, MCSendTags){
     MCSendTagsTALK=1,
-    MCSendTagsCHAT,
-    MCSendTagsLVMSG,
-    MCSendTagsNOTIFY,
+    MCSendTagsENTER,
+    MCSendTagsLEAVE,
+    MCSendTagsSUBSCRIBE,
+    MCSendTagsUNSUBSCRIBE,
     MCSendTagsINVALID
 };
 
