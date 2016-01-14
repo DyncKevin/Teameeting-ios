@@ -13,9 +13,8 @@
 #import "ChatModel.h"
 #import "UUMessageFrame.h"
 #import "UUMessage.h"
-#import "TMMessageManage.h"
 #import "VideoCallViewController.h"
-@interface RootViewController ()<UUInputFunctionViewDelegate,UUMessageCellDelegate,UITableViewDataSource,UITableViewDelegate,tmMessageReceive>
+@interface RootViewController ()<UUInputFunctionViewDelegate,UUMessageCellDelegate,UITableViewDataSource,UITableViewDelegate>
 
 //@property (strong, nonatomic) MJRefreshHeader *head;
 @property (strong, nonatomic) ChatModel *chatModel;
@@ -40,7 +39,6 @@
     self.receiveEnable = YES;
     [self addRefreshViews];
     [self loadBaseViewsAndData];
-    [[TMMessageManage sharedManager] registerMessageListener:self];
     self.chatTableView.backgroundColor = [UIColor colorWithWhite:0.1 alpha:0.5];
     self.view.backgroundColor = [UIColor clearColor];
     [[NSNotificationCenter defaultCenter] removeObserver:self];
@@ -51,7 +49,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
+    [[TMMessageManage sharedManager] registerMessageListener:self];
 }
 
 - (void)viewDidAppear:(BOOL)animated
