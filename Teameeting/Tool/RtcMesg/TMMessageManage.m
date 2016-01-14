@@ -64,6 +64,14 @@
     }
 }
 
+- (void)removeMessageListener:(id<tmMessageReceive>)listener {
+    
+    if ([self.messageListeners containsObject:listener]) {
+        
+        [self.messageListeners removeObject:listener];
+    }
+}
+
 #pragma CoreDataAction
 
 - (void)saveCoreData {
@@ -349,7 +357,7 @@
             if (!searchTag && ![[messageDic objectForKey:@"from"] isEqualToString:[SvUDIDTools UDID]]) {
                 
                 [[TMMessageManage sharedManager] insertMeeageDataWtihBelog:[messageDic objectForKey:@"room"] content:[messageDic objectForKey:@"cont"] messageTime:[messageDic objectForKey:@"ntime"]];
-                for (id<tmMessageReceive> object in self.messageListeners) {
+                for ( id<tmMessageReceive> object in self.messageListeners) {
                     
                     if ([object respondsToSelector:@selector(roomListUnreadMessageChangeWithRoomID:totalCount:lastMessageTime:)] && [object receiveMessageEnable]) {
                         
@@ -365,7 +373,7 @@
             
             if ([[messageDic objectForKey:@"tags"] intValue] == 4 && [[messageDic objectForKey:@"cmd"] intValue] == 1) {
                 
-                for (id<tmMessageReceive> object in self.messageListeners) {
+                for (id <tmMessageReceive> object in self.messageListeners) {
                     
                     if ([object respondsToSelector:@selector(videoSubscribeWith:)] && [object receiveMessageEnable]) {
                         
@@ -405,7 +413,7 @@
 
 - (void) OnMsgServerConnected {
     
-    NSLog(@"ok");
+    
 }
 
 - (void) OnMsgServerDisconnect {

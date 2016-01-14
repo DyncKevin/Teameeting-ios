@@ -12,11 +12,10 @@
 #import <AVFoundation/AVFoundation.h>
 #import "ASHUD.h"
 #import "TMMessageManage.h"
-
 @interface ReceiveCallViewController ()<AnyrtcM2MDelegate,UIGestureRecognizerDelegate,tmMessageReceive>
 {
     AvcAudioRouteMgr *_audioManager;
-    AnyrtcVideoCallView *_localVideoView;
+    UIView *_localVideoView;
     
     CGSize _localVideoSize;
     CGSize _videoSize;
@@ -70,6 +69,15 @@
         _client  = nil;
     }
 }
+
+- (id)init {
+    
+    if (self = [super init]) {
+        
+        [[TMMessageManage sharedManager] registerMessageListener:self];
+    }
+    return self;
+}
 - (void)viewDidDisappear:(BOOL)animated
 {
     [super viewDidDisappear:animated];
@@ -84,7 +92,7 @@
     [self.videosScrollView setContentSize:CGSizeMake(self.view.bounds.size.width*2, 120)];
     [self.videosScrollView setContentOffset:CGPointMake(self.videosScrollView.contentSize.width/4, 0) animated:YES];
     [self.videosScrollView setAutoresizingMask:UIViewAutoresizingFlexibleTopMargin  | UIViewAutoresizingFlexibleWidth];
-    [self.videosScrollView setHidden:YES];
+    [self.videosScrollView setHidden:NO];
     self.videosScrollView.backgroundColor = [UIColor clearColor];
     _peerSelectedId = nil;
     _isHidden = NO;
@@ -95,9 +103,9 @@
     
     [AnyrtcM2Mutlier InitAnyRTC:@"mzw0001" andToken:@"defq34hj92mxxjhaxxgjfdqi1s332dd" andAESKey:@"d74TcmQDMB5nWx9zfJ5al7JdEg3XwySwCkhdB9lvnd1" andAppId:@"org.dync.app"];
     _client = [[AnyrtcM2Mutlier alloc] init];
-    _localVideoView = [[AnyrtcVideoCallView alloc] initWithFrame:self.view.frame];
+    _localVideoView = [[UIView alloc] initWithFrame:self.view.frame];
     _client.delegate = self;
-    _client.videoCallView = _localVideoView;
+    _client.localView = _localVideoView;
     
     UITapGestureRecognizer *singleTapGestureRecognizer = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(locolvideoSingleTap:)];
     singleTapGestureRecognizer.delegate = self;
@@ -118,7 +126,6 @@
         [pramas setStreamType:kSTRtc];
         [_client Publish:pramas];
     }
-    [[TMMessageManage sharedManager] registerMessageListener:self];
 }
 
 - (void)videoSubscribeWith:(NSString *)roomId {
@@ -187,7 +194,11 @@
 {
     if (_client) {
         [_client CloseAll];
+        [_client UnSubscribe:self.roomID];
+        [[TMMessageManage sharedManager] tmRoomCmd:MCMeetCmdLEAVE roomid:self.roomID remain:@""];
+        
     }
+    [[TMMessageManage sharedManager] removeMessageListener:self];
     return;
     _exitRoomAlertView = [[UIAlertView alloc] initWithTitle:nil message:@"你确定要退出吗？" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
     [_exitRoomAlertView show];
@@ -427,9 +438,26 @@
 
 #pragma mark - Private
 
-- (void)setRemoteVideoView:(UIView *)remoteVideoView withTag:(NSString*)strTag{
+
+- (void) OnRtcVideoView:(UIView*)videoView didChangeVideoSize:(CGSize)size {
+    
+    if (videoView == _localVideoView) {
+        _localVideoSize = size;
+    }else{
+        _videoSize = size;
+    }
+    [self layoutSubView];
+    
+}
+/*! @brief 远程图像进入p2p会议
+ *
+ *  @param removeView 远程图像
+ *  @param strTag  该通道标识符
+ */
+- (void) OnRtcInRemoveView:(UIView *)removeView  withTag:(NSString *)strTag {
+    
     UIView* findView = [_dicRemoteVideoView objectForKey:strTag];
-    if (findView == remoteVideoView) {
+    if (findView == removeView) {
         return;
     }
     if (!_peerSelectedId) {
@@ -439,19 +467,24 @@
     UITapGestureRecognizer *singleTapGestureRecognizer = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(singleTap:)];
     [singleTapGestureRecognizer setNumberOfTapsRequired:1];
     singleTapGestureRecognizer.delegate = self;
-    [remoteVideoView addGestureRecognizer:singleTapGestureRecognizer];
-    [self.view addSubview:remoteVideoView];
+    [removeView addGestureRecognizer:singleTapGestureRecognizer];
+    [self.view addSubview:removeView];
     
-    [_dicRemoteVideoView setObject:remoteVideoView forKey:strTag];
+    [_dicRemoteVideoView setObject:removeView forKey:strTag];
     [self layoutSubView];
     //While the number of remote image change, send a notification
     NSNumber *remoteVideoCount = [NSNumber numberWithInteger:[_dicRemoteVideoView count]];
     [[NSNotificationCenter defaultCenter] postNotificationName:@"REMOTEVIDEOCHANGE" object:remoteVideoCount];
+    
 }
 
-// 删除一个
-- (void)setRemoveVideoView:(NSString*)strTag
-{
+/*! @brief 远程图像离开会议
+ *
+ *  @param removeView 远程图像
+ *  @param strTag  该通道标识符
+ */
+- (void)OnRtcLeaveRemoveView:(UIView *)removeView  withTag:(NSString *)strTag {
+    
     UIView *findView = [_dicRemoteVideoView objectForKey:strTag];
     if (findView) {
         if ([strTag isEqualToString:_peerSelectedId]) {
@@ -515,8 +548,6 @@
         if (buttonIndex == 1) {
             [ASHUD showHUDWithStayLoadingStyleInView:self.view belowView:nil content:@"正在退出。。。"];
             [_client CloseAll];
-            [_client UnSubscribe:self.roomID];
-            [[TMMessageManage sharedManager] tmRoomCmd:MCMeetCmdLEAVE roomid:self.roomID remain:@""];
         }
     }
     
