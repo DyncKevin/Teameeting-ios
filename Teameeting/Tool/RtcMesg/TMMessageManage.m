@@ -371,7 +371,7 @@
             
         } else if ([[messageDic objectForKey:@"cmd"] intValue] == 1 || [[messageDic objectForKey:@"cmd"] intValue] == 2) {
             
-            if ([[messageDic objectForKey:@"tags"] intValue] == 4 && [[messageDic objectForKey:@"cmd"] intValue] == 1) {
+            if ([[messageDic objectForKey:@"tags"] intValue] == 4 && [[messageDic objectForKey:@"cmd"] intValue] == 1 && ![[messageDic objectForKey:@"from"] isEqualToString:[SvUDIDTools UDID]]) {
                 
                 for (id <tmMessageReceive> object in self.messageListeners) {
                     

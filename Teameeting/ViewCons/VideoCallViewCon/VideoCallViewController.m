@@ -737,6 +737,7 @@ typedef enum ViewState {
             
             if (self.callViewCon) {
                 [self.callViewCon hangeUp];
+                [[TMMessageManage sharedManager] removeMessageListener:self.rootView];
             }
         }];
         

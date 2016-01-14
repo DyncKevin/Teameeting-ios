@@ -484,7 +484,7 @@ static NSString *kRoomCellID = @"RoomCell";
 {
     dispatch_async(dispatch_get_main_queue(), ^{
         RoomItem *roomItem = [dataArray objectAtIndex:0];
-        roomItem.roomID = [dict objectForKey:@"meetingid"];
+        roomItem.roomID = [NSString stringWithFormat:@"%@",[dict objectForKey:@"meetingid"]];
         roomItem.jointime = [[dict objectForKey:@"jointime"] longValue];
         roomItem.mettingType = [[dict objectForKey:@"meettype"] integerValue];
         roomItem.mettingState = [[dict objectForKey:@"meetusable"] integerValue];
