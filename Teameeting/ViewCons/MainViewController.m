@@ -569,6 +569,10 @@ static NSString *kRoomCellID = @"RoomCell";
                 [weakSelf updataDataWithServerResponse:[dict objectForKey:@"meetingInfo"]];
                  [[NtreatedDataManage sharedManager] removeData:data];
                 [weakSelf.push showWithType:PushViewTypeDefault withObject:roomItem withIndex:0];
+                if (weakSelf.dataArray.count>20) {
+                     [weakSelf deleteRoomWithItem:[dataArray lastObject] withIndex:(dataArray.count -1)];
+                }
+               
                 //this TMCMD_CREATE has deprecated
                 //[[TMMessageManage sharedManager] tmRoomCmd:TMCMD_CREATE Userid:nil pass:[ServerVisit shead].authorization roomid:[NSString stringWithFormat:@"%@",[[dict objectForKey:@"meetingInfo"] objectForKey:@"meetingid"]] remain:@""];
             }
@@ -636,32 +640,26 @@ static NSString *kRoomCellID = @"RoomCell";
             }
         }
     }
+    
+    [dataArray removeObject:item];
+    
+    if (dataArray.count == 0) {
+        
+        [EmptyViewFactory emptyMainView:self.roomList];
+       
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            [self.roomList reloadData];
+        });
+    }else{
+        [self.roomList beginUpdates];
+        [self.roomList deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:index inSection:0]] withRowAnimation:UITableViewRowAnimationAutomatic];
+        [self.roomList endUpdates];
+    }
+
     NtreatedData *data = [[NtreatedData alloc] init];
     data.actionType = ModifyRoomName;
     data.item = item;
     [[NtreatedDataManage sharedManager] addData:data];
-    
-    [dataArray removeObject:item];
-    if (dataArray.count == 0) {
-        
-        [EmptyViewFactory emptyMainView:self.roomList];
-        
-    }
-    
-    NSMutableArray *indexPaths = [[NSMutableArray alloc] init];
-    
-    NSIndexPath *indexP = [NSIndexPath indexPathForRow:index inSection:0];
-    
-    [indexPaths addObject: indexP];
-    [self.roomList beginUpdates];
-    
-    [self.roomList deleteRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationMiddle];
-    
-    [self.roomList endUpdates];
-    
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        [self.roomList reloadData];
-    });
     
     [ServerVisit deleteRoomWithSign:[ServerVisit shead].authorization meetingID:item.roomID completion:^(AFHTTPRequestOperation *operation, id responseData, NSError *error) {
         NSLog(@"delete room");
@@ -814,6 +812,9 @@ static NSString *kRoomCellID = @"RoomCell";
         video.roomItem = item;
         UINavigationController *nai = [[UINavigationController alloc] initWithRootViewController:video];
         [self presentViewController:nai animated:YES completion:^{
+            if (self.dataArray.count>20) {
+                [self deleteRoomWithItem:[dataArray lastObject] withIndex:(dataArray.count -1)];
+            }
             
         }];
     });
@@ -1103,19 +1104,8 @@ static NSString *kRoomCellID = @"RoomCell";
     @synchronized(dataArray) {
         for (RoomItem *item in dataArray) {
             if ([item.roomID isEqualToString:roomID]) {
-                if (state == 1) {
-                    item.mettingNum = item.mettingNum + 1;
-                    [self.roomList reloadData];
-                    break;
-                }else{
-                    if (item.mettingNum == 0) {
-                        break;
-                    }else{
-                        item.mettingNum = item.mettingNum -1;
-                        [self.roomList reloadData];
-                        break;
-                    }
-                }
+                item.mettingNum = state;
+                [self.roomList reloadData];
             }
         }
     }

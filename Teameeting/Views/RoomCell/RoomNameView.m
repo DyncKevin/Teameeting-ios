@@ -32,18 +32,18 @@
         [self addSubview:self.nameLabel];
         self.nameLabel.numberOfLines = 0;
         self.nameLabel.textColor = [UIColor colorWithRed:200.0/255.0 green:139.0/255.0 blue:75.0/255.0 alpha:1.0];
-        self.nameLabel.font = [UIFont boldSystemFontOfSize:17];
+        self.nameLabel.font = [UIFont boldSystemFontOfSize:16];
         self.nameLabel.textAlignment = NSTextAlignmentLeft;
         self.nameLabel.backgroundColor = [UIColor clearColor];
         self.nameLabel.lineBreakMode = NSLineBreakByTruncatingTail;
         NSString *nameString = @"我的会议";
-        orgSize = [nameString sizeWithFont:[UIFont boldSystemFontOfSize:17] maxSize:CGSizeMake([UIScreen mainScreen].bounds.size.width, 100)];
+        orgSize = [nameString sizeWithFont:[UIFont boldSystemFontOfSize:16] maxSize:CGSizeMake([UIScreen mainScreen].bounds.size.width, 100)];
     }
     return self;
 }
 - (void)layoutSubviews
 {
-    CGSize size = [self.roomItem.roomName sizeWithFont:[UIFont boldSystemFontOfSize:17] maxSize:CGSizeMake([UIScreen mainScreen].bounds.size.width, 100)];
+    CGSize size = [self.roomItem.roomName sizeWithFont:[UIFont boldSystemFontOfSize:16] maxSize:CGSizeMake([UIScreen mainScreen].bounds.size.width, 100)];
     if (size.height> orgSize.height) {
         self.nameLabel.frame = CGRectMake(0, 0, self.bounds.size.width-self.bounds.size.height/3*2, self.bounds.size.height);
         self.imageView.frame = CGRectMake(CGRectGetWidth(self.nameLabel.frame), self.bounds.size.height/6, self.bounds.size.height/3*2, self.bounds.size.height/3*2);
@@ -80,6 +80,7 @@
         }
     }
     self.nameLabel.text = item.roomName;
+
     [self layoutSubviews];
 }
 

@@ -48,7 +48,6 @@
 - (void)initSubviews
 {
     self.roomNameView = [RoomNameView new];
-    self.roomNameView.backgroundColor = [UIColor clearColor];
     [self.contentView addSubview:self.roomNameView];
     
     self.timeLabel = [UILabel new];

@@ -35,6 +35,7 @@
         [self addSubview:self.numberLabel];
         self.numberLabel.textAlignment = NSTextAlignmentLeft;
         self.numberLabel.textColor = [UIColor whiteColor];
+        self.numberLabel.font = [UIFont boldSystemFontOfSize:16];
         self.numberLabel.backgroundColor = [UIColor clearColor];
         [self layout];
     }
@@ -46,19 +47,20 @@
     self.numberLabel.translatesAutoresizingMaskIntoConstraints = NO;
     self.notificationImageView.translatesAutoresizingMaskIntoConstraints = NO;
     
-    NSLayoutConstraint * constraint = [NSLayoutConstraint constraintWithItem:_imageView attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeTop multiplier:1.0f constant:0.f];
+    NSLayoutConstraint * constraint2 = [NSLayoutConstraint constraintWithItem:_imageView attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeHeight multiplier:0.8f constant: 0];
+    
+    NSLayoutConstraint * constraint3 = [NSLayoutConstraint constraintWithItem:_imageView attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeHeight multiplier:0.8f constant:0];
     
      NSLayoutConstraint * constraint1 = [NSLayoutConstraint constraintWithItem:_imageView attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeLeft multiplier:1.0f constant:0.f];
     
-    NSLayoutConstraint * constraint2 = [NSLayoutConstraint constraintWithItem:_imageView attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeHeight multiplier:1.0f constant: 0];
+     NSLayoutConstraint * constraint = [NSLayoutConstraint constraintWithItem:_imageView attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeCenterY multiplier:1.0f constant:0.f];
     
-    NSLayoutConstraint * constraint3 = [NSLayoutConstraint constraintWithItem:_imageView attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeHeight multiplier:1.0f constant:0];
     
     NSLayoutConstraint * constraint4 = [NSLayoutConstraint constraintWithItem:_numberLabel attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeTop multiplier:1.0f constant:0.f];
     
-    NSLayoutConstraint * constraint5 = [NSLayoutConstraint constraintWithItem:_numberLabel attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:_imageView attribute:NSLayoutAttributeRight multiplier:1.0f constant: .0f];
+    NSLayoutConstraint * constraint5 = [NSLayoutConstraint constraintWithItem:_numberLabel attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:_imageView attribute:NSLayoutAttributeRight multiplier:1.0f constant: 2.f];
     
-    NSLayoutConstraint * constraint6 = [NSLayoutConstraint constraintWithItem:_numberLabel attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:_imageView attribute:NSLayoutAttributeHeight multiplier:1.0f constant:0];
+    NSLayoutConstraint * constraint6 = [NSLayoutConstraint constraintWithItem:_numberLabel attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeHeight multiplier:1.0f constant:0];
     
     NSLayoutConstraint * constraint7 = [NSLayoutConstraint constraintWithItem:_numberLabel attribute:NSLayoutAttributeRight relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeRight multiplier:1.0f constant:.0f];
     
