@@ -150,6 +150,10 @@ typedef enum ViewState {
     [self performSelector:@selector(loadTableView) withObject:nil afterDelay:0.1];
 }
 
+- (void)dealloc {
+    
+    self.callViewCon = nil;
+}
 - (void)viewDidLoad {
     
     [super viewDidLoad];
@@ -244,7 +248,6 @@ typedef enum ViewState {
                 [self.noUserTip setCenter:CGPointMake(self.view.bounds.size.width/2 + self.view.bounds.size.width/4, self.noUserTip.center.y)];
             }];
             
-            
         } else {
             
             [UIView animateWithDuration:0.2 animations:^{
@@ -328,7 +331,9 @@ typedef enum ViewState {
         naiTitle.center = CGPointMake(self.barView.bounds.size.width/2, self.barView.bounds.size.height/2 + 10);
         
         [self.barView addSubview:naiTitle];
-        [self.barView addSubview:shareButton];
+        if (self.roomItem.mettingState != 2) {
+            [self.barView addSubview:shareButton];
+        }
         [self.barView addSubview:chatButton];
         
     } else {
@@ -368,7 +373,9 @@ typedef enum ViewState {
         naiTitle.center = CGPointMake(self.barView.bounds.size.width/2, self.barView.bounds.size.height/2 + 10);
         
         [self.barView addSubview:naiTitle];
-        [self.barView addSubview:shareButton];
+        if (self.roomItem.mettingState != 2) {
+            [self.barView addSubview:shareButton];
+        }
         [self.barView addSubview:chatButton];
     }
     [self.navigationController.navigationBar addSubview:self.barView];
@@ -660,6 +667,7 @@ typedef enum ViewState {
         [self.videoGroudImage setHidden:YES];
         
     }];
+    [self.rootView resginKeyBord];
     [self.rootView setReceiveMessageEnable:NO];
 
 }
@@ -728,11 +736,14 @@ typedef enum ViewState {
 - (void)menuClick:(LockerButton *)item {
     
     if (item.tag == 10) {
-        
-        if (self.callViewCon) {
-            [self.callViewCon hangeUp];
-        }
-        [self dismissViewControllerAnimated:YES completion:nil];
+    
+        [self dismissViewControllerAnimated:YES completion:^{
+            
+            if (self.callViewCon) {
+                [self.callViewCon hangeUp];
+                [[TMMessageManage sharedManager] removeMessageListener:self.rootView];
+            }
+        }];
         
     } else if (item.tag == 20) {
         
@@ -835,7 +846,7 @@ typedef enum ViewState {
         
         self.noUserTip.alpha = 1;
         self.menuView.alpha = 1;
-        [UIView animateWithDuration:0.1 animations:^{
+        //[UIView animateWithDuration:0.1 animations:^{
             
             if (self.rootView.view.frame.origin.x < 0) {
                 
@@ -850,7 +861,7 @@ typedef enum ViewState {
                 [self.noUserTip setCenter:CGPointMake(self.view.bounds.size.width/2 + self.view.bounds.size.width/4, CGRectGetMinY(self.menuView.frame) - self.noUserTip.bounds.size.height)];
             }
             [self.rootView resetInputFrame:CGRectMake(0, self.view.bounds.size.height - 40, self.view.bounds.size.width, 40)];
-        }];
+        //}];
         
     } else {
         

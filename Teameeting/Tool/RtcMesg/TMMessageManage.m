@@ -64,6 +64,14 @@
     }
 }
 
+- (void)removeMessageListener:(id<tmMessageReceive>)listener {
+    
+    if ([self.messageListeners containsObject:listener]) {
+        
+        [self.messageListeners removeObject:listener];
+    }
+}
+
 #pragma CoreDataAction
 
 - (void)saveCoreData {
@@ -167,6 +175,7 @@
     va_start(args, key);
     NSString *lastTime = nil;
     NSUInteger count = [self getUnreadCountByRoomKey:key lasetTime:&lastTime];
+
     [messageDic setObject:[NSArray arrayWithObjects:[NSNumber numberWithInteger:count], lastTime,nil] forKey:key];
     
     if (key)
@@ -328,7 +337,7 @@
     dispatch_async(dispatch_get_main_queue(), ^{
        
         NSDictionary *messageDic = [NSJSONSerialization JSONObjectWithData:[msg dataUsingEncoding:NSUTF8StringEncoding] options:NSJSONReadingMutableLeaves error:nil];
-        if ([[messageDic objectForKey:@"cmd"] intValue] == 3) {
+        if ([[messageDic objectForKey:@"tags"] intValue] == MCSendTagsTALK) {
             
             BOOL searchTag = NO;
             for (id<tmMessageReceive> object in self.messageListeners) {
@@ -348,7 +357,7 @@
             if (!searchTag && ![[messageDic objectForKey:@"from"] isEqualToString:[SvUDIDTools UDID]]) {
                 
                 [[TMMessageManage sharedManager] insertMeeageDataWtihBelog:[messageDic objectForKey:@"room"] content:[messageDic objectForKey:@"cont"] messageTime:[messageDic objectForKey:@"ntime"]];
-                for (id<tmMessageReceive> object in self.messageListeners) {
+                for ( id<tmMessageReceive> object in self.messageListeners) {
                     
                     if ([object respondsToSelector:@selector(roomListUnreadMessageChangeWithRoomID:totalCount:lastMessageTime:)] && [object receiveMessageEnable]) {
                         
@@ -360,32 +369,33 @@
                 }
             }
             
-        } else if ([[messageDic objectForKey:@"cmd"] intValue] == 1 || [[messageDic objectForKey:@"cmd"] intValue] == 2) {
-            
-            if ([[messageDic objectForKey:@"tags"] intValue] == 4 && [[messageDic objectForKey:@"cmd"] intValue] == 1) {
-                
-                for (id<tmMessageReceive> object in self.messageListeners) {
-                    
-                    if ([object respondsToSelector:@selector(videoSubscribeWith:)] && [object receiveMessageEnable]) {
-                        
-                        [object videoSubscribeWith:[messageDic objectForKey:@"cont"]];
-                    }
-                }
-                return;
-            }
-            
+        } else if ([[messageDic objectForKey:@"tags"] intValue] == MCSendTagsENTER || [[messageDic objectForKey:@"tags"] intValue] == MCSendTagsLEAVE) {
+        
             for (id<tmMessageReceive> object in self.messageListeners) {
                 
                 if ([object respondsToSelector:@selector(roomListMemberChangeWithRoomID:changeState:)] && [object receiveMessageEnable]) {
                     
                     if (![[messageDic objectForKey:@"from"] isEqualToString:[SvUDIDTools UDID]]) {
                         
-                        [object roomListMemberChangeWithRoomID:[messageDic objectForKey:@"room"] changeState:[[messageDic objectForKey:@"cmd"] intValue]];
+                        [object roomListMemberChangeWithRoomID:[messageDic objectForKey:@"room"] changeState:[[messageDic objectForKey:@"nmem"] intValue]];
                     }
                     
                 }
             }
-
+            
+        } else if ([[messageDic objectForKey:@"tags"] intValue] == MCSendTagsSUBSCRIBE || [[messageDic objectForKey:@"tags"] intValue] == MCSendTagsUNSUBSCRIBE) {
+            
+            for (id <tmMessageReceive> object in self.messageListeners) {
+                
+                if ([object respondsToSelector:@selector(videoSubscribeWith:action:)] && [object receiveMessageEnable]) {
+                    
+                    if (![[messageDic objectForKey:@"from"] isEqualToString:[SvUDIDTools UDID]]) {
+                        
+                        [object videoSubscribeWith:[messageDic objectForKey:@"cont"] action:[[messageDic objectForKey:@"tags"] intValue]];
+                    }
+                    
+                }
+            }
         }
         
     });
@@ -404,7 +414,7 @@
 
 - (void) OnMsgServerConnected {
     
-    NSLog(@"ok");
+    
 }
 
 - (void) OnMsgServerDisconnect {

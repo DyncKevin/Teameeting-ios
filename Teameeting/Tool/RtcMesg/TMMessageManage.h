@@ -14,8 +14,8 @@
 
 //for Chat
 - (void)messageDidReceiveWithContent:(NSString *)content messageTime:(NSString *)time;
-//for Chat
-- (void)videoSubscribeWith:(NSString *)roomId;
+//for VideoSubscribe
+- (void)videoSubscribeWith:(NSString *)publishId action:(NSInteger)action;
 
 //for RoomList
 - (void)roomListMemberChangeWithRoomID:(NSString *)roomID changeState:(NSInteger)state;
@@ -41,6 +41,7 @@
 - (BOOL)connectEnable;
 
 - (void)registerMessageListener:(id<tmMessageReceive>)listener;
+- (void)removeMessageListener:(id<tmMessageReceive>)listener;
 #pragma CoreDataAction
 - (NSUInteger)getUnreadCountByRoomKey:(NSString *)key lasetTime:(NSString **)time;
 - (NSDictionary *)getUnreadCountByRoomKeys:(NSString *)key,...;

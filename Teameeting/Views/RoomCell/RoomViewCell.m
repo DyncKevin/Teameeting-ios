@@ -48,7 +48,6 @@
 - (void)initSubviews
 {
     self.roomNameView = [RoomNameView new];
-    self.roomNameView.backgroundColor = [UIColor clearColor];
     [self.contentView addSubview:self.roomNameView];
     
     self.timeLabel = [UILabel new];
@@ -179,7 +178,17 @@
     if ([item.roomName isEqualToString:@""]) {
         self.timeLabel.text = @"";
     }else{
-        self.timeLabel.text = [NSString stringWithFormat:@"创建:%@",[[TimeManager shead] friendTimeWithTimesTamp:item.jointime]];
+        if (item.messageNum!=0) {
+            self.timeLabel.text = [NSString stringWithFormat:@"(%ld)新消息:%@",(long)item.messageNum,[[TimeManager shead] friendTimeWithTimesTampStr:item.lastMessagTime]];
+        }else{
+            if (item.jointime>item.createTime) {
+                self.timeLabel.text = [NSString stringWithFormat:@"加入:%@",[[TimeManager shead] friendTimeWithTimesTamp:item.jointime]];
+            }else{
+              self.timeLabel.text = [NSString stringWithFormat:@"创建:%@",[[TimeManager shead] friendTimeWithTimesTamp:item.createTime]];
+            }
+            
+        }
+        
     }
 }
 

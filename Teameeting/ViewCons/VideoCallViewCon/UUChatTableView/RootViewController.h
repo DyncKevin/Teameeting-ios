@@ -7,8 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
-
-@interface RootViewController : UIViewController
+#import "TMMessageManage.h"
+@interface RootViewController : UIViewController<tmMessageReceive>
 
 
 @property(nonatomic,assign)id parentViewCon;
