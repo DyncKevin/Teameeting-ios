@@ -17,6 +17,8 @@
 
 -(NSString *)friendTimeWithTimesTampStr:(NSString*)timestamp;
 
+// 时间戳转换为时间
+- (NSString*)timestampTransformationTime:(long)timestamp;
 
 // 目前时间转换为时间戳
 - (long)timeTransformationTimestamp;

@@ -45,6 +45,8 @@
 #pragma CoreDataAction
 - (NSUInteger)getUnreadCountByRoomKey:(NSString *)key lasetTime:(NSString **)time;
 - (NSDictionary *)getUnreadCountByRoomKeys:(NSString *)key,...;
+- (void)clearUnreadCountByRoomKey:(NSString*)key;
+
 - (void)insertMeeageDataWtihBelog:(NSString *)belong content:(NSString *)content messageTime:(NSString *)time;
 - (void)insertRoomDataWithKey:(NSString *)key;
 - (NSMutableArray*)selectDataFromMessageTableWithKey:(NSString *)key pageSize:(NSUInteger)size currentPage:(NSInteger)page;

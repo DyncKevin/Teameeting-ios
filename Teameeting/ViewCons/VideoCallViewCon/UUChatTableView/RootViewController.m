@@ -14,9 +14,11 @@
 #import "UUMessageFrame.h"
 #import "UUMessage.h"
 #import "VideoCallViewController.h"
+#import "ServerVisit.h"
+
 @interface RootViewController ()<UUInputFunctionViewDelegate,UUMessageCellDelegate,UITableViewDataSource,UITableViewDelegate>
 
-//@property (strong, nonatomic) MJRefreshHeader *head;
+@property (nonatomic, assign) int pageNum;
 @property (strong, nonatomic) ChatModel *chatModel;
 
 @property (weak, nonatomic) IBOutlet UITableView *chatTableView;
@@ -49,6 +51,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.pageNum = 1;
     [[TMMessageManage sharedManager] registerMessageListener:self];
 }
 
@@ -75,22 +78,11 @@
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemSearch target:self action:nil];
 }
 
-- (void)messageDidReceiveWithContent:(NSString *)content messageTime:(NSString *)time {
-    
-    NSDictionary *dic = @{@"strContent": content,
-                          @"type": @(UUMessageTypeText)};
-    [self.chatModel addOtherItem:dic];
-    [self.chatTableView reloadData];
-    [self performSelector:@selector(tableViewScrollToBottom) withObject:nil afterDelay:0.3];
-}
-
-- (BOOL)receiveMessageEnable {
-    
-    return self.receiveEnable;
-}
-
 - (void)setReceiveMessageEnable:(BOOL)enable {
-    
+    if (enable) {
+        [[TMMessageManage sharedManager] clearUnreadCountByRoomKey:self.parentViewCon.roomItem.roomID];
+        self.parentViewCon.badgeView.text = @"0";
+    }
     self.receiveEnable = enable;
 }
 
@@ -108,11 +100,32 @@
     __weak typeof(self) weakSelf = self;
     self.chatTableView.header= [MJRefreshNormalHeader headerWithRefreshingBlock:^{
         
-        [weakSelf.chatTableView.header endRefreshing];
+        [ServerVisit getMeetingMsgListWithSign:[ServerVisit shead].authorization meetingID:weakSelf.parentViewCon.roomItem.roomID pageNum:[NSString stringWithFormat:@"%d",self.pageNum] pageSize:@"20" completion:^(AFHTTPRequestOperation *operation, id responseData, NSError *error) {
+            if (!error) {
+                NSDictionary *dict = (NSDictionary*)responseData;
+                if ([[dict objectForKey:@"code"] integerValue] ==200) {
+                    
+                    [weakSelf refreshDataFromNet:[dict objectForKey:@"messageList"] withFirst:NO];
+                }
+            }
+            [weakSelf.chatTableView.header endRefreshing];
+        }];
+       
         
     }];
 }
-
+- (void)refreshDataFromNet:(NSArray*)array withFirst:(BOOL)isFirst
+{
+    if (array.count!=0) {
+        self.pageNum++;
+        [self.chatModel addNetDataItems:array];
+        [self.chatTableView reloadData];
+    }
+    if (isFirst) {
+         [self performSelector:@selector(tableViewScrollToBottom) withObject:nil afterDelay:0.3];
+    }
+   
+}
 - (void)loadBaseViewsAndData
 {
     self.chatModel = [[ChatModel alloc]init];
@@ -124,6 +137,18 @@
     
     [self.chatTableView reloadData];
     [self tableViewScrollToBottom];
+    
+    [ServerVisit getMeetingMsgListWithSign:[ServerVisit shead].authorization meetingID:self.parentViewCon.roomItem.roomID pageNum:[NSString stringWithFormat:@"%d",self.pageNum] pageSize:@"20" completion:^(AFHTTPRequestOperation *operation, id responseData, NSError *error) {
+        if (!error) {
+            NSDictionary *dict = (NSDictionary*)responseData;
+            if ([[dict objectForKey:@"code"] integerValue] ==200) {
+                self.pageNum++;
+                [self refreshDataFromNet:[dict objectForKey:@"messageList"]withFirst:YES];
+            }
+        }
+    }];
+
+    
 }
 
 - (void)resginKeyBord {
@@ -201,6 +226,27 @@
         return;
     NSIndexPath *indexPath = [NSIndexPath indexPathForRow:self.chatModel.dataSource.count-1 inSection:0];
     [self.chatTableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionBottom animated:YES];
+}
+
+
+#pragma mark - tmMessageReceive
+
+- (void)messageDidReceiveWithContent:(NSString *)content messageTime:(NSString *)time {
+    
+    NSDictionary *dic = @{@"strContent": content,
+                          @"type": @(UUMessageTypeText)};
+    [self.chatModel addOtherItem:dic];
+    [self.chatTableView reloadData];
+    [self performSelector:@selector(tableViewScrollToBottom) withObject:nil afterDelay:0.3];
+    if (!self.receiveEnable) {
+        [[TMMessageManage sharedManager] insertMeeageDataWtihBelog:self.parentViewCon.roomItem.roomID content:content messageTime:time];
+        self.parentViewCon.badgeView.text = [NSString stringWithFormat:@"%ld",([self.parentViewCon.badgeView.text integerValue]+1)];
+    }
+}
+
+- (BOOL)receiveMessageEnable {
+    
+    return YES;
 }
 
 

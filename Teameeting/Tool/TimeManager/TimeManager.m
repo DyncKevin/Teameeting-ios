@@ -190,6 +190,17 @@ static TimeManager *timeManger = nil;
     return formatter;
 }
 
+// 时间戳转换为时间
+- (NSString*)timestampTransformationTime:(long)timestamp
+{
+//    NSDateFormatter *formatter = [self dateFormatter];
+    long bb=  timestamp/1000;
+    //时间戳转时间的方法:
+    NSDate *confromTimesp = [NSDate dateWithTimeIntervalSince1970:bb];
+    return [confromTimesp description];
+    //return [formatter stringFromDate:confromTimesp];
+}
+
 //判断date_是否在当前星期
 - (BOOL)isDateThisWeek:(NSDate *)date_
 {
