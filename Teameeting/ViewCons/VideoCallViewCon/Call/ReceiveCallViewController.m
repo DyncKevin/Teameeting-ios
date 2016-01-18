@@ -442,80 +442,6 @@
     }
 }
 
-
-
-#pragma mark - Private
-
-
-- (void) OnRtcVideoView:(UIView*)videoView didChangeVideoSize:(CGSize)size {
-    
-    if (videoView == _localVideoView) {
-        _localVideoSize = size;
-    }else{
-        _videoSize = size;
-    }
-    [self layoutSubView];
-    
-}
-/*! @brief 远程图像进入p2p会议
- *
- *  @param removeView 远程图像
- *  @param strTag  该通道标识符
- */
-- (void) OnRtcInRemoveView:(UIView *)removeView  withTag:(NSString *)strTag {
-    
-    UIView* findView = [_dicRemoteVideoView objectForKey:strTag];
-    if (findView == removeView) {
-        return;
-    }
-    if (!_peerSelectedId) {
-        _peerSelectedId = strTag;
-    }
-    
-    UITapGestureRecognizer *singleTapGestureRecognizer = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(singleTap:)];
-    [singleTapGestureRecognizer setNumberOfTapsRequired:1];
-    singleTapGestureRecognizer.delegate = self;
-    [removeView addGestureRecognizer:singleTapGestureRecognizer];
-    [self.view addSubview:removeView];
-    
-    [_dicRemoteVideoView setObject:removeView forKey:strTag];
-    [self layoutSubView];
-    //While the number of remote image change, send a notification
-    NSNumber *remoteVideoCount = [NSNumber numberWithInteger:[_dicRemoteVideoView count]];
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"REMOTEVIDEOCHANGE" object:remoteVideoCount];
-    
-}
-
-/*! @brief 远程图像离开会议
- *
- *  @param removeView 远程图像
- *  @param strTag  该通道标识符
- */
-- (void)OnRtcLeaveRemoveView:(UIView *)removeView  withTag:(NSString *)strTag {
-    
-    UIView *findView = [_dicRemoteVideoView objectForKey:strTag];
-    if (findView) {
-        if ([strTag isEqualToString:_peerSelectedId]) {
-            [findView removeFromSuperview];
-            [_dicRemoteVideoView removeObjectForKey:strTag];
-            if (_dicRemoteVideoView.count!=0) {
-                _peerSelectedId =[[_dicRemoteVideoView allKeys] firstObject];
-            }else{
-                _peerSelectedId = nil;
-            }
-            [self layoutSubView];
-        }else{
-            [findView removeFromSuperview];
-            [_dicRemoteVideoView removeObjectForKey:strTag];
-            [self layoutSubView];
-        }
-    }
-    //While the number of remote image change, send a notification
-    NSNumber *remoteVideoCount = [NSNumber numberWithInteger:[_dicRemoteVideoView count]];
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"REMOTEVIDEOCHANGE" object:remoteVideoCount];
-    
-}
-
 #pragma mark -  UITapGestureRecognizer
 - (void)locolvideoSingleTap:(UITapGestureRecognizer*)gesture
 {
@@ -608,6 +534,75 @@
  */
 - (void) OnRtcSubscribeClosed:(NSString*)strPublishId
 {
+    
+}
+
+- (void) OnRtcVideoView:(UIView*)videoView didChangeVideoSize:(CGSize)size {
+    
+    if (videoView == _localVideoView) {
+        _localVideoSize = size;
+    }else{
+        _videoSize = size;
+    }
+    [self layoutSubView];
+    
+}
+/*! @brief 远程图像进入p2p会议
+ *
+ *  @param removeView 远程图像
+ *  @param strTag  该通道标识符
+ */
+- (void) OnRtcInRemoveView:(UIView *)removeView  withTag:(NSString *)strTag {
+    
+    UIView* findView = [_dicRemoteVideoView objectForKey:strTag];
+    if (findView == removeView) {
+        return;
+    }
+    if (!_peerSelectedId) {
+        _peerSelectedId = strTag;
+    }
+    
+    UITapGestureRecognizer *singleTapGestureRecognizer = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(singleTap:)];
+    [singleTapGestureRecognizer setNumberOfTapsRequired:1];
+    singleTapGestureRecognizer.delegate = self;
+    [removeView addGestureRecognizer:singleTapGestureRecognizer];
+    [self.view addSubview:removeView];
+    
+    [_dicRemoteVideoView setObject:removeView forKey:strTag];
+    [self layoutSubView];
+    //While the number of remote image change, send a notification
+    NSNumber *remoteVideoCount = [NSNumber numberWithInteger:[_dicRemoteVideoView count]];
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"REMOTEVIDEOCHANGE" object:remoteVideoCount];
+    
+}
+
+/*! @brief 远程图像离开会议
+ *
+ *  @param removeView 远程图像
+ *  @param strTag  该通道标识符
+ */
+- (void)OnRtcLeaveRemoveView:(UIView *)removeView  withTag:(NSString *)strTag {
+    
+    UIView *findView = [_dicRemoteVideoView objectForKey:strTag];
+    if (findView) {
+        if ([strTag isEqualToString:_peerSelectedId]) {
+            [findView removeFromSuperview];
+            [_dicRemoteVideoView removeObjectForKey:strTag];
+            if (_dicRemoteVideoView.count!=0) {
+                _peerSelectedId =[[_dicRemoteVideoView allKeys] firstObject];
+            }else{
+                _peerSelectedId = nil;
+            }
+            [self layoutSubView];
+        }else{
+            [findView removeFromSuperview];
+            [_dicRemoteVideoView removeObjectForKey:strTag];
+            [self layoutSubView];
+        }
+    }
+    //While the number of remote image change, send a notification
+    NSNumber *remoteVideoCount = [NSNumber numberWithInteger:[_dicRemoteVideoView count]];
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"REMOTEVIDEOCHANGE" object:remoteVideoCount];
     
 }
 
