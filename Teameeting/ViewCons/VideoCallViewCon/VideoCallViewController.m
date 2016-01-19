@@ -97,7 +97,6 @@ typedef enum ViewState {
     [self initBar];
     self.callViewCon = [[ReceiveCallViewController alloc] init];
     self.callViewCon.roomID = self.roomItem.roomID;
-    self.callViewCon.view.frame = self.view.bounds;
     self.talkView = [[TalkView alloc] initWithFrame:self.view.bounds];
     self.talkView.userInteractionEnabled = NO;
     self.menuView = [[LockerView alloc] initWithFrame:CGRectMake(0, self.view.bounds.size.height - 90, 300, 60)];
@@ -137,7 +136,6 @@ typedef enum ViewState {
     touchEvent.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     touchEvent.backgroundColor = [UIColor clearColor];
     [self.view addSubview:touchEvent];
-    [self.view addSubview:self.callViewCon.view];
     
     self.noUserTip = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width - 80, 80)];
     [self.noUserTip setUserInteractionEnabled:NO];
@@ -146,6 +144,8 @@ typedef enum ViewState {
     [self.noUserTip setTextAlignment:NSTextAlignmentCenter];
     self.noUserTip.text = @"Waiting for others to join the room";
     [self.noUserTip setCenter:CGPointMake(self.view.bounds.size.width/2, CGRectGetMidY(self.menuView.frame) - 80)];
+    self.callViewCon.view.frame = self.view.bounds;
+    [self.view addSubview:self.callViewCon.view];
     [self.view addSubview:self.noUserTip];
     [self.view addSubview:self.micStateImage];
     [self performSelector:@selector(loadTableView) withObject:nil afterDelay:0.1];
@@ -164,7 +164,7 @@ typedef enum ViewState {
 - (void)loadTableView {
 
     BOOL isVertical = [self isVertical];
-    CGFloat rootViewWidth = isVertical == YES ? (self.view.bounds.size.width/2 - 50) : (self.view.bounds.size.width/2 - 100);
+    CGFloat rootViewWidth = isVertical == YES ? (self.view.bounds.size.width/2 - 50) : (self.view.bounds.size.width/2 - 150);
     self.rootView = [[RootViewController alloc] init];
     self.rootView.parentViewCon = self;
     self.rootView.view.autoresizingMask = UIViewAutoresizingNone;
@@ -239,7 +239,7 @@ typedef enum ViewState {
         
     } else if (gesture.state == UIGestureRecognizerStateEnded) {
         
-        CGFloat rootViewWidth = isVertical == YES ? (self.view.bounds.size.width/2 - 50) : (self.view.bounds.size.width/2 - 100);
+        CGFloat rootViewWidth = isVertical == YES ? (self.view.bounds.size.width/2 - 50) : (self.view.bounds.size.width/2 - 150);
         if (fabsf(self.rootView.view.frame.origin.x) <= rootViewWidth/2 || self.rootView.view.frame.origin.x > 0) {
             
             [UIView animateWithDuration:0.2 animations:^{
@@ -276,9 +276,10 @@ typedef enum ViewState {
         [self.shareViewGround performSelector:@selector(removeFromSuperview) withObject:nil afterDelay:0.2];
         return;
     }
-    if (!ISIPAD) {
+    //if (!ISIPAD) {
         
         self.isFullScreen = !self.isFullScreen;
+        
         [UIView animateWithDuration:0.2 animations:^{
             
             if (self.barView) {
@@ -290,7 +291,8 @@ typedef enum ViewState {
             [self.noUserTip setCenter:CGPointMake(self.view.bounds.size.width/2, self.isFullScreen == YES ? (self.view.bounds.size.height + self.noUserTip.bounds.size.height) : (CGRectGetMinY(self.menuView.frame) - self.noUserTip.bounds.size.height/2))];
             
         }];
-    }
+   // }
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"FULLSCREEN" object:[NSNumber numberWithBool:self.isFullScreen]];
     
 }
 
@@ -826,7 +828,7 @@ typedef enum ViewState {
 - (void)didRotateAdjustUI {
     
     BOOL isVertical = [self isVertical];
-    CGFloat rootViewWidth = isVertical == YES ? (self.view.bounds.size.width/2 - 50) : (self.view.bounds.size.width/2 - 100);
+    CGFloat rootViewWidth = isVertical == YES ? (self.view.bounds.size.width/2 - 50) : (self.view.bounds.size.width/2 - 150);
     [self.rootView.view setAlpha:1];
     if (ISIPAD) {
         
@@ -851,13 +853,13 @@ typedef enum ViewState {
         
     } else {
         
-        [UIView animateWithDuration:0.2 animations:^{
+        //[UIView animateWithDuration:0.2 animations:^{
             
             [self.menuView setCenter:CGPointMake(self.view.bounds.size.width/2, self.isFullScreen == YES ? (self.view.bounds.size.height + self.menuView.bounds.size.height) : (self.view.bounds.size.height - self.menuView.bounds.size.height))];
             [self.noUserTip setCenter:CGPointMake(self.view.bounds.size.width/2, self.isFullScreen == YES ? (self.view.bounds.size.height + self.noUserTip.bounds.size.height) : (CGRectGetMinY(self.menuView.frame) - self.noUserTip.bounds.size.height/2))];
             [self.rootView.view setFrame:self.view.bounds];
             [self.rootView resetInputFrame:CGRectMake(0, self.view.bounds.size.height - 40, self.view.bounds.size.width, 40)];
-        }];
+        //}];
         if (self.barView) {
             
             [self initBar];
@@ -867,6 +869,8 @@ typedef enum ViewState {
             [self initChatBar];
         }
     }
+    NSUInteger width = self.view.bounds.size.width > self.view.bounds.size.height ? self.view.bounds.size.width : self.view.bounds.size.height;
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"ROTATECHANGE" object:[NSNumber numberWithInteger:width]];
 }
 
 - (BOOL)isVertical {

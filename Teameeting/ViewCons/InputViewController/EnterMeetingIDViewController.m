@@ -156,9 +156,10 @@
 
 - (void)viewDidLayoutSubviews
 {
+    [super viewDidLayoutSubviews];
     if (ISIPAD) {
         [self setBackGroundImage];
-        [constraint1 setConstant:CGRectGetHeight(self.view.frame)/3.5];
+        //[constraint1 setConstant:CGRectGetHeight(self.view.frame)/3.5];
     }
    
 }
