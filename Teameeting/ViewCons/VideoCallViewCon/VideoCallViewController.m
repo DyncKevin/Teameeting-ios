@@ -274,6 +274,7 @@ typedef enum ViewState {
         [self.popver dismiss];
         self.popver = nil;
         [self.shareViewGround performSelector:@selector(removeFromSuperview) withObject:nil afterDelay:0.2];
+        return;
     }
     if (!ISIPAD) {
         
@@ -490,7 +491,12 @@ typedef enum ViewState {
 }
 
 - (void)shareView {
-    
+    if (self.popver) {
+        [self.popver dismiss];
+        [self.shareViewGround performSelector:@selector(removeFromSuperview) withObject:nil afterDelay:0.2];
+        self.popver = nil;
+        return;
+    }
     BOOL isVertical = YES;
     NSUInteger width = self.view.bounds.size.width;
     NSUInteger height = self.view.bounds.size.height;
@@ -577,25 +583,25 @@ typedef enum ViewState {
     [descriptionTitle setBackgroundColor:[UIColor clearColor]];
     [shareView addSubview:descriptionTitle];
     
-    UILabel *linkTitle = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, shareView.bounds.size.width - (isVertical ? 60 : 120), 56)];
+    UILabel *linkTitle = [[UILabel alloc] initWithFrame:CGRectZero];
     if (ISIPAD) {
         
         [linkTitle setFrame:CGRectMake(0, 0, shareView.bounds.size.width - (isVertical ? 60 : 80), 56)];
         
     } else {
         
-        [linkTitle setFrame:CGRectMake(0, 0, shareView.bounds.size.width - (isVertical ? 60 : 120), 56)];
+        [linkTitle setFrame:CGRectMake(0, 0, shareView.bounds.size.width - (isVertical ? 75 : 120), 56)];
     }
-    
+    linkTitle.lineBreakMode = NSLineBreakByTruncatingMiddle;
     [linkTitle setFont:[UIFont systemFontOfSize:12]];
-    linkTitle.text = [NSString stringWithFormat:@"http://192.168.7.62/demo/rtpmp/rtpmp.html#%@",self.roomItem.roomID];
+    linkTitle.text = [NSString stringWithFormat:@"http://115.28.70.232/share_meetingRoom/%@",self.roomItem.roomID];
     [linkTitle setTextColor:[UIColor grayColor]];
     [linkTitle setBackgroundColor:[UIColor clearColor]];
     [linkTitle setTextAlignment:NSTextAlignmentCenter];
     [shareView addSubview:linkTitle];
     
     UIButton *copyLink = [[UIButton alloc] init];
-    [copyLink setTitle:@"Copy" forState:UIControlStateNormal];
+    [copyLink setTitle:@"拷贝" forState:UIControlStateNormal];
     [copyLink setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [copyLink setBackgroundColor:[UIColor clearColor]];
     [shareView addSubview:copyLink];
@@ -802,13 +808,19 @@ typedef enum ViewState {
 }
 #pragma mark - UI Change
 - (void)willRotateAdjustUI {
-    
+
     [self.rootView.view setAlpha:0];
     if (ISIPAD) {
         
         self.noUserTip.alpha = 0;
         self.menuView.alpha = 0;
     }
+    if (self.popver) {
+        [self.popver dismiss];
+        self.popver = nil;
+        [self.shareViewGround performSelector:@selector(removeFromSuperview) withObject:nil afterDelay:0.2];
+    }
+    
 }
 
 - (void)didRotateAdjustUI {
