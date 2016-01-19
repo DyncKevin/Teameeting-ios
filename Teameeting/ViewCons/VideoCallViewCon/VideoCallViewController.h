@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "RoomVO.h"
+#import "ASBadgeView.h"
 
 @interface UINavigationController (Orientations)
 
@@ -17,5 +18,6 @@
 @interface VideoCallViewController : UIViewController
 
 @property (nonatomic, strong) RoomItem *roomItem;
+@property(nonatomic,strong)ASBadgeView *badgeView;
 - (BOOL)isVertical;
 @end

@@ -53,7 +53,7 @@
 
 - (void)inintTMMessage {
     
-    [_msg tMInitMsgProtocol:self uid:[SvUDIDTools UDID] token:[ServerVisit shead].authorization server:@"192.168.7.39" port:9210];
+    [_msg tMInitMsgProtocol:self uid:[SvUDIDTools UDID] token:[ServerVisit shead].authorization server:@"192.168.7.39" port:6630];
 }
 
 - (void)registerMessageListener:(id<tmMessageReceive>)listener {
@@ -189,6 +189,33 @@
     }
     va_end(args);
     return messageDic;
+}
+
+- (void)clearUnreadCountByRoomKey:(NSString*)key
+{
+    NSManagedObjectContext *context = [self managedObjectContext];
+    NSEntityDescription *entity = [NSEntityDescription entityForName:@"Message" inManagedObjectContext:context];
+    
+    NSString *searchSql = [NSString stringWithFormat:@"belong BEGINSWITH[cd]  '%@'",key];
+    NSPredicate * qcondition= [NSPredicate predicateWithFormat:searchSql];
+    NSFetchRequest *request = [[NSFetchRequest alloc] init];
+    [request setIncludesPropertyValues:NO];
+    [request setEntity:entity];
+    [request setPredicate:qcondition];
+    NSError *error = nil;
+    NSArray *datas = [context executeFetchRequest:request error:&error];
+    if (!error && datas && [datas count])
+    {
+        for (NSManagedObject *obj in datas)
+        {
+            [context deleteObject:obj];
+        }
+        if (![context save:&error])
+        {
+            NSLog(@"error:%@",error);
+        }
+    }
+
 }
 
 - (NSMutableArray*)selectDataFromMessageTableWithKey:(NSString *)key pageSize:(NSUInteger)size currentPage:(NSInteger)page

@@ -18,6 +18,7 @@
 #import "TalkView.h"
 #import "WXApiRequestHandler.h"
 #import "TMMessageManage.h"
+
 @implementation UINavigationController (Orientations)
 
 
@@ -246,6 +247,8 @@ typedef enum ViewState {
                 [self.rootView.view setFrame:CGRectMake(0,self.rootView.view.frame.origin.y, self.rootView.view.bounds.size.width, self.rootView.view.bounds.size.height)];
                 [self.menuView setCenter:CGPointMake(self.view.bounds.size.width/2 + self.view.bounds.size.width/4, self.menuView.center.y)];
                 [self.noUserTip setCenter:CGPointMake(self.view.bounds.size.width/2 + self.view.bounds.size.width/4, self.noUserTip.center.y)];
+            }completion:^(BOOL finished) {
+                [self.rootView setReceiveMessageEnable:YES];
             }];
             
         } else {
@@ -255,6 +258,8 @@ typedef enum ViewState {
                 [self.rootView.view setFrame:CGRectMake(0 - rootViewWidth,self.rootView.view.frame.origin.y, self.rootView.view.bounds.size.width, self.rootView.view.bounds.size.height)];
                 [self.menuView setCenter:CGPointMake(self.view.bounds.size.width/2, self.menuView.center.y)];
                 [self.noUserTip setCenter:CGPointMake(self.view.bounds.size.width/2, self.noUserTip.center.y)];
+            }completion:^(BOOL finished) {
+                [self.rootView setReceiveMessageEnable:NO];
             }];
             [self.rootView resginKeyBord];
         }
@@ -269,6 +274,7 @@ typedef enum ViewState {
         [self.popver dismiss];
         self.popver = nil;
         [self.shareViewGround performSelector:@selector(removeFromSuperview) withObject:nil afterDelay:0.2];
+        return;
     }
     if (!ISIPAD) {
         
@@ -311,6 +317,15 @@ typedef enum ViewState {
         [chatButton setBackgroundColor:[UIColor clearColor]];
         chatButton.frame = CGRectMake(10, 0, 49, 40);
         [chatButton setCenter:CGPointMake(chatButton.center.x, self.barView.bounds.size.height/2 + 10)];
+        
+        self.badgeView = [[ASBadgeView alloc]initWithFrame:CGRectMake(0, 0, 16, 16)];
+        self.badgeView .horizontalAlignment = ASBadgeViewHorizontalAlignmentRight;
+        self.badgeView .alignmentShift = CGSizeMake(-8, 6);
+        self.badgeView .badgeBackgroundColor =  [UIColor redColor];
+        self.badgeView .verticalAlignment = ASBadgeViewVerticalAlignmentTop;
+        [self.badgeView  setFont:[UIFont systemFontOfSize:14]];
+        [chatButton addSubview:self.badgeView ];
+        
         UIButton *shareButton = [UIButton buttonWithType:UIButtonTypeCustom];
         [shareButton setImage:[UIImage imageNamed:@"share"] forState:UIControlStateNormal];
         [shareButton addTarget:self action:@selector(shareView) forControlEvents:UIControlEventTouchUpInside];
@@ -353,6 +368,15 @@ typedef enum ViewState {
         [chatButton setBackgroundColor:[UIColor clearColor]];
         chatButton.frame = CGRectMake(10, 0, 49, 40);
         [chatButton setCenter:CGPointMake(chatButton.center.x, self.barView.bounds.size.height/2 + 10)];
+        
+        self.badgeView = [[ASBadgeView alloc]initWithFrame:CGRectMake(0, 0, 16, 16)];
+        self.badgeView .horizontalAlignment = ASBadgeViewHorizontalAlignmentRight;
+        self.badgeView .alignmentShift = CGSizeMake(-8, 6);
+        self.badgeView .badgeBackgroundColor =  [UIColor redColor];
+        self.badgeView .verticalAlignment = ASBadgeViewVerticalAlignmentTop;
+        [self.badgeView  setFont:[UIFont systemFontOfSize:14]];
+        [chatButton addSubview:self.badgeView ];
+        
         UIButton *shareButton = [UIButton buttonWithType:UIButtonTypeCustom];
         [shareButton setImage:[UIImage imageNamed:@"share"] forState:UIControlStateNormal];
         [shareButton addTarget:self action:@selector(shareView) forControlEvents:UIControlEventTouchUpInside];
@@ -380,6 +404,14 @@ typedef enum ViewState {
     }
     [self.navigationController.navigationBar addSubview:self.barView];
     [self.barView setFrame:CGRectMake(0, self.isFullScreen == YES ? (0 - self.barView.bounds.size.height -20) : -20 , self.barView.bounds.size.width, self.barView.bounds.size.height)];
+    // check out no read messages
+    NSDictionary *dict = [[TMMessageManage sharedManager] getUnreadCountByRoomKeys:self.roomItem.roomID,nil];
+    NSArray *array = [dict objectForKey:self.roomItem.roomID];
+    if (array.count>1) {
+        self.badgeView.text = [[array objectAtIndex:0] stringValue];
+    }else{
+        self.badgeView.text = @"0";
+    }
 }
 
 - (void)initChatBar {
@@ -459,7 +491,12 @@ typedef enum ViewState {
 }
 
 - (void)shareView {
-    
+    if (self.popver) {
+        [self.popver dismiss];
+        [self.shareViewGround performSelector:@selector(removeFromSuperview) withObject:nil afterDelay:0.2];
+        self.popver = nil;
+        return;
+    }
     BOOL isVertical = YES;
     NSUInteger width = self.view.bounds.size.width;
     NSUInteger height = self.view.bounds.size.height;
@@ -546,25 +583,25 @@ typedef enum ViewState {
     [descriptionTitle setBackgroundColor:[UIColor clearColor]];
     [shareView addSubview:descriptionTitle];
     
-    UILabel *linkTitle = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, shareView.bounds.size.width - (isVertical ? 60 : 120), 56)];
+    UILabel *linkTitle = [[UILabel alloc] initWithFrame:CGRectZero];
     if (ISIPAD) {
         
         [linkTitle setFrame:CGRectMake(0, 0, shareView.bounds.size.width - (isVertical ? 60 : 80), 56)];
         
     } else {
         
-        [linkTitle setFrame:CGRectMake(0, 0, shareView.bounds.size.width - (isVertical ? 60 : 120), 56)];
+        [linkTitle setFrame:CGRectMake(0, 0, shareView.bounds.size.width - (isVertical ? 75 : 120), 56)];
     }
-    
+    linkTitle.lineBreakMode = NSLineBreakByTruncatingMiddle;
     [linkTitle setFont:[UIFont systemFontOfSize:12]];
-    linkTitle.text = [NSString stringWithFormat:@"http://192.168.7.62/demo/rtpmp/rtpmp.html#%@",self.roomItem.roomID];
+    linkTitle.text = [NSString stringWithFormat:@"http://115.28.70.232/share_meetingRoom/%@",self.roomItem.roomID];
     [linkTitle setTextColor:[UIColor grayColor]];
     [linkTitle setBackgroundColor:[UIColor clearColor]];
     [linkTitle setTextAlignment:NSTextAlignmentCenter];
     [shareView addSubview:linkTitle];
     
     UIButton *copyLink = [[UIButton alloc] init];
-    [copyLink setTitle:@"Copy" forState:UIControlStateNormal];
+    [copyLink setTitle:@"拷贝" forState:UIControlStateNormal];
     [copyLink setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [copyLink setBackgroundColor:[UIColor clearColor]];
     [shareView addSubview:copyLink];
@@ -639,16 +676,7 @@ typedef enum ViewState {
     }
 }
 
-- (void)weChatShare {
-    
-    
-    [WXApiRequestHandler sendLinkURL:[NSString stringWithFormat:@"http://115.28.70.232/share_meetingRoom/#%@",self.roomItem.roomID]
-                             TagName:nil
-                               Title:@"Teameeting"
-                         Description:@"视频邀请"
-                          ThumbImage:[UIImage imageNamed:@"Icon-1"]
-                             InScene:WXSceneSession];
-}
+
 
 - (void)closeChatView {
     
@@ -778,63 +806,21 @@ typedef enum ViewState {
         [self.menuView showEnable:YES];
     }
 }
-
-- (void)sendMessage {
-    
-    [_popver dismiss];
-    MFMessageComposeViewController *controller = [[MFMessageComposeViewController alloc] init];
-    controller.navigationBar.barTintColor = [UIColor whiteColor];
-    if([MFMessageComposeViewController canSendText])
-    {
-        controller.body = [NSString stringWithFormat:@"http://192.168.7.62/demo/rtpmp/rtpmp.html#%@",self.roomItem.roomID];
-        
-        controller.recipients = nil;
-        
-        controller.messageComposeDelegate = self;
-        
-        [self presentViewController:controller animated:YES completion:nil];
-        
-    }
-}
-
-- (void)messageComposeViewController:(MFMessageComposeViewController *)controller didFinishWithResult:(MessageComposeResult)result
-{
-    [self dismissViewControllerAnimated:YES completion:nil];
-}
-
-- (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
-    
-    [self willRotateAdjustUI];
-}
-
-- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
-    
-    [self didRotateAdjustUI];
-}
-
-//NS_AVAILABLE_IOS(8_0);
-- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id <UIViewControllerTransitionCoordinator>)coordinator
-{
-    [coordinator animateAlongsideTransition:^(id<UIViewControllerTransitionCoordinatorContext> context)
-     {
-         [self willRotateAdjustUI];
-         
-     } completion:^(id<UIViewControllerTransitionCoordinatorContext> context)
-     {
-         [self didRotateAdjustUI];
-     }];
-    
-    [super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
-}
-
+#pragma mark - UI Change
 - (void)willRotateAdjustUI {
-    
+
     [self.rootView.view setAlpha:0];
     if (ISIPAD) {
         
         self.noUserTip.alpha = 0;
         self.menuView.alpha = 0;
     }
+    if (self.popver) {
+        [self.popver dismiss];
+        self.popver = nil;
+        [self.shareViewGround performSelector:@selector(removeFromSuperview) withObject:nil afterDelay:0.2];
+    }
+    
 }
 
 - (void)didRotateAdjustUI {
@@ -847,20 +833,20 @@ typedef enum ViewState {
         self.noUserTip.alpha = 1;
         self.menuView.alpha = 1;
         //[UIView animateWithDuration:0.1 animations:^{
+        
+        if (self.rootView.view.frame.origin.x < 0) {
             
-            if (self.rootView.view.frame.origin.x < 0) {
-                
-                [self.rootView.view setFrame:CGRectMake(0 - rootViewWidth, 0, rootViewWidth, self.view.bounds.size.height)];
-                [self.menuView setCenter:CGPointMake(self.view.bounds.size.width/2, self.view.bounds.size.height - self.menuView.bounds.size.height)];
-                [self.noUserTip setCenter:CGPointMake(self.view.bounds.size.width/2, CGRectGetMinY(self.menuView.frame) - self.noUserTip.bounds.size.height)];
-                
-            } else {
-                
-                [self.rootView.view setFrame:CGRectMake(0, 0, rootViewWidth, self.view.bounds.size.height)];
-                [self.menuView setCenter:CGPointMake(self.view.bounds.size.width/2 + self.view.bounds.size.width/4, self.view.bounds.size.height - self.menuView.bounds.size.height)];
-                [self.noUserTip setCenter:CGPointMake(self.view.bounds.size.width/2 + self.view.bounds.size.width/4, CGRectGetMinY(self.menuView.frame) - self.noUserTip.bounds.size.height)];
-            }
-            [self.rootView resetInputFrame:CGRectMake(0, self.view.bounds.size.height - 40, self.view.bounds.size.width, 40)];
+            [self.rootView.view setFrame:CGRectMake(0 - rootViewWidth, 0, rootViewWidth, self.view.bounds.size.height)];
+            [self.menuView setCenter:CGPointMake(self.view.bounds.size.width/2, self.view.bounds.size.height - self.menuView.bounds.size.height)];
+            [self.noUserTip setCenter:CGPointMake(self.view.bounds.size.width/2, CGRectGetMinY(self.menuView.frame) - self.noUserTip.bounds.size.height)];
+            
+        } else {
+            
+            [self.rootView.view setFrame:CGRectMake(0, 0, rootViewWidth, self.view.bounds.size.height)];
+            [self.menuView setCenter:CGPointMake(self.view.bounds.size.width/2 + self.view.bounds.size.width/4, self.view.bounds.size.height - self.menuView.bounds.size.height)];
+            [self.noUserTip setCenter:CGPointMake(self.view.bounds.size.width/2 + self.view.bounds.size.width/4, CGRectGetMinY(self.menuView.frame) - self.noUserTip.bounds.size.height)];
+        }
+        [self.rootView resetInputFrame:CGRectMake(0, self.view.bounds.size.height - 40, self.view.bounds.size.width, 40)];
         //}];
         
     } else {
@@ -891,6 +877,67 @@ typedef enum ViewState {
     isVertical = width > height ? NO : YES;
     return isVertical;
 }
+
+#pragma mark - share methods
+- (void)weChatShare {
+    
+    
+    [WXApiRequestHandler sendLinkURL:[NSString stringWithFormat:@"http://115.28.70.232/share_meetingRoom/#%@",self.roomItem.roomID]
+                             TagName:nil
+                               Title:@"Teameeting"
+                         Description:@"视频邀请"
+                          ThumbImage:[UIImage imageNamed:@"Icon-1"]
+                             InScene:WXSceneSession];
+}
+
+- (void)sendMessage {
+    
+    [_popver dismiss];
+    MFMessageComposeViewController *controller = [[MFMessageComposeViewController alloc] init];
+    controller.navigationBar.barTintColor = [UIColor whiteColor];
+    if([MFMessageComposeViewController canSendText])
+    {
+        controller.body = [NSString stringWithFormat:@"让我们在会议中见!👉 http://115.28.70.232/share_meetingRoom/%@",self.roomItem.roomID];
+        
+        controller.recipients = nil;
+        
+        controller.messageComposeDelegate = self;
+        
+        [self presentViewController:controller animated:YES completion:nil];
+        
+    }
+}
+#pragma mark - MFMessageComposeViewControllerDelegate
+- (void)messageComposeViewController:(MFMessageComposeViewController *)controller didFinishWithResult:(MessageComposeResult)result
+{
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
+    
+    [self willRotateAdjustUI];
+}
+
+- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
+    
+    [self didRotateAdjustUI];
+}
+
+//NS_AVAILABLE_IOS(8_0);
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id <UIViewControllerTransitionCoordinator>)coordinator
+{
+    [coordinator animateAlongsideTransition:^(id<UIViewControllerTransitionCoordinatorContext> context)
+     {
+         [self willRotateAdjustUI];
+         
+     } completion:^(id<UIViewControllerTransitionCoordinatorContext> context)
+     {
+         [self didRotateAdjustUI];
+     }];
+    
+    [super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
+}
+
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {

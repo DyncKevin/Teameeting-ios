@@ -10,6 +10,8 @@
 
 #import "UUMessage.h"
 #import "UUMessageFrame.h"
+#import "SvUDIDTools.h"
+#import "TimeManager.h"
 
 @implementation ChatModel
 
@@ -72,7 +74,35 @@
     
     [self.dataSource addObject:messageFrame];
 }
-
+- (void)addNetDataItems:(NSArray*)arrayData
+{
+    for (int i=0;i<arrayData.count;i++) {
+        NSDictionary *netDict = [arrayData objectAtIndex:i];
+        
+        UUMessageFrame *messageFrame = [[UUMessageFrame alloc]init];
+        UUMessage *message = [[UUMessage alloc] init];
+        NSMutableDictionary *dataDic = [[NSMutableDictionary alloc] initWithCapacity:5];
+        [dataDic setObject:[netDict objectForKey:@"message"] forKey:@"strContent"];
+        [dataDic setObject:@(UUMessageTypeText) forKey:@"type"];
+        
+        if ([[netDict objectForKey:@"userid"]isEqualToString:[SvUDIDTools UDID]]) {
+            [dataDic setObject:@(UUMessageFromMe) forKey:@"from"];
+        }else{
+            [dataDic setObject:@(UUMessageFromOther) forKey:@"from"];
+        }
+        
+        [dataDic setObject:[[TimeManager shead] timestampTransformationTime:[[netDict objectForKey:@"sendtime"] longValue]] forKey:@"strTime"];
+        [dataDic setObject:@"Hello,Sister" forKey:@"strName"];
+        
+        [message setWithDict:dataDic];
+        [message minuteOffSetStart:previousTime end:dataDic[@"strTime"]];
+        messageFrame.showTime = YES;
+        [messageFrame setMessage:message];
+        previousTime = dataDic[@"strTime"];
+        
+        [self.dataSource insertObject:messageFrame atIndex:0];
+    }
+}
 
 // 添加聊天item（一个cell内容）
 static NSString *previousTime = nil;

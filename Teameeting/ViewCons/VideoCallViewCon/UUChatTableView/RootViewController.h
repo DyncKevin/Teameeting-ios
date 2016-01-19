@@ -8,10 +8,12 @@
 
 #import <UIKit/UIKit.h>
 #import "TMMessageManage.h"
+#import "VideoCallViewController.h"
+
 @interface RootViewController : UIViewController<tmMessageReceive>
 
 
-@property(nonatomic,assign)id parentViewCon;
+@property(nonatomic,assign)VideoCallViewController *parentViewCon;
 - (void)resetInputFrame:(CGRect)rect;
 - (void)hidenInput;
 - (void)resginKeyBord;

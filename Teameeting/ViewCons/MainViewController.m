@@ -66,7 +66,13 @@ static NSString *kRoomCellID = @"RoomCell";
 {
     [[ASNetwork sharedNetwork] removeObserver:self forKeyPath:@"_netType" context:nil];
 }
-
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    if (self.dataArray.count!=0) {
+        [self getNotReadMessageNum];
+    }
+}
 - (void)viewDidLoad {
     
     [super viewDidLoad];
@@ -359,10 +365,12 @@ static NSString *kRoomCellID = @"RoomCell";
             for (RoomItem *item in dataArray) {
                 NSDictionary *dict = [[TMMessageManage sharedManager] getUnreadCountByRoomKeys:item.roomID,nil];
 
-                    NSArray *array = [dict objectForKey:item.roomID];
+                NSArray *array = [dict objectForKey:item.roomID];
                 if (array.count>1) {
                     item.messageNum = [[array objectAtIndex:0] integerValue];
                     item.lastMessagTime = [array objectAtIndex:1];
+                }else{
+                    item.messageNum = 0;
                 }
             }
             [self.roomList reloadData];
@@ -473,6 +481,11 @@ static NSString *kRoomCellID = @"RoomCell";
         for (RoomItem *roomItem in dataArray) {
             if ([roomItem.roomID isEqualToString:item.roomID]) {
                 roomItem.jointime = item.jointime;
+
+                NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"jointime" ascending:NO];//jointime为数组中的对象的属性，这个针对数组中存放对象比较更简洁方便
+                NSArray *sortDescriptors = [[NSArray alloc] initWithObjects:&sortDescriptor count:1];
+                [dataArray sortUsingDescriptors:sortDescriptors];
+                
                 [self.roomList reloadData];
                 break;
             }
@@ -545,279 +558,297 @@ static NSString *kRoomCellID = @"RoomCell";
 // 添加
 - (void)addRoomWithRoomName:(NSString*)roomName withPrivate:(BOOL)isPrivate
 {
-    RoomItem *roomItem = [dataArray objectAtIndex:0];
-    roomItem.roomName = roomName;
-    
-    [dataArray replaceObjectAtIndex:0 withObject:roomItem];
-    [self.roomList reloadData];
-
-    self.cancleButton.hidden = YES;
-    
-    NtreatedData *data = [[NtreatedData alloc] init];
-    data.actionType = CreateRoom;
-    data.isPrivate = isPrivate;
-    data.item = roomItem;
-    [[NtreatedDataManage sharedManager] addData:data];
-    
-    __weak MainViewController *weakSelf = self;
-    // 上传信息
-    [ServerVisit applyRoomWithSign:[ServerVisit shead].authorization mettingId:roomItem.roomID mettingname:roomItem.roomName mettingCanPush:roomItem.canNotification  mettingtype:@"0" meetenable:isPrivate == YES ? @"2" : @"1" mettingdesc:@""  completion:^(AFHTTPRequestOperation *operation, id responseData, NSError *error) {
-        NSLog(@"create room");
-        NSDictionary *dict = (NSDictionary*)responseData;
-        if (!error) {
-            if ([[dict objectForKey:@"code"] intValue]== 200) {
-                [weakSelf updataDataWithServerResponse:[dict objectForKey:@"meetingInfo"]];
-                 [[NtreatedDataManage sharedManager] removeData:data];
-                [weakSelf.push showWithType:PushViewTypeDefault withObject:roomItem withIndex:0];
-                if (weakSelf.dataArray.count>20) {
-                     [weakSelf deleteRoomWithItem:[dataArray lastObject] withIndex:(dataArray.count -1)];
+    @synchronized(dataArray) {
+        RoomItem *roomItem = [dataArray objectAtIndex:0];
+        roomItem.roomName = roomName;
+        
+        [dataArray replaceObjectAtIndex:0 withObject:roomItem];
+        [self.roomList reloadData];
+        
+        self.cancleButton.hidden = YES;
+        
+        NtreatedData *data = [[NtreatedData alloc] init];
+        data.actionType = CreateRoom;
+        data.isPrivate = isPrivate;
+        data.item = roomItem;
+        [[NtreatedDataManage sharedManager] addData:data];
+        
+        __weak MainViewController *weakSelf = self;
+        // 上传信息
+        [ServerVisit applyRoomWithSign:[ServerVisit shead].authorization mettingId:roomItem.roomID mettingname:roomItem.roomName mettingCanPush:roomItem.canNotification  mettingtype:@"0" meetenable:isPrivate == YES ? @"2" : @"1" mettingdesc:@""  completion:^(AFHTTPRequestOperation *operation, id responseData, NSError *error) {
+            NSLog(@"create room");
+            NSDictionary *dict = (NSDictionary*)responseData;
+            if (!error) {
+                if ([[dict objectForKey:@"code"] intValue]== 200) {
+                    [weakSelf updataDataWithServerResponse:[dict objectForKey:@"meetingInfo"]];
+                    [[NtreatedDataManage sharedManager] removeData:data];
+                    [weakSelf.push showWithType:PushViewTypeDefault withObject:roomItem withIndex:0];
+                    if (weakSelf.dataArray.count>20) {
+                        [weakSelf deleteRoomWithItem:[dataArray lastObject] withIndex:(dataArray.count -1)];
+                    }
+                    
+                    //this TMCMD_CREATE has deprecated
+                    //[[TMMessageManage sharedManager] tmRoomCmd:TMCMD_CREATE Userid:nil pass:[ServerVisit shead].authorization roomid:[NSString stringWithFormat:@"%@",[[dict objectForKey:@"meetingInfo"] objectForKey:@"meetingid"]] remain:@""];
                 }
-               
-                //this TMCMD_CREATE has deprecated
-                //[[TMMessageManage sharedManager] tmRoomCmd:TMCMD_CREATE Userid:nil pass:[ServerVisit shead].authorization roomid:[NSString stringWithFormat:@"%@",[[dict objectForKey:@"meetingInfo"] objectForKey:@"meetingid"]] remain:@""];
             }
-        }
-       
-    }];
+            
+        }];
+    }
 }
 
 // update room name
 - (void)addTempDeleteData:(NSString*)roomName
 {
-    if (dataArray.count==0) {
-        return;
-    }
-    // update object
-    RoomItem *roomItem = [dataArray objectAtIndex:0];
-    roomItem.roomName = roomName;
-    [dataArray replaceObjectAtIndex:0 withObject:roomItem];
-    
-    
-    NSMutableArray *indexPaths = [[NSMutableArray alloc] init];
-    for (NSInteger i = tempDataArray.count-1; i>-1; i--) {
-        NSIndexPath *indexPath = [NSIndexPath indexPathForRow:i inSection:0];
-        [indexPaths addObject: indexPath];
-        RoomItem *item = [tempDataArray objectAtIndex:i];
-        [dataArray insertObject:item atIndex:0];
-    }
-    
-    
-    [self.roomList beginUpdates];
-    
-    [self.roomList insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationTop];
-    
-    [self.roomList endUpdates];
-    
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        [self.roomList reloadData];
-    });
-    
-    NtreatedData *data = [[NtreatedData alloc] init];
-    data.actionType = ModifyRoomName;
-    data.item = roomItem;
-    [[NtreatedDataManage sharedManager] addData:data];
-    
-    [ServerVisit updatateRoomNameWithSign:[ServerVisit shead].authorization mettingID:roomItem.roomID mettingName:roomName completion:^(AFHTTPRequestOperation *operation, id responseData, NSError *error) {
-        NSLog(@"updata name");
-         NSDictionary *dict = (NSDictionary*)responseData;
-        if (!error) {
-            if ([[dict objectForKey:@"code"] intValue]== 200) {
-                [[NtreatedDataManage sharedManager] removeData:data];
-                
-            }
+    @synchronized(dataArray) {
+        if (dataArray.count==0) {
+            return;
         }
-    }];
+        // update object
+        RoomItem *roomItem = [dataArray objectAtIndex:0];
+        roomItem.roomName = roomName;
+        [dataArray replaceObjectAtIndex:0 withObject:roomItem];
+        
+        
+        NSMutableArray *indexPaths = [[NSMutableArray alloc] init];
+        for (NSInteger i = tempDataArray.count-1; i>-1; i--) {
+            NSIndexPath *indexPath = [NSIndexPath indexPathForRow:i inSection:0];
+            [indexPaths addObject: indexPath];
+            RoomItem *item = [tempDataArray objectAtIndex:i];
+            [dataArray insertObject:item atIndex:0];
+        }
+        
+        
+        [self.roomList beginUpdates];
+        
+        [self.roomList insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationTop];
+        
+        [self.roomList endUpdates];
+        
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            [self.roomList reloadData];
+        });
+        
+        NtreatedData *data = [[NtreatedData alloc] init];
+        data.actionType = ModifyRoomName;
+        data.item = roomItem;
+        [[NtreatedDataManage sharedManager] addData:data];
+        
+        [ServerVisit updatateRoomNameWithSign:[ServerVisit shead].authorization mettingID:roomItem.roomID mettingName:roomName completion:^(AFHTTPRequestOperation *operation, id responseData, NSError *error) {
+            NSLog(@"updata name");
+            NSDictionary *dict = (NSDictionary*)responseData;
+            if (!error) {
+                if ([[dict objectForKey:@"code"] intValue]== 200) {
+                    [[NtreatedDataManage sharedManager] removeData:data];
+                    
+                }
+            }
+        }];
+    }
 }
 // delete room
 - (void)deleteRoomWithItem:(RoomItem*)item withIndex:(NSInteger)index
 {
-    if (index<0) {
-        for (NSInteger i=0;i<dataArray.count;i++) {
-            RoomItem *roomItem = [dataArray objectAtIndex:i];
-            if ([roomItem.roomID isEqualToString:item.roomID]) {
-                index = i;
-                break;
+    @synchronized(dataArray) {
+        if (index<0) {
+            for (NSInteger i=0;i<dataArray.count;i++) {
+                RoomItem *roomItem = [dataArray objectAtIndex:i];
+                if ([roomItem.roomID isEqualToString:item.roomID]) {
+                    index = i;
+                    break;
+                }
             }
         }
-    }
-    
-    [dataArray removeObject:item];
-    
-    if (dataArray.count == 0) {
         
-        [EmptyViewFactory emptyMainView:self.roomList];
-       
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            [self.roomList reloadData];
-        });
-    }else{
-        [self.roomList beginUpdates];
-        [self.roomList deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:index inSection:0]] withRowAnimation:UITableViewRowAnimationAutomatic];
-        [self.roomList endUpdates];
-    }
-
-    NtreatedData *data = [[NtreatedData alloc] init];
-    data.actionType = ModifyRoomName;
-    data.item = item;
-    [[NtreatedDataManage sharedManager] addData:data];
-    
-    [ServerVisit deleteRoomWithSign:[ServerVisit shead].authorization meetingID:item.roomID completion:^(AFHTTPRequestOperation *operation, id responseData, NSError *error) {
-        NSLog(@"delete room");
-        NSDictionary *dict = (NSDictionary*)responseData;
-        if (!error) {
-            if ([[dict objectForKey:@"code"] intValue]== 200) {
-                [[NtreatedDataManage sharedManager] removeData:data];
-                
-            }
+        [dataArray removeObject:item];
+        
+        if (dataArray.count == 0) {
+            
+            [EmptyViewFactory emptyMainView:self.roomList];
+            
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                [self.roomList reloadData];
+            });
+        }else{
+            [self.roomList beginUpdates];
+            [self.roomList deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:index inSection:0]] withRowAnimation:UITableViewRowAnimationAutomatic];
+            [self.roomList endUpdates];
         }
-    }];
+        
+        NtreatedData *data = [[NtreatedData alloc] init];
+        data.actionType = ModifyRoomName;
+        data.item = item;
+        [[NtreatedDataManage sharedManager] addData:data];
+        
+        [ServerVisit deleteRoomWithSign:[ServerVisit shead].authorization meetingID:item.roomID completion:^(AFHTTPRequestOperation *operation, id responseData, NSError *error) {
+            NSLog(@"delete room");
+            NSDictionary *dict = (NSDictionary*)responseData;
+            if (!error) {
+                if ([[dict objectForKey:@"code"] intValue]== 200) {
+                    [[NtreatedDataManage sharedManager] removeData:data];
+                    
+                }
+            }
+        }];
+    }
     
 }
 // update room can notification
 - (void)updateNotification:(RoomItem*)item withClose:(BOOL)close withIndex:(NSInteger)index
 {
-    NtreatedData *data = [[NtreatedData alloc] init];
-    data.actionType = SettingNotificationRoom;
-    data.isNotification = close;
-    data.item = item;
-    [[NtreatedDataManage sharedManager] addData:data];
-    
-    [dataArray replaceObjectAtIndex:index withObject:item];
-    
-    NSMutableArray *indexPaths = [[NSMutableArray alloc] init];
-    
-    NSIndexPath *indexP = [NSIndexPath indexPathForRow:index inSection:0];
-    
-    [indexPaths addObject: indexP];
-    
-    [self.roomList beginUpdates];
-    
-    [self.roomList reloadRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationNone];
-    
-    [self.roomList endUpdates];
-    
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        [self.roomList reloadData];
-    });
-    
-    [ServerVisit updateRoomPushableWithSign:[ServerVisit shead].authorization meetingID:item.roomID pushable:[NSString stringWithFormat:@"%d",close] completion:^(AFHTTPRequestOperation *operation, id responseData, NSError *error) {
-        NSLog(@"open or close push");
-        NSDictionary *dict = (NSDictionary*)responseData;
-        if (!error) {
-            if ([[dict objectForKey:@"code"] intValue]== 200) {
-                [[NtreatedDataManage sharedManager] removeData:data];
-                
+    @synchronized(dataArray) {
+        NtreatedData *data = [[NtreatedData alloc] init];
+        data.actionType = SettingNotificationRoom;
+        data.isNotification = close;
+        data.item = item;
+        [[NtreatedDataManage sharedManager] addData:data];
+        
+        [dataArray replaceObjectAtIndex:index withObject:item];
+        
+        NSMutableArray *indexPaths = [[NSMutableArray alloc] init];
+        
+        NSIndexPath *indexP = [NSIndexPath indexPathForRow:index inSection:0];
+        
+        [indexPaths addObject: indexP];
+        
+        [self.roomList beginUpdates];
+        
+        [self.roomList reloadRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationNone];
+        
+        [self.roomList endUpdates];
+        
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            [self.roomList reloadData];
+        });
+        
+        [ServerVisit updateRoomPushableWithSign:[ServerVisit shead].authorization meetingID:item.roomID pushable:[NSString stringWithFormat:@"%d",close] completion:^(AFHTTPRequestOperation *operation, id responseData, NSError *error) {
+            NSLog(@"open or close push");
+            NSDictionary *dict = (NSDictionary*)responseData;
+            if (!error) {
+                if ([[dict objectForKey:@"code"] intValue]== 200) {
+                    [[NtreatedDataManage sharedManager] removeData:data];
+                    
+                }
             }
-        }
-    }];
+        }];
+    }
+    
 }
 // setting room is private
 - (void)setPrivateMeeting:(RoomItem*)item withPrivate:(BOOL)private withIndex:(NSInteger)index
 {
-    NtreatedData *data = [[NtreatedData alloc] init];
-    data.actionType = SettingPrivateRoom;
-    data.isPrivate = private;
-    data.item = item;
-    [[NtreatedDataManage sharedManager] addData:data];
-    
-    [dataArray replaceObjectAtIndex:index withObject:item];
-    
-    NSMutableArray *indexPaths = [[NSMutableArray alloc] init];
-    
-    NSIndexPath *indexP = [NSIndexPath indexPathForRow:index inSection:0];
-    
-    [indexPaths addObject: indexP];
-    
-    [self.roomList beginUpdates];
-    
-    [self.roomList reloadRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationNone];
-    
-    [self.roomList endUpdates];
-    
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        [self.roomList reloadData];
-    });
-    
-    NSString *enable;
-    if (private) {
-        enable = @"2";
-    }else{
-        enable = @"1";
-    }
-    [ServerVisit updateRoomEnableWithSign:[ServerVisit shead].authorization meetingID:item.roomID enable:enable completion:^(AFHTTPRequestOperation *operation, id responseData, NSError *error) {
-        NSLog(@"private meeting");
-        NSDictionary *dict = (NSDictionary*)responseData;
-        if (!error) {
-            if ([[dict objectForKey:@"code"] intValue]== 200) {
-                [[NtreatedDataManage sharedManager] removeData:data];
-                
-            }
+    @synchronized(dataArray) {
+        NtreatedData *data = [[NtreatedData alloc] init];
+        data.actionType = SettingPrivateRoom;
+        data.isPrivate = private;
+        data.item = item;
+        [[NtreatedDataManage sharedManager] addData:data];
+        
+        [dataArray replaceObjectAtIndex:index withObject:item];
+        
+        NSMutableArray *indexPaths = [[NSMutableArray alloc] init];
+        
+        NSIndexPath *indexP = [NSIndexPath indexPathForRow:index inSection:0];
+        
+        [indexPaths addObject: indexP];
+        
+        [self.roomList beginUpdates];
+        
+        [self.roomList reloadRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationNone];
+        
+        [self.roomList endUpdates];
+        
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            [self.roomList reloadData];
+        });
+        
+        NSString *enable;
+        if (private) {
+            enable = @"2";
+        }else{
+            enable = @"1";
         }
-    }];
+        [ServerVisit updateRoomEnableWithSign:[ServerVisit shead].authorization meetingID:item.roomID enable:enable completion:^(AFHTTPRequestOperation *operation, id responseData, NSError *error) {
+            NSLog(@"private meeting");
+            NSDictionary *dict = (NSDictionary*)responseData;
+            if (!error) {
+                if ([[dict objectForKey:@"code"] intValue]== 200) {
+                    [[NtreatedDataManage sharedManager] removeData:data];
+                    
+                }
+            }
+        }];
+    }
+    
 }
 // add others meeting in ours
 - (void)insertUserMeetingRoomWithID:(RoomItem*)item
 {
-    BOOL find = NO;
-    for (RoomItem *tempItem in dataArray) {
-        if ([tempItem.roomID isEqualToString:item.roomID]) {
-            find = YES;
-            break;
+    @synchronized(dataArray) {
+        BOOL find = NO;
+        for (RoomItem *tempItem in dataArray) {
+            if ([tempItem.roomID isEqualToString:item.roomID]) {
+                find = YES;
+                break;
+            }
         }
-    }
-    if (!find) {
-        [ASHUD showHUDWithCompleteStyleInView:self.view content:nil icon:nil];
-        __weak MainViewController *weakSelf = self;
-        [ServerVisit insertUserMeetingRoomWithSign:[ServerVisit shead].authorization meetingID:item.roomID completion:^(AFHTTPRequestOperation *operation, id responseData, NSError *error) {
-            NSDictionary *dict = (NSDictionary*)responseData;
-            [ASHUD hideHUD];
-            if (!error) {
-                if ([[dict objectForKey:@"code"] integerValue] == 200) {
-                    [weakSelf addItemAndEnterMetting:item];
+        if (!find) {
+            [ASHUD showHUDWithCompleteStyleInView:self.view content:nil icon:nil];
+            __weak MainViewController *weakSelf = self;
+            [ServerVisit insertUserMeetingRoomWithSign:[ServerVisit shead].authorization meetingID:item.roomID completion:^(AFHTTPRequestOperation *operation, id responseData, NSError *error) {
+                NSDictionary *dict = (NSDictionary*)responseData;
+                [ASHUD hideHUD];
+                if (!error) {
+                    if ([[dict objectForKey:@"code"] integerValue] == 200) {
+                        [weakSelf addItemAndEnterMetting:item];
+                    }else{
+                        
+                    }
                 }else{
                     
                 }
-            }else{
-                
-            }
-        }];
-    }else{
-        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:@"该会议在列表中已经存在，是否直接进会" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
-        alertView.tag = 900;
-        tempRoomItem = item;
-        [alertView show];
+            }];
+        }else{
+            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:@"该会议在列表中已经存在，是否直接进会" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
+            alertView.tag = 900;
+            tempRoomItem = item;
+            [alertView show];
+        }
+
     }
 }
 
 - (void)addItemAndEnterMetting:(RoomItem*)item
 {
-    [dataArray insertObject:item atIndex:0];
-    
-    NSMutableArray *indexPaths = [[NSMutableArray alloc] init];
-    
-    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:0];
-    
-    [indexPaths addObject: indexPath];
-    
-    [self.roomList beginUpdates];
-    
-    [self.roomList insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationTop];
-    
-    [self.roomList endUpdates];
-    
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        [self.roomList reloadData];
+    @synchronized(dataArray) {
+        [dataArray insertObject:item atIndex:0];
         
-        VideoCallViewController *video = [[VideoCallViewController alloc] init];
-        video.roomItem = item;
-        UINavigationController *nai = [[UINavigationController alloc] initWithRootViewController:video];
-        [self presentViewController:nai animated:YES completion:^{
-            if (self.dataArray.count>20) {
-                [self deleteRoomWithItem:[dataArray lastObject] withIndex:(dataArray.count -1)];
-            }
+        NSMutableArray *indexPaths = [[NSMutableArray alloc] init];
+        
+        NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:0];
+        
+        [indexPaths addObject: indexPath];
+        
+        [self.roomList beginUpdates];
+        
+        [self.roomList insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationTop];
+        
+        [self.roomList endUpdates];
+        
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            [self.roomList reloadData];
             
-        }];
-    });
+            VideoCallViewController *video = [[VideoCallViewController alloc] init];
+            video.roomItem = item;
+            UINavigationController *nai = [[UINavigationController alloc] initWithRootViewController:video];
+            [self presentViewController:nai animated:YES completion:^{
+                if (self.dataArray.count>20) {
+                    [self deleteRoomWithItem:[dataArray lastObject] withIndex:(dataArray.count -1)];
+                }
+                
+            }];
+        });
+    }
+    
 }
 
 - (void)addItemAndEnterMettingWithID:(NSString*)meeting
@@ -953,26 +984,27 @@ static NSString *kRoomCellID = @"RoomCell";
 }
 - (void)cancleGetRoom
 {
-    
-    [dataArray removeObjectAtIndex:0];
-    
-    NSMutableArray *indexPaths = [[NSMutableArray alloc] init];
-    
-    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:0];
-    
-    [indexPaths addObject: indexPath];
-    
-    [self.roomList beginUpdates];
-    
-    [self.roomList deleteRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationLeft];
-    
-    [self.roomList endUpdates];
-    
-     self.cancleButton.hidden = YES;
-     self.inputButton.hidden = NO;
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-         [self.roomList reloadData];
-    });
+    @synchronized(self.dataArray) {
+        [dataArray removeObjectAtIndex:0];
+        
+        NSMutableArray *indexPaths = [[NSMutableArray alloc] init];
+        
+        NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:0];
+        
+        [indexPaths addObject: indexPath];
+        
+        [self.roomList beginUpdates];
+        
+        [self.roomList deleteRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationLeft];
+        
+        [self.roomList endUpdates];
+        
+        self.cancleButton.hidden = YES;
+        self.inputButton.hidden = NO;
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            [self.roomList reloadData];
+        });
+    }
 }
 
 - (void)renameRoomNameScuess:(NSString*)roomName

@@ -22,4 +22,6 @@
 
 - (void)addMySeleItem:(NSDictionary *)dic;
 
+- (void)addNetDataItems:(NSArray*)arrayData;
+
 @end
