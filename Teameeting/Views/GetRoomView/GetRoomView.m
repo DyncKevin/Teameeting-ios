@@ -33,6 +33,11 @@
 @implementation GetRoomView
 @synthesize delegate;
 
+- (void)dealloc
+{
+
+}
+
 - (id)initWithFrame:(CGRect)frame withParView:(UIView*)parview
 {
     self = [super initWithFrame:frame];
@@ -65,7 +70,7 @@
         [textInputView addSubview:lineDown];
         
         textInputTextView = [[UITextField alloc] initWithFrame:CGRectMake(15, -(GetRoomViewHeight-TextViewHeight)/2, CGRectGetWidth(textInputView.frame) - 30, TextViewHeight)];
-   
+        [textInputTextView addTarget:self action:@selector(textFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
         [self addSubview:textInputTextView];
         textInputTextView.placeholder = @"房间名字";
         [textInputTextView setValue:[UIColor colorWithRed:146.0/255.0 green:160.0/255.0 blue:169.0/255.0 alpha:1.0] forKeyPath:@"_placeholderLabel.textColor"];
@@ -322,6 +327,15 @@
 }
 
 #pragma mark - UITextFieldDelegate
+- (void)textFieldDidChange:(UITextField*)textField
+{
+    if (textField == textInputTextView) {
+        NSLog(@"%lu",textField.text.length);
+        if (textField.text.length > 32) {
+            textField.text = [textField.text substringToIndex:32];
+        }
+    }
+}
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {

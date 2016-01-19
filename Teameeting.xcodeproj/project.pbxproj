@@ -201,6 +201,10 @@
 		783703491C43E3F5006C80DE /* libstdc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 783703481C43E3F5006C80DE /* libstdc++.tbd */; };
 		7837034B1C43E3FC006C80DE /* libstdc++.6.0.9.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 7837034A1C43E3FC006C80DE /* libstdc++.6.0.9.tbd */; };
 		7837034D1C43E405006C80DE /* libicucore.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 7837034C1C43E405006C80DE /* libicucore.tbd */; };
+		78C5ECC61C4E447600193322 /* weixin@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 78C5ECC41C4E447600193322 /* weixin@2x.png */; };
+		78C5ECC71C4E447600193322 /* weixin@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 78C5ECC51C4E447600193322 /* weixin@3x.png */; };
+		78C5ECCA1C4E45B300193322 /* copy_scuess@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 78C5ECC81C4E45B300193322 /* copy_scuess@2x.png */; };
+		78C5ECCB1C4E45B300193322 /* copy_scuess@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 78C5ECC91C4E45B300193322 /* copy_scuess@3x.png */; };
 		EC157AD0B3A13035EAD046BB /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2E4CBCA8C81B4B1BFCC1872C /* libPods.a */; };
 		FC6A0F4A1C464B9400D8C56D /* TMessage.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = FC6A0F481C464B9400D8C56D /* TMessage.xcdatamodeld */; };
 		FCA4D5971C44F94D005CDF99 /* libanrtcsdk.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FCA4D5961C44F94D005CDF99 /* libanrtcsdk.a */; };
@@ -508,6 +512,10 @@
 		783703481C43E3F5006C80DE /* libstdc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libstdc++.tbd"; path = "usr/lib/libstdc++.tbd"; sourceTree = SDKROOT; };
 		7837034A1C43E3FC006C80DE /* libstdc++.6.0.9.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libstdc++.6.0.9.tbd"; path = "usr/lib/libstdc++.6.0.9.tbd"; sourceTree = SDKROOT; };
 		7837034C1C43E405006C80DE /* libicucore.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libicucore.tbd; path = usr/lib/libicucore.tbd; sourceTree = SDKROOT; };
+		78C5ECC41C4E447600193322 /* weixin@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "weixin@2x.png"; sourceTree = "<group>"; };
+		78C5ECC51C4E447600193322 /* weixin@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "weixin@3x.png"; sourceTree = "<group>"; };
+		78C5ECC81C4E45B300193322 /* copy_scuess@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "copy_scuess@2x.png"; sourceTree = "<group>"; };
+		78C5ECC91C4E45B300193322 /* copy_scuess@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "copy_scuess@3x.png"; sourceTree = "<group>"; };
 		DFBC29C224EA228C97676A8B /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		FC6A0F491C464B9400D8C56D /* TMessage.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = TMessage.xcdatamodel; sourceTree = "<group>"; };
 		FCA4D5961C44F94D005CDF99 /* libanrtcsdk.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libanrtcsdk.a; sourceTree = "<group>"; };
@@ -674,6 +682,10 @@
 		783701741C43DF64006C80DE /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				78C5ECC81C4E45B300193322 /* copy_scuess@2x.png */,
+				78C5ECC91C4E45B300193322 /* copy_scuess@3x.png */,
+				78C5ECC41C4E447600193322 /* weixin@2x.png */,
+				78C5ECC51C4E447600193322 /* weixin@3x.png */,
 				782807A31C463AED0061D6CD /* Icon-1@2x.png */,
 				781F6E181C44DA5300026160 /* metting_nonotification@2x.png */,
 				781F6E191C44DA5300026160 /* metting_nonotification@3x.png */,
@@ -1407,6 +1419,7 @@
 			files = (
 				783702B61C43DF64006C80DE /* messageInvite@2x.png in Resources */,
 				7837029D1C43DF64006C80DE /* Default-Landscape~ipad.png in Resources */,
+				78C5ECCA1C4E45B300193322 /* copy_scuess@2x.png in Resources */,
 				783702B11C43DF64006C80DE /* mailInvite@3x.png in Resources */,
 				7837028F1C43DF64006C80DE /* cancelChat@2x.png in Resources */,
 				783701441C43DDFB006C80DE /* LaunchScreen.storyboard in Resources */,
@@ -1434,6 +1447,7 @@
 				783702BF1C43DF64006C80DE /* no_net_alert@3x.png in Resources */,
 				7837029A1C43DF64006C80DE /* Default-667h@2x.png in Resources */,
 				7837030C1C43DF64006C80DE /* chat_ipunt_message.png in Resources */,
+				78C5ECC71C4E447600193322 /* weixin@3x.png in Resources */,
 				783702CE1C43DF64006C80DE /* share@2x.png in Resources */,
 				783703171C43DF64006C80DE /* headImage.jpeg in Resources */,
 				7837013F1C43DDFB006C80DE /* Main.storyboard in Resources */,
@@ -1487,6 +1501,7 @@
 				783702AC1C43DF64006C80DE /* link_main@2x.png in Resources */,
 				783702D51C43DF64006C80DE /* weixin_main@3x.png in Resources */,
 				7837029F1C43DF64006C80DE /* Default-Portrait~ipad.png.png in Resources */,
+				78C5ECCB1C4E45B300193322 /* copy_scuess@3x.png in Resources */,
 				783702A11C43DF64006C80DE /* delegate_main@2x.png in Resources */,
 				783702CF1C43DF64006C80DE /* share@3x.png in Resources */,
 				7837030D1C43DF64006C80DE /* chat_message_back.png in Resources */,
@@ -1508,6 +1523,7 @@
 				783702AA1C43DF64006C80DE /* hangupselect@3x.png in Resources */,
 				783702C21C43DF64006C80DE /* noMic@2x.png in Resources */,
 				783702AB1C43DF64006C80DE /* LaunchImage-736h@3x.png.png in Resources */,
+				78C5ECC61C4E447600193322 /* weixin@2x.png in Resources */,
 				783703101C43DF64006C80DE /* Chat_take_picture.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
