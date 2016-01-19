@@ -31,6 +31,7 @@
 #import "UIImage+Category.h"
 #import "TMMessageManage.h"
 #import "WXApiRequestHandler.h"
+#import "WXApi.h"
 
 static NSString *kRoomCellID = @"RoomCell";
 
@@ -113,7 +114,7 @@ static NSString *kRoomCellID = @"RoomCell";
     [self.roomList addSubview:refreshControl];
     
     self.getRoomButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    [self.getRoomButton setTitle:@"获取房间" forState:UIControlStateNormal];
+    [self.getRoomButton setTitle:@"创建房间" forState:UIControlStateNormal];
     [self.getRoomButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [self.getRoomButton setTitleColor:[UIColor grayColor] forState:UIControlStateHighlighted];
     [self.view addSubview:self.getRoomButton];
@@ -245,7 +246,7 @@ static NSString *kRoomCellID = @"RoomCell";
 #pragma mark -private methods
 - (void)initUser
 {
-    UIView *initView = [[UIView alloc] initWithFrame:[UIScreen mainScreen].bounds];
+    UIView *initView = [[UIView alloc] initWithFrame:CGRectZero];
     initView.backgroundColor = [UIColor clearColor];
     initView.tag = 400;
 
@@ -256,7 +257,13 @@ static NSString *kRoomCellID = @"RoomCell";
     [initView addSubview:initViewBg];
     
     initViewBg.translatesAutoresizingMaskIntoConstraints = NO;
-    NSDictionary *views = NSDictionaryOfVariableBindings(initViewBg);
+    initView.translatesAutoresizingMaskIntoConstraints = NO;
+    
+    NSDictionary *views = NSDictionaryOfVariableBindings(initView,initViewBg);
+    
+    [apple.window.rootViewController.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-0-[initView]-0-|" options:NSLayoutFormatAlignmentMask metrics:nil views:views]];
+    [apple.window.rootViewController.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-0-[initView]-0-|" options:NSLayoutFormatAlignmentMask metrics:nil views:views]];
+    
     [initView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-0-[initViewBg]-0-|" options:NSLayoutFormatAlignmentMask metrics:nil views:views]];
     [initView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-0-[initViewBg]-0-|" options:NSLayoutFormatAlignmentMask metrics:nil views:views]];
     
@@ -294,9 +301,9 @@ static NSString *kRoomCellID = @"RoomCell";
     activityIndicatorView.translatesAutoresizingMaskIntoConstraints = NO;
     
     NSDictionary* acViews = NSDictionaryOfVariableBindings(activityIndicatorView);
-    //设置高度
+
     [initView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|-[activityIndicatorView]-|" options:NSLayoutFormatAlignAllCenterX metrics:nil views:acViews]];
-   // 上面的代码可以让prgrssView 水平居中。垂直代码如下
+
     [initView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-[activityIndicatorView]-380-|" options:NSLayoutFormatAlignAllTop metrics:nil views:acViews]];
     [activityIndicatorView startAnimating];
 }
@@ -1033,8 +1040,9 @@ static NSString *kRoomCellID = @"RoomCell";
             [self displaySMSComposerSheet:obj.roomID];
         }
         else {
-            UIAlertView *alert=[[UIAlertView alloc] initWithTitle:@""message:@"设备不支持短信功能" delegate:self cancelButtonTitle:@"确定"otherButtonTitles:nil];
-            [alert show];
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+             [ASHUD showHUDWithCompleteStyleInView:self.view content:@"该设备不支持短信功能" icon:nil];
+            });
         }
         
     }
@@ -1042,18 +1050,26 @@ static NSString *kRoomCellID = @"RoomCell";
 
 - (void)pushViewInviteViaWeiXin:(RoomItem*)obj
 {
-    [WXApiRequestHandler sendLinkURL:[NSString stringWithFormat:@"http://115.28.70.232/share_meetingRoom/#%@",obj.roomID]
-                             TagName:nil
-                               Title:@"Teameeting"
-                         Description:@"视频邀请"
-                          ThumbImage:[UIImage imageNamed:@"Icon-1"]
-                             InScene:WXSceneSession];
+    if ([WXApi isWXAppInstalled]) {
+        [WXApiRequestHandler sendLinkURL:[NSString stringWithFormat:@"http://115.28.70.232/share_meetingRoom/#%@",obj.roomID]
+                                 TagName:nil
+                                   Title:@"Teameeting"
+                             Description:@"视频邀请"
+                              ThumbImage:[UIImage imageNamed:@"Icon-1"]
+                                 InScene:WXSceneSession];
+    }else{
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            [ASHUD showHUDWithCompleteStyleInView:self.view content:@"该设备没有安装微信" icon:nil];
+        });
+        
+    }
+    
 }
 - (void)pushViewInviteViaLink:(RoomItem*)obj
 {
     UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
     pasteboard.string = [NSString stringWithFormat:@"http://115.28.70.232/share_meetingRoom/#%@",obj.roomID];
-    [ASHUD showHUDWithCompleteStyleInView:self.view content:@"拷贝成功" icon:@"messageInvite"];
+    [ASHUD showHUDWithCompleteStyleInView:self.view content:@"拷贝成功" icon:@"copy_scuess"];
 }
 
 - (void)pushViewJoinRoom:(RoomItem*)obj

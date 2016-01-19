@@ -402,10 +402,10 @@
                 
                 if ([object respondsToSelector:@selector(roomListMemberChangeWithRoomID:changeState:)] && [object receiveMessageEnable]) {
                     
-                    if (![[messageDic objectForKey:@"from"] isEqualToString:[SvUDIDTools UDID]]) {
+                   // if (![[messageDic objectForKey:@"from"] isEqualToString:[SvUDIDTools UDID]]) {
                         
                         [object roomListMemberChangeWithRoomID:[messageDic objectForKey:@"room"] changeState:[[messageDic objectForKey:@"nmem"] intValue]];
-                    }
+                   // }
                     
                 }
             }

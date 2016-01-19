@@ -38,7 +38,7 @@
     if (self.isViewLoad)
         return;
     self.isViewLoad = YES;
-    self.receiveEnable = YES;
+    self.receiveEnable = NO;
     [self addRefreshViews];
     [self loadBaseViewsAndData];
     self.chatTableView.backgroundColor = [UIColor colorWithWhite:0.1 alpha:0.5];

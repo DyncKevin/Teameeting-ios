@@ -17,7 +17,9 @@
 #import <GLKit/GLKit.h>
 #import "TalkView.h"
 #import "WXApiRequestHandler.h"
+#import "WXApi.h"
 #import "TMMessageManage.h"
+#import "ASHUD.h"
 
 @implementation UINavigationController (Orientations)
 
@@ -533,7 +535,7 @@ typedef enum ViewState {
                                  NSParagraphStyleAttributeName:paragraphStyle
                                  };
     UILabel *title = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, shareView.bounds.size.width-40, 60)];
-    title.attributedText = [[NSAttributedString alloc] initWithString:@"How do you want to invite people to the room?" attributes:attributes];
+    title.attributedText = [[NSAttributedString alloc] initWithString:@"你想通过那种方式邀请好友？" attributes:attributes];
     title.autoresizingMask = UIViewContentModeBottom;
     [title setTextAlignment:NSTextAlignmentCenter];
     [title setTextColor:[UIColor blackColor]];
@@ -547,7 +549,7 @@ typedef enum ViewState {
     [shareView addSubview:messageImage];
     
     UIButton *mailImage = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 60, 60)];
-    [mailImage setBackgroundImage:[UIImage imageNamed:@"mailInvite"] forState:UIControlStateNormal];
+    [mailImage setBackgroundImage:[UIImage imageNamed:@"weixin"] forState:UIControlStateNormal];
     [mailImage addTarget:self action:@selector(weChatShare) forControlEvents:UIControlEventTouchUpInside];
     mailImage.backgroundColor = [UIColor clearColor];
     [shareView addSubview:mailImage];
@@ -560,13 +562,13 @@ typedef enum ViewState {
     
     UILabel *messageTitle = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 100, 30)];
     [messageTitle setFont:[UIFont systemFontOfSize:12]];
-    messageTitle.text = @"Message";
+    messageTitle.text = @"短信";
     [messageTitle setTextColor:[UIColor blackColor]];
     [messageTitle setTextAlignment:NSTextAlignmentCenter];
     
     UILabel *mailTitle = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 100, 30)];
     [mailTitle setFont:[UIFont systemFontOfSize:12]];
-    mailTitle.text = @"Mail";
+    mailTitle.text = @"微信";
     [mailTitle setTextColor:[UIColor blackColor]];
     [mailTitle setTextAlignment:NSTextAlignmentCenter];
     [shareView addSubview:messageTitle];
@@ -575,7 +577,7 @@ typedef enum ViewState {
     
     UILabel *descriptionTitle = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, shareView.bounds.size.width - 40, 80)];
     
-    descriptionTitle.attributedText = [[NSAttributedString alloc] initWithString:@"You can also copy adn paste the secure room link to invite others" attributes:attributes];
+    descriptionTitle.attributedText = [[NSAttributedString alloc] initWithString:@"你也可以拷贝连接，发送给好友来进行邀请。" attributes:attributes];
     [descriptionTitle setFont:[UIFont systemFontOfSize:17]];
     [descriptionTitle setNumberOfLines:0];
     [descriptionTitle setTextColor:[UIColor grayColor]];
@@ -593,7 +595,7 @@ typedef enum ViewState {
         [linkTitle setFrame:CGRectMake(0, 0, shareView.bounds.size.width - (isVertical ? 75 : 120), 56)];
     }
     linkTitle.lineBreakMode = NSLineBreakByTruncatingMiddle;
-    [linkTitle setFont:[UIFont systemFontOfSize:12]];
+    [linkTitle setFont:[UIFont systemFontOfSize:14]];
     linkTitle.text = [NSString stringWithFormat:@"http://115.28.70.232/share_meetingRoom/%@",self.roomItem.roomID];
     [linkTitle setTextColor:[UIColor grayColor]];
     [linkTitle setBackgroundColor:[UIColor clearColor]];
@@ -602,6 +604,7 @@ typedef enum ViewState {
     
     UIButton *copyLink = [[UIButton alloc] init];
     [copyLink setTitle:@"拷贝" forState:UIControlStateNormal];
+    [copyLink addTarget:self action:@selector(copyLineButtonEvent:) forControlEvents:UIControlEventTouchUpInside];
     [copyLink setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [copyLink setBackgroundColor:[UIColor clearColor]];
     [shareView addSubview:copyLink];
@@ -614,7 +617,7 @@ typedef enum ViewState {
         bottomBar.frame = CGRectMake(0, shareView.bounds.size.height - 36, shareView.bounds.size.width +1, 36);
         [messageTitle setCenter:CGPointMake(messageImage.center.x, CGRectGetMaxY(messageImage.frame) + 15)];
         [mailTitle setCenter:CGPointMake(mailImage.center.x, CGRectGetMaxY(mailImage.frame) + 15)];
-        [descriptionTitle setCenter:CGPointMake(shareView.bounds.size.width/2, CGRectGetMaxY(mailTitle.frame) + 25)];
+        [descriptionTitle setCenter:CGPointMake(shareView.bounds.size.width/2, CGRectGetMaxY(mailTitle.frame) + 45)];
         [linkTitle setCenter:CGPointMake(linkTitle.center.x, shareView.bounds.size.height - 20)];
         [copyLink setFrame:CGRectMake(CGRectGetMaxX(linkTitle.frame), 0, shareView.bounds.size.width - CGRectGetMaxX(linkTitle.frame), 45)];
         [copyLink setCenter:CGPointMake(copyLink.center.x, shareView.bounds.size.height - 20)];
@@ -627,7 +630,7 @@ typedef enum ViewState {
         bottomBar.frame = CGRectMake(0, shareView.bounds.size.height - 56, shareView.bounds.size.width +1, 56);
         [messageTitle setCenter:CGPointMake(messageImage.center.x, CGRectGetMaxY(messageImage.frame) + 15)];
         [mailTitle setCenter:CGPointMake(mailImage.center.x, CGRectGetMaxY(mailImage.frame) + 15)];
-        [descriptionTitle setCenter:CGPointMake(shareView.bounds.size.width/2, CGRectGetMaxY(mailTitle.frame) + 35)];
+        [descriptionTitle setCenter:CGPointMake(shareView.bounds.size.width/2, CGRectGetMaxY(mailTitle.frame) + 55)];
         [linkTitle setCenter:CGPointMake(linkTitle.center.x, shareView.bounds.size.height - 30)];
         [copyLink setFrame:CGRectMake(CGRectGetMaxX(linkTitle.frame), 0, shareView.bounds.size.width - CGRectGetMaxX(linkTitle.frame), 56)];
         [copyLink setCenter:CGPointMake(copyLink.center.x, shareView.bounds.size.height - 30)];
@@ -881,32 +884,55 @@ typedef enum ViewState {
 #pragma mark - share methods
 - (void)weChatShare {
     
-    
-    [WXApiRequestHandler sendLinkURL:[NSString stringWithFormat:@"http://115.28.70.232/share_meetingRoom/#%@",self.roomItem.roomID]
-                             TagName:nil
-                               Title:@"Teameeting"
-                         Description:@"视频邀请"
-                          ThumbImage:[UIImage imageNamed:@"Icon-1"]
-                             InScene:WXSceneSession];
+     [_popver dismiss];
+    if ([WXApi isWXAppInstalled]) {
+        //判断是否有微信
+        [WXApiRequestHandler sendLinkURL:[NSString stringWithFormat:@"http://115.28.70.232/share_meetingRoom/#%@",self.roomItem.roomID]
+                                 TagName:nil
+                                   Title:@"Teameeting"
+                             Description:@"视频邀请"
+                              ThumbImage:[UIImage imageNamed:@"Icon-1"]
+                                 InScene:WXSceneSession];
+    }else{
+        [ASHUD showHUDWithCompleteStyleInView:self.view content:@"该设备没有安装微信" icon:nil];
+    }
+  
 }
 
 - (void)sendMessage {
     
     [_popver dismiss];
-    MFMessageComposeViewController *controller = [[MFMessageComposeViewController alloc] init];
-    controller.navigationBar.barTintColor = [UIColor whiteColor];
-    if([MFMessageComposeViewController canSendText])
-    {
-        controller.body = [NSString stringWithFormat:@"让我们在会议中见!👉 http://115.28.70.232/share_meetingRoom/%@",self.roomItem.roomID];
-        
-        controller.recipients = nil;
-        
-        controller.messageComposeDelegate = self;
-        
-        [self presentViewController:controller animated:YES completion:nil];
+    
+    Class messageClass = (NSClassFromString(@"MFMessageComposeViewController"));
+    if (messageClass != nil) {
+        // Check whether the current device is configured for sending SMS messages
+        if ([messageClass canSendText]) {
+            MFMessageComposeViewController *picker = [[MFMessageComposeViewController alloc] init];
+            picker.messageComposeDelegate =self;
+            NSString *smsBody =[NSString stringWithFormat:@"让我们在会议中见!👉 http://115.28.70.232/share_meetingRoom/#%@",self.roomItem.roomID];
+            
+            picker.body=smsBody;
+            
+            [self presentViewController:picker animated:YES completion:^{
+                [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
+            }];
+        }
+        else {
+             [ASHUD showHUDWithCompleteStyleInView:self.view content:@"该设备不支持短信功能" icon:nil];
+        }
         
     }
+
 }
+// copy line method
+- (void)copyLineButtonEvent:(UIButton*)button
+{
+     [_popver dismiss];
+    UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
+    pasteboard.string = [NSString stringWithFormat:@"http://115.28.70.232/share_meetingRoom/#%@",self.roomItem.roomID];
+    [ASHUD showHUDWithCompleteStyleInView:self.view content:@"拷贝成功" icon:@"copy_scuess"];
+}
+
 #pragma mark - MFMessageComposeViewControllerDelegate
 - (void)messageComposeViewController:(MFMessageComposeViewController *)controller didFinishWithResult:(MessageComposeResult)result
 {
