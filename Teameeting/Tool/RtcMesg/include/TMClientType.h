@@ -11,9 +11,8 @@
 
 typedef NS_ENUM(NSInteger, MCConnState){
     MCConnStateNOT_CONNECTED = 0,
-    MCConnStateRESOLVING = 1,
-    MCConnStateCONNECTTING = 2,
-    MCConnStateCONNECTED = 3
+    MCConnStateCONNECTTING = 1,
+    MCConnStateCONNECTED = 2
 };
 
 typedef NS_ENUM(NSInteger, MCErrorType){
@@ -33,13 +32,6 @@ typedef NS_ENUM(NSInteger, MCMeetCmd){
     MCMeetCmdLEAVE,
     MCMeetCmdDCOMM,
     MCMeetCmdINVALID
-};
-
-typedef NS_ENUM(NSInteger, MCDcommAction){
-    MCDcommActionMSEND=1,
-    MCDcommActionDSETT,
-    MCDcommActionSHARE,
-    MCDcommActionINVALID
 };
 
 typedef NS_ENUM(NSInteger, MCSendTags){
