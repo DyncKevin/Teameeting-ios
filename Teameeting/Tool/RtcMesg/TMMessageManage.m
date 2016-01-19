@@ -53,7 +53,7 @@
 
 - (void)inintTMMessage {
     
-    [_msg tMInitMsgProtocol:self uid:[SvUDIDTools UDID] token:[ServerVisit shead].authorization server:@"192.168.7.39" port:9210];
+    [_msg tMInitMsgProtocol:self uid:[SvUDIDTools UDID] token:[ServerVisit shead].authorization server:@"192.168.7.39" port:6630];
 }
 
 - (void)registerMessageListener:(id<tmMessageReceive>)listener {
