@@ -68,6 +68,8 @@
 
 @property (nonatomic, weak) UIView *localView;
 
+@property (nonatomic, strong) NSString *selectedTag;//大视图的tag 本地localView为大视图的时候请设置为nil
+
 @property (nonatomic, weak) id<AnyrtcM2MDelegate> delegate;
 
 + (void) InitAnyRTC:(NSString*)strDeveloperId andToken:(NSString*)strToken andAESKey:(NSString*)strAESKey andAppId:(NSString*)strAppId;
@@ -83,9 +85,6 @@
 - (void) setLocalAudioEnable:(BOOL)enable;
 - (void) setLocalVideoEnable:(BOOL)enable;
 - (void) switchCamera;
-
-//big 0 small 3
-- (void) switchVideoBitsWithTag:(NSString*)tag withLeave:(int)level;
 
 @end
 

@@ -30,7 +30,7 @@
     UIButton *_videoButton;
     UIButton *_muteButton;
     UIButton *_cameraSwitchButton;
-     BOOL videoEnable;
+    BOOL videoEnable;
     
     UIAlertView *_exitErrorAlertView;   // 退出房间失败的问题
     UIAlertView *_exitRoomAlertView;    // 退出房间
