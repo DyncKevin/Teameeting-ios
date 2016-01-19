@@ -47,29 +47,32 @@ static TimeManager *timeManger = nil;
        [nowComponents month] == [createdAtComponents month] &&
        [nowComponents day] == [createdAtComponents day])
     {//今天
+        [dateFormatter setDateFormat:@"'今天 'HH:mm"];
         
-        int time_long = [createdAt timeIntervalSinceNow];
+        time = [dateFormatter stringFromDate:createdAt];
         
-        if (time_long <= 0 && time_long >-60*60) {//一小时之内
-            int min = -time_long/60;
-            if (min == 0) {
-                min = 1;
-            }
-            //            time = [[NSString alloc]initWithFormat:loadMuLanguage(@"%d分钟前",@""),min];
-            if (min <= 1) {
-                //time = [NSString stringWithFormat:@" %d秒前",abs(time_long)];
-                time = [NSString stringWithFormat:@"刚刚"];
-            } else {
-                time = [NSString stringWithFormat:@" %d分钟前",min];
-            }
-        }else if (time_long > 0) {
-            time = [NSString stringWithFormat:@" %d分钟前",1];
-            
-        } else {
-            [dateFormatter setDateFormat:@"'今天 'HH:mm"];
-            
-            time = [dateFormatter stringFromDate:createdAt];
-        }
+//        int time_long = [createdAt timeIntervalSinceNow];
+//        
+//        if (time_long <= 0 && time_long >-60*60) {//一小时之内
+//            int min = -time_long/60;
+//            if (min == 0) {
+//                min = 1;
+//            }
+//            //            time = [[NSString alloc]initWithFormat:loadMuLanguage(@"%d分钟前",@""),min];
+//            if (min <= 1) {
+//                //time = [NSString stringWithFormat:@" %d秒前",abs(time_long)];
+//                time = [NSString stringWithFormat:@"刚刚"];
+//            } else {
+//                time = [NSString stringWithFormat:@" %d分钟前",min];
+//            }
+//        }else if (time_long > 0) {
+//            time = [NSString stringWithFormat:@" %d分钟前",1];
+//            
+//        } else {
+//            [dateFormatter setDateFormat:@"'今天 'HH:mm"];
+//            
+//            time = [dateFormatter stringFromDate:createdAt];
+//        }
     }else if([self isDateThisWeek:createdAt]){
 //        NSLog(@"在本周，如果昨天就不按照周几来");
         NSDateComponents *_comps = [[NSDateComponents alloc] init];

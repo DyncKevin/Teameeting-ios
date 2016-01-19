@@ -184,14 +184,14 @@
                         [alertView show];
                     }else{
                         RoomItem *item = [[RoomItem alloc] init];
-                        item.roomID = [roomInfo objectForKey:@"meetingid"];
-                        item.roomName = [roomInfo objectForKey:@"meetname"];
+                        item.roomID = [[roomInfo objectForKey:@"meetingid"] stringValue];
+                        item.roomName = [[roomInfo objectForKey:@"meetname"] stringValue];
                         item.createTime = [[roomInfo objectForKey:@"crttime"] longValue];
-                        item.mettingDesc = [roomInfo objectForKey:@"meetdesc"];
-                        item.mettingNum = [[roomInfo objectForKey:@"memnumber"] stringValue];
+                        item.mettingDesc = [[roomInfo objectForKey:@"meetdesc"] stringValue];
+                        item.mettingNum = [[roomInfo objectForKey:@"memnumber"] integerValue];
                         item.mettingType = [[roomInfo objectForKey:@"meettype1"] integerValue];
                         item.mettingState = [[roomInfo objectForKey:@"meetusable"] integerValue];
-                        item.userID = [roomInfo objectForKey:@"userid"];
+                        item.userID = [[roomInfo objectForKey:@"userid"] stringValue];
                         item.canNotification = [[roomInfo objectForKey:@"pushable"] stringValue];
                         [weakSelf enterMeeting:item];
                     }

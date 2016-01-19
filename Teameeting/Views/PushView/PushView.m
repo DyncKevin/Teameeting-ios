@@ -401,7 +401,7 @@
         lastPushViewType = PushViewTypeNone;
         
         self.upButton = [[UIButton alloc] initWithFrame:CGRectMake(0, self.bounds.size.height, self.frame.size.width, 40)];
-        [self.upButton setTitle:@"Close" forState:UIControlStateNormal];
+        [self.upButton setTitle:@"关闭" forState:UIControlStateNormal];
         [self.upButton setCenter:CGPointMake(self.bounds.size.width/2, self.upButton.center.y)];
         [self.upButton addTarget:self action:@selector(close) forControlEvents:UIControlEventTouchUpInside];
         [self.upButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
