@@ -12,20 +12,22 @@
 #import <AVFoundation/AVFoundation.h>
 #import "ASHUD.h"
 #import "TMMessageManage.h"
+//#import "VideoShowView.h"
+#import "VideoShowItem.h"
+
+#define bottonSpace 10
 @interface ReceiveCallViewController ()<AnyrtcM2MDelegate,UIGestureRecognizerDelegate,tmMessageReceive>
 {
     AvcAudioRouteMgr *_audioManager;
-    UIView *_localVideoView;
+    VideoShowItem *_localVideoView;
     
     CGSize _localVideoSize;
     CGSize _videoSize;
     
     NSString *_peerSelectedId;
-    
+    NSString *_peerOldSelectedId;
     
     // VIEW
-   
-    BOOL _isHidden;
     UIView *_toolBarView;
     UIButton *_videoButton;
     UIButton *_muteButton;
@@ -49,6 +51,7 @@
 @implementation ReceiveCallViewController
 
 @synthesize _dicRemoteVideoView;
+
 @synthesize _client;
 @synthesize roomID;
 @synthesize _userArray,_channelArray;
@@ -65,7 +68,7 @@
     if (_dicRemoteVideoView) {
         _dicRemoteVideoView = nil;
     }
-    
+
     if (_client) {
         _client  = nil;
     }
@@ -103,25 +106,25 @@
     [self.videosScrollView setScrollEnabled:NO];
     self.videosScrollView.backgroundColor = [UIColor clearColor];
     _peerSelectedId = nil;
-    _isHidden = NO;
     _userArray = [[NSMutableArray alloc] initWithCapacity:5];
     _channelArray = [[NSMutableArray alloc] initWithCapacity:5];
     
     _dicRemoteVideoView = [[NSMutableDictionary alloc] initWithCapacity:5];
-    
     [AnyrtcM2Mutlier InitAnyRTC:@"mzw0001" andToken:@"defq34hj92mxxjhaxxgjfdqi1s332dd" andAESKey:@"d74TcmQDMB5nWx9zfJ5al7JdEg3XwySwCkhdB9lvnd1" andAppId:@"org.dync.app"];
     _client = [[AnyrtcM2Mutlier alloc] init];
-    _localVideoView = [[UIView alloc] initWithFrame:self.view.frame];
+    _localVideoView = [[VideoShowItem alloc] init];
+    [_localVideoView setFullScreen:NO];
+    UIView *local = [[UIView alloc] initWithFrame:self.view.frame];
     _client.delegate = self;
-    _client.localView = _localVideoView;
+    _client.localView = local;
     
     UITapGestureRecognizer *singleTapGestureRecognizer = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(locolvideoSingleTap:)];
     singleTapGestureRecognizer.delegate = self;
     [singleTapGestureRecognizer setNumberOfTapsRequired:1];
-    [_localVideoView addGestureRecognizer:singleTapGestureRecognizer];
-    [self.view addSubview:_localVideoView];
-
-    //[ASHUD showHUDWithStayLoadingStyleInView:self.view belowView:nil content:@"接听中。。。"];
+    [local addGestureRecognizer:singleTapGestureRecognizer];
+    [self.view addSubview:local];
+    _localVideoView.showVideoView = local;
+    
     [self.view addSubview:self.videosScrollView];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationWillResignActive) name:UIApplicationWillResignActiveNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidBecomeActive) name:UIApplicationDidBecomeActiveNotification object:nil];
@@ -168,16 +171,29 @@
     self.isFullScreen = !self.isFullScreen;
     if (self.isFullScreen ) {
         
+        if (_peerSelectedId) {
+            VideoShowItem *item = [_dicRemoteVideoView objectForKey:_peerSelectedId];
+            [item setFullScreen:YES];
+        }else{
+            [_localVideoView setFullScreen:YES];
+        }
+        
         [UIView animateWithDuration:0.2 animations:^{
             
-            self.videosScrollView.frame = CGRectMake(self.videosScrollView.frame.origin.x, self.view.bounds.size.height - 320, self.view.bounds.size.width, 300);
+            self.videosScrollView.frame = CGRectMake(self.videosScrollView.frame.origin.x, self.view.bounds.size.height - 180, self.view.bounds.size.width, 180);
         }];
         
     } else {
+        if (_peerSelectedId) {
+            VideoShowItem *item = [_dicRemoteVideoView objectForKey:_peerSelectedId];
+            [item setFullScreen:NO];
+        }else{
+            [_localVideoView setFullScreen:NO];
+        }
         
         [UIView animateWithDuration:0.2 animations:^{
             
-            self.videosScrollView.frame = CGRectMake(self.videosScrollView.frame.origin.x, self.view.bounds.size.height - 380, self.view.bounds.size.width, 300);
+            self.videosScrollView.frame = CGRectMake(self.videosScrollView.frame.origin.x, self.view.bounds.size.height - 280, self.view.bounds.size.width, 180);
         }];
     }
     
@@ -199,12 +215,22 @@
 {
     if (_client) {
          [_client setLocalVideoEnable:enable];
+        if (enable) {
+            [_localVideoView setVideoHidden:NO];
+        }else{
+            [_localVideoView setVideoHidden:YES];
+        }
     }
 }
 - (void)audioEnable:(BOOL)enable
 {
     if (_client) {
         [_client setLocalAudioEnable:enable];
+        if (enable) {
+            [_localVideoView setAudioClose:NO];
+        }else{
+             [_localVideoView setAudioClose:YES];
+        }
     }
 }
 
@@ -252,16 +278,49 @@
 
 - (void)layoutSubView
 {
-    
     [ASHUD hideHUD];
+    if (self.isFullScreen) {
+            self.videosScrollView.frame = CGRectMake(self.videosScrollView.frame.origin.x, self.view.bounds.size.height - 180, self.view.bounds.size.width, 180);
+        
+        if (_peerSelectedId) {
+            VideoShowItem *item = [_dicRemoteVideoView objectForKey:_peerSelectedId];
+            [item setFullScreen:YES];
+            if (_peerOldSelectedId) {
+                VideoShowItem *item = [_dicRemoteVideoView objectForKey:_peerOldSelectedId];
+                [item setFullScreen:YES];
+            }else{
+                [_localVideoView setFullScreen:YES];
+            }
+        }else{
+              [_localVideoView setFullScreen:YES];
+        }
+        
+    } else {
+            self.videosScrollView.frame = CGRectMake(self.videosScrollView.frame.origin.x, self.view.bounds.size.height - 280, self.view.bounds.size.width, 180);
+        if (_peerSelectedId) {
+            VideoShowItem *item = [_dicRemoteVideoView objectForKey:_peerSelectedId];
+            [item setFullScreen:NO];
+            if (_peerOldSelectedId) {
+                VideoShowItem *item = [_dicRemoteVideoView objectForKey:_peerOldSelectedId];
+                [item setFullScreen:YES];
+            }else{
+                [_localVideoView setFullScreen:NO];
+            }
+        }else{
+              [_localVideoView setFullScreen:NO];
+        }
+    }
+    
     if (_peerSelectedId) {
-        UIView* view = nil;
-        view = [_dicRemoteVideoView objectForKey:_peerSelectedId];
+        [_localVideoView setFullScreen:YES];
+        
+        VideoShowItem* view = nil;
+        view = (VideoShowItem*)[_dicRemoteVideoView objectForKey:_peerSelectedId];
 
-        if (_videoSize.width>0&& _videoSize.height>0) {
-            // Aspect fit local video view into a square box.
+        if (view.videoSize.width>0&& view.videoSize.height>0) {
+             //Aspect fit local video view into a square box.
             CGRect remoteVideoFrame =
-            AVMakeRectWithAspectRatioInsideRect(_videoSize, self.view.bounds);
+            AVMakeRectWithAspectRatioInsideRect(view.videoSize, self.view.bounds);
             CGFloat scale = 1;
             if (remoteVideoFrame.size.width < remoteVideoFrame.size.height) {
                 // Scale by height.
@@ -272,16 +331,16 @@
             }
             remoteVideoFrame.size.height *= scale;
             remoteVideoFrame.size.width *= scale;
-            view.frame = remoteVideoFrame;
-            view.center = CGPointMake(self.view.bounds.size.width/2,self.view.bounds.size.height/2);
+            view.showVideoView.frame = remoteVideoFrame;
+            view.showVideoView.center = CGPointMake(self.view.bounds.size.width/2,self.view.bounds.size.height/2);
             
         }else{
-            view.frame = CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height);;
+            view.showVideoView.frame = CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height);;
         }
         
-        [view removeFromSuperview];
-        [self.view addSubview:view];
-        [self.view sendSubviewToBack:view];
+        [view.showVideoView removeFromSuperview];
+        [self.view addSubview:view.showVideoView];
+        [self.view sendSubviewToBack:view.showVideoView];
         
         CGFloat scalelocal = _localVideoSize.width/_localVideoSize.height;
         CGFloat localViewwidth = self.view.bounds.size.width/4;
@@ -289,28 +348,29 @@
         
         CGFloat remoteViewHeight = 0.0;
         CGFloat remoteViewWidth = 0.0;
-        if (_videoSize.width > 0 ) {
-            
-            CGFloat scale = _videoSize.width/_videoSize.height;
-            remoteViewWidth = self.view.bounds.size.width/4;
-            remoteViewHeight = remoteViewWidth/scale;
-            
-        }
-        CGFloat x = self.view.bounds.size.width - (_dicRemoteVideoView.count-1)*remoteViewWidth - localViewwidth -20;
+    
+        remoteViewWidth = self.view.bounds.size.width/4;
+        
+        CGFloat x = (self.view.bounds.size.width - (_dicRemoteVideoView.count-1)*remoteViewWidth - localViewwidth)/2;
         CGFloat y = 180;//self.view.bounds.size.height - localViewheight - 20;
         
         if (_localVideoSize.width && _localVideoSize.height > 0 ) {
             
-            _localVideoView.frame =  CGRectMake(0, 0, localViewwidth, localViewheight);
-            [_localVideoView removeFromSuperview];
+            _localVideoView.showVideoView.frame =  CGRectMake(0, 0, localViewwidth, localViewheight);
+            [_localVideoView.showVideoView removeFromSuperview];
         }
         [self.videosScrollView.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
+        
         NSMutableArray *videoArrays = [NSMutableArray array];
-        UIView* viewsmail = nil;
+        VideoShowItem* viewsmail = nil;
         for (id key in [_dicRemoteVideoView allKeys]) {
             if (![key isEqualToString:_peerSelectedId]) {
                 viewsmail = [_dicRemoteVideoView objectForKey:key];
-                viewsmail.frame = CGRectMake(x, y, remoteViewWidth, remoteViewHeight);
+                if (viewsmail.videoSize.width>0&& viewsmail.videoSize.height>0) {
+                    CGFloat scale = viewsmail.videoSize.width/viewsmail.videoSize.height;
+                     remoteViewHeight = remoteViewWidth/scale;
+                }
+                viewsmail.showVideoView.frame = CGRectMake(x, y, remoteViewWidth, remoteViewHeight);
                 x+=remoteViewWidth;
                 [videoArrays addObject:viewsmail];
             }
@@ -322,16 +382,15 @@
         NSMutableArray *rightVideos = [NSMutableArray array];
         if ([videoArrays count] == 1) {
             
-            UIView *subView = [videoArrays objectAtIndex:0];
-            [subView setCenter:CGPointMake(self.videosScrollView.bounds.size.width/2, self.videosScrollView.bounds.size.height/2)];
-            [self.videosScrollView addSubview:subView];
-            //[self.videosScrollView setContentOffset:CGPointMake(self.videosScrollView.contentSize.width/4, 0)];
+            VideoShowItem *subView = [videoArrays objectAtIndex:0];
+            [subView.showVideoView setCenter:CGPointMake(self.videosScrollView.bounds.size.width/2, self.videosScrollView.bounds.size.height-subView.showVideoView.bounds.size.height/2-bottonSpace)];
+            [self.videosScrollView addSubview:subView.showVideoView];
             
         } else {
             
             for (int i = 0; i < [videoArrays count]; i++) {
                 
-                UIView *subView = [videoArrays objectAtIndex:i];
+                VideoShowItem *subView = [videoArrays objectAtIndex:i];
                 if (i %2 == 0) {
                     
                     [leftVideos addObject:subView];
@@ -344,19 +403,19 @@
             }
             for (int i = 0; i < [leftVideos count]; i ++) {
                 
-                UIView *subView = [leftVideos objectAtIndex:i];
-                CGRect rect = CGRectMake(self.videosScrollView.bounds.size.width/2 - (i + 1)*subView.bounds.size.width, self.videosScrollView.bounds.size.height/2, subView.bounds.size.width, subView.bounds.size.height);
-                subView.frame = rect;
-                [subView setCenter:CGPointMake(subView.center.x, self.videosScrollView.bounds.size.height/2)];
-                [self.videosScrollView addSubview:subView];
+                VideoShowItem *subView = [leftVideos objectAtIndex:i];
+                CGRect rect = CGRectMake(self.videosScrollView.bounds.size.width/2 - (i + 1)*subView.showVideoView.bounds.size.width, self.videosScrollView.bounds.size.height/2, subView.showVideoView.bounds.size.width, subView.showVideoView.bounds.size.height);
+                subView.showVideoView.frame = rect;
+                [subView.showVideoView setCenter:CGPointMake(subView.showVideoView.center.x, self.videosScrollView.bounds.size.height-subView.showVideoView.bounds.size.height/2-bottonSpace)];
+                [self.videosScrollView addSubview:subView.showVideoView];
             }
             for (int i = 0; i < [rightVideos count]; i ++) {
                 
-                UIView *subView = [rightVideos objectAtIndex:i];
-                CGRect rect = CGRectMake(self.videosScrollView.bounds.size.width/2 + i*subView.bounds.size.width, self.videosScrollView.bounds.size.height/2, subView.bounds.size.width, subView.bounds.size.height);
-                subView.frame = rect;
-                [subView setCenter:CGPointMake(subView.center.x, self.videosScrollView.bounds.size.height/2)];
-                [self.videosScrollView addSubview:subView];
+                VideoShowItem*subView = [rightVideos objectAtIndex:i];
+                CGRect rect = CGRectMake(self.videosScrollView.bounds.size.width/2 + i*subView.showVideoView.bounds.size.width, self.videosScrollView.bounds.size.height/2, subView.showVideoView.bounds.size.width, subView.showVideoView.bounds.size.height);
+                subView.showVideoView.frame = rect;
+                [subView.showVideoView setCenter:CGPointMake(subView.showVideoView.center.x, self.videosScrollView.bounds.size.height-subView.showVideoView.bounds.size.height/2-bottonSpace)];
+                [self.videosScrollView addSubview:subView.showVideoView];
             }
             
         }
@@ -369,76 +428,73 @@
                 float scaleW = self.view.bounds.size.width/_localVideoSize.width;
                 float scaleH = self.view.bounds.size.height/_localVideoSize.height;
                 if (scaleW>scaleH) {
-                    _localVideoView.frame = CGRectMake(0, 0, _localVideoSize.width*scaleW, _localVideoSize.height*scaleW);
-                    _localVideoView.center =  CGPointMake(CGRectGetMidX(self.view.bounds), CGRectGetMidY(self.view.bounds));;
+                    _localVideoView.showVideoView.frame = CGRectMake(0, 0, _localVideoSize.width*scaleW, _localVideoSize.height*scaleW);
+                    _localVideoView.showVideoView.center =  CGPointMake(CGRectGetMidX(self.view.bounds), CGRectGetMidY(self.view.bounds));;
                 }else{
-                    _localVideoView.frame = CGRectMake(0, 0, _localVideoSize.width*scaleH, _localVideoSize.height*scaleH);
-                    _localVideoView.center =  CGPointMake(CGRectGetMidX(self.view.bounds), CGRectGetMidY(self.view.bounds));;
+                    _localVideoView.showVideoView.frame = CGRectMake(0, 0, _localVideoSize.width*scaleH, _localVideoSize.height*scaleH);
+                    _localVideoView.showVideoView.center =  CGPointMake(CGRectGetMidX(self.view.bounds), CGRectGetMidY(self.view.bounds));;
                 }
                 
             } else {
-                _localVideoView.frame = CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height);
+                _localVideoView.showVideoView.frame = CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height);
             }
-            [_localVideoView removeFromSuperview];
-            [self.view addSubview:_localVideoView];
-            [self.view sendSubviewToBack:_localVideoView];
+            [_localVideoView.showVideoView removeFromSuperview];
+            [self.view addSubview:_localVideoView.showVideoView];
+            [self.view sendSubviewToBack:_localVideoView.showVideoView];
             return;
         }
         if (_localVideoSize.width && _localVideoSize.height > 0) {
             float scaleW = self.view.bounds.size.width/_localVideoSize.width;
             float scaleH = self.view.bounds.size.height/_localVideoSize.height;
             if (scaleW>scaleH) {
-                _localVideoView.frame = CGRectMake(0, 0, _localVideoSize.width*scaleW, _localVideoSize.height*scaleW);
-                _localVideoView.center =  CGPointMake(CGRectGetMidX(self.view.bounds), CGRectGetMidY(self.view.bounds));;
+                _localVideoView.showVideoView.frame = CGRectMake(0, 0, _localVideoSize.width*scaleW, _localVideoSize.height*scaleW);
+                _localVideoView.showVideoView.center =  CGPointMake(CGRectGetMidX(self.view.bounds), CGRectGetMidY(self.view.bounds));;
             }else{
-                _localVideoView.frame = CGRectMake(0, 0, _localVideoSize.width*scaleH, _localVideoSize.height*scaleH);
-                _localVideoView.center =  CGPointMake(CGRectGetMidX(self.view.bounds), CGRectGetMidY(self.view.bounds));;
+                _localVideoView.showVideoView.frame = CGRectMake(0, 0, _localVideoSize.width*scaleH, _localVideoSize.height*scaleH);
+                _localVideoView.showVideoView.center =  CGPointMake(CGRectGetMidX(self.view.bounds), CGRectGetMidY(self.view.bounds));;
             }
         } else {
-            _localVideoView.frame = CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height);
+            _localVideoView.showVideoView.frame = CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height);
         }
-        [_localVideoView removeFromSuperview];
-        [self.view addSubview:_localVideoView];
-        [self.view sendSubviewToBack:_localVideoView];
+        [_localVideoView.showVideoView removeFromSuperview];
+        [self.view addSubview:_localVideoView.showVideoView];
+        [self.view sendSubviewToBack:_localVideoView.showVideoView];
     
-        CGFloat scale = _videoSize.width/_videoSize.height;
+
         CGFloat remoteViewWidth = self.view.bounds.size.width/4;
-        CGFloat remoteViewHeight = remoteViewWidth/scale;
+        CGFloat remoteViewHeight = 0.0;
         
         CGFloat x = self.view.bounds.size.width - _dicRemoteVideoView.count*remoteViewWidth -20;
-        CGFloat y = self.view.bounds.size.height - remoteViewHeight - 20;
+        CGFloat y = self.view.bounds.size.height - 180;
         
         
         NSMutableArray *videoArrays = [NSMutableArray array];
-        UIView* viewsmail = nil;
+        VideoShowItem* viewsmail = nil;
         for (id key in [_dicRemoteVideoView allKeys]) {
             viewsmail = [_dicRemoteVideoView objectForKey:key];
-            viewsmail.frame = CGRectMake(x, y, remoteViewWidth, remoteViewHeight);
+            if (viewsmail.videoSize.width>0 && viewsmail.videoSize.height>0) {
+                CGFloat scale = viewsmail.videoSize.width/viewsmail.videoSize.height;
+                remoteViewHeight = remoteViewWidth/scale;
+            }
+            viewsmail.showVideoView.frame = CGRectMake(x, y, remoteViewWidth, remoteViewHeight);
             x+=remoteViewWidth;
+            [viewsmail.showVideoView removeFromSuperview];
             [videoArrays addObject:viewsmail];
         }
-        for (NSInteger i = ([videoArrays count]-1) ; i >= 0; i --) {
-            UIView *subView = [videoArrays objectAtIndex:i];
-            if ([subView isKindOfClass:[UIImageView class]]) {
-                
-                [videoArrays removeObject:subView];
-            }
-        }
-        [videoArrays makeObjectsPerformSelector:@selector(removeFromSuperview)];
         NSMutableArray *leftVideos = [NSMutableArray array];
         NSMutableArray *rightVideos = [NSMutableArray array];
         
         if ([videoArrays count] == 1) {
             
-            UIView *subView = [videoArrays objectAtIndex:0];
-            [subView setCenter:CGPointMake(self.videosScrollView.bounds.size.width/2, self.videosScrollView.bounds.size.height/2)];
-            [self.videosScrollView addSubview:subView];
+            VideoShowItem *subView = [videoArrays objectAtIndex:0];
+            [subView.showVideoView setCenter:CGPointMake(self.videosScrollView.bounds.size.width/2, self.videosScrollView.bounds.size.height-subView.showVideoView.bounds.size.height/2-bottonSpace)];
+            [self.videosScrollView addSubview:subView.showVideoView];
             
         } else {
             
             for (int i = 0; i < [videoArrays count]; i++) {
                 
-                UIView *subView = [videoArrays objectAtIndex:i];
+                VideoShowItem *subView = [videoArrays objectAtIndex:i];
                 if (i %2 == 0) {
                     
                     [leftVideos addObject:subView];
@@ -451,19 +507,19 @@
             }
             for (int i = 0; i < [leftVideos count]; i ++) {
                 
-                UIView *subView = [leftVideos objectAtIndex:i];
-                CGRect rect = CGRectMake(self.videosScrollView.bounds.size.width/2 - (i + 1)*subView.bounds.size.width, self.videosScrollView.bounds.size.height/2, subView.bounds.size.width, subView.bounds.size.height);
-                subView.frame = rect;
-                [subView setCenter:CGPointMake(subView.center.x, self.videosScrollView.bounds.size.height/2)];
-                [self.videosScrollView addSubview:subView];
+                VideoShowItem *subView = [leftVideos objectAtIndex:i];
+                CGRect rect = CGRectMake(self.videosScrollView.bounds.size.width/2 - (i + 1)*subView.showVideoView.bounds.size.width, self.videosScrollView.bounds.size.height/2, subView.showVideoView.bounds.size.width, subView.showVideoView.bounds.size.height);
+                subView.showVideoView.frame = rect;
+                [subView.showVideoView setCenter:CGPointMake(subView.showVideoView.center.x, self.videosScrollView.bounds.size.height-subView.showVideoView.bounds.size.height/2-bottonSpace)];
+                [self.videosScrollView addSubview:subView.showVideoView];
             }
             for (int i = 0; i < [rightVideos count]; i ++) {
                 
-                UIView *subView = [rightVideos objectAtIndex:i];
-                CGRect rect = CGRectMake(self.videosScrollView.bounds.size.width/2 + i*subView.bounds.size.width, self.videosScrollView.bounds.size.height/2, subView.bounds.size.width, subView.bounds.size.height);
-                subView.frame = rect;
-                [subView setCenter:CGPointMake(subView.center.x, self.videosScrollView.bounds.size.height/2)];
-                [self.videosScrollView addSubview:subView];
+                VideoShowItem *subView = [rightVideos objectAtIndex:i];
+                CGRect rect = CGRectMake(self.videosScrollView.bounds.size.width/2 + i*subView.showVideoView.bounds.size.width, self.videosScrollView.bounds.size.height/2, subView.showVideoView.bounds.size.width, subView.showVideoView.bounds.size.height);
+                subView.showVideoView.frame = rect;
+                [subView.showVideoView setCenter:CGPointMake(subView.showVideoView.center.x, self.videosScrollView.bounds.size.height-subView.showVideoView.bounds.size.height/2-bottonSpace)];
+                [self.videosScrollView addSubview:subView.showVideoView];
             }
         }
     
@@ -474,13 +530,11 @@
 - (void)locolvideoSingleTap:(UITapGestureRecognizer*)gesture
 {
     if (_peerSelectedId) {
+        _peerOldSelectedId = _peerSelectedId;
         _peerSelectedId = nil;
         [self layoutSubView];
-        
-    }else{
-        // 点击的是大图
-        _isHidden = !_isHidden;
     }
+   
 }
 - (void)singleTap:(UITapGestureRecognizer*)gesture
 {
@@ -489,17 +543,15 @@
     // 如果得到的是小图的，变为大图
     if (CGRectGetWidth(view.frame) < self.view.bounds.size.width) {
         for (id key in [_dicRemoteVideoView allKeys]) {
-            UIView *item = [_dicRemoteVideoView objectForKey:key];
-            if (item == view) {
+            VideoShowItem *item = [_dicRemoteVideoView objectForKey:key];
+            if (item.showVideoView == view) {
+                _peerOldSelectedId = _peerSelectedId;
                 _peerSelectedId = key;
                 [self layoutSubView];
                 return;
             }
         }
-    }else{
-        _isHidden = !_isHidden;
     }
-    
 }
 #pragma mark -  UIAlertViewDelegate
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
@@ -567,10 +619,18 @@
 
 - (void) OnRtcVideoView:(UIView*)videoView didChangeVideoSize:(CGSize)size {
     
-    if (videoView == _localVideoView) {
+    if (videoView == _localVideoView.showVideoView) {
         _localVideoSize = size;
     }else{
         _videoSize = size;
+        for (NSString *strTag in [_dicRemoteVideoView allKeys]) {
+           VideoShowItem *remoteView = (VideoShowItem*)[_dicRemoteVideoView objectForKey:strTag];
+            if (remoteView.showVideoView == videoView) {
+                remoteView.videoSize = size;
+                break;
+            }
+        }
+        NSLog(@"OnRtcVideoView:%f %f",_videoSize.width,_videoSize.height);
     }
     [self layoutSubView];
     
@@ -582,8 +642,8 @@
  */
 - (void) OnRtcInRemoveView:(UIView *)removeView  withTag:(NSString *)strTag {
     
-    UIView* findView = [_dicRemoteVideoView objectForKey:strTag];
-    if (findView == removeView) {
+    VideoShowItem* findView = [_dicRemoteVideoView objectForKey:strTag];
+    if (findView.showVideoView == removeView) {
         return;
     }
     if (!_peerSelectedId) {
@@ -595,9 +655,10 @@
     singleTapGestureRecognizer.delegate = self;
     [removeView addGestureRecognizer:singleTapGestureRecognizer];
     [self.view addSubview:removeView];
-    
-    [_dicRemoteVideoView setObject:removeView forKey:strTag];
-    [self layoutSubView];
+    VideoShowItem *item = [[VideoShowItem alloc] init];
+    item.showVideoView = removeView;
+    [_dicRemoteVideoView setObject:item forKey:strTag];
+  //  [self layoutSubView];
     //While the number of remote image change, send a notification
     NSNumber *remoteVideoCount = [NSNumber numberWithInteger:[_dicRemoteVideoView count]];
     [[NSNotificationCenter defaultCenter] postNotificationName:@"REMOTEVIDEOCHANGE" object:remoteVideoCount];
@@ -611,10 +672,10 @@
  */
 - (void)OnRtcLeaveRemoveView:(UIView *)removeView  withTag:(NSString *)strTag {
     
-    UIView *findView = [_dicRemoteVideoView objectForKey:strTag];
+    VideoShowItem *findView = [_dicRemoteVideoView objectForKey:strTag];
     if (findView) {
         if ([strTag isEqualToString:_peerSelectedId]) {
-            [findView removeFromSuperview];
+            [findView.showVideoView removeFromSuperview];
             [_dicRemoteVideoView removeObjectForKey:strTag];
             if (_dicRemoteVideoView.count!=0) {
                 _peerSelectedId =[[_dicRemoteVideoView allKeys] firstObject];
@@ -623,7 +684,7 @@
             }
             [self layoutSubView];
         }else{
-            [findView removeFromSuperview];
+            [findView.showVideoView removeFromSuperview];
             [_dicRemoteVideoView removeObjectForKey:strTag];
             [self layoutSubView];
         }

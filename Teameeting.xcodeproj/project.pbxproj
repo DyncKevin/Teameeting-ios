@@ -201,6 +201,7 @@
 		783703491C43E3F5006C80DE /* libstdc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 783703481C43E3F5006C80DE /* libstdc++.tbd */; };
 		7837034B1C43E3FC006C80DE /* libstdc++.6.0.9.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 7837034A1C43E3FC006C80DE /* libstdc++.6.0.9.tbd */; };
 		7837034D1C43E405006C80DE /* libicucore.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 7837034C1C43E405006C80DE /* libicucore.tbd */; };
+		7861D0291C4F8E7200B2F30D /* VideoShowItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 7861D0281C4F8E7200B2F30D /* VideoShowItem.m */; };
 		78C5ECC61C4E447600193322 /* weixin@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 78C5ECC41C4E447600193322 /* weixin@2x.png */; };
 		78C5ECC71C4E447600193322 /* weixin@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 78C5ECC51C4E447600193322 /* weixin@3x.png */; };
 		78C5ECCA1C4E45B300193322 /* copy_scuess@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 78C5ECC81C4E45B300193322 /* copy_scuess@2x.png */; };
@@ -512,6 +513,8 @@
 		783703481C43E3F5006C80DE /* libstdc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libstdc++.tbd"; path = "usr/lib/libstdc++.tbd"; sourceTree = SDKROOT; };
 		7837034A1C43E3FC006C80DE /* libstdc++.6.0.9.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libstdc++.6.0.9.tbd"; path = "usr/lib/libstdc++.6.0.9.tbd"; sourceTree = SDKROOT; };
 		7837034C1C43E405006C80DE /* libicucore.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libicucore.tbd; path = usr/lib/libicucore.tbd; sourceTree = SDKROOT; };
+		7861D0271C4F8E7200B2F30D /* VideoShowItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VideoShowItem.h; sourceTree = "<group>"; };
+		7861D0281C4F8E7200B2F30D /* VideoShowItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VideoShowItem.m; sourceTree = "<group>"; };
 		78C5ECC41C4E447600193322 /* weixin@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "weixin@2x.png"; sourceTree = "<group>"; };
 		78C5ECC51C4E447600193322 /* weixin@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "weixin@3x.png"; sourceTree = "<group>"; };
 		78C5ECC81C4E45B300193322 /* copy_scuess@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "copy_scuess@2x.png"; sourceTree = "<group>"; };
@@ -1047,6 +1050,8 @@
 			children = (
 				7837022C1C43DF64006C80DE /* ReceiveCallViewController.h */,
 				7837022D1C43DF64006C80DE /* ReceiveCallViewController.m */,
+				7861D0271C4F8E7200B2F30D /* VideoShowItem.h */,
+				7861D0281C4F8E7200B2F30D /* VideoShowItem.m */,
 			);
 			path = Call;
 			sourceTree = "<group>";
@@ -1634,6 +1639,7 @@
 				783703241C43DF64006C80DE /* RoomAlertView.m in Sources */,
 				783702EA1C43DF64006C80DE /* Message.m in Sources */,
 				783703281C43DF64006C80DE /* LockerView.m in Sources */,
+				7861D0291C4F8E7200B2F30D /* VideoShowItem.m in Sources */,
 				783702DB1C43DF64006C80DE /* UIDevice+Category.m in Sources */,
 				7837032A1C43DF64006C80DE /* PushView.m in Sources */,
 				783702DE1C43DF64006C80DE /* UINavigationBar+Category.m in Sources */,

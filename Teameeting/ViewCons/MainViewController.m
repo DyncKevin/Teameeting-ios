@@ -593,7 +593,6 @@ static NSString *kRoomCellID = @"RoomCell";
                     if (weakSelf.dataArray.count>20) {
                         [weakSelf deleteRoomWithItem:[dataArray lastObject] withIndex:(dataArray.count -1)];
                     }
-                    
                     //this TMCMD_CREATE has deprecated
                     //[[TMMessageManage sharedManager] tmRoomCmd:TMCMD_CREATE Userid:nil pass:[ServerVisit shead].authorization roomid:[NSString stringWithFormat:@"%@",[[dict objectForKey:@"meetingInfo"] objectForKey:@"meetingid"]] remain:@""];
                 }
