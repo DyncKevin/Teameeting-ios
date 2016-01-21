@@ -12,6 +12,8 @@
 
 #import "GetRoomView.h"
 #import "VideoCallViewController.h"
+#import "VideoViewController.h"
+
 #import "ServerVisit.h"
 #import "SvUDIDTools.h"
 #import "ToolUtils.h"
@@ -464,7 +466,8 @@ static NSString *kRoomCellID = @"RoomCell";
                 [weakSelf deleteRoomWithItem:item withIndex:index];
             }else if ([[dict objectForKey:@"code"] integerValue] == 200){
                 dispatch_async(dispatch_get_main_queue(), ^{
-                    VideoCallViewController *video = [[VideoCallViewController alloc] init];
+                   // VideoCallViewController *video = [[VideoCallViewController alloc] init];
+                    VideoViewController *video = [[VideoViewController alloc] init];
                     video.roomItem = item;
                     UINavigationController *nai = [[UINavigationController alloc] initWithRootViewController:video];
                     [weakSelf presentViewController:nai animated:YES completion:^{

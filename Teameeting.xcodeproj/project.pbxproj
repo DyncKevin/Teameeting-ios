@@ -206,6 +206,7 @@
 		78C5ECC71C4E447600193322 /* weixin@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 78C5ECC51C4E447600193322 /* weixin@3x.png */; };
 		78C5ECCA1C4E45B300193322 /* copy_scuess@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 78C5ECC81C4E45B300193322 /* copy_scuess@2x.png */; };
 		78C5ECCB1C4E45B300193322 /* copy_scuess@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 78C5ECC91C4E45B300193322 /* copy_scuess@3x.png */; };
+		78FA86871C50731A00BAF72B /* VideoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 78FA86861C50731A00BAF72B /* VideoViewController.m */; };
 		EC157AD0B3A13035EAD046BB /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2E4CBCA8C81B4B1BFCC1872C /* libPods.a */; };
 		FC6A0F4A1C464B9400D8C56D /* TMessage.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = FC6A0F481C464B9400D8C56D /* TMessage.xcdatamodeld */; };
 		FCA4D5971C44F94D005CDF99 /* libanrtcsdk.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FCA4D5961C44F94D005CDF99 /* libanrtcsdk.a */; };
@@ -519,6 +520,8 @@
 		78C5ECC51C4E447600193322 /* weixin@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "weixin@3x.png"; sourceTree = "<group>"; };
 		78C5ECC81C4E45B300193322 /* copy_scuess@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "copy_scuess@2x.png"; sourceTree = "<group>"; };
 		78C5ECC91C4E45B300193322 /* copy_scuess@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "copy_scuess@3x.png"; sourceTree = "<group>"; };
+		78FA86851C50731A00BAF72B /* VideoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VideoViewController.h; sourceTree = "<group>"; };
+		78FA86861C50731A00BAF72B /* VideoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VideoViewController.m; sourceTree = "<group>"; };
 		DFBC29C224EA228C97676A8B /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		FC6A0F491C464B9400D8C56D /* TMessage.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = TMessage.xcdatamodel; sourceTree = "<group>"; };
 		FCA4D5961C44F94D005CDF99 /* libanrtcsdk.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libanrtcsdk.a; sourceTree = "<group>"; };
@@ -1041,6 +1044,8 @@
 				783702671C43DF64006C80DE /* UUChatTableView */,
 				7837026D1C43DF64006C80DE /* VideoCallViewController.h */,
 				7837026E1C43DF64006C80DE /* VideoCallViewController.m */,
+				78FA86851C50731A00BAF72B /* VideoViewController.h */,
+				78FA86861C50731A00BAF72B /* VideoViewController.m */,
 			);
 			path = VideoCallViewCon;
 			sourceTree = "<group>";
@@ -1620,6 +1625,7 @@
 				7837031D1C43DF64006C80DE /* UUMessageContentButton.m in Sources */,
 				7837031B1C43DF64006C80DE /* UUMessage.m in Sources */,
 				7837031E1C43DF64006C80DE /* UUMessageFrame.m in Sources */,
+				78FA86871C50731A00BAF72B /* VideoViewController.m in Sources */,
 				783702E31C43DF64006C80DE /* ErrorUtil.m in Sources */,
 				783703041C43DF64006C80DE /* MessageView.m in Sources */,
 				783703271C43DF64006C80DE /* GetRoomView.m in Sources */,

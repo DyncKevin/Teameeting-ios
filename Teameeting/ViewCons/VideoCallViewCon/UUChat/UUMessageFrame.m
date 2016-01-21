@@ -60,7 +60,7 @@
             break;
     }
     if (_message.from == UUMessageFromMe) {
-        contentX = screenW - contentSize.width - ChatContentRight*3;
+        contentX = screenW - contentSize.width - ChatContentRight*8;
         //contentX = iconX - contentSize.width - ChatContentLeft - ChatContentRight - ChatMargin;
     }
     _contentF = CGRectMake(contentX, contentY, contentSize.width + ChatContentLeft + ChatContentRight, contentSize.height + ChatContentTop + ChatContentBottom);

@@ -46,7 +46,9 @@ typedef enum ViewState {
 
 @interface VideoCallViewController ()<UINavigationControllerDelegate,LockerDelegate,MFMessageComposeViewControllerDelegate,UIGestureRecognizerDelegate>
 
-
+{
+    UITapGestureRecognizer *tapGesture;
+}
 @property(nonatomic,strong)UIControl *barView;
 @property(nonatomic,strong)UIControl *chatBarView;
 @property(nonatomic,strong)LockerView *menuView;
@@ -104,7 +106,7 @@ typedef enum ViewState {
     self.menuView = [[LockerView alloc] initWithFrame:CGRectMake(0, self.view.bounds.size.height - 90, 300, 60)];
     [self.menuView setCenter:CGPointMake(self.view.bounds.size.width/2, self.menuView.center.y)];
     self.menuView.delegate = self;
-    UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapEvent)];
+    tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapEvent)];
     tapGesture.delegate = self;
     [self.view addGestureRecognizer:tapGesture];
     if (ISIPAD) {
@@ -141,13 +143,14 @@ typedef enum ViewState {
     
     self.noUserTip = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width - 80, 80)];
     [self.noUserTip setUserInteractionEnabled:NO];
-    self.noUserTip.shadowColor = [UIColor lightGrayColor];
-    self.noUserTip.shadowOffset = CGSizeMake(0, -1.0);
+    self.noUserTip.shadowColor = [UIColor blackColor];
+    self.noUserTip.shadowOffset = CGSizeMake(0, -0.5);
     [self.noUserTip setTextColor:[UIColor whiteColor]];
     [self.noUserTip setNumberOfLines:0];
+    self.noUserTip.font = [UIFont boldSystemFontOfSize:20];
     [self.noUserTip setTextAlignment:NSTextAlignmentCenter];
     self.noUserTip.text = @"等待别人进入房间";
-    [self.noUserTip setCenter:CGPointMake(self.view.bounds.size.width/2, CGRectGetMidY(self.menuView.frame) - 80)];
+    [self.noUserTip setCenter:CGPointMake(self.view.bounds.size.width/2, CGRectGetMinY(self.menuView.frame) - 80)];
     self.callViewCon.view.frame = self.view.bounds;
     [self.view addSubview:self.callViewCon.view];
     [self.view addSubview:self.noUserTip];
