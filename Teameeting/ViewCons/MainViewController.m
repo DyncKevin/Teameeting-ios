@@ -72,6 +72,8 @@ static NSString *kRoomCellID = @"RoomCell";
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+
+    [[UIApplication sharedApplication] setStatusBarHidden:NO];
     if (self.dataArray.count!=0) {
         [self getNotReadMessageNum];
     }
@@ -681,6 +683,9 @@ static NSString *kRoomCellID = @"RoomCell";
             [self.roomList beginUpdates];
             [self.roomList deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:index inSection:0]] withRowAnimation:UITableViewRowAnimationAutomatic];
             [self.roomList endUpdates];
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                [self.roomList reloadData];
+            });
         }
         
         NtreatedData *data = [[NtreatedData alloc] init];
@@ -988,6 +993,7 @@ static NSString *kRoomCellID = @"RoomCell";
 
 - (void)getRoomWithRoomName:(NSString*)roomName withPrivateMetting:(BOOL)isPrivate
 {
+     self.inputButton.hidden = NO;
     [self addRoomWithRoomName:roomName withPrivate:isPrivate];
     
 }

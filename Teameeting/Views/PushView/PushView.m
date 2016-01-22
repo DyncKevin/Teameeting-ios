@@ -983,6 +983,16 @@
                 [delegate pushViewDelegateRoom:roomItem withIndex:self.index];
             }
         }
+    }else if (lastPushViewType == PushViewTypeSettingConferee){
+        if (index == 0) {
+            if ([delegate respondsToSelector:@selector(pushViewJoinRoom:)]) {
+                [delegate pushViewJoinRoom:roomItem];
+            }
+        }else if (index == 6){
+            if ([delegate respondsToSelector:@selector(pushViewDelegateRoom:withIndex:)]) {
+                [delegate pushViewDelegateRoom:roomItem withIndex:self.index];
+            }
+        }
     }
 }
 

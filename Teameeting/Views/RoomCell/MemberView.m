@@ -64,13 +64,13 @@
     
     NSLayoutConstraint * constraint7 = [NSLayoutConstraint constraintWithItem:_numberLabel attribute:NSLayoutAttributeRight relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeRight multiplier:1.0f constant:.0f];
     
-    NSLayoutConstraint * constraint8 = [NSLayoutConstraint constraintWithItem:_notificationImageView attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeHeight multiplier:0.85f constant:0.f];
+    NSLayoutConstraint * constraint8 = [NSLayoutConstraint constraintWithItem:_notificationImageView attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeHeight multiplier:0.9f constant:0.f];
     
     NSLayoutConstraint * constraint9 = [NSLayoutConstraint constraintWithItem:_notificationImageView attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeHeight multiplier:0.85f constant: .0f];
     
-    NSLayoutConstraint * constraint10 = [NSLayoutConstraint constraintWithItem:_notificationImageView attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeCenterX multiplier:1.0f constant:0];
+    NSLayoutConstraint * constraint10 = [NSLayoutConstraint constraintWithItem:_notificationImageView attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeCenterY multiplier:1.0f constant:0];
     
-    NSLayoutConstraint * constraint11 = [NSLayoutConstraint constraintWithItem:_notificationImageView attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeCenterY multiplier:1.0f constant:.0f];
+    NSLayoutConstraint * constraint11 = [NSLayoutConstraint constraintWithItem:_notificationImageView attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeLeft multiplier:1.0f constant:.0f];
     
     
     [self addConstraint:constraint];

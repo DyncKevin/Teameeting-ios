@@ -111,6 +111,7 @@
         [button setBackgroundImage:[UIImage imageNamed:@"video"] forState:UIControlStateNormal];
         [[NSNotificationCenter defaultCenter] postNotificationName:OPENVIDEO object:nil];
         self.originButton.selected = NO;
+        self.closeVideoButton.isSelect = NO;
         return;
         
     }

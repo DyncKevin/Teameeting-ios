@@ -9,7 +9,7 @@
 #import "VideoShowItem.h"
 @interface VideoShowItem()
 @property (nonatomic, strong) UIImageView *micImageView;
-@property (nonatomic, strong) UIView *videoHiddenView;
+@property (nonatomic, strong) UIImageView *videoHiddenView;
 @property (nonatomic, strong) UIImageView *videoHiddenImageView;
 @property (nonatomic, strong) NSLayoutConstraint * constraintTop;
 @property (nonatomic, strong) NSLayoutConstraint * constraintRight;
@@ -49,14 +49,14 @@
     
     [_showVideoView addObserver:self forKeyPath:@"frame" options:NSKeyValueObservingOptionNew context:nil];
     
-    self.videoHiddenView = [UIView new];
-    self.videoHiddenView.backgroundColor = [UIColor blackColor];
+    self.videoHiddenView = [UIImageView new];
+    self.videoHiddenView.backgroundColor = [UIColor grayColor];
     [_showVideoView addSubview:self.videoHiddenView];
     _videoHiddenView.hidden = YES;
     
     self.videoHiddenImageView = [UIImageView new];
-    self.videoHiddenImageView.backgroundColor = [UIColor redColor];
-    self.videoHiddenImageView.image = [UIImage imageNamed:@""];
+    self.videoHiddenImageView.backgroundColor = [UIColor clearColor];
+    self.videoHiddenImageView.image = [UIImage imageNamed:@"no_video_show"];
     [_videoHiddenView addSubview:self.videoHiddenImageView];
     
     self.micImageView = [UIImageView new];

@@ -138,6 +138,7 @@
         [pramas setStreamType:kSTRtc];
         [_client Publish:pramas];
     }
+    _audioManager = [[AvcAudioRouteMgr alloc] init];
 }
 
 - (void)videoSubscribeWith:(NSString *)publishId action:(NSInteger)action {
@@ -369,9 +370,9 @@
             localViewheight = localViewwidth/scalelocal;
             remoteViewWidth = 120;
         }else{
-            localViewwidth = self.view.bounds.size.width/6;
+            localViewwidth = 60;
             localViewheight = localViewwidth/scalelocal;
-            remoteViewWidth = self.view.bounds.size.width/6;
+            remoteViewWidth = 60;
         }
         
         CGFloat x = (self.view.bounds.size.width - (_dicRemoteVideoView.count-1)*remoteViewWidth - localViewwidth)/2;
@@ -488,7 +489,7 @@
         if (ISIPAD) {
             remoteViewWidth = 120;
         }else{
-            remoteViewWidth = self.view.bounds.size.width/6;
+            remoteViewWidth = 60;
         }
         CGFloat remoteViewHeight = 0.0;
         
@@ -668,7 +669,9 @@
  *  @param strTag  该通道标识符
  */
 - (void) OnRtcInRemoveView:(UIView *)removeView  withTag:(NSString *)strTag {
-    
+    if (![_audioManager _isSpeakerOn]) {
+        [_audioManager setSpeakerOn];
+    }
     VideoShowItem* findView = [_dicRemoteVideoView objectForKey:strTag];
     if (findView.showVideoView == removeView) {
         return;

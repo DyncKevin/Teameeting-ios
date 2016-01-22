@@ -343,7 +343,7 @@
     
     UIImageView *bottomBar = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"sharebackgroud"]];
     bottomBar.autoresizingMask = UIViewContentModeBottom;
-    bottomBar.backgroundColor = [UIColor redColor];
+    bottomBar.backgroundColor = [UIColor clearColor];
     [shareView addSubview:bottomBar];
     
     UILabel *messageTitle = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 100, 30)];
@@ -372,14 +372,7 @@
     [shareView addSubview:descriptionTitle];
     
     UILabel *linkTitle = [[UILabel alloc] initWithFrame:CGRectZero];
-    if (ISIPAD) {
-        
-        [linkTitle setFrame:CGRectMake(0, 0, shareView.bounds.size.width - (isVertical ? 60 : 80), 56)];
-        
-    } else {
-        
-        [linkTitle setFrame:CGRectMake(0, 0, shareView.bounds.size.width - (isVertical ? 75 : 120), 56)];
-    }
+    [linkTitle setFrame:CGRectMake(0, 0, shareView.bounds.size.width - (isVertical ? 60 : 80), (isVertical ? 56 : 45))];
     linkTitle.lineBreakMode = NSLineBreakByTruncatingMiddle;
     [linkTitle setFont:[UIFont systemFontOfSize:14]];
     linkTitle.text = [NSString stringWithFormat:@"http://115.28.70.232/share_meetingRoom/%@",self.roomItem.roomID];
@@ -392,7 +385,7 @@
     [copyLink setTitle:@"拷贝" forState:UIControlStateNormal];
     [copyLink addTarget:self action:@selector(copyLineButtonEvent:) forControlEvents:UIControlEventTouchUpInside];
     [copyLink setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [copyLink setBackgroundColor:[UIColor clearColor]];
+    [copyLink setBackgroundColor:[UIColor blackColor]];
     [shareView addSubview:copyLink];
     
     if (!isVertical) {
@@ -400,26 +393,24 @@
         [title setCenter:CGPointMake(shareView.bounds.size.width/2, 40)];
         messageImage.center = CGPointMake(shareView.bounds.size.width/2 - 40, CGRectGetMaxY(title.frame) + 30);
         mailImage.center = CGPointMake(shareView.bounds.size.width/2 + 40, CGRectGetMaxY(title.frame) + 30);
-        bottomBar.frame = CGRectMake(0, shareView.bounds.size.height - 36, shareView.bounds.size.width +1, 36);
+        bottomBar.frame = CGRectMake(0, shareView.bounds.size.height - 45, shareView.bounds.size.width-80, 45);
         [messageTitle setCenter:CGPointMake(messageImage.center.x, CGRectGetMaxY(messageImage.frame) + 15)];
         [mailTitle setCenter:CGPointMake(mailImage.center.x, CGRectGetMaxY(mailImage.frame) + 15)];
         [descriptionTitle setCenter:CGPointMake(shareView.bounds.size.width/2, CGRectGetMaxY(mailTitle.frame) + 45)];
-        [linkTitle setCenter:CGPointMake(linkTitle.center.x, shareView.bounds.size.height - 20)];
-        [copyLink setFrame:CGRectMake(CGRectGetMaxX(linkTitle.frame), 0, shareView.bounds.size.width - CGRectGetMaxX(linkTitle.frame), 45)];
-        [copyLink setCenter:CGPointMake(copyLink.center.x, shareView.bounds.size.height - 20)];
+        [linkTitle setFrame:CGRectMake(0, shareView.bounds.size.height- linkTitle.bounds.size.height,linkTitle.bounds.size.width, linkTitle.bounds.size.height)];
+        [copyLink setFrame:CGRectMake(CGRectGetMaxX(linkTitle.frame),CGRectGetHeight(shareView.frame)-45, shareView.bounds.size.width - CGRectGetMaxX(linkTitle.frame), 45)];
         
     }  else {
         
         [title setCenter:CGPointMake(shareView.bounds.size.width/2, 60)];
         messageImage.center = CGPointMake(shareView.bounds.size.width/2 - 40, CGRectGetMaxY(title.frame) + 50);
         mailImage.center = CGPointMake(shareView.bounds.size.width/2 + 40, CGRectGetMaxY(title.frame) + 50);
-        bottomBar.frame = CGRectMake(0, shareView.bounds.size.height - 56, shareView.bounds.size.width +1, 56);
+        bottomBar.frame = CGRectMake(0, shareView.bounds.size.height - 56, shareView.bounds.size.width -60, 56);
         [messageTitle setCenter:CGPointMake(messageImage.center.x, CGRectGetMaxY(messageImage.frame) + 15)];
         [mailTitle setCenter:CGPointMake(mailImage.center.x, CGRectGetMaxY(mailImage.frame) + 15)];
         [descriptionTitle setCenter:CGPointMake(shareView.bounds.size.width/2, CGRectGetMaxY(mailTitle.frame) + 55)];
-        [linkTitle setCenter:CGPointMake(linkTitle.center.x, shareView.bounds.size.height - 30)];
-        [copyLink setFrame:CGRectMake(CGRectGetMaxX(linkTitle.frame), 0, shareView.bounds.size.width - CGRectGetMaxX(linkTitle.frame), 56)];
-        [copyLink setCenter:CGPointMake(copyLink.center.x, shareView.bounds.size.height - 30)];
+        [linkTitle setFrame:CGRectMake(0, shareView.bounds.size.height- linkTitle.bounds.size.height,linkTitle.bounds.size.width, linkTitle.bounds.size.height)];
+        [copyLink setFrame:CGRectMake(CGRectGetMaxX(linkTitle.frame), CGRectGetHeight(shareView.frame)-56, shareView.bounds.size.width - CGRectGetMaxX(linkTitle.frame), 56)];
         
     }
     if (self.popver) {
@@ -431,30 +422,14 @@
     self.popver.sideEdge = 15;
     self.popver.arrowSize = CGSizeMake(15, 15);
     
-    if (ISIPAD) {
-        
-        if (!isVertical) {
-            
-            [self.popver showAtPoint:CGPointMake(self.view.bounds.size.width - 25, 65) popoverPostion:DXPopoverPositionDown withContentView:shareView inView:self.navigationController.view];
-            
-        } else {
-            
-            [self.popver showAtPoint:CGPointMake(self.view.bounds.size.width - 25, 65) popoverPostion:DXPopoverPositionDown withContentView:shareView inView:self.navigationController.view];
-            
-        }
-        
-    } else {
-        
-        if (!isVertical) {
-            
-            [self.popver showAtPoint:CGPointMake(self.view.bounds.size.width - 25, 32) popoverPostion:DXPopoverPositionDown withContentView:shareView inView:self.navigationController.view];
-            
-        } else {
-            
-            [self.popver showAtPoint:CGPointMake(self.view.bounds.size.width - 25, 65) popoverPostion:DXPopoverPositionDown withContentView:shareView inView:self.navigationController.view];
-            
-        }
+    CGPoint startPoint;
+    if ([[UIApplication sharedApplication] isStatusBarHidden]) {
+         startPoint = CGPointMake(self.view.bounds.size.width - 25, CGRectGetHeight(self.navigationController.navigationBar.bounds)+5);
+    }else{
+        startPoint = CGPointMake(self.view.bounds.size.width - 25, CGRectGetHeight(self.navigationController.navigationBar.bounds)+25);
     }
+   
+      [self.popver showAtPoint:startPoint popoverPostion:DXPopoverPositionDown withContentView:shareView inView:self.navigationController.view];
 }
 
 
@@ -731,6 +706,32 @@
     }else
         return NO;
 }
+- (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+{
+    if (self.popver) {
+        [self.popver dismiss];
+        self.popver = nil;
+    }
+}
+
+
+//NS_AVAILABLE_IOS(8_0);
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id <UIViewControllerTransitionCoordinator>)coordinator
+{
+    [coordinator animateAlongsideTransition:^(id<UIViewControllerTransitionCoordinatorContext> context)
+     {
+         if (self.popver) {
+             [self.popver dismiss];
+             self.popver = nil;
+         }
+         
+     } completion:^(id<UIViewControllerTransitionCoordinatorContext> context)
+     {
+     }];
+    
+    [super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
+}
+
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
