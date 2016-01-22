@@ -60,7 +60,7 @@
     [_videoHiddenView addSubview:self.videoHiddenImageView];
     
     self.micImageView = [UIImageView new];
-    self.micImageView.backgroundColor = [UIColor blueColor];
+    self.micImageView.backgroundColor = [UIColor clearColor];
     self.micImageView.image = [UIImage imageNamed:@"micState"];
     [_showVideoView addSubview:self.micImageView];
     self.micImageView.hidden = YES;
@@ -127,17 +127,47 @@
                  if (_showVideoView.frame.size.height>[UIScreen mainScreen].bounds.size.height) {
                      [self.constraintTop setConstant:(_showVideoView.frame.size.height -[UIScreen mainScreen].bounds.size.height)/2];
                  }else{
-                     [self.constraintTop setConstant:0.0f];
+                     [self.constraintTop setConstant:[UIScreen mainScreen].bounds.size.height -_showVideoView.frame.size.height];
                  }
              }else{
                  
                  if (_showVideoView.frame.size.height>[UIScreen mainScreen].bounds.size.height) {
-                     [self.constraintTop setConstant:(_showVideoView.frame.size.height -[UIScreen mainScreen].bounds.size.height)/2+64];
+                     if ([[UIApplication sharedApplication] isStatusBarHidden]) {
+                         if (ISIPAD) {
+                             [self.constraintTop setConstant:(_showVideoView.frame.size.height -[UIScreen mainScreen].bounds.size.height)/2+64];
+                         }else{
+                             [self.constraintTop setConstant:(_showVideoView.frame.size.height -[UIScreen mainScreen].bounds.size.height)/2+44];
+                         }
+                         
+                     }else{
+                         [self.constraintTop setConstant:(_showVideoView.frame.size.height -[UIScreen mainScreen].bounds.size.height)/2+64];
+                     }
+                    
                  }else{
                      if (_showVideoView.superview.bounds.size.width>_showVideoView.superview.bounds.size.height) {
-                          [self.constraintTop setConstant:(_showVideoView.frame.size.height -[UIScreen mainScreen].bounds.size.height)/2+64];
+                         if ([[UIApplication sharedApplication] isStatusBarHidden]) {
+                             if (ISIPAD) {
+                                 [self.constraintTop setConstant:(_showVideoView.frame.size.height -[UIScreen mainScreen].bounds.size.height)/2+64];
+                             }else{
+                                 [self.constraintTop setConstant:(_showVideoView.frame.size.height -[UIScreen mainScreen].bounds.size.height)/2+44];
+                             }
+                             
+                         }else{
+                             [self.constraintTop setConstant:(_showVideoView.frame.size.height -[UIScreen mainScreen].bounds.size.height)/2+64];
+                         }
+                         
                      }else{
-                          [self.constraintTop setConstant:64.0f];
+                         if ([[UIApplication sharedApplication] isStatusBarHidden]) {
+                             if (ISIPAD) {
+                                  [self.constraintTop setConstant:64.0f];
+                             }else{
+                                  [self.constraintTop setConstant:44.0f];
+                             }
+                            
+                         }else{
+                            [self.constraintTop setConstant:64.0f];
+                         }
+                         
                      }
                     
                  }

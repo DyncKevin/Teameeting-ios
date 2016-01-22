@@ -201,6 +201,8 @@
 		783703491C43E3F5006C80DE /* libstdc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 783703481C43E3F5006C80DE /* libstdc++.tbd */; };
 		7837034B1C43E3FC006C80DE /* libstdc++.6.0.9.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 7837034A1C43E3FC006C80DE /* libstdc++.6.0.9.tbd */; };
 		7837034D1C43E405006C80DE /* libicucore.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 7837034C1C43E405006C80DE /* libicucore.tbd */; };
+		785643E71C50D3EC00836850 /* AnimatedTransitioning.m in Sources */ = {isa = PBXBuildFile; fileRef = 785643E41C50D3EC00836850 /* AnimatedTransitioning.m */; };
+		785643E81C50D3EC00836850 /* TransitionDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 785643E61C50D3EC00836850 /* TransitionDelegate.m */; };
 		7861D0291C4F8E7200B2F30D /* VideoShowItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 7861D0281C4F8E7200B2F30D /* VideoShowItem.m */; };
 		78C5ECC61C4E447600193322 /* weixin@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 78C5ECC41C4E447600193322 /* weixin@2x.png */; };
 		78C5ECC71C4E447600193322 /* weixin@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 78C5ECC51C4E447600193322 /* weixin@3x.png */; };
@@ -514,6 +516,10 @@
 		783703481C43E3F5006C80DE /* libstdc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libstdc++.tbd"; path = "usr/lib/libstdc++.tbd"; sourceTree = SDKROOT; };
 		7837034A1C43E3FC006C80DE /* libstdc++.6.0.9.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libstdc++.6.0.9.tbd"; path = "usr/lib/libstdc++.6.0.9.tbd"; sourceTree = SDKROOT; };
 		7837034C1C43E405006C80DE /* libicucore.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libicucore.tbd; path = usr/lib/libicucore.tbd; sourceTree = SDKROOT; };
+		785643E31C50D3EC00836850 /* AnimatedTransitioning.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AnimatedTransitioning.h; sourceTree = "<group>"; };
+		785643E41C50D3EC00836850 /* AnimatedTransitioning.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AnimatedTransitioning.m; sourceTree = "<group>"; };
+		785643E51C50D3EC00836850 /* TransitionDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TransitionDelegate.h; sourceTree = "<group>"; };
+		785643E61C50D3EC00836850 /* TransitionDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TransitionDelegate.m; sourceTree = "<group>"; };
 		7861D0271C4F8E7200B2F30D /* VideoShowItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VideoShowItem.h; sourceTree = "<group>"; };
 		7861D0281C4F8E7200B2F30D /* VideoShowItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VideoShowItem.m; sourceTree = "<group>"; };
 		78C5ECC41C4E447600193322 /* weixin@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "weixin@2x.png"; sourceTree = "<group>"; };
@@ -794,6 +800,7 @@
 		783701C01C43DF64006C80DE /* Tool */ = {
 			isa = PBXGroup;
 			children = (
+				785643E21C50D3EC00836850 /* TransitionDelegate */,
 				783701C11C43DF64006C80DE /* ASProgressHUD */,
 				783701C41C43DF64006C80DE /* Base64Util */,
 				783701CA1C43DF64006C80DE /* Category */,
@@ -1275,6 +1282,17 @@
 			path = RoomCell;
 			sourceTree = "<group>";
 		};
+		785643E21C50D3EC00836850 /* TransitionDelegate */ = {
+			isa = PBXGroup;
+			children = (
+				785643E31C50D3EC00836850 /* AnimatedTransitioning.h */,
+				785643E41C50D3EC00836850 /* AnimatedTransitioning.m */,
+				785643E51C50D3EC00836850 /* TransitionDelegate.h */,
+				785643E61C50D3EC00836850 /* TransitionDelegate.m */,
+			);
+			path = TransitionDelegate;
+			sourceTree = "<group>";
+		};
 		A8A98EB2C59EDD5F8E7C4717 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -1659,6 +1677,7 @@
 				783702FD1C43DF64006C80DE /* ReceiveCallViewController.m in Sources */,
 				783702F01C43DF64006C80DE /* TimeManager.m in Sources */,
 				783702DD1C43DF64006C80DE /* UILabel+Category.m in Sources */,
+				785643E71C50D3EC00836850 /* AnimatedTransitioning.m in Sources */,
 				7810288E1C48DA2200CD9FA6 /* ASBadgeView.m in Sources */,
 				783701361C43DDFB006C80DE /* main.m in Sources */,
 				783702DF1C43DF64006C80DE /* UIView+Category.m in Sources */,
@@ -1679,6 +1698,7 @@
 				781F6E141C44C5E200026160 /* RoomNameView.m in Sources */,
 				783703291C43DF64006C80DE /* NavView.m in Sources */,
 				783702E01C43DF64006C80DE /* EmptyViewFactory.m in Sources */,
+				785643E81C50D3EC00836850 /* TransitionDelegate.m in Sources */,
 				783702E71C43DF64006C80DE /* ServerVisit.m in Sources */,
 				783702FB1C43DF64006C80DE /* BaseViewController.m in Sources */,
 			);

@@ -22,7 +22,6 @@
     VideoShowItem *_localVideoView;
     
     CGSize _localVideoSize;
-    CGSize _videoSize;
     
     NSString *_peerSelectedId;
     NSString *_peerOldSelectedId;
@@ -129,6 +128,7 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationWillResignActive) name:UIApplicationWillResignActiveNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidBecomeActive) name:UIApplicationDidBecomeActiveNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(fullSreenNoti:) name:@"FULLSCREEN" object:nil];
+     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(chatViewNoti:) name:@"TALKCHAT_NOTIFICATION" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(rotateChange:) name:@"ROTATECHANGE" object:nil];
 
     {//@Eric - Publish myself
@@ -164,6 +164,22 @@
     
     //[self.videosScrollView setContentSize:CGSizeMake([[noti object] integerValue], 300)];
     //[self.videosScrollView setContentOffset:CGPointMake(self.videosScrollView.contentSize.width/4, 0)];
+}
+
+- (void)chatViewNoti:(NSNotification*)noti
+{
+    BOOL isChat = [noti.object boolValue];
+    if (isChat) {
+        [UIView animateWithDuration:0.2 animations:^{
+            
+            self.videosScrollView.frame = CGRectMake(self.videosScrollView.frame.origin.x, self.view.bounds.size.height - 180, self.view.bounds.size.width, 180);
+        }];
+    }else{
+        [UIView animateWithDuration:0.2 animations:^{
+            
+            self.videosScrollView.frame = CGRectMake(self.videosScrollView.frame.origin.x, self.view.bounds.size.height - 280, self.view.bounds.size.width, 180);
+        }];
+    }
 }
 
 - (void)fullSreenNoti:(NSNotification *)noti {
@@ -343,13 +359,20 @@
         [self.view sendSubviewToBack:view.showVideoView];
         
         CGFloat scalelocal = _localVideoSize.width/_localVideoSize.height;
-        CGFloat localViewwidth = self.view.bounds.size.width/4;
-        CGFloat localViewheight = localViewwidth/scalelocal;
+        CGFloat localViewwidth =0.0;
+        CGFloat localViewheight =0.0;
         
         CGFloat remoteViewHeight = 0.0;
         CGFloat remoteViewWidth = 0.0;
-    
-        remoteViewWidth = self.view.bounds.size.width/4;
+        if (ISIPAD) {
+            localViewwidth = 120;
+            localViewheight = localViewwidth/scalelocal;
+            remoteViewWidth = 120;
+        }else{
+            localViewwidth = self.view.bounds.size.width/6;
+            localViewheight = localViewwidth/scalelocal;
+            remoteViewWidth = self.view.bounds.size.width/6;
+        }
         
         CGFloat x = (self.view.bounds.size.width - (_dicRemoteVideoView.count-1)*remoteViewWidth - localViewwidth)/2;
         CGFloat y = 180;//self.view.bounds.size.height - localViewheight - 20;
@@ -461,7 +484,12 @@
         [self.view sendSubviewToBack:_localVideoView.showVideoView];
     
 
-        CGFloat remoteViewWidth = self.view.bounds.size.width/4;
+        CGFloat remoteViewWidth = 0.0;
+        if (ISIPAD) {
+            remoteViewWidth = 120;
+        }else{
+            remoteViewWidth = self.view.bounds.size.width/6;
+        }
         CGFloat remoteViewHeight = 0.0;
         
         CGFloat x = self.view.bounds.size.width - _dicRemoteVideoView.count*remoteViewWidth -20;
@@ -622,7 +650,6 @@
     if (videoView == _localVideoView.showVideoView) {
         _localVideoSize = size;
     }else{
-        _videoSize = size;
         for (NSString *strTag in [_dicRemoteVideoView allKeys]) {
            VideoShowItem *remoteView = (VideoShowItem*)[_dicRemoteVideoView objectForKey:strTag];
             if (remoteView.showVideoView == videoView) {
@@ -630,7 +657,7 @@
                 break;
             }
         }
-        NSLog(@"OnRtcVideoView:%f %f",_videoSize.width,_videoSize.height);
+        NSLog(@"OnRtcVideoView:%f %f",size.width,size.height);
     }
     [self layoutSubView];
     

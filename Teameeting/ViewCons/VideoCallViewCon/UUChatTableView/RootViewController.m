@@ -31,6 +31,10 @@
     UUInputFunctionView *IFView;
 }
 
+- (void)dealloc
+{
+    
+}
 
 - (void)viewWillAppear:(BOOL)animated {
     
@@ -65,9 +69,12 @@
 
 - (void)closeChatView
 {
+  
     if (self.closeRootViewBlock) {
         self.closeRootViewBlock();
     }
+    
+    [self.navigationController dismissViewControllerAnimated:NO completion:nil];
 }
 - (void)viewDidAppear:(BOOL)animated
 {
@@ -78,6 +85,25 @@
 {
     [super viewWillDisappear:animated];
     [[NSNotificationCenter defaultCenter]removeObserver:self];
+    [[TMMessageManage sharedManager] removeMessageListener:self];
+    [IFView removeFromSuperview];
+    IFView = nil;
+    if (self.chatTableView) {
+        self.chatTableView = nil;
+    }
+   
+}
+
+- (void)viewDidLayoutSubviews
+{
+    [super viewDidLayoutSubviews];
+    if (!ISIPAD) {
+        if (self.view.bounds.size.width>self.view.bounds.size.height) {
+             [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationNone];
+        }else{
+             [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationNone];
+        }
+    }
 }
 
 - (void)initBar
@@ -136,7 +162,7 @@
         [self.chatTableView reloadData];
     }
     if (isFirst) {
-         [self performSelector:@selector(tableViewScrollToBottom) withObject:nil afterDelay:0.3];
+         [self performSelector:@selector(tableViewScrollToBottom) withObject:nil afterDelay:0.0];
     }
    
 }

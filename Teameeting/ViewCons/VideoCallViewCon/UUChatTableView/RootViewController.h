@@ -15,7 +15,7 @@
 
 
 //@property(nonatomic,assign)VideoCallViewController *parentViewCon;
-@property (nonatomic, copy)void(^closeRootViewBlock)(void);
+@property (nonatomic, strong)void(^closeRootViewBlock)(void);
 @property (nonatomic, assign)VideoViewController *parentViewCon;
 - (void)resetInputFrame:(CGRect)rect;
 - (void)hidenInput;

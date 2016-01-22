@@ -67,6 +67,7 @@
         [self addSubview:self.btnVoiceRecord];
         
         //输入框
+        //self.TextViewInput = [UITextView new];
         self.TextViewInput = [[UITextView alloc]initWithFrame:CGRectMake(10, 5, superVC.view.bounds.size.width - 55, 30)];
         //self.TextViewInput.layer.cornerRadius = 4;
         //self.TextViewInput.layer.masksToBounds = YES;
@@ -77,11 +78,13 @@
         
         //输入框的提示语
         placeHold = [[UILabel alloc]initWithFrame:CGRectMake(20, 0, 200, 30)];
+        //placeHold = [UILabel new];
         placeHold.text = @"Send a message";
         placeHold.font = [UIFont systemFontOfSize:13];
         placeHold.textColor = [[UIColor lightGrayColor] colorWithAlphaComponent:0.8];
         [self.TextViewInput addSubview:placeHold];
         [self addSubview:self.btnSendMessage];
+            //[self layout];
         //分割线
         self.layer.borderWidth = 1;
         self.layer.borderColor = [[UIColor lightGrayColor] colorWithAlphaComponent:0.3].CGColor;
@@ -92,6 +95,43 @@
     return self;
 }
 
+- (void)layout
+{
+    self.btnSendMessage.translatesAutoresizingMaskIntoConstraints = NO;
+    self.TextViewInput.translatesAutoresizingMaskIntoConstraints = NO;
+    placeHold.translatesAutoresizingMaskIntoConstraints = NO;
+    
+    // btnSendMessage
+    NSLayoutConstraint * constraint = [NSLayoutConstraint constraintWithItem:_btnSendMessage attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeHeight multiplier:0.8f constant:0.0f];
+    NSLayoutConstraint * constraint1 = [NSLayoutConstraint constraintWithItem:_btnSendMessage attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0f constant:60.0f];
+    NSLayoutConstraint * constraint2 = [NSLayoutConstraint constraintWithItem:_btnSendMessage attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeCenterX multiplier:1.0f constant:0.0f];
+    NSLayoutConstraint * constraint3 = [NSLayoutConstraint constraintWithItem:_btnSendMessage attribute:NSLayoutAttributeRight relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeRight multiplier:1.0f constant:0.0f];
+    [self addConstraint:constraint];
+    [self addConstraint:constraint1];
+    [self addConstraint:constraint2];
+    [self addConstraint:constraint3];
+    
+    // TextViewInput
+    NSLayoutConstraint * constraint4 = [NSLayoutConstraint constraintWithItem:_TextViewInput attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeHeight multiplier:1.0f constant:0.0f];
+    NSLayoutConstraint * constraint5 = [NSLayoutConstraint constraintWithItem:_TextViewInput attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeWidth multiplier:1.0f constant:-70.0f];
+    NSLayoutConstraint * constraint6 = [NSLayoutConstraint constraintWithItem:_TextViewInput attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeCenterX multiplier:1.0f constant:0.0f];
+    NSLayoutConstraint * constraint7 = [NSLayoutConstraint constraintWithItem:_TextViewInput attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeLeft multiplier:1.0f constant:5.0f];
+    [self addConstraint:constraint4];
+    [self addConstraint:constraint5];
+    [self addConstraint:constraint6];
+    [self addConstraint:constraint7];
+    
+    // placeHold
+    NSLayoutConstraint * constraint8 = [NSLayoutConstraint constraintWithItem:placeHold attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:_TextViewInput attribute:NSLayoutAttributeHeight multiplier:1.0f constant:0.0f];
+    NSLayoutConstraint * constraint9 = [NSLayoutConstraint constraintWithItem:placeHold attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:_TextViewInput attribute:NSLayoutAttributeWidth multiplier:0.8f constant:0.0f];
+    NSLayoutConstraint * constraint10 = [NSLayoutConstraint constraintWithItem:placeHold attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:_TextViewInput attribute:NSLayoutAttributeCenterX multiplier:1.0f constant:0.0f];
+    NSLayoutConstraint * constraint11 = [NSLayoutConstraint constraintWithItem:placeHold attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:_TextViewInput attribute:NSLayoutAttributeLeft multiplier:1.0f constant:5.0f];
+    [_TextViewInput addConstraint:constraint8];
+    [_TextViewInput addConstraint:constraint9];
+    [_TextViewInput addConstraint:constraint10];
+    [_TextViewInput addConstraint:constraint11];
+    
+}
 #pragma mark - 录音touch事件
 - (void)beginRecordVoice:(UIButton *)button
 {
@@ -273,6 +313,7 @@
 
 -(void)dealloc{
     [[NSNotificationCenter defaultCenter]removeObserver:self];
+    self.superVC = nil;
 }
 
 @end

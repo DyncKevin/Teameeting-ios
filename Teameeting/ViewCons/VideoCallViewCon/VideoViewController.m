@@ -17,6 +17,7 @@
 #import "WXApi.h"
 #import <MessageUI/MFMessageComposeViewController.h>
 #import "ASHUD.h"
+#import "TransitionDelegate.h"
 
 @interface VideoViewController ()<UIGestureRecognizerDelegate,LockerDelegate,MFMessageComposeViewControllerDelegate>
 {
@@ -30,8 +31,9 @@
 @property (nonatomic, strong) UILabel *noUserTip;
 
 @property (nonatomic, assign) BOOL isChat;
-@property (nonatomic,strong) UINavigationController *talkNav;
+@property (nonatomic, strong) UINavigationController *talkNav;
 @property (nonatomic, assign) BOOL isFullScreen;
+@property (nonatomic, strong) TransitionDelegate *transDelegate;
 
 @end
 
@@ -101,6 +103,8 @@
         rightswipeGestureRecognizer.direction = UISwipeGestureRecognizerDirectionRight;
         [self.view addGestureRecognizer:rightswipeGestureRecognizer];
         
+    }else{
+         _transDelegate = [[TransitionDelegate alloc] init];
     }
     self.noUserTip = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width - 80, 50)];
     [self.noUserTip setUserInteractionEnabled:NO];
@@ -115,7 +119,7 @@
     self.callViewCon.view.frame = self.view.bounds;
     [self.view addSubview:self.callViewCon.view];
     [self.view addSubview:self.noUserTip];
-    // [self.view addSubview:self.micStateImage];
+     [self.view addSubview:self.menuView];
     [self performSelector:@selector(loadTableView) withObject:nil afterDelay:0.1];
     
     // check out no read messages
@@ -151,28 +155,23 @@
         
         [self.menuView setCenter:CGPointMake(self.view.bounds.size.width/2, self.isFullScreen == YES ? (self.view.bounds.size.height + self.menuView.bounds.size.height) : (self.view.bounds.size.height - self.menuView.bounds.size.height))];
         [self.noUserTip setCenter:CGPointMake(self.view.bounds.size.width/2, self.isFullScreen == YES ? (self.view.bounds.size.height + self.noUserTip.bounds.size.height) : (CGRectGetMinY(self.menuView.frame) - self.noUserTip.bounds.size.height/2))];
-        [self.talkNav.view setFrame:self.view.bounds];
+        [self.rootView.view setFrame:self.view.bounds];
+//        [self.rootView resetInputFrame:CGRectMake(0, self.view.bounds.size.height - 40, self.view.bounds.size.width, 40)];
        
     }
     [self.rootView resetInputFrame:CGRectMake(0, self.view.bounds.size.height - 40, self.view.bounds.size.width, 40)];
-    
     if (self.view.bounds.size.width>self.view.bounds.size.height) {
+     
+        
         if (!self.isFullScreen) {
             if (!ISIPAD) {
                 [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationNone];
-                self.talkNav.view.frame = self.navigationController.view.frame;
-//                [self.talkNav.view removeFromSuperview];
-//                NSLog(@"%@",self.talkNav.view);
-//                [self.navigationController.view addSubview:self.talkNav.view];
             }
         }
     }else{
         if (!self.isFullScreen) {
             if (!ISIPAD) {
                  [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationNone];
-                 self.talkNav.view.frame = self.navigationController.view.frame;
-//                [self.talkNav.view removeFromSuperview];
-//                [self.navigationController.view addSubview:self.talkNav.view];
             }
         }
     }
@@ -191,7 +190,7 @@
 - (void)loadTableView {
     
     CGFloat rootViewWidth = 340;//isVertical == YES ? (self.view.bounds.size.width/2 - 50) : (self.view.bounds.size.width/2 - 150);
-    self.rootView = [[RootViewController alloc] init];
+    self.rootView = [[RootViewController alloc] initWithNibName:@"RootViewController" bundle:nil];
     self.rootView.parentViewCon = self;
     self.rootView.view.autoresizingMask = UIViewAutoresizingNone;
     self.rootView.view.backgroundColor = [UIColor clearColor];
@@ -199,29 +198,65 @@
         self.rootView.view.frame = CGRectMake(0 - rootViewWidth, 0, rootViewWidth, self.view.bounds.size.height);
           [self.view addSubview:self.rootView.view];
     }else{
-        self.talkNav = [[UINavigationController alloc] initWithRootViewController:self.rootView];
-        [self.navigationController.view addSubview:self.talkNav.view];
-        //[self.view addSubview:self.talkNav.view];
-        self.talkNav.view.hidden = YES;
+        self.talkNav = [[UINavigationController alloc] initWithRootViewController:_rootView];
+        self.rootView.title = @"聊天";
         __weak VideoViewController *weakSelf = self;
-        [self.rootView setCloseRootViewBlock:^{
+        [_rootView setCloseRootViewBlock:^{
             weakSelf.isChat = NO;
             [UIView animateWithDuration:0.2 animations:^{
-                [weakSelf.menuView setAlpha:1];
+                [weakSelf.menuView setCenter:CGPointMake(weakSelf.menuView.center.x,  (weakSelf.view.bounds.size.height - weakSelf.menuView.bounds.size.height))];
+                
+                [weakSelf.noUserTip setCenter:CGPointMake(weakSelf.view.bounds.size.width/2, (CGRectGetMinY(weakSelf.menuView.frame) - weakSelf.noUserTip.bounds.size.height))];
             } completion:^(BOOL finished) {
                 
             }];
-            weakSelf.talkNav.view.hidden = YES;
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"TALKCHAT_NOTIFICATION" object:[NSNumber numberWithBool:NO]];
+            //weakSelf.talkNav.view.hidden = YES;
             [weakSelf.navigationController setNavigationBarHidden:NO animated:YES];
             
             [weakSelf.rootView resginKeyBord];
             [weakSelf.rootView setReceiveMessageEnable:NO];
+            [[TMMessageManage sharedManager] removeMessageListener:weakSelf.rootView];
+            // 继续初始化talkNav
+            [weakSelf initTalkNav];
         }];
     }
-  // [self.rootView resetInputFrame:CGRectMake(0, self.view.bounds.size.height - 40, self.view.bounds.size.width, 40)];
-   [self.view addSubview:self.menuView];
+  
 }
-
+- (void)initTalkNav
+{
+    if (self.talkNav) {
+        self.talkNav = nil;
+    }
+    if (self.rootView) {
+        self.rootView = nil;
+    }
+    self.rootView = [[RootViewController alloc] initWithNibName:@"RootViewController" bundle:nil];
+    self.rootView.parentViewCon = self;
+    self.rootView.view.autoresizingMask = UIViewAutoresizingNone;
+    self.rootView.view.backgroundColor = [UIColor clearColor];
+    self.talkNav = [[UINavigationController alloc] initWithRootViewController:_rootView];
+    __weak VideoViewController *weakSelf = self;
+    [_rootView setCloseRootViewBlock:^{
+        weakSelf.isChat = NO;
+        [UIView animateWithDuration:0.2 animations:^{
+            [weakSelf.menuView setCenter:CGPointMake(weakSelf.menuView.center.x, (weakSelf.view.bounds.size.height - weakSelf.menuView.bounds.size.height))];
+            
+            [weakSelf.noUserTip setCenter:CGPointMake(weakSelf.view.bounds.size.width/2,  (CGRectGetMinY(weakSelf.menuView.frame) - weakSelf.noUserTip.bounds.size.height))];
+        } completion:^(BOOL finished) {
+            
+        }];
+         [[NSNotificationCenter defaultCenter] postNotificationName:@"TALKCHAT_NOTIFICATION" object:[NSNumber numberWithBool:NO]];
+        //weakSelf.talkNav.view.hidden = YES;
+        [weakSelf.navigationController setNavigationBarHidden:NO animated:YES];
+        
+        [weakSelf.rootView resginKeyBord];
+        [weakSelf.rootView setReceiveMessageEnable:NO];
+        // 继续初始化talkNav
+        [weakSelf initTalkNav];
+        
+    }];
+}
 - (void)remoteVideoChange:(NSNotification *)noti {
     
     NSNumber *object = [noti object];
@@ -449,31 +484,26 @@
         
     } else {
         [self.navigationController setNavigationBarHidden:YES animated:NO];
-        
-        if (self.talkNav.view.hidden) {
-            [self.talkNav.view setHidden:NO];
-            
-            [UIView animateWithDuration:0.2 animations:^{
-                
-                [self.menuView setAlpha:0];
-                [self.rootView.view setAlpha:1];
-            }];
-            [self.rootView setReceiveMessageEnable:YES];
-            
-        } else {
-            
-            [UIView animateWithDuration:0.2 animations:^{
-                [self.menuView setAlpha:1];
-                [self.rootView.view setAlpha:0];
-                
-            } completion:^(BOOL finished) {
-                
-                [self.talkNav.view setHidden:YES];
-                
-            }];
-            [self.rootView setReceiveMessageEnable:NO];
-            
+        if ([[[UIDevice currentDevice] systemVersion] floatValue] < 8.0)
+        {
+            [self.talkNav setTransitioningDelegate:self.transDelegate];
+            self.talkNav.modalPresentationStyle = UIModalPresentationCustom;
+            [self presentViewController:self.talkNav animated:NO completion:nil];
         }
+        else
+        {
+            self.rootView.view.backgroundColor = [UIColor clearColor];
+            self.talkNav.modalPresentationStyle = UIModalPresentationOverCurrentContext;
+            [self presentViewController:self.talkNav animated:NO completion:nil];
+        }
+        [UIView animateWithDuration:0.2 animations:^{
+            
+            [self.menuView setCenter:CGPointMake(self.menuView.center.x, (self.view.bounds.size.height + self.menuView.bounds.size.height))];
+            
+            [self.noUserTip setCenter:CGPointMake(self.view.bounds.size.width/2,  (self.view.bounds.size.height + self.noUserTip.bounds.size.height))];
+        }];
+        [self.rootView setReceiveMessageEnable:YES];
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"TALKCHAT_NOTIFICATION" object:[NSNumber numberWithBool:YES]];
     }
 }
 
@@ -570,10 +600,10 @@
                 self.isFullScreen = !self.isFullScreen;
                 if (self.isFullScreen) {
                     [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationNone];
-                    [self.navigationController setNavigationBarHidden:YES animated:YES];
+                    [self.navigationController setNavigationBarHidden:YES animated:NO];
                 }else{
                     [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationNone];
-                    [self.navigationController setNavigationBarHidden:NO animated:YES];
+                    [self.navigationController setNavigationBarHidden:NO animated:NO];
                 }
             }
         }
