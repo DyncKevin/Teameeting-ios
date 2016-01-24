@@ -712,13 +712,17 @@
             }else{
                 _peerSelectedId = nil;
             }
-            [self layoutSubView];
         }else{
             [findView.showVideoView removeFromSuperview];
             [_dicRemoteVideoView removeObjectForKey:strTag];
-            [self layoutSubView];
+           
         }
+        if (_dicRemoteVideoView.count ==0) {
+            self.isFullScreen = NO;
+        }
+        [self layoutSubView];
     }
+   
     //While the number of remote image change, send a notification
     NSNumber *remoteVideoCount = [NSNumber numberWithInteger:[_dicRemoteVideoView count]];
     [[NSNotificationCenter defaultCenter] postNotificationName:@"REMOTEVIDEOCHANGE" object:remoteVideoCount];

@@ -25,6 +25,7 @@ PODS:
   - MBProgressHUD (0.9.1)
   - MJRefresh (2.4.3)
   - mp3lame-for-ios (0.1.1)
+  - SSKeychain (1.2.3)
   - TTTAttributedLabel (1.13.4)
 
 DEPENDENCIES:
@@ -34,6 +35,7 @@ DEPENDENCIES:
   - MBProgressHUD (~> 0.9.1)
   - MJRefresh (~> 2.4.3)
   - mp3lame-for-ios (~> 0.1.1)
+  - SSKeychain
   - TTTAttributedLabel (~> 1.13.3)
 
 SPEC CHECKSUMS:
@@ -43,6 +45,7 @@ SPEC CHECKSUMS:
   MBProgressHUD: c47f2c166c126cf2ce36498d80f33e754d4e93ad
   MJRefresh: d652e909f7182e306d445ec39868ff03a1ae36ce
   mp3lame-for-ios: 4daeb5686885be66438154050e3fe975d4ee1f07
+  SSKeychain: 3f42991739c6c60a9cf1bbd4dff6c0d3694bcf3d
   TTTAttributedLabel: 0a2ac7b2dd726d32a070dafb01446026b11e624f
 
 COCOAPODS: 0.39.0

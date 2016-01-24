@@ -127,7 +127,7 @@
 		783702EC1C43DF64006C80DE /* Rooms.m in Sources */ = {isa = PBXBuildFile; fileRef = 783701F91C43DF64006C80DE /* Rooms.m */; };
 		783702ED1C43DF64006C80DE /* TMMessageManage.m in Sources */ = {isa = PBXBuildFile; fileRef = 783701FB1C43DF64006C80DE /* TMMessageManage.m */; };
 		783702EE1C43DF64006C80DE /* AvcAudioRouteMgr.m in Sources */ = {isa = PBXBuildFile; fileRef = 783701FE1C43DF64006C80DE /* AvcAudioRouteMgr.m */; };
-		783702EF1C43DF64006C80DE /* SvUDIDTools.m in Sources */ = {isa = PBXBuildFile; fileRef = 783702011C43DF64006C80DE /* SvUDIDTools.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		783702EF1C43DF64006C80DE /* SvUDIDTools.m in Sources */ = {isa = PBXBuildFile; fileRef = 783702011C43DF64006C80DE /* SvUDIDTools.m */; };
 		783702F01C43DF64006C80DE /* TimeManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 783702041C43DF64006C80DE /* TimeManager.m */; };
 		783702F11C43DF64006C80DE /* ToolUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 783702071C43DF64006C80DE /* ToolUtils.m */; };
 		783702F21C43DF64006C80DE /* WXApiManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 7837020B1C43DF64006C80DE /* WXApiManager.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
@@ -188,7 +188,6 @@
 		7837032A1C43DF64006C80DE /* PushView.m in Sources */ = {isa = PBXBuildFile; fileRef = 783702841C43DF64006C80DE /* PushView.m */; };
 		7837032B1C43DF64006C80DE /* MemberView.m in Sources */ = {isa = PBXBuildFile; fileRef = 783702871C43DF64006C80DE /* MemberView.m */; };
 		7837032C1C43DF64006C80DE /* RoomViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 783702891C43DF64006C80DE /* RoomViewCell.m */; };
-		783703301C43DF97006C80DE /* KeychainAccessGroups.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7837032D1C43DF97006C80DE /* KeychainAccessGroups.plist */; };
 		783703311C43DF97006C80DE /* PushConfig.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7837032E1C43DF97006C80DE /* PushConfig.plist */; };
 		783703331C43E3A6006C80DE /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 783703321C43E3A6006C80DE /* CoreData.framework */; };
 		783703351C43E3AD006C80DE /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 783703341C43E3AD006C80DE /* Security.framework */; };
@@ -505,7 +504,6 @@
 		783702871C43DF64006C80DE /* MemberView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MemberView.m; sourceTree = "<group>"; };
 		783702881C43DF64006C80DE /* RoomViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoomViewCell.h; sourceTree = "<group>"; };
 		783702891C43DF64006C80DE /* RoomViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RoomViewCell.m; sourceTree = "<group>"; };
-		7837032D1C43DF97006C80DE /* KeychainAccessGroups.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = KeychainAccessGroups.plist; sourceTree = "<group>"; };
 		7837032E1C43DF97006C80DE /* PushConfig.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = PushConfig.plist; sourceTree = "<group>"; };
 		7837032F1C43DF97006C80DE /* Teameeting-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Teameeting-Prefix.pch"; sourceTree = "<group>"; };
 		783703321C43E3A6006C80DE /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
@@ -598,7 +596,6 @@
 			isa = PBXGroup;
 			children = (
 				FC6A0F481C464B9400D8C56D /* TMessage.xcdatamodeld */,
-				7837032D1C43DF97006C80DE /* KeychainAccessGroups.plist */,
 				7837032E1C43DF97006C80DE /* PushConfig.plist */,
 				7837032F1C43DF97006C80DE /* Teameeting-Prefix.pch */,
 				783701331C43DDFB006C80DE /* Teameeting */,
@@ -1475,7 +1472,6 @@
 				783703141C43DF64006C80DE /* chatto_bg_normal.png in Resources */,
 				783702BC1C43DF64006C80DE /* micState@2x.png in Resources */,
 				7837030B1C43DF64006C80DE /* chat_animation_white3.png in Resources */,
-				783703301C43DF97006C80DE /* KeychainAccessGroups.plist in Resources */,
 				783702B71C43DF64006C80DE /* messageInvite@3x.png in Resources */,
 				783702D31C43DF64006C80DE /* videoBackgroud.png in Resources */,
 				783702C81C43DF64006C80DE /* notification_not_main@2x.png in Resources */,
@@ -1853,7 +1849,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_ENTITLEMENTS = KeychainAccessGroups.plist;
+				CODE_SIGN_ENTITLEMENTS = "";
 				CODE_SIGN_IDENTITY = "iPhone Developer: yangyang wang (3VG6DLPKJ2)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: yangyang wang (3VG6DLPKJ2)";
 				ENABLE_BITCODE = NO;
@@ -1908,7 +1904,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_ENTITLEMENTS = KeychainAccessGroups.plist;
+				CODE_SIGN_ENTITLEMENTS = "";
 				CODE_SIGN_IDENTITY = "iPhone Distribution: AVCON Information Technology Co., Ltd.";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: AVCON Information Technology Co., Ltd.";
 				ENABLE_BITCODE = NO;

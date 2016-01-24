@@ -268,6 +268,17 @@
     } else {
         tapGesture.enabled = NO;
         [self.noUserTip setHidden:NO];
+        if (self.isFullScreen) {
+            [UIView animateWithDuration:0.2 animations:^{
+                
+                [self.menuView setCenter:CGPointMake(self.menuView.center.x, self.isFullScreen == YES ? (self.view.bounds.size.height + self.menuView.bounds.size.height) : (self.view.bounds.size.height - self.menuView.bounds.size.height))];
+                
+                [self.noUserTip setCenter:CGPointMake(self.view.bounds.size.width/2, self.isFullScreen == YES ? (self.view.bounds.size.height + self.noUserTip.bounds.size.height) : (CGRectGetMinY(self.menuView.frame) - self.noUserTip.bounds.size.height))];
+                
+            }completion:^(BOOL finished) {
+                 self.isFullScreen =  NO;
+            }];
+        }
     }
 }
 
