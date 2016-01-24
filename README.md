@@ -3,7 +3,7 @@
 Xcode 6＋<br>
 
 ##运行项目<br>
-安装CocoaPods (关于CocoaPods的安装和使用，可参考这个教程)<br>
+安装CocoaPods (关于CocoaPods的安装和使用，可参考[这个教程](http://code4app.com/article/cocoapods-install-usage))<br>
 在终端下打开项目所在的目录，执行pod install (若是首次使用CocoaPods，需先执行pod setup)<br>
 pod install命令执行成功后，通过新生成的xcworkspace文件打开工程运行项目<br>
 ##目录简介<br>
