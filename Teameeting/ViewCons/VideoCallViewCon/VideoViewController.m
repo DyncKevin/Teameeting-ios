@@ -91,7 +91,7 @@
     
     tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapEvent:)];
     tapGesture.delegate = self;
-   // tapGesture.enabled = NO;
+    tapGesture.enabled = NO;
     [self.view addGestureRecognizer:tapGesture];
     if (ISIPAD) {
         
@@ -152,26 +152,37 @@
             [self.noUserTip setCenter:CGPointMake(self.view.bounds.size.width/2 + self.view.bounds.size.width/4, CGRectGetMinY(self.menuView.frame) - self.noUserTip.bounds.size.height)];
         }
     } else {
+        if (self.isChat) {
+            [self.menuView setCenter:CGPointMake(self.view.bounds.size.width/2, (self.view.bounds.size.height + self.menuView.bounds.size.height))];
+            [self.noUserTip setCenter:CGPointMake(self.view.bounds.size.width/2,(self.view.bounds.size.height - 90))];
+            [self.rootView.view setFrame:self.view.bounds];
+        }else{
+            [self.menuView setCenter:CGPointMake(self.view.bounds.size.width/2, self.isFullScreen == YES ? (self.view.bounds.size.height + self.menuView.bounds.size.height) : (self.view.bounds.size.height - self.menuView.bounds.size.height))];
+            [self.noUserTip setCenter:CGPointMake(self.view.bounds.size.width/2, self.isFullScreen == YES ? (self.view.bounds.size.height + self.noUserTip.bounds.size.height) : (CGRectGetMinY(self.menuView.frame) - self.noUserTip.bounds.size.height/2))];
+            [self.rootView.view setFrame:self.view.bounds];
+        }
         
-        [self.menuView setCenter:CGPointMake(self.view.bounds.size.width/2, self.isFullScreen == YES ? (self.view.bounds.size.height + self.menuView.bounds.size.height) : (self.view.bounds.size.height - self.menuView.bounds.size.height))];
-        [self.noUserTip setCenter:CGPointMake(self.view.bounds.size.width/2, self.isFullScreen == YES ? (self.view.bounds.size.height + self.noUserTip.bounds.size.height) : (CGRectGetMinY(self.menuView.frame) - self.noUserTip.bounds.size.height/2))];
-        [self.rootView.view setFrame:self.view.bounds];
 //        [self.rootView resetInputFrame:CGRectMake(0, self.view.bounds.size.height - 40, self.view.bounds.size.width, 40)];
        
     }
     [self.rootView resetInputFrame:CGRectMake(0, self.view.bounds.size.height - 40, self.view.bounds.size.width, 40)];
     if (self.view.bounds.size.width>self.view.bounds.size.height) {
-     
-        
+    
         if (!self.isFullScreen) {
             if (!ISIPAD) {
-                [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationNone];
+                if (self.isChat) {
+                     [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationNone];
+                }
+               
             }
         }
     }else{
         if (!self.isFullScreen) {
             if (!ISIPAD) {
-                 [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationNone];
+                if (self.isChat) {
+                      [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationNone];
+                }
+              
             }
         }
     }
@@ -486,7 +497,7 @@
             
             [self.menuView setCenter:CGPointMake(self.menuView.center.x, (self.view.bounds.size.height + self.menuView.bounds.size.height))];
             
-            [self.noUserTip setCenter:CGPointMake(self.view.bounds.size.width/2,  (self.view.bounds.size.height + self.noUserTip.bounds.size.height))];
+            [self.noUserTip setCenter:CGPointMake(self.view.bounds.size.width/2,  (self.view.bounds.size.height -90))];
         }];
         [self.rootView setReceiveMessageEnable:YES];
         [[NSNotificationCenter defaultCenter] postNotificationName:@"TALKCHAT_NOTIFICATION" object:[NSNumber numberWithBool:YES]];

@@ -669,9 +669,12 @@
  *  @param strTag  该通道标识符
  */
 - (void) OnRtcInRemoveView:(UIView *)removeView  withTag:(NSString *)strTag {
-    if (![_audioManager _isSpeakerOn]) {
-        [_audioManager setSpeakerOn];
+    if (!ISIPAD) {
+        if (![_audioManager _isSpeakerOn]) {
+            [_audioManager setSpeakerOn];
+        }
     }
+   
     VideoShowItem* findView = [_dicRemoteVideoView objectForKey:strTag];
     if (findView.showVideoView == removeView) {
         return;

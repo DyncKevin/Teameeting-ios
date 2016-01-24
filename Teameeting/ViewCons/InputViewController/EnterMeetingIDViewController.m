@@ -10,7 +10,7 @@
 #import "ServerVisit.h"
 #import "UIImage+Category.h"
 
-@interface EnterMeetingIDViewController ()
+@interface EnterMeetingIDViewController ()<UITextFieldDelegate>
 {
     UITextField *enterTextField;
     NSLayoutConstraint * constraint1;
@@ -46,6 +46,8 @@
     enterTextField.textAlignment = NSTextAlignmentCenter;
     enterTextField.font = [UIFont boldSystemFontOfSize:18];
     enterTextField.textColor = [UIColor whiteColor];
+    enterTextField.returnKeyType = UIReturnKeyDone;
+    enterTextField.delegate = self;
     enterTextField.placeholder = @"会议ID";
     [self.view addSubview:enterTextField];
     [enterTextField becomeFirstResponder];
@@ -220,6 +222,12 @@
 - (void)closeButtonEvent:(UIButton*)button
 {
     [self dismissViewControllerAnimated:NO completion:nil];
+}
+#pragma mark - UITextFieldDelegate
+- (BOOL)textFieldShouldReturn:(UITextField *)textField
+{
+    [self enterButtonEvent:nil];
+    return YES;
 }
 
 - (void)didReceiveMemoryWarning {

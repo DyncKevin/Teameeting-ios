@@ -55,6 +55,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.title = @"聊天";
     self.pageNum = 1;
     [[TMMessageManage sharedManager] registerMessageListener:self];
     UIButton *closeButton = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -93,19 +94,6 @@
     }
    
 }
-
-- (void)viewDidLayoutSubviews
-{
-    [super viewDidLayoutSubviews];
-    if (!ISIPAD) {
-        if (self.view.bounds.size.width>self.view.bounds.size.height) {
-             [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationNone];
-        }else{
-             [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationNone];
-        }
-    }
-}
-
 - (void)initBar
 {
     UISegmentedControl *segment = [[UISegmentedControl alloc]initWithItems:@[@" private ",@" group "]];

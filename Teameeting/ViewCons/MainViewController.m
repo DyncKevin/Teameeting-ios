@@ -508,6 +508,9 @@ static NSString *kRoomCellID = @"RoomCell";
 - (void)updataDataWithServerResponse:(NSDictionary*)dict
 {
     dispatch_async(dispatch_get_main_queue(), ^{
+        if (dataArray.count==0) {
+            return;
+        }
         RoomItem *roomItem = [dataArray objectAtIndex:0];
         roomItem.roomID = [NSString stringWithFormat:@"%@",[dict objectForKey:@"meetingid"]];
         roomItem.jointime = [[dict objectForKey:@"jointime"] longValue];

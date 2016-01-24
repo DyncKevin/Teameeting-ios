@@ -52,7 +52,7 @@
 }
 
 - (void)inintTMMessage {
-    //192.168.7.39
+    //192.168.7.39 :6630      180.150.179.128  :6630
     [_msg tMInitMsgProtocol:self uid:[SvUDIDTools UDID] token:[ServerVisit shead].authorization server:@"180.150.179.128" port:6630];
 }
 
