@@ -26,4 +26,4 @@ SSKeychain： 账号密码的存取<br>
 TTTAttributedLabel： 支持富文本显示的label<br>
 
 ##开源协议<br>
-OSChina iOS app is under the GPL license. See the LICENSE file for more details.
+Teameeting iOS app is under the Apache license. See the LICENSE file for more details.
