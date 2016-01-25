@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		780455C21C51E736003ADDCC /* no_video_show@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 780455C01C51E736003ADDCC /* no_video_show@2x.png */; };
+		780455C31C51E736003ADDCC /* no_video_show@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 780455C11C51E736003ADDCC /* no_video_show@3x.png */; };
+		780455C61C51FB11003ADDCC /* sharebackgroud@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 780455C41C51FB11003ADDCC /* sharebackgroud@2x.png */; };
+		780455C71C51FB11003ADDCC /* sharebackgroud@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 780455C51C51FB11003ADDCC /* sharebackgroud@3x.png */; };
 		7810288E1C48DA2200CD9FA6 /* ASBadgeView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7810288D1C48DA2200CD9FA6 /* ASBadgeView.m */; };
 		781F6E0E1C44A33F00026160 /* meeting_num@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 781F6E0A1C44A33F00026160 /* meeting_num@2x.png */; };
 		781F6E0F1C44A33F00026160 /* meeting_num@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 781F6E0B1C44A33F00026160 /* meeting_num@3x.png */; };
@@ -93,7 +97,6 @@
 		783702CD1C43DF64006C80DE /* setting_main_point@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 783701B31C43DF64006C80DE /* setting_main_point@3x.png */; };
 		783702CE1C43DF64006C80DE /* share@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 783701B41C43DF64006C80DE /* share@2x.png */; };
 		783702CF1C43DF64006C80DE /* share@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 783701B51C43DF64006C80DE /* share@3x.png */; };
-		783702D01C43DF64006C80DE /* sharebackgroud.png in Resources */ = {isa = PBXBuildFile; fileRef = 783701B61C43DF64006C80DE /* sharebackgroud.png */; };
 		783702D11C43DF64006C80DE /* video@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 783701B71C43DF64006C80DE /* video@2x.png */; };
 		783702D21C43DF64006C80DE /* video@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 783701B81C43DF64006C80DE /* video@3x.png */; };
 		783702D31C43DF64006C80DE /* videoBackgroud.png in Resources */ = {isa = PBXBuildFile; fileRef = 783701B91C43DF64006C80DE /* videoBackgroud.png */; };
@@ -124,7 +127,7 @@
 		783702EC1C43DF64006C80DE /* Rooms.m in Sources */ = {isa = PBXBuildFile; fileRef = 783701F91C43DF64006C80DE /* Rooms.m */; };
 		783702ED1C43DF64006C80DE /* TMMessageManage.m in Sources */ = {isa = PBXBuildFile; fileRef = 783701FB1C43DF64006C80DE /* TMMessageManage.m */; };
 		783702EE1C43DF64006C80DE /* AvcAudioRouteMgr.m in Sources */ = {isa = PBXBuildFile; fileRef = 783701FE1C43DF64006C80DE /* AvcAudioRouteMgr.m */; };
-		783702EF1C43DF64006C80DE /* SvUDIDTools.m in Sources */ = {isa = PBXBuildFile; fileRef = 783702011C43DF64006C80DE /* SvUDIDTools.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		783702EF1C43DF64006C80DE /* SvUDIDTools.m in Sources */ = {isa = PBXBuildFile; fileRef = 783702011C43DF64006C80DE /* SvUDIDTools.m */; };
 		783702F01C43DF64006C80DE /* TimeManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 783702041C43DF64006C80DE /* TimeManager.m */; };
 		783702F11C43DF64006C80DE /* ToolUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 783702071C43DF64006C80DE /* ToolUtils.m */; };
 		783702F21C43DF64006C80DE /* WXApiManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 7837020B1C43DF64006C80DE /* WXApiManager.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
@@ -185,7 +188,6 @@
 		7837032A1C43DF64006C80DE /* PushView.m in Sources */ = {isa = PBXBuildFile; fileRef = 783702841C43DF64006C80DE /* PushView.m */; };
 		7837032B1C43DF64006C80DE /* MemberView.m in Sources */ = {isa = PBXBuildFile; fileRef = 783702871C43DF64006C80DE /* MemberView.m */; };
 		7837032C1C43DF64006C80DE /* RoomViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 783702891C43DF64006C80DE /* RoomViewCell.m */; };
-		783703301C43DF97006C80DE /* KeychainAccessGroups.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7837032D1C43DF97006C80DE /* KeychainAccessGroups.plist */; };
 		783703311C43DF97006C80DE /* PushConfig.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7837032E1C43DF97006C80DE /* PushConfig.plist */; };
 		783703331C43E3A6006C80DE /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 783703321C43E3A6006C80DE /* CoreData.framework */; };
 		783703351C43E3AD006C80DE /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 783703341C43E3AD006C80DE /* Security.framework */; };
@@ -201,6 +203,14 @@
 		783703491C43E3F5006C80DE /* libstdc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 783703481C43E3F5006C80DE /* libstdc++.tbd */; };
 		7837034B1C43E3FC006C80DE /* libstdc++.6.0.9.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 7837034A1C43E3FC006C80DE /* libstdc++.6.0.9.tbd */; };
 		7837034D1C43E405006C80DE /* libicucore.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 7837034C1C43E405006C80DE /* libicucore.tbd */; };
+		785643E71C50D3EC00836850 /* AnimatedTransitioning.m in Sources */ = {isa = PBXBuildFile; fileRef = 785643E41C50D3EC00836850 /* AnimatedTransitioning.m */; };
+		785643E81C50D3EC00836850 /* TransitionDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 785643E61C50D3EC00836850 /* TransitionDelegate.m */; };
+		7861D0291C4F8E7200B2F30D /* VideoShowItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 7861D0281C4F8E7200B2F30D /* VideoShowItem.m */; };
+		78C5ECC61C4E447600193322 /* weixin@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 78C5ECC41C4E447600193322 /* weixin@2x.png */; };
+		78C5ECC71C4E447600193322 /* weixin@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 78C5ECC51C4E447600193322 /* weixin@3x.png */; };
+		78C5ECCA1C4E45B300193322 /* copy_scuess@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 78C5ECC81C4E45B300193322 /* copy_scuess@2x.png */; };
+		78C5ECCB1C4E45B300193322 /* copy_scuess@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 78C5ECC91C4E45B300193322 /* copy_scuess@3x.png */; };
+		78FA86871C50731A00BAF72B /* VideoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 78FA86861C50731A00BAF72B /* VideoViewController.m */; };
 		EC157AD0B3A13035EAD046BB /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2E4CBCA8C81B4B1BFCC1872C /* libPods.a */; };
 		FC6A0F4A1C464B9400D8C56D /* TMessage.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = FC6A0F481C464B9400D8C56D /* TMessage.xcdatamodeld */; };
 		FCA4D5971C44F94D005CDF99 /* libanrtcsdk.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FCA4D5961C44F94D005CDF99 /* libanrtcsdk.a */; };
@@ -226,6 +236,10 @@
 /* Begin PBXFileReference section */
 		2E4CBCA8C81B4B1BFCC1872C /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		4FC9F3D7C32580F380F2F34B /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
+		780455C01C51E736003ADDCC /* no_video_show@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "no_video_show@2x.png"; sourceTree = "<group>"; };
+		780455C11C51E736003ADDCC /* no_video_show@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "no_video_show@3x.png"; sourceTree = "<group>"; };
+		780455C41C51FB11003ADDCC /* sharebackgroud@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "sharebackgroud@2x.png"; sourceTree = "<group>"; };
+		780455C51C51FB11003ADDCC /* sharebackgroud@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "sharebackgroud@3x.png"; sourceTree = "<group>"; };
 		7810288C1C48DA2200CD9FA6 /* ASBadgeView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASBadgeView.h; sourceTree = "<group>"; };
 		7810288D1C48DA2200CD9FA6 /* ASBadgeView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ASBadgeView.m; sourceTree = "<group>"; };
 		781F6E0A1C44A33F00026160 /* meeting_num@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "meeting_num@2x.png"; sourceTree = "<group>"; };
@@ -326,7 +340,6 @@
 		783701B31C43DF64006C80DE /* setting_main_point@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "setting_main_point@3x.png"; sourceTree = "<group>"; };
 		783701B41C43DF64006C80DE /* share@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "share@2x.png"; sourceTree = "<group>"; };
 		783701B51C43DF64006C80DE /* share@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "share@3x.png"; sourceTree = "<group>"; };
-		783701B61C43DF64006C80DE /* sharebackgroud.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sharebackgroud.png; sourceTree = "<group>"; };
 		783701B71C43DF64006C80DE /* video@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "video@2x.png"; sourceTree = "<group>"; };
 		783701B81C43DF64006C80DE /* video@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "video@3x.png"; sourceTree = "<group>"; };
 		783701B91C43DF64006C80DE /* videoBackgroud.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = videoBackgroud.png; sourceTree = "<group>"; };
@@ -491,7 +504,6 @@
 		783702871C43DF64006C80DE /* MemberView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MemberView.m; sourceTree = "<group>"; };
 		783702881C43DF64006C80DE /* RoomViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoomViewCell.h; sourceTree = "<group>"; };
 		783702891C43DF64006C80DE /* RoomViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RoomViewCell.m; sourceTree = "<group>"; };
-		7837032D1C43DF97006C80DE /* KeychainAccessGroups.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = KeychainAccessGroups.plist; sourceTree = "<group>"; };
 		7837032E1C43DF97006C80DE /* PushConfig.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = PushConfig.plist; sourceTree = "<group>"; };
 		7837032F1C43DF97006C80DE /* Teameeting-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Teameeting-Prefix.pch"; sourceTree = "<group>"; };
 		783703321C43E3A6006C80DE /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
@@ -508,6 +520,18 @@
 		783703481C43E3F5006C80DE /* libstdc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libstdc++.tbd"; path = "usr/lib/libstdc++.tbd"; sourceTree = SDKROOT; };
 		7837034A1C43E3FC006C80DE /* libstdc++.6.0.9.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libstdc++.6.0.9.tbd"; path = "usr/lib/libstdc++.6.0.9.tbd"; sourceTree = SDKROOT; };
 		7837034C1C43E405006C80DE /* libicucore.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libicucore.tbd; path = usr/lib/libicucore.tbd; sourceTree = SDKROOT; };
+		785643E31C50D3EC00836850 /* AnimatedTransitioning.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AnimatedTransitioning.h; sourceTree = "<group>"; };
+		785643E41C50D3EC00836850 /* AnimatedTransitioning.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AnimatedTransitioning.m; sourceTree = "<group>"; };
+		785643E51C50D3EC00836850 /* TransitionDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TransitionDelegate.h; sourceTree = "<group>"; };
+		785643E61C50D3EC00836850 /* TransitionDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TransitionDelegate.m; sourceTree = "<group>"; };
+		7861D0271C4F8E7200B2F30D /* VideoShowItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VideoShowItem.h; sourceTree = "<group>"; };
+		7861D0281C4F8E7200B2F30D /* VideoShowItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VideoShowItem.m; sourceTree = "<group>"; };
+		78C5ECC41C4E447600193322 /* weixin@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "weixin@2x.png"; sourceTree = "<group>"; };
+		78C5ECC51C4E447600193322 /* weixin@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "weixin@3x.png"; sourceTree = "<group>"; };
+		78C5ECC81C4E45B300193322 /* copy_scuess@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "copy_scuess@2x.png"; sourceTree = "<group>"; };
+		78C5ECC91C4E45B300193322 /* copy_scuess@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "copy_scuess@3x.png"; sourceTree = "<group>"; };
+		78FA86851C50731A00BAF72B /* VideoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VideoViewController.h; sourceTree = "<group>"; };
+		78FA86861C50731A00BAF72B /* VideoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VideoViewController.m; sourceTree = "<group>"; };
 		DFBC29C224EA228C97676A8B /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		FC6A0F491C464B9400D8C56D /* TMessage.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = TMessage.xcdatamodel; sourceTree = "<group>"; };
 		FCA4D5961C44F94D005CDF99 /* libanrtcsdk.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libanrtcsdk.a; sourceTree = "<group>"; };
@@ -572,7 +596,6 @@
 			isa = PBXGroup;
 			children = (
 				FC6A0F481C464B9400D8C56D /* TMessage.xcdatamodeld */,
-				7837032D1C43DF97006C80DE /* KeychainAccessGroups.plist */,
 				7837032E1C43DF97006C80DE /* PushConfig.plist */,
 				7837032F1C43DF97006C80DE /* Teameeting-Prefix.pch */,
 				783701331C43DDFB006C80DE /* Teameeting */,
@@ -674,6 +697,14 @@
 		783701741C43DF64006C80DE /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				780455C41C51FB11003ADDCC /* sharebackgroud@2x.png */,
+				780455C51C51FB11003ADDCC /* sharebackgroud@3x.png */,
+				780455C01C51E736003ADDCC /* no_video_show@2x.png */,
+				780455C11C51E736003ADDCC /* no_video_show@3x.png */,
+				78C5ECC81C4E45B300193322 /* copy_scuess@2x.png */,
+				78C5ECC91C4E45B300193322 /* copy_scuess@3x.png */,
+				78C5ECC41C4E447600193322 /* weixin@2x.png */,
+				78C5ECC51C4E447600193322 /* weixin@3x.png */,
 				782807A31C463AED0061D6CD /* Icon-1@2x.png */,
 				781F6E181C44DA5300026160 /* metting_nonotification@2x.png */,
 				781F6E191C44DA5300026160 /* metting_nonotification@3x.png */,
@@ -746,7 +777,6 @@
 				783701B31C43DF64006C80DE /* setting_main_point@3x.png */,
 				783701B41C43DF64006C80DE /* share@2x.png */,
 				783701B51C43DF64006C80DE /* share@3x.png */,
-				783701B61C43DF64006C80DE /* sharebackgroud.png */,
 				783701B71C43DF64006C80DE /* video@2x.png */,
 				783701B81C43DF64006C80DE /* video@3x.png */,
 				783701B91C43DF64006C80DE /* videoBackgroud.png */,
@@ -776,6 +806,7 @@
 		783701C01C43DF64006C80DE /* Tool */ = {
 			isa = PBXGroup;
 			children = (
+				785643E21C50D3EC00836850 /* TransitionDelegate */,
 				783701C11C43DF64006C80DE /* ASProgressHUD */,
 				783701C41C43DF64006C80DE /* Base64Util */,
 				783701CA1C43DF64006C80DE /* Category */,
@@ -1026,6 +1057,8 @@
 				783702671C43DF64006C80DE /* UUChatTableView */,
 				7837026D1C43DF64006C80DE /* VideoCallViewController.h */,
 				7837026E1C43DF64006C80DE /* VideoCallViewController.m */,
+				78FA86851C50731A00BAF72B /* VideoViewController.h */,
+				78FA86861C50731A00BAF72B /* VideoViewController.m */,
 			);
 			path = VideoCallViewCon;
 			sourceTree = "<group>";
@@ -1035,6 +1068,8 @@
 			children = (
 				7837022C1C43DF64006C80DE /* ReceiveCallViewController.h */,
 				7837022D1C43DF64006C80DE /* ReceiveCallViewController.m */,
+				7861D0271C4F8E7200B2F30D /* VideoShowItem.h */,
+				7861D0281C4F8E7200B2F30D /* VideoShowItem.m */,
 			);
 			path = Call;
 			sourceTree = "<group>";
@@ -1253,6 +1288,17 @@
 			path = RoomCell;
 			sourceTree = "<group>";
 		};
+		785643E21C50D3EC00836850 /* TransitionDelegate */ = {
+			isa = PBXGroup;
+			children = (
+				785643E31C50D3EC00836850 /* AnimatedTransitioning.h */,
+				785643E41C50D3EC00836850 /* AnimatedTransitioning.m */,
+				785643E51C50D3EC00836850 /* TransitionDelegate.h */,
+				785643E61C50D3EC00836850 /* TransitionDelegate.m */,
+			);
+			path = TransitionDelegate;
+			sourceTree = "<group>";
+		};
 		A8A98EB2C59EDD5F8E7C4717 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -1406,7 +1452,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				783702B61C43DF64006C80DE /* messageInvite@2x.png in Resources */,
+				780455C61C51FB11003ADDCC /* sharebackgroud@2x.png in Resources */,
 				7837029D1C43DF64006C80DE /* Default-Landscape~ipad.png in Resources */,
+				78C5ECCA1C4E45B300193322 /* copy_scuess@2x.png in Resources */,
 				783702B11C43DF64006C80DE /* mailInvite@3x.png in Resources */,
 				7837028F1C43DF64006C80DE /* cancelChat@2x.png in Resources */,
 				783701441C43DDFB006C80DE /* LaunchScreen.storyboard in Resources */,
@@ -1424,7 +1472,6 @@
 				783703141C43DF64006C80DE /* chatto_bg_normal.png in Resources */,
 				783702BC1C43DF64006C80DE /* micState@2x.png in Resources */,
 				7837030B1C43DF64006C80DE /* chat_animation_white3.png in Resources */,
-				783703301C43DF97006C80DE /* KeychainAccessGroups.plist in Resources */,
 				783702B71C43DF64006C80DE /* messageInvite@3x.png in Resources */,
 				783702D31C43DF64006C80DE /* videoBackgroud.png in Resources */,
 				783702C81C43DF64006C80DE /* notification_not_main@2x.png in Resources */,
@@ -1434,6 +1481,7 @@
 				783702BF1C43DF64006C80DE /* no_net_alert@3x.png in Resources */,
 				7837029A1C43DF64006C80DE /* Default-667h@2x.png in Resources */,
 				7837030C1C43DF64006C80DE /* chat_ipunt_message.png in Resources */,
+				78C5ECC71C4E447600193322 /* weixin@3x.png in Resources */,
 				783702CE1C43DF64006C80DE /* share@2x.png in Resources */,
 				783703171C43DF64006C80DE /* headImage.jpeg in Resources */,
 				7837013F1C43DDFB006C80DE /* Main.storyboard in Resources */,
@@ -1468,6 +1516,7 @@
 				783702CD1C43DF64006C80DE /* setting_main_point@3x.png in Resources */,
 				783702BD1C43DF64006C80DE /* micState@3x.png in Resources */,
 				783702931C43DF64006C80DE /* changeVideo@3x.png in Resources */,
+				780455C31C51E736003ADDCC /* no_video_show@3x.png in Resources */,
 				783702A81C43DF64006C80DE /* hangup@3x.png in Resources */,
 				783702FF1C43DF64006C80DE /* expression_custom.plist in Resources */,
 				783702A31C43DF64006C80DE /* enter_go@2x.png in Resources */,
@@ -1478,7 +1527,6 @@
 				783702D41C43DF64006C80DE /* weixin_main@2x.png in Resources */,
 				783702B81C43DF64006C80DE /* mic@2x.png in Resources */,
 				783702A61C43DF64006C80DE /* enter_main@3x.png in Resources */,
-				783702D01C43DF64006C80DE /* sharebackgroud.png in Resources */,
 				783702CB1C43DF64006C80DE /* rename_main@3x.png in Resources */,
 				783702C51C43DF64006C80DE /* noMicselect@3x.png in Resources */,
 				783703131C43DF64006C80DE /* chatfrom_doctor_icon.png in Resources */,
@@ -1487,6 +1535,7 @@
 				783702AC1C43DF64006C80DE /* link_main@2x.png in Resources */,
 				783702D51C43DF64006C80DE /* weixin_main@3x.png in Resources */,
 				7837029F1C43DF64006C80DE /* Default-Portrait~ipad.png.png in Resources */,
+				78C5ECCB1C4E45B300193322 /* copy_scuess@3x.png in Resources */,
 				783702A11C43DF64006C80DE /* delegate_main@2x.png in Resources */,
 				783702CF1C43DF64006C80DE /* share@3x.png in Resources */,
 				7837030D1C43DF64006C80DE /* chat_message_back.png in Resources */,
@@ -1503,11 +1552,14 @@
 				783702911C43DF64006C80DE /* changeSelectVideo@3x.png in Resources */,
 				783702971C43DF64006C80DE /* close_enter@3x.png in Resources */,
 				783702C41C43DF64006C80DE /* noMicselect@2x.png in Resources */,
+				780455C21C51E736003ADDCC /* no_video_show@2x.png in Resources */,
+				780455C71C51FB11003ADDCC /* sharebackgroud@3x.png in Resources */,
 				781F6E1B1C44DA5300026160 /* metting_nonotification@3x.png in Resources */,
 				783702C11C43DF64006C80DE /* no_room@3x.png in Resources */,
 				783702AA1C43DF64006C80DE /* hangupselect@3x.png in Resources */,
 				783702C21C43DF64006C80DE /* noMic@2x.png in Resources */,
 				783702AB1C43DF64006C80DE /* LaunchImage-736h@3x.png.png in Resources */,
+				78C5ECC61C4E447600193322 /* weixin@2x.png in Resources */,
 				783703101C43DF64006C80DE /* Chat_take_picture.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1599,6 +1651,7 @@
 				7837031D1C43DF64006C80DE /* UUMessageContentButton.m in Sources */,
 				7837031B1C43DF64006C80DE /* UUMessage.m in Sources */,
 				7837031E1C43DF64006C80DE /* UUMessageFrame.m in Sources */,
+				78FA86871C50731A00BAF72B /* VideoViewController.m in Sources */,
 				783702E31C43DF64006C80DE /* ErrorUtil.m in Sources */,
 				783703041C43DF64006C80DE /* MessageView.m in Sources */,
 				783703271C43DF64006C80DE /* GetRoomView.m in Sources */,
@@ -1618,6 +1671,7 @@
 				783703241C43DF64006C80DE /* RoomAlertView.m in Sources */,
 				783702EA1C43DF64006C80DE /* Message.m in Sources */,
 				783703281C43DF64006C80DE /* LockerView.m in Sources */,
+				7861D0291C4F8E7200B2F30D /* VideoShowItem.m in Sources */,
 				783702DB1C43DF64006C80DE /* UIDevice+Category.m in Sources */,
 				7837032A1C43DF64006C80DE /* PushView.m in Sources */,
 				783702DE1C43DF64006C80DE /* UINavigationBar+Category.m in Sources */,
@@ -1631,6 +1685,7 @@
 				783702FD1C43DF64006C80DE /* ReceiveCallViewController.m in Sources */,
 				783702F01C43DF64006C80DE /* TimeManager.m in Sources */,
 				783702DD1C43DF64006C80DE /* UILabel+Category.m in Sources */,
+				785643E71C50D3EC00836850 /* AnimatedTransitioning.m in Sources */,
 				7810288E1C48DA2200CD9FA6 /* ASBadgeView.m in Sources */,
 				783701361C43DDFB006C80DE /* main.m in Sources */,
 				783702DF1C43DF64006C80DE /* UIView+Category.m in Sources */,
@@ -1651,6 +1706,7 @@
 				781F6E141C44C5E200026160 /* RoomNameView.m in Sources */,
 				783703291C43DF64006C80DE /* NavView.m in Sources */,
 				783702E01C43DF64006C80DE /* EmptyViewFactory.m in Sources */,
+				785643E81C50D3EC00836850 /* TransitionDelegate.m in Sources */,
 				783702E71C43DF64006C80DE /* ServerVisit.m in Sources */,
 				783702FB1C43DF64006C80DE /* BaseViewController.m in Sources */,
 			);
@@ -1793,7 +1849,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_ENTITLEMENTS = KeychainAccessGroups.plist;
+				CODE_SIGN_ENTITLEMENTS = "";
 				CODE_SIGN_IDENTITY = "iPhone Developer: yangyang wang (3VG6DLPKJ2)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: yangyang wang (3VG6DLPKJ2)";
 				ENABLE_BITCODE = NO;
@@ -1837,7 +1893,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.dync.teameeting;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "326a786e-bfa0-4b80-9f8b-1c5309d941c4";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -1848,7 +1904,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_ENTITLEMENTS = KeychainAccessGroups.plist;
+				CODE_SIGN_ENTITLEMENTS = "";
 				CODE_SIGN_IDENTITY = "iPhone Distribution: AVCON Information Technology Co., Ltd.";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: AVCON Information Technology Co., Ltd.";
 				ENABLE_BITCODE = NO;
@@ -1892,7 +1948,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.dync.teameeting;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "326a786e-bfa0-4b80-9f8b-1c5309d941c4";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;

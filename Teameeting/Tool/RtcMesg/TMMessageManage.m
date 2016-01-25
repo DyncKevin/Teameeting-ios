@@ -52,8 +52,8 @@
 }
 
 - (void)inintTMMessage {
-    
-    [_msg tMInitMsgProtocol:self uid:[SvUDIDTools UDID] token:[ServerVisit shead].authorization server:@"192.168.7.39" port:9210];
+    //192.168.7.39 :6630      180.150.179.128  :6630
+    [_msg tMInitMsgProtocol:self uid:[SvUDIDTools UDID] token:[ServerVisit shead].authorization server:@"180.150.179.128" port:6630];
 }
 
 - (void)registerMessageListener:(id<tmMessageReceive>)listener {
@@ -402,10 +402,10 @@
                 
                 if ([object respondsToSelector:@selector(roomListMemberChangeWithRoomID:changeState:)] && [object receiveMessageEnable]) {
                     
-                    if (![[messageDic objectForKey:@"from"] isEqualToString:[SvUDIDTools UDID]]) {
+                   // if (![[messageDic objectForKey:@"from"] isEqualToString:[SvUDIDTools UDID]]) {
                         
                         [object roomListMemberChangeWithRoomID:[messageDic objectForKey:@"room"] changeState:[[messageDic objectForKey:@"nmem"] intValue]];
-                    }
+                   // }
                     
                 }
             }

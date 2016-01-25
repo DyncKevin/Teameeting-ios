@@ -17,7 +17,9 @@
 #import <GLKit/GLKit.h>
 #import "TalkView.h"
 #import "WXApiRequestHandler.h"
+#import "WXApi.h"
 #import "TMMessageManage.h"
+#import "ASHUD.h"
 
 @implementation UINavigationController (Orientations)
 
@@ -44,7 +46,9 @@ typedef enum ViewState {
 
 @interface VideoCallViewController ()<UINavigationControllerDelegate,LockerDelegate,MFMessageComposeViewControllerDelegate,UIGestureRecognizerDelegate>
 
-
+{
+    UITapGestureRecognizer *tapGesture;
+}
 @property(nonatomic,strong)UIControl *barView;
 @property(nonatomic,strong)UIControl *chatBarView;
 @property(nonatomic,strong)LockerView *menuView;
@@ -97,13 +101,12 @@ typedef enum ViewState {
     [self initBar];
     self.callViewCon = [[ReceiveCallViewController alloc] init];
     self.callViewCon.roomID = self.roomItem.roomID;
-    self.callViewCon.view.frame = self.view.bounds;
     self.talkView = [[TalkView alloc] initWithFrame:self.view.bounds];
     self.talkView.userInteractionEnabled = NO;
     self.menuView = [[LockerView alloc] initWithFrame:CGRectMake(0, self.view.bounds.size.height - 90, 300, 60)];
     [self.menuView setCenter:CGPointMake(self.view.bounds.size.width/2, self.menuView.center.y)];
     self.menuView.delegate = self;
-    UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapEvent)];
+    tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapEvent)];
     tapGesture.delegate = self;
     [self.view addGestureRecognizer:tapGesture];
     if (ISIPAD) {
@@ -137,17 +140,21 @@ typedef enum ViewState {
     touchEvent.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     touchEvent.backgroundColor = [UIColor clearColor];
     [self.view addSubview:touchEvent];
-    [self.view addSubview:self.callViewCon.view];
     
     self.noUserTip = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width - 80, 80)];
     [self.noUserTip setUserInteractionEnabled:NO];
+    self.noUserTip.shadowColor = [UIColor blackColor];
+    self.noUserTip.shadowOffset = CGSizeMake(0, -0.5);
     [self.noUserTip setTextColor:[UIColor whiteColor]];
     [self.noUserTip setNumberOfLines:0];
+    self.noUserTip.font = [UIFont boldSystemFontOfSize:20];
     [self.noUserTip setTextAlignment:NSTextAlignmentCenter];
-    self.noUserTip.text = @"Waiting for others to join the room";
-    [self.noUserTip setCenter:CGPointMake(self.view.bounds.size.width/2, CGRectGetMidY(self.menuView.frame) - 80)];
+    self.noUserTip.text = @"等待别人进入房间";
+    [self.noUserTip setCenter:CGPointMake(self.view.bounds.size.width/2, CGRectGetMinY(self.menuView.frame) - 80)];
+    self.callViewCon.view.frame = self.view.bounds;
+    [self.view addSubview:self.callViewCon.view];
     [self.view addSubview:self.noUserTip];
-    [self.view addSubview:self.micStateImage];
+   // [self.view addSubview:self.micStateImage];
     [self performSelector:@selector(loadTableView) withObject:nil afterDelay:0.1];
 }
 
@@ -160,11 +167,56 @@ typedef enum ViewState {
     [super viewDidLoad];
     [[TMMessageManage sharedManager] tmRoomCmd:MCMeetCmdENTER roomid:self.roomItem.roomID remain:@""];
 }
+- (void)viewDidLayoutSubviews
+{
+    [super viewDidLayoutSubviews];
+    BOOL isVertical = [self isVertical];
+    CGFloat rootViewWidth = isVertical == YES ? (self.view.bounds.size.width/2 - 50) : (self.view.bounds.size.width/2 - 150);
 
+    if (ISIPAD) {
+        
+        self.noUserTip.alpha = 1;
+        self.menuView.alpha = 1;
+        //[UIView animateWithDuration:0.1 animations:^{
+        
+        if (self.rootView.view.frame.origin.x < 0) {
+            
+            [self.rootView.view setFrame:CGRectMake(0 - rootViewWidth, 0, rootViewWidth, self.view.bounds.size.height)];
+            [self.menuView setCenter:CGPointMake(self.view.bounds.size.width/2, self.view.bounds.size.height - self.menuView.bounds.size.height)];
+            [self.noUserTip setCenter:CGPointMake(self.view.bounds.size.width/2, CGRectGetMinY(self.menuView.frame) - self.noUserTip.bounds.size.height)];
+            
+        } else {
+            
+            [self.rootView.view setFrame:CGRectMake(0, 0, rootViewWidth, self.view.bounds.size.height)];
+            [self.menuView setCenter:CGPointMake(self.view.bounds.size.width/2 + self.view.bounds.size.width/4, self.view.bounds.size.height - self.menuView.bounds.size.height)];
+            [self.noUserTip setCenter:CGPointMake(self.view.bounds.size.width/2 + self.view.bounds.size.width/4, CGRectGetMinY(self.menuView.frame) - self.noUserTip.bounds.size.height)];
+        }
+        [self.rootView resetInputFrame:CGRectMake(0, self.view.bounds.size.height - 40, self.view.bounds.size.width, 40)];
+        //}];
+        
+    } else {
+        
+        //[UIView animateWithDuration:0.2 animations:^{
+        
+        [self.menuView setCenter:CGPointMake(self.view.bounds.size.width/2, self.isFullScreen == YES ? (self.view.bounds.size.height + self.menuView.bounds.size.height) : (self.view.bounds.size.height - self.menuView.bounds.size.height))];
+        [self.noUserTip setCenter:CGPointMake(self.view.bounds.size.width/2, self.isFullScreen == YES ? (self.view.bounds.size.height + self.noUserTip.bounds.size.height) : (CGRectGetMinY(self.menuView.frame) - self.noUserTip.bounds.size.height/2))];
+        [self.rootView.view setFrame:self.view.bounds];
+        [self.rootView resetInputFrame:CGRectMake(0, self.view.bounds.size.height - 40, self.view.bounds.size.width, 40)];
+        //}];
+        if (self.barView) {
+            
+            [self initBar];
+            
+        } else {
+            
+            [self initChatBar];
+        }
+    }
+}
 - (void)loadTableView {
 
     BOOL isVertical = [self isVertical];
-    CGFloat rootViewWidth = isVertical == YES ? (self.view.bounds.size.width/2 - 50) : (self.view.bounds.size.width/2 - 100);
+    CGFloat rootViewWidth = isVertical == YES ? (self.view.bounds.size.width/2 - 50) : (self.view.bounds.size.width/2 - 150);
     self.rootView = [[RootViewController alloc] init];
     self.rootView.parentViewCon = self;
     self.rootView.view.autoresizingMask = UIViewAutoresizingNone;
@@ -239,7 +291,7 @@ typedef enum ViewState {
         
     } else if (gesture.state == UIGestureRecognizerStateEnded) {
         
-        CGFloat rootViewWidth = isVertical == YES ? (self.view.bounds.size.width/2 - 50) : (self.view.bounds.size.width/2 - 100);
+        CGFloat rootViewWidth = isVertical == YES ? (self.view.bounds.size.width/2 - 50) : (self.view.bounds.size.width/2 - 150);
         if (fabsf(self.rootView.view.frame.origin.x) <= rootViewWidth/2 || self.rootView.view.frame.origin.x > 0) {
             
             [UIView animateWithDuration:0.2 animations:^{
@@ -276,9 +328,15 @@ typedef enum ViewState {
         [self.shareViewGround performSelector:@selector(removeFromSuperview) withObject:nil afterDelay:0.2];
         return;
     }
-    if (!ISIPAD) {
+    //if (!ISIPAD) {
         
-        self.isFullScreen = !self.isFullScreen;
+    self.isFullScreen = !self.isFullScreen;
+    
+    if (self.isFullScreen) {
+         [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
+    }else{
+         [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
+    }
         [UIView animateWithDuration:0.2 animations:^{
             
             if (self.barView) {
@@ -290,7 +348,8 @@ typedef enum ViewState {
             [self.noUserTip setCenter:CGPointMake(self.view.bounds.size.width/2, self.isFullScreen == YES ? (self.view.bounds.size.height + self.noUserTip.bounds.size.height) : (CGRectGetMinY(self.menuView.frame) - self.noUserTip.bounds.size.height/2))];
             
         }];
-    }
+   // }
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"FULLSCREEN" object:[NSNumber numberWithBool:self.isFullScreen]];
     
 }
 
@@ -533,7 +592,7 @@ typedef enum ViewState {
                                  NSParagraphStyleAttributeName:paragraphStyle
                                  };
     UILabel *title = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, shareView.bounds.size.width-40, 60)];
-    title.attributedText = [[NSAttributedString alloc] initWithString:@"How do you want to invite people to the room?" attributes:attributes];
+    title.attributedText = [[NSAttributedString alloc] initWithString:@"你想通过那种方式邀请好友？" attributes:attributes];
     title.autoresizingMask = UIViewContentModeBottom;
     [title setTextAlignment:NSTextAlignmentCenter];
     [title setTextColor:[UIColor blackColor]];
@@ -547,7 +606,7 @@ typedef enum ViewState {
     [shareView addSubview:messageImage];
     
     UIButton *mailImage = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 60, 60)];
-    [mailImage setBackgroundImage:[UIImage imageNamed:@"mailInvite"] forState:UIControlStateNormal];
+    [mailImage setBackgroundImage:[UIImage imageNamed:@"weixin"] forState:UIControlStateNormal];
     [mailImage addTarget:self action:@selector(weChatShare) forControlEvents:UIControlEventTouchUpInside];
     mailImage.backgroundColor = [UIColor clearColor];
     [shareView addSubview:mailImage];
@@ -560,13 +619,13 @@ typedef enum ViewState {
     
     UILabel *messageTitle = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 100, 30)];
     [messageTitle setFont:[UIFont systemFontOfSize:12]];
-    messageTitle.text = @"Message";
+    messageTitle.text = @"短信";
     [messageTitle setTextColor:[UIColor blackColor]];
     [messageTitle setTextAlignment:NSTextAlignmentCenter];
     
     UILabel *mailTitle = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 100, 30)];
     [mailTitle setFont:[UIFont systemFontOfSize:12]];
-    mailTitle.text = @"Mail";
+    mailTitle.text = @"微信";
     [mailTitle setTextColor:[UIColor blackColor]];
     [mailTitle setTextAlignment:NSTextAlignmentCenter];
     [shareView addSubview:messageTitle];
@@ -575,7 +634,7 @@ typedef enum ViewState {
     
     UILabel *descriptionTitle = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, shareView.bounds.size.width - 40, 80)];
     
-    descriptionTitle.attributedText = [[NSAttributedString alloc] initWithString:@"You can also copy adn paste the secure room link to invite others" attributes:attributes];
+    descriptionTitle.attributedText = [[NSAttributedString alloc] initWithString:@"你也可以拷贝连接，发送给好友来进行邀请。" attributes:attributes];
     [descriptionTitle setFont:[UIFont systemFontOfSize:17]];
     [descriptionTitle setNumberOfLines:0];
     [descriptionTitle setTextColor:[UIColor grayColor]];
@@ -593,7 +652,7 @@ typedef enum ViewState {
         [linkTitle setFrame:CGRectMake(0, 0, shareView.bounds.size.width - (isVertical ? 75 : 120), 56)];
     }
     linkTitle.lineBreakMode = NSLineBreakByTruncatingMiddle;
-    [linkTitle setFont:[UIFont systemFontOfSize:12]];
+    [linkTitle setFont:[UIFont systemFontOfSize:14]];
     linkTitle.text = [NSString stringWithFormat:@"http://115.28.70.232/share_meetingRoom/%@",self.roomItem.roomID];
     [linkTitle setTextColor:[UIColor grayColor]];
     [linkTitle setBackgroundColor:[UIColor clearColor]];
@@ -602,6 +661,7 @@ typedef enum ViewState {
     
     UIButton *copyLink = [[UIButton alloc] init];
     [copyLink setTitle:@"拷贝" forState:UIControlStateNormal];
+    [copyLink addTarget:self action:@selector(copyLineButtonEvent:) forControlEvents:UIControlEventTouchUpInside];
     [copyLink setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [copyLink setBackgroundColor:[UIColor clearColor]];
     [shareView addSubview:copyLink];
@@ -614,7 +674,7 @@ typedef enum ViewState {
         bottomBar.frame = CGRectMake(0, shareView.bounds.size.height - 36, shareView.bounds.size.width +1, 36);
         [messageTitle setCenter:CGPointMake(messageImage.center.x, CGRectGetMaxY(messageImage.frame) + 15)];
         [mailTitle setCenter:CGPointMake(mailImage.center.x, CGRectGetMaxY(mailImage.frame) + 15)];
-        [descriptionTitle setCenter:CGPointMake(shareView.bounds.size.width/2, CGRectGetMaxY(mailTitle.frame) + 25)];
+        [descriptionTitle setCenter:CGPointMake(shareView.bounds.size.width/2, CGRectGetMaxY(mailTitle.frame) + 45)];
         [linkTitle setCenter:CGPointMake(linkTitle.center.x, shareView.bounds.size.height - 20)];
         [copyLink setFrame:CGRectMake(CGRectGetMaxX(linkTitle.frame), 0, shareView.bounds.size.width - CGRectGetMaxX(linkTitle.frame), 45)];
         [copyLink setCenter:CGPointMake(copyLink.center.x, shareView.bounds.size.height - 20)];
@@ -627,7 +687,7 @@ typedef enum ViewState {
         bottomBar.frame = CGRectMake(0, shareView.bounds.size.height - 56, shareView.bounds.size.width +1, 56);
         [messageTitle setCenter:CGPointMake(messageImage.center.x, CGRectGetMaxY(messageImage.frame) + 15)];
         [mailTitle setCenter:CGPointMake(mailImage.center.x, CGRectGetMaxY(mailImage.frame) + 15)];
-        [descriptionTitle setCenter:CGPointMake(shareView.bounds.size.width/2, CGRectGetMaxY(mailTitle.frame) + 35)];
+        [descriptionTitle setCenter:CGPointMake(shareView.bounds.size.width/2, CGRectGetMaxY(mailTitle.frame) + 55)];
         [linkTitle setCenter:CGPointMake(linkTitle.center.x, shareView.bounds.size.height - 30)];
         [copyLink setFrame:CGRectMake(CGRectGetMaxX(linkTitle.frame), 0, shareView.bounds.size.width - CGRectGetMaxX(linkTitle.frame), 56)];
         [copyLink setCenter:CGPointMake(copyLink.center.x, shareView.bounds.size.height - 30)];
@@ -809,12 +869,6 @@ typedef enum ViewState {
 #pragma mark - UI Change
 - (void)willRotateAdjustUI {
 
-    [self.rootView.view setAlpha:0];
-    if (ISIPAD) {
-        
-        self.noUserTip.alpha = 0;
-        self.menuView.alpha = 0;
-    }
     if (self.popver) {
         [self.popver dismiss];
         self.popver = nil;
@@ -824,49 +878,8 @@ typedef enum ViewState {
 }
 
 - (void)didRotateAdjustUI {
-    
-    BOOL isVertical = [self isVertical];
-    CGFloat rootViewWidth = isVertical == YES ? (self.view.bounds.size.width/2 - 50) : (self.view.bounds.size.width/2 - 100);
-    [self.rootView.view setAlpha:1];
-    if (ISIPAD) {
-        
-        self.noUserTip.alpha = 1;
-        self.menuView.alpha = 1;
-        //[UIView animateWithDuration:0.1 animations:^{
-        
-        if (self.rootView.view.frame.origin.x < 0) {
-            
-            [self.rootView.view setFrame:CGRectMake(0 - rootViewWidth, 0, rootViewWidth, self.view.bounds.size.height)];
-            [self.menuView setCenter:CGPointMake(self.view.bounds.size.width/2, self.view.bounds.size.height - self.menuView.bounds.size.height)];
-            [self.noUserTip setCenter:CGPointMake(self.view.bounds.size.width/2, CGRectGetMinY(self.menuView.frame) - self.noUserTip.bounds.size.height)];
-            
-        } else {
-            
-            [self.rootView.view setFrame:CGRectMake(0, 0, rootViewWidth, self.view.bounds.size.height)];
-            [self.menuView setCenter:CGPointMake(self.view.bounds.size.width/2 + self.view.bounds.size.width/4, self.view.bounds.size.height - self.menuView.bounds.size.height)];
-            [self.noUserTip setCenter:CGPointMake(self.view.bounds.size.width/2 + self.view.bounds.size.width/4, CGRectGetMinY(self.menuView.frame) - self.noUserTip.bounds.size.height)];
-        }
-        [self.rootView resetInputFrame:CGRectMake(0, self.view.bounds.size.height - 40, self.view.bounds.size.width, 40)];
-        //}];
-        
-    } else {
-        
-        [UIView animateWithDuration:0.2 animations:^{
-            
-            [self.menuView setCenter:CGPointMake(self.view.bounds.size.width/2, self.isFullScreen == YES ? (self.view.bounds.size.height + self.menuView.bounds.size.height) : (self.view.bounds.size.height - self.menuView.bounds.size.height))];
-            [self.noUserTip setCenter:CGPointMake(self.view.bounds.size.width/2, self.isFullScreen == YES ? (self.view.bounds.size.height + self.noUserTip.bounds.size.height) : (CGRectGetMinY(self.menuView.frame) - self.noUserTip.bounds.size.height/2))];
-            [self.rootView.view setFrame:self.view.bounds];
-            [self.rootView resetInputFrame:CGRectMake(0, self.view.bounds.size.height - 40, self.view.bounds.size.width, 40)];
-        }];
-        if (self.barView) {
-            
-            [self initBar];
-            
-        } else {
-            
-            [self initChatBar];
-        }
-    }
+    NSUInteger width = self.view.bounds.size.width > self.view.bounds.size.height ? self.view.bounds.size.width : self.view.bounds.size.height;
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"ROTATECHANGE" object:[NSNumber numberWithInteger:width]];
 }
 
 - (BOOL)isVertical {
@@ -881,32 +894,55 @@ typedef enum ViewState {
 #pragma mark - share methods
 - (void)weChatShare {
     
-    
-    [WXApiRequestHandler sendLinkURL:[NSString stringWithFormat:@"http://115.28.70.232/share_meetingRoom/#%@",self.roomItem.roomID]
-                             TagName:nil
-                               Title:@"Teameeting"
-                         Description:@"视频邀请"
-                          ThumbImage:[UIImage imageNamed:@"Icon-1"]
-                             InScene:WXSceneSession];
+     [_popver dismiss];
+    if ([WXApi isWXAppInstalled]) {
+        //判断是否有微信
+        [WXApiRequestHandler sendLinkURL:[NSString stringWithFormat:@"http://115.28.70.232/share_meetingRoom/#%@",self.roomItem.roomID]
+                                 TagName:nil
+                                   Title:@"Teameeting"
+                             Description:@"视频邀请"
+                              ThumbImage:[UIImage imageNamed:@"Icon-1"]
+                                 InScene:WXSceneSession];
+    }else{
+        [ASHUD showHUDWithCompleteStyleInView:self.view content:@"该设备没有安装微信" icon:nil];
+    }
+  
 }
 
 - (void)sendMessage {
     
     [_popver dismiss];
-    MFMessageComposeViewController *controller = [[MFMessageComposeViewController alloc] init];
-    controller.navigationBar.barTintColor = [UIColor whiteColor];
-    if([MFMessageComposeViewController canSendText])
-    {
-        controller.body = [NSString stringWithFormat:@"让我们在会议中见!👉 http://115.28.70.232/share_meetingRoom/%@",self.roomItem.roomID];
-        
-        controller.recipients = nil;
-        
-        controller.messageComposeDelegate = self;
-        
-        [self presentViewController:controller animated:YES completion:nil];
+    
+    Class messageClass = (NSClassFromString(@"MFMessageComposeViewController"));
+    if (messageClass != nil) {
+        // Check whether the current device is configured for sending SMS messages
+        if ([messageClass canSendText]) {
+            MFMessageComposeViewController *picker = [[MFMessageComposeViewController alloc] init];
+            picker.messageComposeDelegate =self;
+            NSString *smsBody =[NSString stringWithFormat:@"让我们在会议中见!👉 http://115.28.70.232/share_meetingRoom/#%@",self.roomItem.roomID];
+            
+            picker.body=smsBody;
+            
+            [self presentViewController:picker animated:YES completion:^{
+                [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
+            }];
+        }
+        else {
+             [ASHUD showHUDWithCompleteStyleInView:self.view content:@"该设备不支持短信功能" icon:nil];
+        }
         
     }
+
 }
+// copy line method
+- (void)copyLineButtonEvent:(UIButton*)button
+{
+     [_popver dismiss];
+    UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
+    pasteboard.string = [NSString stringWithFormat:@"http://115.28.70.232/share_meetingRoom/#%@",self.roomItem.roomID];
+    [ASHUD showHUDWithCompleteStyleInView:self.view content:@"拷贝成功" icon:@"copy_scuess"];
+}
+
 #pragma mark - MFMessageComposeViewControllerDelegate
 - (void)messageComposeViewController:(MFMessageComposeViewController *)controller didFinishWithResult:(MessageComposeResult)result
 {

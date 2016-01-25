@@ -10,8 +10,8 @@
 #import "Base64Generater.h"
 // 192.168.7.45
 #define ASRequestInstance [NetRequestUtils sharedInstance]
-#define requesturlid  @"http://192.168.7.45:8055"
-#define requesturlidUpdateHeadPhoto  @"http://192.168.7.45:8055"
+//#define requesturlid  @"http://192.168.7.45:8055"
+#define requesturlid  @"http://123.59.68.21:8055"
 #define REQUEST_TIME_OUT 60
 #define REQUEST_SUCCESS 0
 
@@ -260,35 +260,7 @@ static NetRequestUtils *_requestUtils = nil;
 
 + (id)requestWithInterfaceStr:(NSString *)interfaceStr withRequestType:(RequestType)type parameters:(id)params completion:(void (^)(AFHTTPRequestOperation *operation ,id responseData,NSError *error))completion
 {
-    NSString *urlStr = nil;
-//    if ([interfaceStr isEqualToString:@"private/updatePhoto"]) {
-//    
-//        urlStr = [NSString stringWithFormat:@"%@/%@",requesturlidUpdateHeadPhoto,interfaceStr];
-//
-//        AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-//        manager.requestSerializer.timeoutInterval = REQUEST_TIME_OUT;
-//        [manager.requestSerializer setValue:[Base64Generater EncodedWithBase64:[NSString stringWithFormat:@"%@:%@",[[LoginUtil shead] userId],[LoginUtil lastAuthorization]]] forHTTPHeaderField:@"Authorization"];
-//        
-//        AFHTTPRequestOperation *operation = [manager POST:urlStr parameters:nil constructingBodyWithBlock:^(id<AFMultipartFormData>formData){
-//            
-//          [formData appendPartWithFileData:params name:@"profile" fileName:@"test.jpeg" mimeType:@"image/jpeg"];
-//            
-//        }success:^(AFHTTPRequestOperation *operation, id responseObject){
-//            
-//            completion(operation,responseObject,nil);
-//            
-//        }failure:^(AFHTTPRequestOperation *operation, NSError *error){
-//            
-//            completion(operation,nil,error);
-//            
-//        }];
-//        return operation;
-//        
-//    } else {
-//        urlStr = [NSString stringWithFormat:@"%@/%@",requesturlid,interfaceStr];
-//    }
-//    
-     urlStr = [NSString stringWithFormat:@"%@/%@",requesturlid,interfaceStr];
+    NSString *urlStr = [NSString stringWithFormat:@"%@/%@",requesturlid,interfaceStr];
     return [ASRequestInstance requestWithURL:urlStr withType:type parameters:params completion:completion];
 }
 

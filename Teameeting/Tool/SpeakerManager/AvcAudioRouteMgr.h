@@ -23,7 +23,5 @@
 
 // 打开扬声器
 - (void)setSpeakerOn;
-// 关闭扬声器
-- (void)setSpeakerOff;
 
 @end

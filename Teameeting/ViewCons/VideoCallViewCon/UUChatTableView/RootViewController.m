@@ -31,6 +31,10 @@
     UUInputFunctionView *IFView;
 }
 
+- (void)dealloc
+{
+    
+}
 
 - (void)viewWillAppear:(BOOL)animated {
     
@@ -38,7 +42,7 @@
     if (self.isViewLoad)
         return;
     self.isViewLoad = YES;
-    self.receiveEnable = YES;
+    self.receiveEnable = NO;
     [self addRefreshViews];
     [self loadBaseViewsAndData];
     self.chatTableView.backgroundColor = [UIColor colorWithWhite:0.1 alpha:0.5];
@@ -51,10 +55,28 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.title = @"聊天";
     self.pageNum = 1;
     [[TMMessageManage sharedManager] registerMessageListener:self];
+    UIButton *closeButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    [closeButton setImage:[UIImage imageNamed:@"cancelChat"] forState:UIControlStateNormal];
+    [closeButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [closeButton addTarget:self action:@selector(closeChatView) forControlEvents:UIControlEventTouchUpInside];
+    [closeButton setBackgroundColor:[UIColor clearColor]];
+    closeButton.frame = CGRectMake(0, 0, 28, 28);
+    UIBarButtonItem *groupButton1 =[[UIBarButtonItem alloc] initWithCustomView:closeButton];
+    self.navigationItem.leftBarButtonItem = groupButton1;
 }
 
+- (void)closeChatView
+{
+  
+    if (self.closeRootViewBlock) {
+        self.closeRootViewBlock();
+    }
+    
+    [self.navigationController dismissViewControllerAnimated:NO completion:nil];
+}
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
@@ -64,8 +86,14 @@
 {
     [super viewWillDisappear:animated];
     [[NSNotificationCenter defaultCenter]removeObserver:self];
+    [[TMMessageManage sharedManager] removeMessageListener:self];
+    [IFView removeFromSuperview];
+    IFView = nil;
+    if (self.chatTableView) {
+        self.chatTableView = nil;
+    }
+   
 }
-
 - (void)initBar
 {
     UISegmentedControl *segment = [[UISegmentedControl alloc]initWithItems:@[@" private ",@" group "]];
@@ -122,7 +150,7 @@
         [self.chatTableView reloadData];
     }
     if (isFirst) {
-         [self performSelector:@selector(tableViewScrollToBottom) withObject:nil afterDelay:0.3];
+         [self performSelector:@selector(tableViewScrollToBottom) withObject:nil afterDelay:0.0];
     }
    
 }

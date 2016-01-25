@@ -11,8 +11,6 @@
 #import <AVFoundation/AVFoundation.h>
 
 @interface AvcAudioRouteMgr()
-- (BOOL)checkSpeakerOn;
-- (BOOL)hasHeadset;
 - (BOOL)hasMicphone;
 - (void)resetOutputTarget;
 @end
@@ -30,12 +28,15 @@
         // Set audio propety.
         AVAudioSession *audioSession = [AVAudioSession sharedInstance];
         NSError *audioSessionError;
-        [audioSession setCategory:AVAudioSessionCategoryPlayAndRecord error:&audioSessionError];  
-        
-        AudioSessionAddPropertyListener (kAudioSessionProperty_AudioRouteChange,
-                                        audioRouteChangeListenerCallbacks, (__bridge void *)(self));
+        [audioSession setCategory:AVAudioSessionCategoryPlayAndRecord error:&audioSessionError];
         
         [[AVAudioSession sharedInstance] setActive:YES error:nil];
+        
+        [[NSNotificationCenter defaultCenter] addObserver: self
+                                                 selector: @selector(routeChanged:)
+                                                     name: AVAudioSessionRouteChangeNotification
+                                                   object: nil];
+        
     }
     
     return self;
@@ -43,156 +44,152 @@
 
 - (void) dealloc
 {
-    AudioSessionRemovePropertyListenerWithUserData(kAudioSessionProperty_AudioRouteChange,audioRouteChangeListenerCallbacks,(__bridge void *)(self));
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:AVAudioSessionRouteChangeNotification object:nil];
 }
 
 - (void)setSpeakerOn
 {
-    UInt32 audioRouteOverride = kAudioSessionOverrideAudioRoute_Speaker;
-    AudioSessionSetProperty (kAudioSessionProperty_OverrideAudioRoute,
-                             sizeof (audioRouteOverride),
-                             &audioRouteOverride);
-    
-    _isSpeakerOn = [self checkSpeakerOn];
-}
-
-- (void)setSpeakerOff
-{
-    UInt32 audioRouteOverride = kAudioSessionOverrideAudioRoute_None;
-    AudioSessionSetProperty (kAudioSessionProperty_OverrideAudioRoute,
-                             sizeof (audioRouteOverride),
-                             &audioRouteOverride);
-    
-    _isSpeakerOn = [self checkSpeakerOn];
-}
-
-- (BOOL)checkSpeakerOn
-{
-    CFStringRef route; 
-    UInt32 propertySize = sizeof(CFStringRef); 
-    AudioSessionGetProperty(kAudioSessionProperty_AudioRoute, &propertySize, &route); 
-    
-    if((route == NULL) || (CFStringGetLength(route) == 0))
-    { 
-        // Silent Mode 
-        NSLog(@"AudioRoute: SILENT, do nothing!"); 
-    } 
-    else 
-    { 
-        NSString* routeStr = (__bridge NSString*)route; 
-        NSRange speakerRange = [routeStr rangeOfString : @"Speaker"]; 
-        if (speakerRange.location != NSNotFound) 
-            return YES;
+    if ([self HasHeadsetMic]) {
+        return;
+    }
+    NSError *error;
+    AVAudioSession *audioSession = [AVAudioSession sharedInstance];
+    [audioSession overrideOutputAudioPort:AVAudioSessionPortOverrideSpeaker error:&error];
+    if(error)
+    {
+        NSLog(@"AvcAudioRouteMgr: AudioSession cannot use speakers");
+        _isSpeakerOn = NO;
     }
     
-    return NO;
 }
 
-- (BOOL)hasHeadset 
+- (BOOL)HasHeadsetMic
 {
-    CFStringRef route; 
-    UInt32 propertySize = sizeof(CFStringRef); 
-    AudioSessionGetProperty(kAudioSessionProperty_AudioRoute, &propertySize, &route); 
-           
-    if((route == NULL) || (CFStringGetLength(route) == 0))
-    { 
-        // Silent Mode 
-        NSLog(@"AudioRoute: SILENT, do nothing!"); 
-    } 
-    else 
-    { 
-        NSString* routeStr = (__bridge NSString*)route; 
-        NSLog(@"AudioRoute: %@", routeStr); 
-
-        NSRange headphoneRange = [routeStr rangeOfString : @"Headphone"]; 
-        NSRange headsetRange = [routeStr rangeOfString : @"Headset"]; 
-        if (headphoneRange.location != NSNotFound) 
-        { 
-            return YES; 
-        } else if(headsetRange.location != NSNotFound) 
-        { 
-            return YES; 
-        } 
-    } 
+    AVAudioSession *session = [AVAudioSession sharedInstance];
+    // Input
+    AVAudioSessionPortDescription *input = [[session.currentRoute.inputs count] ? session.currentRoute.inputs:nil objectAtIndex:0];
+   
+    if ([input.portType isEqualToString:AVAudioSessionPortHeadsetMic]) {
+        _isSpeakerOn = NO;
+        return YES;
+    }
     return NO;
-} 
-- (void)erjiOutPutTarget
-{
-    BOOL hasHeadset = [self hasHeadset];
-    NSLog (@"Will Set output target is_headset = %@ .", hasHeadset?@"YES":@"NO");
-    UInt32 audioRouteOverride = kAudioSessionOverrideAudioRoute_None;
-    AudioSessionSetProperty(kAudioSessionProperty_OverrideAudioRoute, sizeof(audioRouteOverride), &audioRouteOverride);
 }
-
+// 检测声音输入设备
 - (BOOL)hasMicphone 
 { 
-    return [[AVAudioSession sharedInstance] inputIsAvailable]; 
+    return [AVAudioSession sharedInstance].inputAvailable;
 }
 
 - (void)resetOutputTarget 
-{ 
-    BOOL hasHeadset = [self hasHeadset]; 
-    NSLog (@"Will Set output target is_headset = %@ .", hasHeadset?@"YES":@"NO"); 
-    UInt32 audioRouteOverride = _isSpeakerOn ? kAudioSessionOverrideAudioRoute_Speaker:kAudioSessionOverrideAudioRoute_None;
-    AudioSessionSetProperty(kAudioSessionProperty_OverrideAudioRoute, sizeof(audioRouteOverride), &audioRouteOverride);
+{
+    NSError *error;
+    AVAudioSession *audioSession = [AVAudioSession sharedInstance];
+    NSInteger audioRouteOverride = _isSpeakerOn ? AVAudioSessionPortOverrideSpeaker:AVAudioSessionPortOverrideNone;
+    [audioSession overrideOutputAudioPort:audioRouteOverride error:&error];
+    if(error)
+    {
+        NSLog(@"AvcAudioRouteMgr: resetOutputTarget");
+    }
 } 
 
-void audioRouteChangeListenerCallbacks (void *inUserData, AudioSessionPropertyID inPropertyID, UInt32 inPropertyValueS, const void *inPropertyValue)
-{ 
-    if (inPropertyID != kAudioSessionProperty_AudioRouteChange) 
-        return; 
+#pragma mark Route change listener
+// *********************************************************************************************************
+// *********** Route change listener ***********************************************************************
+// *********************************************************************************************************
+-(void)routeChanged:(NSNotification*)notification {
     
-    // Determines the reason for the route change, to ensure that it is not 
-    // because of a category change. 
-    CFDictionaryRef routeChangeDictionary = inPropertyValue; 
-          
-    CFNumberRef routeChangeReasonRef = CFDictionaryGetValue (routeChangeDictionary, CFSTR (kAudioSession_AudioRouteChangeKey_Reason)); 
-          
-    SInt32 routeChangeReason;
-          
-    CFNumberGetValue (routeChangeReasonRef, kCFNumberSInt32Type, &routeChangeReason); 
-//    NSLog(@"<<<RouteChangeReason: %ld",routeChangeReason);
+    NSLog(@"]-----------------[ Audio Route Change ]--------------------[");
     
-    AvcAudioRouteMgr *pMgr = (__bridge AvcAudioRouteMgr *)inUserData;
-    //没有耳机
-    if (routeChangeReason == kAudioSessionRouteChangeReason_OldDeviceUnavailable)
-    {
-        [pMgr resetOutputTarget];
-        [pMgr setSpeakerOn];
+    AVAudioSession *session = [AVAudioSession sharedInstance];
+    // Reason
+    NSInteger reason = [[[notification userInfo] objectForKey:AVAudioSessionRouteChangeReasonKey] integerValue];
+    switch (reason) {
+        case AVAudioSessionRouteChangeReasonNoSuitableRouteForCategory:
+            NSLog(@"] Audio Route: The route changed because no suitable route is now available for the specified category.");
+            break;
+        case AVAudioSessionRouteChangeReasonWakeFromSleep:
+            NSLog(@"] Audio Route: The route changed when the device woke up from sleep.");
+            break;
+        case AVAudioSessionRouteChangeReasonOverride:
+            NSLog(@"] Audio Route: The output route was overridden by the app.");
+            break;
+        case AVAudioSessionRouteChangeReasonCategoryChange:
+            NSLog(@"] Audio Route: The category of the session object changed.");
+            break;
+        case AVAudioSessionRouteChangeReasonOldDeviceUnavailable:
+            NSLog(@"] Audio Route: The previous audio output path is no longer available.");
+            break;
+        case AVAudioSessionRouteChangeReasonNewDeviceAvailable:
+            NSLog(@"] Audio Route: A preferred new audio output path is now available.");
+            break;
+        case AVAudioSessionRouteChangeReasonUnknown:
+            NSLog(@"] Audio Route: The reason for the change is unknown.");
+            break;
+        default:
+            NSLog(@"] Audio Route: The reason for the change is very unknown.");
+            break;
     }
-    else if (routeChangeReason == kAudioSessionRouteChangeReason_NewDeviceAvailable)
-    {
-        [pMgr erjiOutPutTarget];
-    }else if (routeChangeReason == kAudioSessionRouteChangeReason_Override){
-        [pMgr resetOutputTarget];
-        [pMgr setSpeakerOn];
-        
+    
+    // Output
+    AVAudioSessionPortDescription *output = [[session.currentRoute.outputs count]?session.currentRoute.outputs:nil objectAtIndex:0];
+    if ([output.portType isEqualToString:AVAudioSessionPortLineOut]) {
+        NSLog(@"] Audio Route: Output Port: LineOut");
+    }
+    else if ([output.portType isEqualToString:AVAudioSessionPortHeadphones]) {
+        NSLog(@"] Audio Route: Output Port: Headphones");
+    }
+    else if ([output.portType isEqualToString:AVAudioSessionPortBluetoothA2DP]) {
+        NSLog(@"] Audio Route: Output Port: BluetoothA2DP");
+    }
+    else if ([output.portType isEqualToString:AVAudioSessionPortBuiltInReceiver]) {
+        NSLog(@"] Audio Route: Output Port: BuiltInReceiver");
+        // 打开扬声器
+        [self setSpeakerOn];
+    }
+    else if ([output.portType isEqualToString:AVAudioSessionPortBuiltInSpeaker]) {
+        NSLog(@"] Audio Route: Output Port: BuiltInSpeaker");
+    }
+    else if ([output.portType isEqualToString:AVAudioSessionPortHDMI]) {
+        NSLog(@"] Audio Route: Output Port: HDMI");
+    }
+    else if ([output.portType isEqualToString:AVAudioSessionPortAirPlay]) {
+        NSLog(@"] Audio Route: Output Port: AirPlay");
+    }
+    else if ([output.portType isEqualToString:AVAudioSessionPortBluetoothLE]) {
+        NSLog(@"] Audio Route: Output Port: BluetoothLE");
+    }
+    else {
+        NSLog(@"] Audio Route: Output Port: Unknown: %@",output.portType);
     }
     
-//    if (routeChangeReason == kAudioSessionRouteChangeReason_OldDeviceUnavailable)
-//    {
-//        if ([pMgr.delegate respondsToSelector:@selector(audioManager:plugginHeadset:)]) {
-//            [pMgr.delegate audioManager:pMgr plugginHeadset:NO];
-//        }
-//        [pMgr resetOutputTarget];
-////        if (![pMgr hasHeadset]) 
-////        { 
-////            [[NSNotificationCenter defaultCenter] postNotificationName:@"ununpluggingHeadse" object:nil]; 
-////        } 
-//    }
-//    else if (routeChangeReason == kAudioSessionRouteChangeReason_NewDeviceAvailable) 
-//    { 
-//        [pMgr resetOutputTarget];
-////        if (![pMgr hasMicphone]) 
-////        { 
-////            [[NSNotificationCenter defaultCenter] postNotificationName:@"pluggInMicrophone" object:nil]; 
-////        } 
-//    }
-////    else if (routeChangeReason == kAudioSessionRouteChangeReason_NoSuitableRouteForCategory) 
-////    { 
-////        [pMgr resetOutputTarget];
-////        [[NSNotificationCenter defaultCenter] postNotificationName:@"lostMicroPhone" object:nil]; 
-////    }
+    // Input
+    AVAudioSessionPortDescription *input = [[session.currentRoute.inputs count] ? session.currentRoute.inputs:nil objectAtIndex:0];
+    
+    if ([input.portType isEqualToString:AVAudioSessionPortLineIn]) {
+        NSLog(@"] Audio Route: Input Port: LineIn");
+    }
+    else if ([input.portType isEqualToString:AVAudioSessionPortBuiltInMic]) {
+        NSLog(@"] Audio Route: Input Port: BuiltInMic");
+    }
+    else if ([input.portType isEqualToString:AVAudioSessionPortHeadsetMic]) {
+        NSLog(@"] Audio Route: Input Port: HeadsetMic");
+    }
+    else if ([input.portType isEqualToString:AVAudioSessionPortBluetoothHFP]) {
+        NSLog(@"] Audio Route: Input Port: BluetoothHFP");
+    }
+    else if ([input.portType isEqualToString:AVAudioSessionPortUSBAudio]) {
+        NSLog(@"] Audio Route: Input Port: USBAudio");
+    }
+    else if ([input.portType isEqualToString:AVAudioSessionPortCarAudio]) {
+        NSLog(@"] Audio Route: Input Port: CarAudio");
+    }
+    else {
+        NSLog(@"] Audio Input Port: Unknown: %@",input.portType);
+    }
+    
+    NSLog(@"]--------------------------[  ]-----------------------------[");
+    
 }
 
 @end
