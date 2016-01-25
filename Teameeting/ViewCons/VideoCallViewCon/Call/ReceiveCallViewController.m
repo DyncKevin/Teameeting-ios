@@ -606,7 +606,7 @@
 {
     [ASHUD hideHUD];
 
-    [[TMMessageManage sharedManager] tMNotifyMsgRoomid:roomID withMessage:strPublishId];
+    [[TMMessageManage sharedManager] tMNotifyMsgRoomid:roomID withTags:MCSendTagsSUBSCRIBE withMessage:strPublishId];
 }
 /** 发布失败
  * @param nCode		失败的代码
