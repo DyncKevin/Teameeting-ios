@@ -353,9 +353,9 @@
     return [self.msg tMOptRoomCmd:cmd roomid:roomid remain:remain];
 }
 
-- (int)tMNotifyMsgRoomid:(NSString*)roomid withMessage:(NSString*)meg
+- (int)tMNotifyMsgRoomid:(NSString*)roomid withTags:(MCSendTags)tags withMessage:(NSString*)meg
 {
-    return [self.msg tMNotifyMsgRoomid:roomid msg:meg];
+    return [self.msg tMNotifyMsgRoomid:roomid tags:tags msg:meg];
 }
 
 //接收消息

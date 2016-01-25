@@ -36,6 +36,7 @@
           remain:(NSString*) remain;
 
 - (int)tMNotifyMsgRoomid:(NSString*)roomid
+                withTags:(MCSendTags)tags
              withMessage:(NSString*)meg;
 
 - (BOOL)connectEnable;
