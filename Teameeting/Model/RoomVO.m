@@ -37,7 +37,7 @@
             self.mettingNum = [[params valueForKey:@"memnumber"] integerValue];
             self.mettingType = [[params valueForKey:@"meettype"] integerValue];
             self.mettingState = [[params valueForKey:@"meetusable"] integerValue];
-            self.userID = [params valueForKey:@"meetinguserid"];
+            self.userID = [params valueForKey:@"userid"];
             self.isOwn = [[params valueForKey:@"owner"] boolValue];
         }
     }
