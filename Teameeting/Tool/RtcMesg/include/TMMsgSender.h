@@ -87,7 +87,8 @@
  *      msg:the publish id
  **/
 - (int) tMNotifyMsgRoomid:(NSString*) roomid
-                   msg:(NSString*) msg;
+                     tags:(MCSendTags) tags
+                      msg:(NSString*) msg;
 
 @end
 
