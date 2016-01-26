@@ -36,7 +36,7 @@
         self.btnSendMessage = [UIButton buttonWithType:UIButtonTypeCustom];
         self.btnSendMessage.frame = CGRectMake(superVC.view.bounds.size.width - 60, 0, 60, 40);
         self.isAbleToSendTextMessage = NO;
-        [self.btnSendMessage setTitle:@"Send" forState:UIControlStateNormal];
+        [self.btnSendMessage setTitle:@"发送" forState:UIControlStateNormal];
         [self.btnSendMessage setBackgroundColor:[UIColor colorWithRed:234.f/255.f green:85.f/255.f blue:20.f/255.f alpha:1]];
         self.btnSendMessage.titleLabel.font = [UIFont boldSystemFontOfSize:16];
         [self.btnSendMessage addTarget:self action:@selector(sendMessage:) forControlEvents:UIControlEventTouchUpInside];
@@ -79,7 +79,7 @@
         //输入框的提示语
         placeHold = [[UILabel alloc]initWithFrame:CGRectMake(20, 0, 200, 30)];
         //placeHold = [UILabel new];
-        placeHold.text = @"Send a message";
+        placeHold.text = @"发送消息";
         placeHold.font = [UIFont systemFontOfSize:13];
         placeHold.textColor = [[UIColor lightGrayColor] colorWithAlphaComponent:0.8];
         [self.TextViewInput addSubview:placeHold];

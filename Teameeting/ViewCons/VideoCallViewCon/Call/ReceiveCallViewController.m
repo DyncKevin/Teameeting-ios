@@ -14,6 +14,7 @@
 #import "TMMessageManage.h"
 //#import "VideoShowView.h"
 #import "VideoShowItem.h"
+#import "ToolUtils.h"
 
 #define bottonSpace 10
 @interface ReceiveCallViewController ()<AnyrtcM2MDelegate,UIGestureRecognizerDelegate,tmMessageReceive>
@@ -154,7 +155,36 @@
     
 }
 
-
+- (void)videoAudioSet:(NSString *)content action:(NSInteger)action
+{
+     NSDictionary *dict = [ToolUtils JSONValue:content];
+    if (action==6) {
+        
+        for (NSString *strTag in [_dicRemoteVideoView allKeys]) {
+            VideoShowItem *item = [_dicRemoteVideoView objectForKey:strTag];
+            if ([item.publishID isEqualToString:[dict objectForKey:@"PublishId"]]) {
+                if ([[dict objectForKey:@"Media"] isEqualToString:@"Close"]) {
+                      [item setAudioClose:YES];
+                }else{
+                     [item setAudioClose:NO];
+                }
+                break;
+            }
+        }
+    }else{
+        for (NSString *strTag in [_dicRemoteVideoView allKeys]) {
+            VideoShowItem *item = [_dicRemoteVideoView objectForKey:strTag];
+            if ([item.publishID isEqualToString:[dict objectForKey:@"PublishId"]]) {
+                if ([[dict objectForKey:@"Media"] isEqualToString:@"Close"]) {
+                    [item setVideoHidden:YES];
+                }else{
+                    [item setVideoHidden:NO];
+                }
+                break;
+            }
+        }
+    }
+}
 
 -(BOOL)receiveMessageEnable {
     
@@ -232,10 +262,15 @@
 {
     if (_client) {
          [_client setLocalVideoEnable:enable];
+       
         if (enable) {
             [_localVideoView setVideoHidden:NO];
+            NSDictionary *dict = [NSDictionary dictionaryWithObjectsAndKeys:_localVideoView.publishID,@"PublishId",@"Open",@"Media", nil];
+            [[TMMessageManage sharedManager] tMNotifyMsgRoomid:self.roomID withTags:MCSendTagsVIDEOSET withMessage:[ToolUtils JSONTOString:dict]];
         }else{
             [_localVideoView setVideoHidden:YES];
+            NSDictionary *dict = [NSDictionary dictionaryWithObjectsAndKeys:_localVideoView.publishID,@"PublishId",@"Close",@"Media", nil];
+            [[TMMessageManage sharedManager] tMNotifyMsgRoomid:self.roomID withTags:MCSendTagsVIDEOSET withMessage:[ToolUtils JSONTOString:dict]];
         }
     }
 }
@@ -245,8 +280,13 @@
         [_client setLocalAudioEnable:enable];
         if (enable) {
             [_localVideoView setAudioClose:NO];
+            NSDictionary *dict = [NSDictionary dictionaryWithObjectsAndKeys:_localVideoView.publishID,@"PublishId",@"Open",@"Media", nil];
+            [[TMMessageManage sharedManager] tMNotifyMsgRoomid:self.roomID withTags:MCSendTagsAUDIOSET withMessage:[ToolUtils JSONTOString:dict]];
+
         }else{
              [_localVideoView setAudioClose:YES];
+            NSDictionary *dict = [NSDictionary dictionaryWithObjectsAndKeys:_localVideoView.publishID,@"PublishId",@"Close",@"Media", nil];
+            [[TMMessageManage sharedManager] tMNotifyMsgRoomid:self.roomID withTags:MCSendTagsAUDIOSET withMessage:[ToolUtils JSONTOString:dict]];
         }
     }
 }
@@ -561,6 +601,7 @@
     if (_peerSelectedId) {
         _peerOldSelectedId = _peerSelectedId;
         _peerSelectedId = nil;
+         _client.selectedTag = nil;
         [self layoutSubView];
     }
    
@@ -576,6 +617,7 @@
             if (item.showVideoView == view) {
                 _peerOldSelectedId = _peerSelectedId;
                 _peerSelectedId = key;
+                _client.selectedTag = key;
                 [self layoutSubView];
                 return;
             }
@@ -605,7 +647,7 @@
 - (void) OnRtcPublishOK:(NSString*)strPublishId withRtmpUrl:(NSString*)strRtmpUtl withHlsUrl:(NSString*)strHlsUrl
 {
     [ASHUD hideHUD];
-
+    _localVideoView.publishID = strPublishId;
     [[TMMessageManage sharedManager] tMNotifyMsgRoomid:roomID withTags:MCSendTagsSUBSCRIBE withMessage:strPublishId];
 }
 /** 发布失败
@@ -666,21 +708,22 @@
 /*! @brief 远程图像进入p2p会议
  *
  *  @param removeView 远程图像
- *  @param strTag  该通道标识符
+ *  @param peerChannelID  该通道标识符
  */
-- (void) OnRtcInRemoveView:(UIView *)removeView  withTag:(NSString *)strTag {
+- (void) OnRtcInRemoveView:(UIView *)removeView  withChannelID:(NSString *)peerChannelID withPublishID:(NSString *)publishID{
     if (!ISIPAD) {
         if (![_audioManager _isSpeakerOn]) {
             [_audioManager setSpeakerOn];
         }
     }
    
-    VideoShowItem* findView = [_dicRemoteVideoView objectForKey:strTag];
+    VideoShowItem* findView = [_dicRemoteVideoView objectForKey:peerChannelID];
     if (findView.showVideoView == removeView) {
         return;
     }
     if (!_peerSelectedId) {
-        _peerSelectedId = strTag;
+        _peerSelectedId = peerChannelID;
+        _client.selectedTag = peerChannelID;
     }
     
     UITapGestureRecognizer *singleTapGestureRecognizer = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(singleTap:)];
@@ -690,7 +733,9 @@
     [self.view addSubview:removeView];
     VideoShowItem *item = [[VideoShowItem alloc] init];
     item.showVideoView = removeView;
-    [_dicRemoteVideoView setObject:item forKey:strTag];
+    item.publishID = publishID;
+    
+    [_dicRemoteVideoView setObject:item forKey:peerChannelID];
   //  [self layoutSubView];
     //While the number of remote image change, send a notification
     NSNumber *remoteVideoCount = [NSNumber numberWithInteger:[_dicRemoteVideoView count]];
@@ -701,15 +746,15 @@
 /*! @brief 远程图像离开会议
  *
  *  @param removeView 远程图像
- *  @param strTag  该通道标识符
+ *  @param peerChannelID  该通道标识符
  */
-- (void)OnRtcLeaveRemoveView:(UIView *)removeView  withTag:(NSString *)strTag {
+- (void)OnRtcLeaveRemoveView:(UIView *)removeView  withChannelID:(NSString *)peerChannelID{
     
-    VideoShowItem *findView = [_dicRemoteVideoView objectForKey:strTag];
+    VideoShowItem *findView = [_dicRemoteVideoView objectForKey:peerChannelID];
     if (findView) {
-        if ([strTag isEqualToString:_peerSelectedId]) {
+        if ([peerChannelID isEqualToString:_peerSelectedId]) {
             [findView.showVideoView removeFromSuperview];
-            [_dicRemoteVideoView removeObjectForKey:strTag];
+            [_dicRemoteVideoView removeObjectForKey:peerChannelID];
             if (_dicRemoteVideoView.count!=0) {
                 _peerSelectedId =[[_dicRemoteVideoView allKeys] firstObject];
             }else{
@@ -717,7 +762,7 @@
             }
         }else{
             [findView.showVideoView removeFromSuperview];
-            [_dicRemoteVideoView removeObjectForKey:strTag];
+            [_dicRemoteVideoView removeObjectForKey:peerChannelID];
            
         }
         if (_dicRemoteVideoView.count ==0) {

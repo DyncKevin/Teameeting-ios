@@ -16,6 +16,8 @@
 - (void)messageDidReceiveWithContent:(NSString *)content messageTime:(NSString *)time;
 //for VideoSubscribe
 - (void)videoSubscribeWith:(NSString *)publishId action:(NSInteger)action;
+//for Video Audio Setting
+- (void)videoAudioSet:(NSString *)content action:(NSInteger)action;
 
 //for RoomList
 - (void)roomListMemberChangeWithRoomID:(NSString *)roomID changeState:(NSInteger)state;

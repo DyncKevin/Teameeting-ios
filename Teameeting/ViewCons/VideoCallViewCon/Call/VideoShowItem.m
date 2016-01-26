@@ -23,7 +23,6 @@
 @synthesize micImageView = _micImageView;
 @synthesize videoHiddenView = _videoHiddenView;
 @synthesize videoHiddenImageView = _videoHiddenImageView;
-
 - (id)init
 {
     self = [super init];
