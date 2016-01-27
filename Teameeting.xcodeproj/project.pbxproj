@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		780198C81C588E3E00D9BEF4 /* main_line@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 780198C71C588E3E00D9BEF4 /* main_line@2x.png */; };
 		780455C21C51E736003ADDCC /* no_video_show@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 780455C01C51E736003ADDCC /* no_video_show@2x.png */; };
 		780455C31C51E736003ADDCC /* no_video_show@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 780455C11C51E736003ADDCC /* no_video_show@3x.png */; };
 		780455C61C51FB11003ADDCC /* sharebackgroud@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 780455C41C51FB11003ADDCC /* sharebackgroud@2x.png */; };
@@ -178,7 +179,6 @@
 		783703201C43DF64006C80DE /* ChatModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 783702691C43DF64006C80DE /* ChatModel.m */; };
 		783703211C43DF64006C80DE /* RootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7837026B1C43DF64006C80DE /* RootViewController.m */; };
 		783703221C43DF64006C80DE /* RootViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7837026C1C43DF64006C80DE /* RootViewController.xib */; };
-		783703231C43DF64006C80DE /* VideoCallViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7837026E1C43DF64006C80DE /* VideoCallViewController.m */; };
 		783703241C43DF64006C80DE /* RoomAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 783702721C43DF64006C80DE /* RoomAlertView.m */; };
 		783703251C43DF64006C80DE /* CustomInputAccessoryView.m in Sources */ = {isa = PBXBuildFile; fileRef = 783702751C43DF64006C80DE /* CustomInputAccessoryView.m */; };
 		783703261C43DF64006C80DE /* FackNavView.m in Sources */ = {isa = PBXBuildFile; fileRef = 783702781C43DF64006C80DE /* FackNavView.m */; };
@@ -236,6 +236,7 @@
 /* Begin PBXFileReference section */
 		2E4CBCA8C81B4B1BFCC1872C /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		4FC9F3D7C32580F380F2F34B /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
+		780198C71C588E3E00D9BEF4 /* main_line@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "main_line@2x.png"; sourceTree = "<group>"; };
 		780455C01C51E736003ADDCC /* no_video_show@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "no_video_show@2x.png"; sourceTree = "<group>"; };
 		780455C11C51E736003ADDCC /* no_video_show@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "no_video_show@3x.png"; sourceTree = "<group>"; };
 		780455C41C51FB11003ADDCC /* sharebackgroud@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "sharebackgroud@2x.png"; sourceTree = "<group>"; };
@@ -484,8 +485,6 @@
 		7837026A1C43DF64006C80DE /* RootViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RootViewController.h; sourceTree = "<group>"; };
 		7837026B1C43DF64006C80DE /* RootViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RootViewController.m; sourceTree = "<group>"; };
 		7837026C1C43DF64006C80DE /* RootViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RootViewController.xib; sourceTree = "<group>"; };
-		7837026D1C43DF64006C80DE /* VideoCallViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VideoCallViewController.h; sourceTree = "<group>"; };
-		7837026E1C43DF64006C80DE /* VideoCallViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VideoCallViewController.m; sourceTree = "<group>"; };
 		783702711C43DF64006C80DE /* RoomAlertView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoomAlertView.h; sourceTree = "<group>"; };
 		783702721C43DF64006C80DE /* RoomAlertView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RoomAlertView.m; sourceTree = "<group>"; };
 		783702741C43DF64006C80DE /* CustomInputAccessoryView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomInputAccessoryView.h; sourceTree = "<group>"; };
@@ -697,6 +696,7 @@
 		783701741C43DF64006C80DE /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				780198C71C588E3E00D9BEF4 /* main_line@2x.png */,
 				780455C41C51FB11003ADDCC /* sharebackgroud@2x.png */,
 				780455C51C51FB11003ADDCC /* sharebackgroud@3x.png */,
 				780455C01C51E736003ADDCC /* no_video_show@2x.png */,
@@ -1055,8 +1055,6 @@
 				783702401C43DF64006C80DE /* OtherResources */,
 				783702561C43DF64006C80DE /* UUChat */,
 				783702671C43DF64006C80DE /* UUChatTableView */,
-				7837026D1C43DF64006C80DE /* VideoCallViewController.h */,
-				7837026E1C43DF64006C80DE /* VideoCallViewController.m */,
 				78FA86851C50731A00BAF72B /* VideoViewController.h */,
 				78FA86861C50731A00BAF72B /* VideoViewController.m */,
 			);
@@ -1526,6 +1524,7 @@
 				781F6E0E1C44A33F00026160 /* meeting_num@2x.png in Resources */,
 				783702D41C43DF64006C80DE /* weixin_main@2x.png in Resources */,
 				783702B81C43DF64006C80DE /* mic@2x.png in Resources */,
+				780198C81C588E3E00D9BEF4 /* main_line@2x.png in Resources */,
 				783702A61C43DF64006C80DE /* enter_main@3x.png in Resources */,
 				783702CB1C43DF64006C80DE /* rename_main@3x.png in Resources */,
 				783702C51C43DF64006C80DE /* noMicselect@3x.png in Resources */,
@@ -1644,7 +1643,6 @@
 				783702F71C43DF64006C80DE /* WXMediaMessage+messageConstruct.m in Sources */,
 				7837031A1C43DF64006C80DE /* UUInputFunctionView.m in Sources */,
 				7837028B1C43DF64006C80DE /* RoomApp.m in Sources */,
-				783703231C43DF64006C80DE /* VideoCallViewController.m in Sources */,
 				7837028D1C43DF64006C80DE /* NtreatedDataManage.m in Sources */,
 				7837028E1C43DF64006C80DE /* RoomVO.m in Sources */,
 				783703021C43DF64006C80DE /* EmojiEmoticons.m in Sources */,
