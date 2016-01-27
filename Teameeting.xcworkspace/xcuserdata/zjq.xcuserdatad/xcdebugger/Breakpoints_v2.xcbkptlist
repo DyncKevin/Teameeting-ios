@@ -9,13 +9,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Teameeting/ViewCons/VideoCallViewCon/MessageTip/MessageView.m"
-            timestampString = "474211814.598854"
+            filePath = "Teameeting/ViewCons/VideoCallViewCon/UUChat/UUInputFunctionView.m"
+            timestampString = "475061839.41472"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "62"
-            endingLineNumber = "62"
-            landmarkName = "-initWithFrame:withDic:"
+            startingLineNumber = "134"
+            endingLineNumber = "134"
+            landmarkName = "-layout"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -25,14 +25,28 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Teameeting/ViewCons/VideoCallViewCon/MessageTip/TalkView.m"
-            timestampString = "474211984.440056"
+            filePath = "Teameeting/Views/PushView/PushView.m"
+            timestampString = "475131592.169286"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "37"
-            endingLineNumber = "37"
-            landmarkName = "-initWithFrame:"
+            startingLineNumber = "993"
+            endingLineNumber = "993"
+            landmarkName = "-selectedItemCell:"
             landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Teameeting/ViewCons/VideoCallViewCon/UUChatTableView/RootViewController.m"
+            timestampString = "475504134.324873"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "362"
+            endingLineNumber = "362">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

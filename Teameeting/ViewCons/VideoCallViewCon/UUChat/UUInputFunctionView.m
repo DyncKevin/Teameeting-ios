@@ -251,7 +251,7 @@
 - (void)changeSendBtnWithPhoto:(BOOL)isPhoto
 {
     self.isAbleToSendTextMessage = !isPhoto;
-    [self.btnSendMessage setTitle:isPhoto?@"send":@"send" forState:UIControlStateNormal];
+    [self.btnSendMessage setTitle:isPhoto?@"发送":@"发送" forState:UIControlStateNormal];
     //self.btnSendMessage.frame = RECT_CHANGE_width(self.btnSendMessage, isPhoto?30:35);
     //UIImage *image = [UIImage imageNamed:isPhoto?@"Chat_take_picture":@"chat_send_message"];
     //[self.btnSendMessage setBackgroundImage:image forState:UIControlStateNormal];

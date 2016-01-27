@@ -11,7 +11,6 @@
 #import "RoomViewCell.h"
 
 #import "GetRoomView.h"
-#import "VideoCallViewController.h"
 #import "VideoViewController.h"
 
 #import "ServerVisit.h"
@@ -34,6 +33,8 @@
 #import "TMMessageManage.h"
 #import "WXApiRequestHandler.h"
 #import "WXApi.h"
+
+
 
 static NSString *kRoomCellID = @"RoomCell";
 
@@ -843,7 +844,7 @@ static NSString *kRoomCellID = @"RoomCell";
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             [self.roomList reloadData];
             
-            VideoCallViewController *video = [[VideoCallViewController alloc] init];
+            VideoViewController *video = [[VideoViewController alloc] init];
             video.roomItem = item;
             UINavigationController *nai = [[UINavigationController alloc] initWithRootViewController:video];
             [self presentViewController:nai animated:YES completion:^{
@@ -1075,7 +1076,7 @@ static NSString *kRoomCellID = @"RoomCell";
 - (void)pushViewJoinRoom:(RoomItem*)obj
 {
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        VideoCallViewController *video = [[VideoCallViewController alloc] init];
+        VideoViewController *video = [[VideoViewController alloc] init];
         video.roomItem = obj;
         UINavigationController *nai = [[UINavigationController alloc] initWithRootViewController:video];
         [self presentViewController:nai animated:YES completion:^{
