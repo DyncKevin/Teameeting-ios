@@ -50,16 +50,17 @@
 /*! @brief 远程图像进入p2p会议
  *
  *  @param removeView 远程图像
- *  @param strTag  该通道标识符
+ *  @param peerChannelID  该通道标识符
+ *  @param publishID  发布的ID
  */
-- (void) OnRtcInRemoveView:(UIView *)removeView  withTag:(NSString *)strTag;
+- (void) OnRtcInRemoveView:(UIView *)removeView  withChannelID:(NSString *)peerChannelID withPublishID:(NSString*)publishID;
 
 /*! @brief 远程图像离开会议
  *
  *  @param removeView 远程图像
- *  @param strTag  该通道标识符
+ *  @param peerChannelID  该通道标识符
  */
-- (void)OnRtcLeaveRemoveView:(UIView *)removeView  withTag:(NSString *)strTag;
+- (void)OnRtcLeaveRemoveView:(UIView *)removeView  withChannelID:(NSString *)peerChannelID;
 @end
 
 @interface AnyrtcM2Mutlier : NSObject {

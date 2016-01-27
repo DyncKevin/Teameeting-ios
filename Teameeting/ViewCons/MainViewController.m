@@ -42,7 +42,6 @@ static NSString *kRoomCellID = @"RoomCell";
 @interface MainViewController ()<UITableViewDelegate,UITableViewDataSource,RoomViewCellDelegate,GetRoomViewDelegate,PushViewDelegate,MFMessageComposeViewControllerDelegate,UIAlertViewDelegate,tmMessageReceive>
 
 {
-    UIRefreshControl *refreshControl;
     RoomItem *tempRoomItem;
 }
 
@@ -113,10 +112,6 @@ static NSString *kRoomCellID = @"RoomCell";
     [self.view addSubview:self.roomList];
     [self.roomList registerClass:[RoomViewCell class] forCellReuseIdentifier:kRoomCellID];
     
-    refreshControl = [[UIRefreshControl alloc]init];
-    [refreshControl addTarget:self action:@selector(refreshViewControlEventValueChanged) forControlEvents:UIControlEventValueChanged];
-    [self.roomList addSubview:refreshControl];
-    
     self.getRoomButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [self.getRoomButton setTitle:@"创建房间" forState:UIControlStateNormal];
     [self.getRoomButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
@@ -170,12 +165,6 @@ static NSString *kRoomCellID = @"RoomCell";
     [self.view bringSubviewToFront:self.navView];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(shareMettingNotification:) name:ShareMettingNotification object:nil];
-}
-- (void)refreshViewControlEventValueChanged
-{
-    [refreshControl endRefreshing];
-    [self.roomList reloadData];
-    
 }
 // 旋转屏幕适配
 - (void)viewDidLayoutSubviews

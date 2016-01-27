@@ -170,18 +170,18 @@
     
         if (!self.isFullScreen) {
             if (!ISIPAD) {
-                if (self.isChat) {
+               // if (self.isChat) {
                      [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationNone];
-                }
+               // }
                
             }
         }
     }else{
         if (!self.isFullScreen) {
             if (!ISIPAD) {
-                if (self.isChat) {
+               // if (self.isChat) {
                       [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationNone];
-                }
+               // }
               
             }
         }
