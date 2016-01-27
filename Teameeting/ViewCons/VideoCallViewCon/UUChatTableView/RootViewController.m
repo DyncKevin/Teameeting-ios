@@ -22,6 +22,7 @@
 
 @property (weak, nonatomic) IBOutlet UITableView *chatTableView;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *bottomConstraint;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *topConstraint;
 @property (assign,nonatomic) BOOL isViewLoad;
 @property (assign,nonatomic) BOOL receiveEnable;
 @end
@@ -65,6 +66,9 @@
     closeButton.frame = CGRectMake(0, 0, 28, 28);
     UIBarButtonItem *groupButton1 =[[UIBarButtonItem alloc] initWithCustomView:closeButton];
     self.navigationItem.leftBarButtonItem = groupButton1;
+    if (ISIPAD) {
+        [self.topConstraint setConstant:64];
+    }
 }
 
 - (void)closeChatView

@@ -731,6 +731,7 @@
         [self.navigationController.navigationBar setTranslucent:YES];
         //main_line@2x
         self.navigationController.navigationBar.barTintColor = [UIColor colorWithRed:.0f green:.0f blue:.0f alpha:0.1];
+        [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"nav_bar"] forBarMetrics:UIBarMetricsDefault];
     }
 }
 #pragma mark - UIGestureRecognizerDelegate

@@ -20,7 +20,6 @@
 #import <MessageUI/MessageUI.h>
 #import "ASNetwork.h"
 #import "RoomAlertView.h"
-#import "UINavigationBar+Category.h"
 #import "NavView.h"
 #import "NtreatedDataManage.h"
 #import "UIView+Category.h"
@@ -884,7 +883,7 @@ static NSString *kRoomCellID = @"RoomCell";
                             item.roomName = [roomInfo objectForKey:@"meetname"];
                             item.createTime = [[roomInfo objectForKey:@"crttime"] longValue];
                             item.mettingDesc = [roomInfo objectForKey:@"meetdesc"];
-                            item.mettingNum = [[roomInfo objectForKey:@"memnumber"] stringValue];
+                            item.mettingNum = [[roomInfo objectForKey:@"memnumber"] integerValue];
                             item.mettingType = [[roomInfo objectForKey:@"meettype1"] integerValue];
                             item.mettingState = [[roomInfo objectForKey:@"meetusable"] integerValue];
                             item.userID = [roomInfo objectForKey:@"userid"];
@@ -1198,6 +1197,7 @@ static NSString *kRoomCellID = @"RoomCell";
                             self.netAlertView = nil;
                         }
                     }
+                [[NtreatedDataManage sharedManager] dealwithDataWithTarget:self];
                 }
             }else{
                 if (!self.netAlertView) {

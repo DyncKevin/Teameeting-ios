@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		780198C81C588E3E00D9BEF4 /* main_line@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 780198C71C588E3E00D9BEF4 /* main_line@2x.png */; };
+		780198CA1C5896BA00D9BEF4 /* nav_bar@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 780198C91C5896BA00D9BEF4 /* nav_bar@2x.png */; };
 		780455C21C51E736003ADDCC /* no_video_show@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 780455C01C51E736003ADDCC /* no_video_show@2x.png */; };
 		780455C31C51E736003ADDCC /* no_video_show@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 780455C11C51E736003ADDCC /* no_video_show@3x.png */; };
 		780455C61C51FB11003ADDCC /* sharebackgroud@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 780455C41C51FB11003ADDCC /* sharebackgroud@2x.png */; };
@@ -111,7 +111,6 @@
 		783702DB1C43DF64006C80DE /* UIDevice+Category.m in Sources */ = {isa = PBXBuildFile; fileRef = 783701CE1C43DF64006C80DE /* UIDevice+Category.m */; };
 		783702DC1C43DF64006C80DE /* UIImage+Category.m in Sources */ = {isa = PBXBuildFile; fileRef = 783701D01C43DF64006C80DE /* UIImage+Category.m */; };
 		783702DD1C43DF64006C80DE /* UILabel+Category.m in Sources */ = {isa = PBXBuildFile; fileRef = 783701D21C43DF64006C80DE /* UILabel+Category.m */; };
-		783702DE1C43DF64006C80DE /* UINavigationBar+Category.m in Sources */ = {isa = PBXBuildFile; fileRef = 783701D41C43DF64006C80DE /* UINavigationBar+Category.m */; };
 		783702DF1C43DF64006C80DE /* UIView+Category.m in Sources */ = {isa = PBXBuildFile; fileRef = 783701D61C43DF64006C80DE /* UIView+Category.m */; };
 		783702E01C43DF64006C80DE /* EmptyViewFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = 783701DA1C43DF64006C80DE /* EmptyViewFactory.m */; };
 		783702E11C43DF64006C80DE /* FOREmptyAssistantConfiger.m in Sources */ = {isa = PBXBuildFile; fileRef = 783701DC1C43DF64006C80DE /* FOREmptyAssistantConfiger.m */; };
@@ -236,7 +235,7 @@
 /* Begin PBXFileReference section */
 		2E4CBCA8C81B4B1BFCC1872C /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		4FC9F3D7C32580F380F2F34B /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
-		780198C71C588E3E00D9BEF4 /* main_line@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "main_line@2x.png"; sourceTree = "<group>"; };
+		780198C91C5896BA00D9BEF4 /* nav_bar@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "nav_bar@2x.png"; sourceTree = "<group>"; };
 		780455C01C51E736003ADDCC /* no_video_show@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "no_video_show@2x.png"; sourceTree = "<group>"; };
 		780455C11C51E736003ADDCC /* no_video_show@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "no_video_show@3x.png"; sourceTree = "<group>"; };
 		780455C41C51FB11003ADDCC /* sharebackgroud@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "sharebackgroud@2x.png"; sourceTree = "<group>"; };
@@ -363,8 +362,6 @@
 		783701D01C43DF64006C80DE /* UIImage+Category.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Category.m"; sourceTree = "<group>"; };
 		783701D11C43DF64006C80DE /* UILabel+Category.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UILabel+Category.h"; sourceTree = "<group>"; };
 		783701D21C43DF64006C80DE /* UILabel+Category.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UILabel+Category.m"; sourceTree = "<group>"; };
-		783701D31C43DF64006C80DE /* UINavigationBar+Category.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UINavigationBar+Category.h"; sourceTree = "<group>"; };
-		783701D41C43DF64006C80DE /* UINavigationBar+Category.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UINavigationBar+Category.m"; sourceTree = "<group>"; };
 		783701D51C43DF64006C80DE /* UIView+Category.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+Category.h"; sourceTree = "<group>"; };
 		783701D61C43DF64006C80DE /* UIView+Category.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+Category.m"; sourceTree = "<group>"; };
 		783701D71C43DF64006C80DE /* Common.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Common.h; sourceTree = "<group>"; };
@@ -696,7 +693,7 @@
 		783701741C43DF64006C80DE /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				780198C71C588E3E00D9BEF4 /* main_line@2x.png */,
+				780198C91C5896BA00D9BEF4 /* nav_bar@2x.png */,
 				780455C41C51FB11003ADDCC /* sharebackgroud@2x.png */,
 				780455C51C51FB11003ADDCC /* sharebackgroud@3x.png */,
 				780455C01C51E736003ADDCC /* no_video_show@2x.png */,
@@ -857,8 +854,6 @@
 				783701D01C43DF64006C80DE /* UIImage+Category.m */,
 				783701D11C43DF64006C80DE /* UILabel+Category.h */,
 				783701D21C43DF64006C80DE /* UILabel+Category.m */,
-				783701D31C43DF64006C80DE /* UINavigationBar+Category.h */,
-				783701D41C43DF64006C80DE /* UINavigationBar+Category.m */,
 				783701D51C43DF64006C80DE /* UIView+Category.h */,
 				783701D61C43DF64006C80DE /* UIView+Category.m */,
 				781F6E151C44CCA600026160 /* NSString+Category.h */,
@@ -1483,6 +1478,7 @@
 				783702CE1C43DF64006C80DE /* share@2x.png in Resources */,
 				783703171C43DF64006C80DE /* headImage.jpeg in Resources */,
 				7837013F1C43DDFB006C80DE /* Main.storyboard in Resources */,
+				780198CA1C5896BA00D9BEF4 /* nav_bar@2x.png in Resources */,
 				783702A71C43DF64006C80DE /* hangup@2x.png in Resources */,
 				783702AD1C43DF64006C80DE /* link_main@3x.png in Resources */,
 				783702BE1C43DF64006C80DE /* no_net_alert@2x.png in Resources */,
@@ -1524,7 +1520,6 @@
 				781F6E0E1C44A33F00026160 /* meeting_num@2x.png in Resources */,
 				783702D41C43DF64006C80DE /* weixin_main@2x.png in Resources */,
 				783702B81C43DF64006C80DE /* mic@2x.png in Resources */,
-				780198C81C588E3E00D9BEF4 /* main_line@2x.png in Resources */,
 				783702A61C43DF64006C80DE /* enter_main@3x.png in Resources */,
 				783702CB1C43DF64006C80DE /* rename_main@3x.png in Resources */,
 				783702C51C43DF64006C80DE /* noMicselect@3x.png in Resources */,
@@ -1672,7 +1667,6 @@
 				7861D0291C4F8E7200B2F30D /* VideoShowItem.m in Sources */,
 				783702DB1C43DF64006C80DE /* UIDevice+Category.m in Sources */,
 				7837032A1C43DF64006C80DE /* PushView.m in Sources */,
-				783702DE1C43DF64006C80DE /* UINavigationBar+Category.m in Sources */,
 				783702D91C43DF64006C80DE /* GTMBase64.m in Sources */,
 				783702F31C43DF64006C80DE /* WXApiRequestHandler.m in Sources */,
 				783702EF1C43DF64006C80DE /* SvUDIDTools.m in Sources */,

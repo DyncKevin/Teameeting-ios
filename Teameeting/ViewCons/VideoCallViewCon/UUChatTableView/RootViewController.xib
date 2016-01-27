@@ -9,6 +9,7 @@
             <connections>
                 <outlet property="bottomConstraint" destination="XyL-18-qIM" id="icX-qG-hy5"/>
                 <outlet property="chatTableView" destination="dyp-1R-xTY" id="tRx-rN-5c4"/>
+                <outlet property="topConstraint" destination="SSU-5N-DNK" id="CKh-EP-mcW"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
