@@ -95,6 +95,13 @@
                      tags:(MCSendTags) tags
                       msg:(NSString*) msg;
 
+/**
+ * set user nick name
+ * params:
+ *      nname: nick name
+ **/
+- (void) tMSetNickNameNname:(NSString*) nname;
+
 @end
 
 #endif
