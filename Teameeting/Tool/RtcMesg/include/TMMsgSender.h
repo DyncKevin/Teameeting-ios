@@ -30,6 +30,7 @@
 - (int) tMInitMsgProtocol:(id<MsgClientProtocol>)protocol
                       uid:(NSString*) uid
                     token:(NSString*) token
+                    nname:(NSString*) nname
                    server:(NSString*) server
                     port :(int) port;
 /**
@@ -49,6 +50,7 @@
  *      msg:the msg to send
  **/
 - (int) tMSndMsgRoomid:(NSString*) roomid
+                 rname:(NSString*) rname
                    msg:(NSString*) msg;
 
 /**
@@ -67,6 +69,7 @@
  **/
 - (int) tMOptRoomCmd:(MCMeetCmd) cmd
               roomid:(NSString*) roomid
+               rname:(NSString*) rname
               remain:(NSString*) remain;
 
 /**
@@ -77,6 +80,7 @@
  *      ulist:the members to send to
  **/
 - (int) tMSndMsgToRoomid:(NSString*) roomid
+                   rname:(NSString*) rname
                      msg:(NSString*) msg
                    ulist:(NSArray*) ulist;
 
@@ -87,8 +91,16 @@
  *      msg:the publish id
  **/
 - (int) tMNotifyMsgRoomid:(NSString*) roomid
+                    rname:(NSString*) rname
                      tags:(MCSendTags) tags
                       msg:(NSString*) msg;
+
+/**
+ * set user nick name
+ * params:
+ *      nname: nick name
+ **/
+- (void) tMSetNickNameNname:(NSString*) nname;
 
 @end
 

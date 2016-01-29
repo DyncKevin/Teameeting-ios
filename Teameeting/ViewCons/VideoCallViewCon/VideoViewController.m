@@ -12,14 +12,29 @@
 #import "DXPopover.h"
 #import "ReceiveCallViewController.h"
 #import "TMMessageManage.h"
-#import "UINavigationBar+Category.h"
+//#import "UINavigationBar+Category.h"
 #import "WXApiRequestHandler.h"
 #import "WXApi.h"
 #import <MessageUI/MFMessageComposeViewController.h>
 #import "ASHUD.h"
 #import "TransitionDelegate.h"
 
-@interface VideoViewController ()<UIGestureRecognizerDelegate,LockerDelegate,MFMessageComposeViewControllerDelegate>
+@implementation UINavigationController (Orientations)
+
+
+- (NSUInteger)supportedInterfaceOrientations {
+    
+    return [self.topViewController supportedInterfaceOrientations];
+}
+
+- (BOOL)shouldAutorotate {
+    
+    return YES;
+}
+
+@end
+
+@interface VideoViewController ()<UIGestureRecognizerDelegate,LockerDelegate,MFMessageComposeViewControllerDelegate,UINavigationControllerDelegate>
 {
     UITapGestureRecognizer *tapGesture;
 }
@@ -47,13 +62,13 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    [self.navigationController.navigationBar rm_setBackgroundColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:0.6]];
+//    [self.navigationController.navigationBar rm_setBackgroundColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:0.6]];
 }
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     [[TMMessageManage sharedManager] tmRoomCmd:MCMeetCmdENTER roomid:self.roomItem.roomID remain:@""];
-    
+    self.navigationController.delegate = self;
     self.title = self.roomItem.roomName;
     self.view.backgroundColor = [UIColor blackColor];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(openVideo) name:OPENVIDEO object:nil];
@@ -74,14 +89,15 @@
     self.badgeView .verticalAlignment = ASBadgeViewVerticalAlignmentTop;
     [self.badgeView  setFont:[UIFont systemFontOfSize:14]];
     [chatButton addSubview:self.badgeView ];
-    
-    UIButton *shareButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    [shareButton setImage:[UIImage imageNamed:@"share"] forState:UIControlStateNormal];
-    [shareButton addTarget:self action:@selector(shareView) forControlEvents:UIControlEventTouchUpInside];
-    shareButton.frame = CGRectMake(0, 0, 28, 28);
-    UIBarButtonItem *groupButton1 =[[UIBarButtonItem alloc] initWithCustomView:shareButton];
-    self.navigationItem.rightBarButtonItem = groupButton1;
-    
+   
+    if (self.roomItem.mettingState != 2) {
+        UIButton *shareButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        [shareButton setImage:[UIImage imageNamed:@"share"] forState:UIControlStateNormal];
+        [shareButton addTarget:self action:@selector(shareView) forControlEvents:UIControlEventTouchUpInside];
+        shareButton.frame = CGRectMake(0, 0, 28, 28);
+        UIBarButtonItem *groupButton1 =[[UIBarButtonItem alloc] initWithCustomView:shareButton];
+        self.navigationItem.rightBarButtonItem = groupButton1;
+    }
     
     self.callViewCon = [[ReceiveCallViewController alloc] init];
     self.callViewCon.roomID = self.roomItem.roomID;
@@ -130,14 +146,12 @@
     }else{
         self.badgeView.text = @"0";
     }
-    
-    
+   
 }
 - (void)viewDidLayoutSubviews
 {
     [super viewDidLayoutSubviews];
     CGFloat rootViewWidth = 340;//isVertical == YES ? (self.view.bounds.size.width/2 - 50) : (self.view.bounds.size.width/2 - 150);
-    
     if (ISIPAD) {
         if (self.rootView.view.frame.origin.x < 0) {
             
@@ -170,19 +184,13 @@
     
         if (!self.isFullScreen) {
             if (!ISIPAD) {
-                if (self.isChat) {
-                     [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationNone];
-                }
-               
+                [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationNone];
             }
         }
     }else{
         if (!self.isFullScreen) {
             if (!ISIPAD) {
-                if (self.isChat) {
-                      [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationNone];
-                }
-              
+                [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationNone];
             }
         }
     }
@@ -297,8 +305,6 @@
     
     [self.callViewCon videoEnable:YES];
 }
-
-
 
 #pragma mark - button event
 - (void)shareView {
@@ -514,7 +520,7 @@
             if (self.rootView.view.frame.origin.x>=0) {
                 self.isChat = NO;
                 [UIView animateWithDuration:0.2 animations:^{
-                    CGFloat rootViewWidth = [self isVertical] == YES ? (self.view.bounds.size.width/2 - 50) : (self.view.bounds.size.width/2 - 150);
+                    CGFloat rootViewWidth =340;// [self isVertical] == YES ? (self.view.bounds.size.width/2 - 50) : (self.view.bounds.size.width/2 - 150);
 
                     [self.rootView.view setFrame:CGRectMake(0 - rootViewWidth,self.rootView.view.frame.origin.y, self.rootView.view.bounds.size.width, self.rootView.view.bounds.size.height)];
                     [self.menuView setCenter:CGPointMake(self.view.bounds.size.width/2, self.menuView.center.y)];
@@ -718,6 +724,15 @@
 {
     [self dismissViewControllerAnimated:YES completion:nil];
 }
+#pragma mark - UINavigationControllerDelegate
+- (void)navigationController:(UINavigationController *)navigationController willShowViewController:(UIViewController *)viewController animated:(BOOL)animated
+{
+    if (viewController == self) {
+        [self.navigationController.navigationBar setTranslucent:YES];
+        //main_line@2x
+        self.navigationController.navigationBar.barTintColor = [UIColor colorWithRed:.0f green:.0f blue:.0f alpha:0.1];
+    }
+}
 #pragma mark - UIGestureRecognizerDelegate
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch {
     NSLog(@"gestureRecognizer:%@",touch.view);
@@ -754,6 +769,25 @@
     [super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
 }
 
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
+{
+    return (interfaceOrientation != UIInterfaceOrientationPortraitUpsideDown);
+}
+
+- (UIInterfaceOrientationMask)supportedInterfaceOrientations
+{
+    return UIInterfaceOrientationMaskAllButUpsideDown;
+}
+
+- (BOOL)shouldAutorotate
+{
+    return YES;
+}
+
+- (BOOL)prefersStatusBarHidden {
+    
+    return NO;
+}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

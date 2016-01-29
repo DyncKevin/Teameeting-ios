@@ -11,7 +11,6 @@
 #import "RoomViewCell.h"
 
 #import "GetRoomView.h"
-#import "VideoCallViewController.h"
 #import "VideoViewController.h"
 
 #import "ServerVisit.h"
@@ -35,6 +34,8 @@
 #import "WXApiRequestHandler.h"
 #import "WXApi.h"
 
+
+
 static NSString *kRoomCellID = @"RoomCell";
 
 #define IPADLISTWIDTH 320
@@ -42,7 +43,6 @@ static NSString *kRoomCellID = @"RoomCell";
 @interface MainViewController ()<UITableViewDelegate,UITableViewDataSource,RoomViewCellDelegate,GetRoomViewDelegate,PushViewDelegate,MFMessageComposeViewControllerDelegate,UIAlertViewDelegate,tmMessageReceive>
 
 {
-    UIRefreshControl *refreshControl;
     RoomItem *tempRoomItem;
 }
 
@@ -113,10 +113,6 @@ static NSString *kRoomCellID = @"RoomCell";
     [self.view addSubview:self.roomList];
     [self.roomList registerClass:[RoomViewCell class] forCellReuseIdentifier:kRoomCellID];
     
-    refreshControl = [[UIRefreshControl alloc]init];
-    [refreshControl addTarget:self action:@selector(refreshViewControlEventValueChanged) forControlEvents:UIControlEventValueChanged];
-    [self.roomList addSubview:refreshControl];
-    
     self.getRoomButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [self.getRoomButton setTitle:@"创建房间" forState:UIControlStateNormal];
     [self.getRoomButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
@@ -170,12 +166,6 @@ static NSString *kRoomCellID = @"RoomCell";
     [self.view bringSubviewToFront:self.navView];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(shareMettingNotification:) name:ShareMettingNotification object:nil];
-}
-- (void)refreshViewControlEventValueChanged
-{
-    [refreshControl endRefreshing];
-    [self.roomList reloadData];
-    
 }
 // 旋转屏幕适配
 - (void)viewDidLayoutSubviews
@@ -854,7 +844,7 @@ static NSString *kRoomCellID = @"RoomCell";
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             [self.roomList reloadData];
             
-            VideoCallViewController *video = [[VideoCallViewController alloc] init];
+            VideoViewController *video = [[VideoViewController alloc] init];
             video.roomItem = item;
             UINavigationController *nai = [[UINavigationController alloc] initWithRootViewController:video];
             [self presentViewController:nai animated:YES completion:^{
@@ -1086,7 +1076,7 @@ static NSString *kRoomCellID = @"RoomCell";
 - (void)pushViewJoinRoom:(RoomItem*)obj
 {
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        VideoCallViewController *video = [[VideoCallViewController alloc] init];
+        VideoViewController *video = [[VideoViewController alloc] init];
         video.roomItem = obj;
         UINavigationController *nai = [[UINavigationController alloc] initWithRootViewController:video];
         [self presentViewController:nai animated:YES completion:^{

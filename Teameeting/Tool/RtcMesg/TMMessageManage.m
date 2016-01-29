@@ -53,7 +53,7 @@
 
 - (void)inintTMMessage {
     //192.168.7.39 :6630      180.150.179.128  :6630
-    [_msg tMInitMsgProtocol:self uid:[SvUDIDTools UDID] token:[ServerVisit shead].authorization server:@"180.150.179.128" port:6630];
+    [_msg tMInitMsgProtocol:self uid:[SvUDIDTools UDID] token:[ServerVisit shead].authorization nname:@"nick name" server:TMMessageUrl port:6630];
 }
 
 - (void)registerMessageListener:(id<tmMessageReceive>)listener {
@@ -345,17 +345,17 @@
 
 - (int)sendMsgWithRoomid:(NSString *)roomid msg:(NSString *)msg {
     
-   return [self.msg tMSndMsgRoomid:roomid msg:msg];
+   return [self.msg tMSndMsgRoomid:roomid rname:@"room name" msg:msg];
 }
 
 - (int)tmRoomCmd:(MCMeetCmd)cmd roomid:(NSString *)roomid remain:(NSString *)remain {
 
-    return [self.msg tMOptRoomCmd:cmd roomid:roomid remain:remain];
+    return [self.msg tMOptRoomCmd:cmd roomid:roomid rname:@"room name" remain:remain];
 }
 
 - (int)tMNotifyMsgRoomid:(NSString*)roomid withTags:(MCSendTags)tags withMessage:(NSString*)meg
 {
-    return [self.msg tMNotifyMsgRoomid:roomid tags:tags msg:meg];
+    return [self.msg tMNotifyMsgRoomid:roomid rname:@"room name" tags:tags msg:meg];
 }
 
 //接收消息
@@ -419,6 +419,23 @@
                     if (![[messageDic objectForKey:@"from"] isEqualToString:[SvUDIDTools UDID]]) {
                         
                         [object videoSubscribeWith:[messageDic objectForKey:@"cont"] action:[[messageDic objectForKey:@"tags"] intValue]];
+                    }
+                    
+                }
+            }
+        }else if([[messageDic objectForKey:@"tags"] intValue] == MCSendTagsAUDIOSET || [[messageDic objectForKey:@""] intValue] == MCSendTagsVIDEOSET){
+            for (id <tmMessageReceive> object in self.messageListeners) {
+                
+                if ([object respondsToSelector:@selector(videoAudioSet:action:)] && [object receiveMessageEnable]) {
+                    
+                    if (![[messageDic objectForKey:@"from"] isEqualToString:[SvUDIDTools UDID]]) {
+                        
+                        if ([[messageDic objectForKey:@"tags"] intValue] == MCSendTagsAUDIOSET) {
+                             [object videoAudioSet:[messageDic objectForKey:@"cont"] action:[[messageDic objectForKey:@"tags"] intValue]];
+                        }else{
+                             [object videoAudioSet:[messageDic objectForKey:@"cont"] action:[[messageDic objectForKey:@"tags"] intValue]];
+                        }
+                       
                     }
                     
                 }

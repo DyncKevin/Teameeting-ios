@@ -12,6 +12,8 @@
 
 @property (nonatomic,strong) UIView *showVideoView;
 
+@property (nonatomic, strong) NSString *publishID;
+
 @property (nonatomic)CGSize videoSize; // reality video Size
 
 @property (nonatomic, strong) NSString *selectedTag;

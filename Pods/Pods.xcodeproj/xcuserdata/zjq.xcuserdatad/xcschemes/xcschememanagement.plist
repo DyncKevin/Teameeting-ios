@@ -39,6 +39,11 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>SSKeychain.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>TTTAttributedLabel.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -57,11 +62,6 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>61CAFDED102E490117CC4DEBBD432ECE</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
 		<key>736E57AD5AEFAAF68D47AE4E8FCB8F68</key>
 		<dict>
 			<key>primary</key>
@@ -72,12 +72,22 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>A4D5F2A6BB736B1F5269BF80F0EBBD07</key>
+		<key>BD25B2157D8BCA944D6FF3EC2B073ECB</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>BD25B2157D8BCA944D6FF3EC2B073ECB</key>
+		<key>C76A650BCBF492AE45F88798B0A3D7E5</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>DD9A3BFCD3FBDE854C4A22DEBB59EB15</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>E5307175BC56A94EA011942CA23D85B0</key>
 		<dict>
 			<key>primary</key>
 			<true/>

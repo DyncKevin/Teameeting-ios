@@ -21,9 +21,12 @@
         assert(uuid != NULL);
         CFStringRef uuidStr = CFUUIDCreateString(NULL, uuid);
         retrieveuuid = [NSString stringWithFormat:@"%@",uuidStr];
-        
+        NSError *error;
         [SSKeychain setPassword: retrieveuuid
-                     forService:@"com.dync.teameeting"account:@"userUDID"];
+                     forService:@"com.dync.teameeting"account:@"userUDID" error:&error];
+        if (error) {
+            NSLog(@"SSKeychain Faile");
+        }
     }
     NSLog(@"UUID：%@",retrieveuuid);
     return [retrieveuuid lowercaseString];

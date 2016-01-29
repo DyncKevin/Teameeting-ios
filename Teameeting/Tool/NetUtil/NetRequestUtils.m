@@ -10,8 +10,7 @@
 #import "Base64Generater.h"
 // 192.168.7.45
 #define ASRequestInstance [NetRequestUtils sharedInstance]
-//#define requesturlid  @"http://192.168.7.45:8055"
-#define requesturlid  @"http://123.59.68.21:8055"
+
 #define REQUEST_TIME_OUT 60
 #define REQUEST_SUCCESS 0
 

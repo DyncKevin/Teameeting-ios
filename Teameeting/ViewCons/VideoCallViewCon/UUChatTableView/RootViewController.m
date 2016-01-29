@@ -13,7 +13,6 @@
 #import "ChatModel.h"
 #import "UUMessageFrame.h"
 #import "UUMessage.h"
-#import "VideoCallViewController.h"
 #import "ServerVisit.h"
 
 @interface RootViewController ()<UUInputFunctionViewDelegate,UUMessageCellDelegate,UITableViewDataSource,UITableViewDelegate>
@@ -81,7 +80,17 @@
 {
     [super viewDidAppear:animated];
 }
-
+- (void)viewDidLayoutSubviews
+{
+    [super viewDidLayoutSubviews];
+    if (!ISIPAD) {
+        if (self.view.frame.size.width>self.view.frame.size.height) {
+            [[UIApplication sharedApplication] setStatusBarHidden:YES];
+        }else{
+             [[UIApplication sharedApplication] setStatusBarHidden:NO];
+        }
+    }
+}
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
@@ -92,7 +101,6 @@
     if (self.chatTableView) {
         self.chatTableView = nil;
     }
-   
 }
 - (void)initBar
 {
@@ -128,7 +136,7 @@
     __weak typeof(self) weakSelf = self;
     self.chatTableView.header= [MJRefreshNormalHeader headerWithRefreshingBlock:^{
         
-        [ServerVisit getMeetingMsgListWithSign:[ServerVisit shead].authorization meetingID:weakSelf.parentViewCon.roomItem.roomID pageNum:[NSString stringWithFormat:@"%d",self.pageNum] pageSize:@"20" completion:^(AFHTTPRequestOperation *operation, id responseData, NSError *error) {
+        [ServerVisit getMeetingMsgListWithSign:[ServerVisit shead].authorization meetingID:weakSelf.parentViewCon.roomItem.roomID pageNum:[NSString stringWithFormat:@"%d",weakSelf.pageNum] pageSize:@"20" completion:^(AFHTTPRequestOperation *operation, id responseData, NSError *error) {
             if (!error) {
                 NSDictionary *dict = (NSDictionary*)responseData;
                 if ([[dict objectForKey:@"code"] integerValue] ==200) {
@@ -289,7 +297,7 @@
     funcView.TextViewInput.text = @"";
     [funcView changeSendBtnWithPhoto:YES];
     [self dealTheFunctionData:dic];
-    VideoCallViewController *videoCon = (VideoCallViewController *)self.parentViewCon;
+    VideoViewController *videoCon = (VideoViewController *)self.parentViewCon;
     [[TMMessageManage sharedManager]sendMsgWithRoomid:videoCon.roomItem.roomID msg:message];
 }
 

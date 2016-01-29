@@ -33,7 +33,7 @@
     [[UINavigationBar appearance] setTitleTextAttributes:navbarTitleTextAttributes];
     [[UINavigationBar appearance] setTintColor:[UIColor whiteColor]];
     [[UINavigationBar appearance] setBarTintColor: [UIColor blackColor]];
-    
+    [[UIApplication sharedApplication] setIdleTimerDisabled:YES];
     [ASNetwork sharedNetwork];
   
     [RoomApp shead].appDelgate = self;
