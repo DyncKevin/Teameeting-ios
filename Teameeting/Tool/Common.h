@@ -11,6 +11,9 @@
 
 #define ISIPAD (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) // 判断设备是不是iPad
 #define ISIPADMainList 320   // 列表的宽度
+#define VideoParViewHeight 200 
+#define TalkPannelWidth 340
+#define ShearUrl @"http://115.28.70.232/share_meetingRoom/"
 #define ShareMettingNotification @"ShareMettingNotification"
 //#define requesturlid  @"http://192.168.7.45:8055"
 #define requesturlid  @"http://123.59.68.21:8055"

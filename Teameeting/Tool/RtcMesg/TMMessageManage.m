@@ -358,6 +358,10 @@
     return [self.msg tMNotifyMsgRoomid:roomid rname:@"room name" tags:tags msg:meg];
 }
 
+- (void) tmUpdateNickNameNname:(NSString*)nickName
+{
+    [self.msg tMSetNickNameNname:nickName];
+}
 //接收消息
 - (void) OnSndMsgMsg:(NSString *) msg {
     

@@ -43,6 +43,8 @@
                 withTags:(MCSendTags)tags
              withMessage:(NSString*)meg;
 
+- (void) tmUpdateNickNameNname:(NSString*)nickName;
+
 - (BOOL)connectEnable;
 
 - (void)registerMessageListener:(id<tmMessageReceive>)listener;

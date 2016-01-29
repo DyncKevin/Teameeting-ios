@@ -447,7 +447,7 @@ static NSString *kRoomCellID = @"RoomCell";
     
     MFMessageComposeViewController *picker = [[MFMessageComposeViewController alloc] init];
     picker.messageComposeDelegate =self;
-    NSString *smsBody =[NSString stringWithFormat:@"让我们在会议中见!👉 http://115.28.70.232/share_meetingRoom/#%@",roomID];
+    NSString *smsBody =[NSString stringWithFormat:@"让我们在会议中见!👉 %@#%@",ShearUrl,roomID];
     
     picker.body=smsBody;
     
@@ -1051,12 +1051,15 @@ static NSString *kRoomCellID = @"RoomCell";
     __weak MainViewController *weakSelf = self;
     if ([[ServerVisit shead].nickName isEqualToString:nickName]) {
         [SvUDIDTools shead].notFirstStart = YES;
+        [self.reNameAlertView dismiss];
+        self.reNameAlertView = nil;
         return;
     }
     [ServerVisit updataNickNameWithSign:[ServerVisit shead].authorization userID:nickName completion:^(AFHTTPRequestOperation *operation, id responseData, NSError *error) {
         if (!error) {
             NSDictionary *dict = (NSDictionary*)responseData;
             if ([[dict objectForKey:@"code"] integerValue]== 200) {
+                [[TMMessageManage sharedManager] tmUpdateNickNameNname:nickName];
                 [SvUDIDTools shead].notFirstStart = YES;
             }
         }
@@ -1096,7 +1099,7 @@ static NSString *kRoomCellID = @"RoomCell";
 - (void)pushViewInviteViaWeiXin:(RoomItem*)obj
 {
     if ([WXApi isWXAppInstalled]) {
-        [WXApiRequestHandler sendLinkURL:[NSString stringWithFormat:@"http://115.28.70.232/share_meetingRoom/#%@",obj.roomID]
+        [WXApiRequestHandler sendLinkURL:[NSString stringWithFormat:@"%@#%@",ShearUrl,obj.roomID]
                                  TagName:nil
                                    Title:@"Teameeting"
                              Description:@"视频邀请"
@@ -1113,7 +1116,7 @@ static NSString *kRoomCellID = @"RoomCell";
 - (void)pushViewInviteViaLink:(RoomItem*)obj
 {
     UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
-    pasteboard.string = [NSString stringWithFormat:@"http://115.28.70.232/share_meetingRoom/#%@",obj.roomID];
+    pasteboard.string = [NSString stringWithFormat:@"%@#%@",ShearUrl,obj.roomID];
     [ASHUD showHUDWithCompleteStyleInView:self.view content:@"拷贝成功" icon:@"copy_scuess"];
 }
 

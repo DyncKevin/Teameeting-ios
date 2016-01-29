@@ -37,6 +37,8 @@
     UIAlertView *_exitErrorAlertView;   // 退出房间失败的问题
     UIAlertView *_exitRoomAlertView;    // 退出房间
     
+    BOOL isRightTran;
+    
 }
 @property (nonatomic, strong)  NSMutableDictionary *_dicRemoteVideoView;
 @property (nonatomic, strong) NSMutableArray *_userArray;
@@ -77,7 +79,7 @@
 - (id)init {
     
     if (self = [super init]) {
-        
+        isRightTran = NO;
         [[TMMessageManage sharedManager] registerMessageListener:self];
     }
     return self;
@@ -97,7 +99,7 @@
     
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor clearColor];
-    self.videosScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, self.view.bounds.size.height - 390, self.view.bounds.size.width, 300)];
+    self.videosScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, self.view.bounds.size.height - 390, self.view.bounds.size.width, VideoParViewHeight)];
     self.videosScrollView.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleWidth;
     self.videosScrollView.bounces = YES;
     self.videosScrollView.indicatorStyle = UIScrollViewIndicatorStyleWhite;
@@ -196,19 +198,19 @@
     //[self.videosScrollView setContentSize:CGSizeMake([[noti object] integerValue], 300)];
     //[self.videosScrollView setContentOffset:CGPointMake(self.videosScrollView.contentSize.width/4, 0)];
 }
-
+// ios iphone notification
 - (void)chatViewNoti:(NSNotification*)noti
 {
     BOOL isChat = [noti.object boolValue];
     if (isChat) {
         [UIView animateWithDuration:0.2 animations:^{
             
-            self.videosScrollView.frame = CGRectMake(self.videosScrollView.frame.origin.x, self.view.bounds.size.height - 180, self.view.bounds.size.width, 180);
+            self.videosScrollView.frame = CGRectMake(self.videosScrollView.frame.origin.x, self.view.bounds.size.height - VideoParViewHeight, self.view.bounds.size.width, VideoParViewHeight);
         }];
     }else{
         [UIView animateWithDuration:0.2 animations:^{
             
-            self.videosScrollView.frame = CGRectMake(self.videosScrollView.frame.origin.x, self.view.bounds.size.height - 280, self.view.bounds.size.width, 180);
+            self.videosScrollView.frame = CGRectMake(self.videosScrollView.frame.origin.x, self.view.bounds.size.height - 300, self.view.bounds.size.width, VideoParViewHeight);
         }];
     }
 }
@@ -290,12 +292,18 @@
 - (void)transitionVideoView:(BOOL)isRigth
 {
     if (isRigth) {
+        isRightTran = YES;
         [UIView animateWithDuration:.2 animations:^{
-            self.videosScrollView.frame = CGRectMake(self.videosScrollView.frame.origin.x+340, self.videosScrollView.frame.origin.y, self.videosScrollView.frame.size.width-340, self.videosScrollView.frame.size.height);
+            self.videosScrollView.frame = CGRectMake(self.videosScrollView.frame.origin.x+TalkPannelWidth, self.videosScrollView.frame.origin.y, self.videosScrollView.frame.size.width-TalkPannelWidth, self.videosScrollView.frame.size.height);
+            [self layoutSubView];
+        }completion:^(BOOL finished) {
         }];
     }else{
+        isRightTran = NO;
         [UIView animateWithDuration:.2 animations:^{
-            self.videosScrollView.frame = CGRectMake(self.videosScrollView.frame.origin.x-340, self.videosScrollView.frame.origin.y, self.videosScrollView.frame.size.width+340, self.videosScrollView.frame.size.height);
+            self.videosScrollView.frame = CGRectMake(self.videosScrollView.frame.origin.x-TalkPannelWidth, self.videosScrollView.frame.origin.y, self.videosScrollView.frame.size.width+TalkPannelWidth, self.videosScrollView.frame.size.height);
+            [self layoutSubView];
+        }completion:^(BOOL finished) {
         }];
     }
    
@@ -326,7 +334,12 @@
     [ASHUD hideHUD];
     if (self.isFullScreen) {
         [UIView animateWithDuration:.2 animations:^{
-              self.videosScrollView.frame = CGRectMake(self.videosScrollView.frame.origin.x, self.view.bounds.size.height - 180, self.view.bounds.size.width, 180);
+            if (isRightTran) {
+                self.videosScrollView.frame = CGRectMake(self.videosScrollView.frame.origin.x, self.view.bounds.size.height - 200, self.view.bounds.size.width-TalkPannelWidth, VideoParViewHeight);
+            }else{
+                self.videosScrollView.frame = CGRectMake(self.videosScrollView.frame.origin.x, self.view.bounds.size.height - 200, self.view.bounds.size.width, VideoParViewHeight);
+            }
+            
         }];
         if (_peerSelectedId) {
             VideoShowItem *item = [_dicRemoteVideoView objectForKey:_peerSelectedId];
@@ -343,7 +356,11 @@
         
     } else {
         [UIView animateWithDuration:.2 animations:^{
-            self.videosScrollView.frame = CGRectMake(self.videosScrollView.frame.origin.x, self.view.bounds.size.height - 280, self.view.bounds.size.width, 180);
+            if (isRightTran) {
+                self.videosScrollView.frame = CGRectMake(self.videosScrollView.frame.origin.x, self.view.bounds.size.height - 300, self.view.bounds.size.width-TalkPannelWidth, VideoParViewHeight);
+            }else{
+                self.videosScrollView.frame = CGRectMake(self.videosScrollView.frame.origin.x, self.view.bounds.size.height - 300, self.view.bounds.size.width, VideoParViewHeight);
+            }
         }];
         if (_peerSelectedId) {
             VideoShowItem *item = [_dicRemoteVideoView objectForKey:_peerSelectedId];
@@ -388,24 +405,37 @@
         [self.view addSubview:view.showVideoView];
         [self.view sendSubviewToBack:view.showVideoView];
         
+
         CGFloat scalelocal = _localVideoSize.width/_localVideoSize.height;
         CGFloat localViewwidth =0.0;
         CGFloat localViewheight =0.0;
         
         CGFloat remoteViewHeight = 0.0;
         CGFloat remoteViewWidth = 0.0;
+        
         if (ISIPAD) {
-            localViewwidth = 120;
+            
+            localViewwidth = 140;
             localViewheight = localViewwidth/scalelocal;
-            remoteViewWidth = 120;
+            remoteViewWidth = 140;
+            if ((_dicRemoteVideoView.count+1)*140>self.videosScrollView.bounds.size.width) {
+                self.videosScrollView.contentSize = CGSizeMake((_dicRemoteVideoView.count)*140, CGRectGetHeight(self.videosScrollView.frame));
+            }else{
+                self.videosScrollView.contentSize = CGSizeZero;
+            }
         }else{
-            localViewwidth = 60;
+            localViewwidth = 90;
             localViewheight = localViewwidth/scalelocal;
-            remoteViewWidth = 60;
+            remoteViewWidth = 90;
+            if ((_dicRemoteVideoView.count+1)*90>self.videosScrollView.bounds.size.width) {
+                self.videosScrollView.contentSize = CGSizeMake((_dicRemoteVideoView.count)*90, CGRectGetHeight(self.videosScrollView.frame));
+            }else{
+                self.videosScrollView.contentSize = CGSizeZero;
+            }
         }
         
-        CGFloat x = (self.view.bounds.size.width - (_dicRemoteVideoView.count-1)*remoteViewWidth - localViewwidth)/2;
-        CGFloat y = 180;//self.view.bounds.size.height - localViewheight - 20;
+        CGFloat x = (self.videosScrollView.bounds.size.width - (_dicRemoteVideoView.count-1)*remoteViewWidth - localViewwidth)/2;
+        CGFloat y = self.videosScrollView.bounds.size.height - localViewheight - bottonSpace;
         
         if (_localVideoSize.width && _localVideoSize.height > 0 ) {
             
@@ -414,65 +444,21 @@
         }
         [self.videosScrollView.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
         
-        NSMutableArray *videoArrays = [NSMutableArray array];
         VideoShowItem* viewsmail = nil;
         for (id key in [_dicRemoteVideoView allKeys]) {
             if (![key isEqualToString:_peerSelectedId]) {
                 viewsmail = [_dicRemoteVideoView objectForKey:key];
                 if (viewsmail.videoSize.width>0&& viewsmail.videoSize.height>0) {
                     CGFloat scale = viewsmail.videoSize.width/viewsmail.videoSize.height;
-                     remoteViewHeight = remoteViewWidth/scale;
+                    remoteViewHeight = remoteViewWidth/scale;
                 }
-                viewsmail.showVideoView.frame = CGRectMake(x, y, remoteViewWidth, remoteViewHeight);
+                viewsmail.showVideoView.frame = CGRectMake(x, self.videosScrollView.bounds.size.height - remoteViewHeight - bottonSpace, remoteViewWidth, remoteViewHeight);
                 x+=remoteViewWidth;
-                [videoArrays addObject:viewsmail];
+                [self.videosScrollView addSubview:viewsmail.showVideoView];
             }
         }
-        if (![videoArrays containsObject:_localVideoView])
-            [videoArrays addObject:_localVideoView];
-        
-        NSMutableArray *leftVideos = [NSMutableArray array];
-        NSMutableArray *rightVideos = [NSMutableArray array];
-        if ([videoArrays count] == 1) {
-            
-            VideoShowItem *subView = [videoArrays objectAtIndex:0];
-            [subView.showVideoView setCenter:CGPointMake(self.videosScrollView.bounds.size.width/2, self.videosScrollView.bounds.size.height-subView.showVideoView.bounds.size.height/2-bottonSpace)];
-            [self.videosScrollView addSubview:subView.showVideoView];
-            
-        } else {
-            
-            for (int i = 0; i < [videoArrays count]; i++) {
-                
-                VideoShowItem *subView = [videoArrays objectAtIndex:i];
-                if (i %2 == 0) {
-                    
-                    [leftVideos addObject:subView];
-                    
-                } else {
-                    
-                    [rightVideos addObject:subView];
-                }
-                
-            }
-            for (int i = 0; i < [leftVideos count]; i ++) {
-                
-                VideoShowItem *subView = [leftVideos objectAtIndex:i];
-                CGRect rect = CGRectMake(self.videosScrollView.bounds.size.width/2 - (i + 1)*subView.showVideoView.bounds.size.width, self.videosScrollView.bounds.size.height/2, subView.showVideoView.bounds.size.width, subView.showVideoView.bounds.size.height);
-                subView.showVideoView.frame = rect;
-                [subView.showVideoView setCenter:CGPointMake(subView.showVideoView.center.x, self.videosScrollView.bounds.size.height-subView.showVideoView.bounds.size.height/2-bottonSpace)];
-                [self.videosScrollView addSubview:subView.showVideoView];
-            }
-            for (int i = 0; i < [rightVideos count]; i ++) {
-                
-                VideoShowItem*subView = [rightVideos objectAtIndex:i];
-                CGRect rect = CGRectMake(self.videosScrollView.bounds.size.width/2 + i*subView.showVideoView.bounds.size.width, self.videosScrollView.bounds.size.height/2, subView.showVideoView.bounds.size.width, subView.showVideoView.bounds.size.height);
-                subView.showVideoView.frame = rect;
-                [subView.showVideoView setCenter:CGPointMake(subView.showVideoView.center.x, self.videosScrollView.bounds.size.height-subView.showVideoView.bounds.size.height/2-bottonSpace)];
-                [self.videosScrollView addSubview:subView.showVideoView];
-            }
-            
-        }
-    
+        _localVideoView.showVideoView.frame = CGRectMake(x, y, localViewwidth, localViewheight);
+        [self.videosScrollView addSubview:_localVideoView.showVideoView];
         
     } else {
         
@@ -513,74 +499,42 @@
         [self.view addSubview:_localVideoView.showVideoView];
         [self.view sendSubviewToBack:_localVideoView.showVideoView];
     
-
-        CGFloat remoteViewWidth = 0.0;
-        if (ISIPAD) {
-            remoteViewWidth = 120;
-        }else{
-            remoteViewWidth = 60;
-        }
+        
         CGFloat remoteViewHeight = 0.0;
+        CGFloat remoteViewWidth = 0.0;
         
-        CGFloat x = self.view.bounds.size.width - _dicRemoteVideoView.count*remoteViewWidth -20;
-        CGFloat y = self.view.bounds.size.height - 180;
+        if (ISIPAD) {
+            remoteViewWidth = 140;
+            if ((_dicRemoteVideoView.count+1)*140>self.videosScrollView.bounds.size.width) {
+                self.videosScrollView.contentSize = CGSizeMake((_dicRemoteVideoView.count)*140, CGRectGetHeight(self.videosScrollView.frame));
+            }else{
+                self.videosScrollView.contentSize = CGSizeZero;
+            }
+        }else{
+            remoteViewWidth = 90;
+            if ((_dicRemoteVideoView.count+1)*90>self.videosScrollView.bounds.size.width) {
+                self.videosScrollView.contentSize = CGSizeMake((_dicRemoteVideoView.count)*90, CGRectGetHeight(self.videosScrollView.frame));
+            }else{
+                self.videosScrollView.contentSize = CGSizeZero;
+            }
+        }
         
+        CGFloat x = (self.videosScrollView.bounds.size.width - _dicRemoteVideoView.count*remoteViewWidth)/2;
         
-        NSMutableArray *videoArrays = [NSMutableArray array];
         VideoShowItem* viewsmail = nil;
         for (id key in [_dicRemoteVideoView allKeys]) {
             viewsmail = [_dicRemoteVideoView objectForKey:key];
-            if (viewsmail.videoSize.width>0 && viewsmail.videoSize.height>0) {
+            if (viewsmail.videoSize.width>0&& viewsmail.videoSize.height>0) {
                 CGFloat scale = viewsmail.videoSize.width/viewsmail.videoSize.height;
                 remoteViewHeight = remoteViewWidth/scale;
             }
-            viewsmail.showVideoView.frame = CGRectMake(x, y, remoteViewWidth, remoteViewHeight);
+            if ([viewsmail.showVideoView.superview isKindOfClass:[self.view class]]) {
+                [viewsmail.showVideoView removeFromSuperview];
+            }
+            viewsmail.showVideoView.frame = CGRectMake(x, self.videosScrollView.bounds.size.height - remoteViewHeight - bottonSpace, remoteViewWidth, remoteViewHeight);
             x+=remoteViewWidth;
-            [viewsmail.showVideoView removeFromSuperview];
-            [videoArrays addObject:viewsmail];
+            [self.videosScrollView addSubview:viewsmail.showVideoView];
         }
-        NSMutableArray *leftVideos = [NSMutableArray array];
-        NSMutableArray *rightVideos = [NSMutableArray array];
-        
-        if ([videoArrays count] == 1) {
-            
-            VideoShowItem *subView = [videoArrays objectAtIndex:0];
-            [subView.showVideoView setCenter:CGPointMake(self.videosScrollView.bounds.size.width/2, self.videosScrollView.bounds.size.height-subView.showVideoView.bounds.size.height/2-bottonSpace)];
-            [self.videosScrollView addSubview:subView.showVideoView];
-            
-        } else {
-            
-            for (int i = 0; i < [videoArrays count]; i++) {
-                
-                VideoShowItem *subView = [videoArrays objectAtIndex:i];
-                if (i %2 == 0) {
-                    
-                    [leftVideos addObject:subView];
-                    
-                } else {
-                    
-                    [rightVideos addObject:subView];
-                }
-                
-            }
-            for (int i = 0; i < [leftVideos count]; i ++) {
-                
-                VideoShowItem *subView = [leftVideos objectAtIndex:i];
-                CGRect rect = CGRectMake(self.videosScrollView.bounds.size.width/2 - (i + 1)*subView.showVideoView.bounds.size.width, self.videosScrollView.bounds.size.height/2, subView.showVideoView.bounds.size.width, subView.showVideoView.bounds.size.height);
-                subView.showVideoView.frame = rect;
-                [subView.showVideoView setCenter:CGPointMake(subView.showVideoView.center.x, self.videosScrollView.bounds.size.height-subView.showVideoView.bounds.size.height/2-bottonSpace)];
-                [self.videosScrollView addSubview:subView.showVideoView];
-            }
-            for (int i = 0; i < [rightVideos count]; i ++) {
-                
-                VideoShowItem *subView = [rightVideos objectAtIndex:i];
-                CGRect rect = CGRectMake(self.videosScrollView.bounds.size.width/2 + i*subView.showVideoView.bounds.size.width, self.videosScrollView.bounds.size.height/2, subView.showVideoView.bounds.size.width, subView.showVideoView.bounds.size.height);
-                subView.showVideoView.frame = rect;
-                [subView.showVideoView setCenter:CGPointMake(subView.showVideoView.center.x, self.videosScrollView.bounds.size.height-subView.showVideoView.bounds.size.height/2-bottonSpace)];
-                [self.videosScrollView addSubview:subView.showVideoView];
-            }
-        }
-    
     }
 }
 

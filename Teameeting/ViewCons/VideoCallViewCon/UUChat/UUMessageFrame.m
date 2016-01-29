@@ -79,7 +79,7 @@
         screenW = screenW > screenH ? screenW : screenH;
     }
     if (ISIPAD) {
-        screenW = 340;
+        screenW = TalkPannelWidth;
 //        if (vertical) {
 //            
 //            screenW = [UIScreen mainScreen].bounds.size.width/2 - 50;
