@@ -12,23 +12,44 @@
 
 @implementation SvUDIDTools
 
-+ (NSString*)UDID
+static SvUDIDTools *uuidTool = nil;
+
++ (SvUDIDTools*)shead
 {
-    NSString *retrieveuuid = [SSKeychain passwordForService:@"com.dync.teameeting"account:@"userUDID"];
-    
-    if (!retrieveuuid) {
-        CFUUIDRef uuid = CFUUIDCreate(NULL);
-        assert(uuid != NULL);
-        CFStringRef uuidStr = CFUUIDCreateString(NULL, uuid);
-        retrieveuuid = [NSString stringWithFormat:@"%@",uuidStr];
-        NSError *error;
-        [SSKeychain setPassword: retrieveuuid
-                     forService:@"com.dync.teameeting"account:@"userUDID" error:&error];
-        if (error) {
-            NSLog(@"SSKeychain Faile");
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+         uuidTool = [[SvUDIDTools alloc] init];
+    });
+    return uuidTool;
+}
+
+- (id)init
+{
+    self = [super init];
+    if (self) {
+        _UUID = [SSKeychain passwordForService:@"com.dync.teameeting"account:@"userUDID"];
+       self.notFirstStart = [[[NSUserDefaults standardUserDefaults] objectForKey:@"isUpateNickName"] boolValue];
+        
+        if (!_UUID) {
+            CFUUIDRef uuid = CFUUIDCreate(NULL);
+            assert(uuid != NULL);
+            CFStringRef uuidStr = CFUUIDCreateString(NULL, uuid);
+            _UUID = [[NSString stringWithFormat:@"%@",uuidStr] lowercaseString];
+            NSError *error;
+            [SSKeychain setPassword: _UUID
+                         forService:@"com.dync.teameeting"account:@"userUDID" error:&error];
+            if (error) {
+                NSLog(@"SSKeychain Faile");
+            }
         }
+        NSLog(@"UUID：%@",_UUID);
     }
-    NSLog(@"UUID：%@",retrieveuuid);
-    return [retrieveuuid lowercaseString];
+    return self;
+}
+- (void)setNotFirstStart:(BOOL)notFirstStart
+{
+    _notFirstStart = notFirstStart;
+    [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithBool:notFirstStart] forKey:@"isUpateNickName"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
 }
 @end

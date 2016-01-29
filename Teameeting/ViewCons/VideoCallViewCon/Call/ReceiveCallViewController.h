@@ -7,9 +7,11 @@
 //
 
 #import "BaseViewController.h"
+#import "RoomVO.h"
+
 @interface ReceiveCallViewController : BaseViewController
 
-@property (nonatomic, strong) NSString *roomID;
+@property (nonatomic, strong) RoomItem *roomItem;
 
 - (void)videoEnable:(BOOL)enable;
 - (void)audioEnable:(BOOL)enable;
@@ -18,5 +20,7 @@
 - (void)hangeUp;      // hunge up
 
 - (void)sendMessageWithCmmand:(NSString *)cmd userID:(NSString *)userid;
+
+- (void)transitionVideoView:(BOOL)isRigth;
 
 @end

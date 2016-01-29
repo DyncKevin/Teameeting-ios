@@ -15,6 +15,7 @@
     if (self) {
         self.deviceToken = @"";
         self.authorization = @"";
+        self.nickName = @"";
     }
     return self;
 }
@@ -174,5 +175,13 @@ static ServerVisit *_server = nil;
 {
     NSString *meeting = [NSString stringWithFormat:@"meeting/getMeetingInfo/%@",meetingID];
     [NetRequestUtils requestWithInterfaceStr:meeting withRequestType:GetType parameters:nil completion:completion];
+}
+
++ (void)updataNickNameWithSign:(NSString*)gn
+                        userID:(NSString*)userID
+                    completion:(void (^)(AFHTTPRequestOperation *operation ,id responseData,NSError *error))completion
+{
+    NSDictionary *parameters = [NSDictionary dictionaryWithObjectsAndKeys:gn,@"sign",userID,@"nickname",nil];
+    [NetRequestUtils requestWithInterfaceStrWithHeader:@"users/updateNickname" withRequestType:PostType parameters:parameters completion:completion];
 }
 @end

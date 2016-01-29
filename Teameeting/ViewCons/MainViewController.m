@@ -20,7 +20,6 @@
 #import <MessageUI/MessageUI.h>
 #import "ASNetwork.h"
 #import "RoomAlertView.h"
-#import "UINavigationBar+Category.h"
 #import "NavView.h"
 #import "NtreatedDataManage.h"
 #import "UIView+Category.h"
@@ -40,7 +39,7 @@ static NSString *kRoomCellID = @"RoomCell";
 
 #define IPADLISTWIDTH 320
 
-@interface MainViewController ()<UITableViewDelegate,UITableViewDataSource,RoomViewCellDelegate,GetRoomViewDelegate,PushViewDelegate,MFMessageComposeViewControllerDelegate,UIAlertViewDelegate,tmMessageReceive>
+@interface MainViewController ()<UITableViewDelegate,UITableViewDataSource,RoomViewCellDelegate,GetRoomViewDelegate,PushViewDelegate,MFMessageComposeViewControllerDelegate,UIAlertViewDelegate,tmMessageReceive,RoomAlertViewDelegate>
 
 {
     RoomItem *tempRoomItem;
@@ -54,6 +53,7 @@ static NSString *kRoomCellID = @"RoomCell";
 @property (nonatomic, strong) UIButton *cancleButton;    // cancle create room button
 @property (nonatomic, strong) UIButton *inputButton;
 @property (nonatomic, strong) RoomAlertView *netAlertView;
+@property (nonatomic, strong) RoomAlertView *reNameAlertView;
 @property (nonatomic, strong) NavView *navView;
 @property (nonatomic, assign) UIInterfaceOrientation oldInterface;
 @property (nonatomic, strong) UIImageView *listBgView;
@@ -171,6 +171,11 @@ static NSString *kRoomCellID = @"RoomCell";
 - (void)viewDidLayoutSubviews
 {
      [self refreshImage];
+    if (ISIPAD) {
+        if (self.netAlertView) {
+            [self.netAlertView updateFrame];
+        }
+    }
     if (self.oldInterface == self.interfaceOrientation || !ISIPAD) {
         return;
     }else{
@@ -306,11 +311,12 @@ static NSString *kRoomCellID = @"RoomCell";
 {
     __weak MainViewController *weakSelf = self;
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        [ServerVisit userInitWithUserid:[SvUDIDTools UDID] uactype:@"0" uregtype:@"3" ulogindev:@"3" upushtoken:[ServerVisit shead].deviceToken completion:^(AFHTTPRequestOperation *operation, id responseData, NSError *error) {
+        [ServerVisit userInitWithUserid:[SvUDIDTools shead].UUID uactype:@"0" uregtype:@"3" ulogindev:@"3" upushtoken:[ServerVisit shead].deviceToken completion:^(AFHTTPRequestOperation *operation, id responseData, NSError *error) {
             if (!error) {
                 NSDictionary *dict = (NSDictionary*)responseData;
                 if ([[dict objectForKey:@"code"] integerValue] == 200) {
                     [ServerVisit shead].authorization = [dict objectForKey:@"authorization"];
+                    [ServerVisit shead].nickName = [[dict objectForKey:@"information"] objectForKey:@"uname"];
                     [weakSelf getData];
                     [[TMMessageManage sharedManager] inintTMMessage];
                     
@@ -353,6 +359,15 @@ static NSString *kRoomCellID = @"RoomCell";
                     }completion:^(BOOL finished) {
                         [initView removeFromSuperview];
                     }];
+                }
+                // judge is first start app
+                if (![SvUDIDTools shead].notFirstStart) {
+                    if (weakSelf.reNameAlertView) {
+                        [weakSelf.reNameAlertView dismiss];
+                        weakSelf.reNameAlertView = nil;
+                    }
+                    weakSelf.reNameAlertView = [[RoomAlertView alloc] initType:AlertViewModifyNameType withDelegate:self];
+                    [weakSelf.reNameAlertView show];
                 }
             }
         }
@@ -432,7 +447,7 @@ static NSString *kRoomCellID = @"RoomCell";
     
     MFMessageComposeViewController *picker = [[MFMessageComposeViewController alloc] init];
     picker.messageComposeDelegate =self;
-    NSString *smsBody =[NSString stringWithFormat:@"让我们在会议中见!👉 http://115.28.70.232/share_meetingRoom/#%@",roomID];
+    NSString *smsBody =[NSString stringWithFormat:@"让我们在会议中见!👉 %@#%@",ShearUrl,roomID];
     
     picker.body=smsBody;
     
@@ -505,7 +520,7 @@ static NSString *kRoomCellID = @"RoomCell";
         roomItem.roomID = [NSString stringWithFormat:@"%@",[dict objectForKey:@"meetingid"]];
         roomItem.jointime = [[dict objectForKey:@"jointime"] longValue];
         roomItem.mettingType = [[dict objectForKey:@"meettype"] integerValue];
-        roomItem.mettingState = [[dict objectForKey:@"meetusable"] integerValue];
+        roomItem.mettingState = [[dict objectForKey:@"meetenable"] integerValue];
         
         [dataArray replaceObjectAtIndex:0 withObject:roomItem];
         [self.roomList reloadData];
@@ -521,7 +536,7 @@ static NSString *kRoomCellID = @"RoomCell";
     [self.getRoomView showGetRoomView];
     
     RoomItem *roomItem = [[RoomItem alloc] init];
-    roomItem.userID = [SvUDIDTools UDID];
+    roomItem.userID = [SvUDIDTools shead].UUID;
     [dataArray insertObject:roomItem atIndex:0];
     // 先把数据添加上，在搞下面的
     
@@ -884,9 +899,9 @@ static NSString *kRoomCellID = @"RoomCell";
                             item.roomName = [roomInfo objectForKey:@"meetname"];
                             item.createTime = [[roomInfo objectForKey:@"crttime"] longValue];
                             item.mettingDesc = [roomInfo objectForKey:@"meetdesc"];
-                            item.mettingNum = [[roomInfo objectForKey:@"memnumber"] stringValue];
+                            item.mettingNum = [[roomInfo objectForKey:@"memnumber"] integerValue];
                             item.mettingType = [[roomInfo objectForKey:@"meettype1"] integerValue];
-                            item.mettingState = [[roomInfo objectForKey:@"meetusable"] integerValue];
+                            item.mettingState = [[roomInfo objectForKey:@"meetenable"] integerValue];
                             item.userID = [roomInfo objectForKey:@"userid"];
                             item.canNotification = [[roomInfo objectForKey:@"pushable"] stringValue];
                             [ToolUtils shead].meetingID = nil;
@@ -969,7 +984,7 @@ static NSString *kRoomCellID = @"RoomCell";
         return;
     }
     RoomItem *roomItem = [dataArray objectAtIndex:index];
-    if ([roomItem.userID isEqualToString:[SvUDIDTools UDID]]) {
+    if ([roomItem.userID isEqualToString:[SvUDIDTools shead].UUID]) {
         [self.push showWithType:PushViewTypeSetting withObject:roomItem withIndex:index];
     }else{
         [self.push showWithType:PushViewTypeSettingConferee withObject:roomItem withIndex:index];
@@ -1029,6 +1044,38 @@ static NSString *kRoomCellID = @"RoomCell";
      self.cancleButton.hidden = YES;
 }
 
+#pragma mark - RoomAlertViewDelegate
+
+- (void)modifyNickName:(NSString *)nickName
+{
+    __weak MainViewController *weakSelf = self;
+    if ([[ServerVisit shead].nickName isEqualToString:nickName]) {
+        [SvUDIDTools shead].notFirstStart = YES;
+        [self.reNameAlertView dismiss];
+        self.reNameAlertView = nil;
+        return;
+    }
+    [ServerVisit updataNickNameWithSign:[ServerVisit shead].authorization userID:nickName completion:^(AFHTTPRequestOperation *operation, id responseData, NSError *error) {
+        if (!error) {
+            NSDictionary *dict = (NSDictionary*)responseData;
+            if ([[dict objectForKey:@"code"] integerValue]== 200) {
+                [[TMMessageManage sharedManager] tmUpdateNickNameNname:nickName];
+                [SvUDIDTools shead].notFirstStart = YES;
+            }
+        }
+        [weakSelf.reNameAlertView dismiss];
+        weakSelf.reNameAlertView = nil;
+    }];
+}
+
+- (void)closeModifyNickName
+{
+    if (self.reNameAlertView) {
+        [self.reNameAlertView dismiss];
+        self.reNameAlertView = nil;
+        [SvUDIDTools shead].notFirstStart = YES;
+    }
+}
 
 #pragma mark - PushViewDelegate
 - (void)pushViewInviteViaMessages:(RoomItem*)obj
@@ -1052,7 +1099,7 @@ static NSString *kRoomCellID = @"RoomCell";
 - (void)pushViewInviteViaWeiXin:(RoomItem*)obj
 {
     if ([WXApi isWXAppInstalled]) {
-        [WXApiRequestHandler sendLinkURL:[NSString stringWithFormat:@"http://115.28.70.232/share_meetingRoom/#%@",obj.roomID]
+        [WXApiRequestHandler sendLinkURL:[NSString stringWithFormat:@"%@#%@",ShearUrl,obj.roomID]
                                  TagName:nil
                                    Title:@"Teameeting"
                              Description:@"视频邀请"
@@ -1069,7 +1116,7 @@ static NSString *kRoomCellID = @"RoomCell";
 - (void)pushViewInviteViaLink:(RoomItem*)obj
 {
     UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
-    pasteboard.string = [NSString stringWithFormat:@"http://115.28.70.232/share_meetingRoom/#%@",obj.roomID];
+    pasteboard.string = [NSString stringWithFormat:@"%@#%@",ShearUrl,obj.roomID];
     [ASHUD showHUDWithCompleteStyleInView:self.view content:@"拷贝成功" icon:@"copy_scuess"];
 }
 
@@ -1198,10 +1245,15 @@ static NSString *kRoomCellID = @"RoomCell";
                             self.netAlertView = nil;
                         }
                     }
+                [[NtreatedDataManage sharedManager] dealwithDataWithTarget:self];
                 }
             }else{
+                if (self.reNameAlertView) {
+                    [self.reNameAlertView dismiss];
+                    self.reNameAlertView = nil;
+                }
                 if (!self.netAlertView) {
-                    self.netAlertView = [[RoomAlertView alloc] initType:AlertViewNotNetType];
+                    self.netAlertView = [[RoomAlertView alloc] initType:AlertViewNotNetType withDelegate:self];
                     [self.netAlertView show];
                 }
                 

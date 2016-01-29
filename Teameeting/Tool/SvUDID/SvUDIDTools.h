@@ -11,6 +11,12 @@
 
 @interface SvUDIDTools : NSObject
 
-+ (NSString*)UDID;
++ (SvUDIDTools*)shead;
+
+@property (nonatomic, strong)NSString *UUID;
+
+@property (nonatomic, assign) BOOL notFirstStart;
+
+
 
 @end

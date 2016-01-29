@@ -67,7 +67,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    [[TMMessageManage sharedManager] tmRoomCmd:MCMeetCmdENTER roomid:self.roomItem.roomID remain:@""];
+    [[TMMessageManage sharedManager] tmRoomCmd:MCMeetCmdENTER roomid:self.roomItem.roomID withRoomName:self.roomItem.roomName remain:@""];
     self.navigationController.delegate = self;
     self.title = self.roomItem.roomName;
     self.view.backgroundColor = [UIColor blackColor];
@@ -100,7 +100,7 @@
     }
     
     self.callViewCon = [[ReceiveCallViewController alloc] init];
-    self.callViewCon.roomID = self.roomItem.roomID;
+    self.callViewCon.roomItem = self.roomItem;
     self.menuView = [[LockerView alloc] initWithFrame:CGRectMake(0, self.view.bounds.size.height - 60, 300, 60)];
     [self.menuView setCenter:CGPointMake(self.view.bounds.size.width/2, self.menuView.center.y)];
     self.menuView.delegate = self;
@@ -151,7 +151,7 @@
 - (void)viewDidLayoutSubviews
 {
     [super viewDidLayoutSubviews];
-    CGFloat rootViewWidth = 340;//isVertical == YES ? (self.view.bounds.size.width/2 - 50) : (self.view.bounds.size.width/2 - 150);
+    CGFloat rootViewWidth = TalkPannelWidth;//isVertical == YES ? (self.view.bounds.size.width/2 - 50) : (self.view.bounds.size.width/2 - 150);
     if (ISIPAD) {
         if (self.rootView.view.frame.origin.x < 0) {
             
@@ -162,8 +162,8 @@
         } else {
             
             [self.rootView.view setFrame:CGRectMake(0, 0, rootViewWidth, self.view.bounds.size.height)];
-            [self.menuView setCenter:CGPointMake(self.view.bounds.size.width/2 + self.view.bounds.size.width/4, self.view.bounds.size.height - self.menuView.bounds.size.height)];
-            [self.noUserTip setCenter:CGPointMake(self.view.bounds.size.width/2 + self.view.bounds.size.width/4, CGRectGetMinY(self.menuView.frame) - self.noUserTip.bounds.size.height)];
+            [self.menuView setCenter:CGPointMake((self.view.bounds.size.width - TalkPannelWidth)/2+TalkPannelWidth, self.view.bounds.size.height - self.menuView.bounds.size.height)];
+            [self.noUserTip setCenter:CGPointMake((self.view.bounds.size.width - TalkPannelWidth)/2+TalkPannelWidth, CGRectGetMinY(self.menuView.frame) - self.noUserTip.bounds.size.height)];
         }
     } else {
         if (self.isChat) {
@@ -208,7 +208,7 @@
 
 - (void)loadTableView {
     
-    CGFloat rootViewWidth = 340;//isVertical == YES ? (self.view.bounds.size.width/2 - 50) : (self.view.bounds.size.width/2 - 150);
+    CGFloat rootViewWidth = TalkPannelWidth;//isVertical == YES ? (self.view.bounds.size.width/2 - 50) : (self.view.bounds.size.width/2 - 150);
     self.rootView = [[RootViewController alloc] initWithNibName:@"RootViewController" bundle:nil];
     self.rootView.parentViewCon = self;
     self.rootView.view.autoresizingMask = UIViewAutoresizingNone;
@@ -403,7 +403,7 @@
     [linkTitle setFrame:CGRectMake(0, 0, shareView.bounds.size.width - (isVertical ? 60 : 80), (isVertical ? 56 : 45))];
     linkTitle.lineBreakMode = NSLineBreakByTruncatingMiddle;
     [linkTitle setFont:[UIFont systemFontOfSize:14]];
-    linkTitle.text = [NSString stringWithFormat:@"http://115.28.70.232/share_meetingRoom/%@",self.roomItem.roomID];
+    linkTitle.text = [NSString stringWithFormat:@"%@%@",ShearUrl,self.roomItem.roomID];
     [linkTitle setTextColor:[UIColor grayColor]];
     [linkTitle setBackgroundColor:[UIColor clearColor]];
     [linkTitle setTextAlignment:NSTextAlignmentCenter];
@@ -465,14 +465,18 @@
     
     self.isChat = YES;
     if (ISIPAD) {
-        
+        if (self.rootView.view.frame.origin.x<0) {
+            [self.callViewCon transitionVideoView:YES];
+        }else{
+            [self.callViewCon transitionVideoView:NO];
+        }
         [UIView animateWithDuration:0.2 animations:^{
             
             if (self.rootView.view.frame.origin.x < 0) {
                 
                 [self.rootView.view setFrame:CGRectMake(0,self.rootView.view.frame.origin.y, self.rootView.view.bounds.size.width, self.rootView.view.bounds.size.height)];
-                [self.menuView setCenter:CGPointMake(self.view.bounds.size.width/2 + self.view.bounds.size.width/4, self.menuView.center.y)];
-                [self.noUserTip setCenter:CGPointMake(self.view.bounds.size.width/2 + self.view.bounds.size.width/4, self.noUserTip.center.y)];
+                [self.menuView setCenter:CGPointMake((self.view.bounds.size.width - TalkPannelWidth)/2+TalkPannelWidth, self.menuView.center.y)];
+                [self.noUserTip setCenter:CGPointMake((self.view.bounds.size.width - TalkPannelWidth)/2+TalkPannelWidth, self.noUserTip.center.y)];
                 [self.rootView setReceiveMessageEnable:YES];
                 
             } else {
@@ -519,8 +523,9 @@
             NSLog(@"left");
             if (self.rootView.view.frame.origin.x>=0) {
                 self.isChat = NO;
+                [self.callViewCon transitionVideoView:NO];
                 [UIView animateWithDuration:0.2 animations:^{
-                    CGFloat rootViewWidth =340;// [self isVertical] == YES ? (self.view.bounds.size.width/2 - 50) : (self.view.bounds.size.width/2 - 150);
+                    CGFloat rootViewWidth =TalkPannelWidth;// [self isVertical] == YES ? (self.view.bounds.size.width/2 - 50) : (self.view.bounds.size.width/2 - 150);
 
                     [self.rootView.view setFrame:CGRectMake(0 - rootViewWidth,self.rootView.view.frame.origin.y, self.rootView.view.bounds.size.width, self.rootView.view.bounds.size.height)];
                     [self.menuView setCenter:CGPointMake(self.view.bounds.size.width/2, self.menuView.center.y)];
@@ -539,11 +544,13 @@
                 self.isChat = YES;
                 [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationNone];
                 [self.navigationController setNavigationBarHidden:NO animated:YES];
+                [self.callViewCon transitionVideoView:YES];
+
                 [UIView animateWithDuration:0.2 animations:^{
                     
                     [self.rootView.view setFrame:CGRectMake(0,self.rootView.view.frame.origin.y, self.rootView.view.bounds.size.width, self.rootView.view.bounds.size.height)];
-                    [self.menuView setCenter:CGPointMake(self.view.bounds.size.width/2 + self.view.bounds.size.width/4, self.menuView.center.y)];
-                    [self.noUserTip setCenter:CGPointMake(self.view.bounds.size.width/2 + self.view.bounds.size.width/4, self.noUserTip.center.y)];
+                    [self.menuView setCenter:CGPointMake((self.view.bounds.size.width - TalkPannelWidth)/2 +TalkPannelWidth, self.menuView.center.y)];
+                    [self.noUserTip setCenter:CGPointMake((self.view.bounds.size.width - TalkPannelWidth)/2+TalkPannelWidth, self.noUserTip.center.y)];
                 }completion:^(BOOL finished) {
                     [self.rootView setReceiveMessageEnable:YES];
                 }];
@@ -568,8 +575,9 @@
     if (self.isChat) {
         if (self.rootView.view.frame.origin.x>=0) {
             self.isChat = NO;
+            [self.callViewCon transitionVideoView:NO];
             [UIView animateWithDuration:0.2 animations:^{
-                CGFloat rootViewWidth = [self isVertical] == YES ? (self.view.bounds.size.width/2 - 50) : (self.view.bounds.size.width/2 - 150);
+                CGFloat rootViewWidth =TalkPannelWidth;// [self isVertical] == YES ? (self.view.bounds.size.width/2 - 50) : (self.view.bounds.size.width/2 - 150);
                 
                 [self.rootView.view setFrame:CGRectMake(0 - rootViewWidth,self.rootView.view.frame.origin.y, self.rootView.view.bounds.size.width, self.rootView.view.bounds.size.height)];
                 [self.menuView setCenter:CGPointMake(self.view.bounds.size.width/2, self.menuView.center.y)];
@@ -627,7 +635,7 @@
     [_popver dismiss];
     if ([WXApi isWXAppInstalled]) {
         //判断是否有微信
-        [WXApiRequestHandler sendLinkURL:[NSString stringWithFormat:@"http://115.28.70.232/share_meetingRoom/#%@",self.roomItem.roomID]
+        [WXApiRequestHandler sendLinkURL:[NSString stringWithFormat:@"%@#%@",ShearUrl,self.roomItem.roomID]
                                  TagName:nil
                                    Title:@"Teameeting"
                              Description:@"视频邀请"
@@ -649,7 +657,7 @@
         if ([messageClass canSendText]) {
             MFMessageComposeViewController *picker = [[MFMessageComposeViewController alloc] init];
             picker.messageComposeDelegate =self;
-            NSString *smsBody =[NSString stringWithFormat:@"让我们在会议中见!👉 http://115.28.70.232/share_meetingRoom/#%@",self.roomItem.roomID];
+            NSString *smsBody =[NSString stringWithFormat:@"让我们在会议中见!👉 %@#%@",ShearUrl,self.roomItem.roomID];
             
             picker.body=smsBody;
             
@@ -669,7 +677,7 @@
 {
     [_popver dismiss];
     UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
-    pasteboard.string = [NSString stringWithFormat:@"http://115.28.70.232/share_meetingRoom/#%@",self.roomItem.roomID];
+    pasteboard.string = [NSString stringWithFormat:@"%@#%@",ShearUrl,self.roomItem.roomID];
     [ASHUD showHUDWithCompleteStyleInView:self.view content:@"拷贝成功" icon:@"copy_scuess"];
 }
 
@@ -731,6 +739,7 @@
         [self.navigationController.navigationBar setTranslucent:YES];
         //main_line@2x
         self.navigationController.navigationBar.barTintColor = [UIColor colorWithRed:.0f green:.0f blue:.0f alpha:0.1];
+        [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"nav_bar"] forBarMetrics:UIBarMetricsDefault];
     }
 }
 #pragma mark - UIGestureRecognizerDelegate
