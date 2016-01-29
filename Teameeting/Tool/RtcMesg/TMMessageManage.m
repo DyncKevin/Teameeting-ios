@@ -53,7 +53,7 @@
 
 - (void)inintTMMessage {
     //192.168.7.39 :6630      180.150.179.128  :6630
-    [_msg tMInitMsgProtocol:self uid:[SvUDIDTools UDID] token:[ServerVisit shead].authorization nname:@"nick name" server:TMMessageUrl port:6630];
+    [_msg tMInitMsgProtocol:self uid:[SvUDIDTools shead].UUID token:[ServerVisit shead].authorization nname:[ServerVisit shead].nickName server:TMMessageUrl port:6630];
 }
 
 - (void)registerMessageListener:(id<tmMessageReceive>)listener {
@@ -343,14 +343,14 @@
 #pragma mark TMessage Action
 
 
-- (int)sendMsgWithRoomid:(NSString *)roomid msg:(NSString *)msg {
+- (int)sendMsgWithRoomid:(NSString *)roomid withRoomName:(NSString*)roomName msg:(NSString *)msg {
     
-   return [self.msg tMSndMsgRoomid:roomid rname:@"room name" msg:msg];
+   return [self.msg tMSndMsgRoomid:roomid rname:roomName msg:msg];
 }
 
-- (int)tmRoomCmd:(MCMeetCmd)cmd roomid:(NSString *)roomid remain:(NSString *)remain {
+- (int)tmRoomCmd:(MCMeetCmd)cmd roomid:(NSString *)roomid withRoomName:(NSString*)roomName remain:(NSString *)remain {
 
-    return [self.msg tMOptRoomCmd:cmd roomid:roomid rname:@"room name" remain:remain];
+    return [self.msg tMOptRoomCmd:cmd roomid:roomid rname:roomName remain:remain];
 }
 
 - (int)tMNotifyMsgRoomid:(NSString*)roomid withTags:(MCSendTags)tags withMessage:(NSString*)meg
@@ -358,6 +358,10 @@
     return [self.msg tMNotifyMsgRoomid:roomid rname:@"room name" tags:tags msg:meg];
 }
 
+- (void) tmUpdateNickNameNname:(NSString*)nickName
+{
+    [self.msg tMSetNickNameNname:nickName];
+}
 //接收消息
 - (void) OnSndMsgMsg:(NSString *) msg {
     
@@ -369,11 +373,11 @@
             BOOL searchTag = NO;
             for (id<tmMessageReceive> object in self.messageListeners) {
                 
-                if ([object respondsToSelector:@selector(messageDidReceiveWithContent:messageTime:)] && [object receiveMessageEnable]) {
+                if ([object respondsToSelector:@selector(messageDidReceiveWithContent:messageTime:withNickName:)] && [object receiveMessageEnable]) {
                     
-                    if (![[messageDic objectForKey:@"from"] isEqualToString:[SvUDIDTools UDID]]) {
+                    if (![[messageDic objectForKey:@"from"] isEqualToString:[SvUDIDTools shead].UUID]) {
                         
-                        [object messageDidReceiveWithContent:[messageDic objectForKey:@"cont"] messageTime:[messageDic objectForKey:@"ntime"]];
+                        [object messageDidReceiveWithContent:[messageDic objectForKey:@"cont"] messageTime:[messageDic objectForKey:@"ntime"] withNickName:[messageDic objectForKey:@"nname"]];
                     }
                     
                     searchTag = YES;
@@ -381,7 +385,7 @@
                 }
 
             }
-            if (!searchTag && ![[messageDic objectForKey:@"from"] isEqualToString:[SvUDIDTools UDID]]) {
+            if (!searchTag && ![[messageDic objectForKey:@"from"] isEqualToString:[SvUDIDTools shead].UUID]) {
                 
                 [[TMMessageManage sharedManager] insertMeeageDataWtihBelog:[messageDic objectForKey:@"room"] content:[messageDic objectForKey:@"cont"] messageTime:[messageDic objectForKey:@"ntime"]];
                 for ( id<tmMessageReceive> object in self.messageListeners) {
@@ -416,19 +420,19 @@
                 
                 if ([object respondsToSelector:@selector(videoSubscribeWith:action:)] && [object receiveMessageEnable]) {
                     
-                    if (![[messageDic objectForKey:@"from"] isEqualToString:[SvUDIDTools UDID]]) {
+                    if (![[messageDic objectForKey:@"from"] isEqualToString:[SvUDIDTools shead].UUID]) {
                         
                         [object videoSubscribeWith:[messageDic objectForKey:@"cont"] action:[[messageDic objectForKey:@"tags"] intValue]];
                     }
                     
                 }
             }
-        }else if([[messageDic objectForKey:@"tags"] intValue] == MCSendTagsAUDIOSET || [[messageDic objectForKey:@""] intValue] == MCSendTagsVIDEOSET){
+        }else if([[messageDic objectForKey:@"tags"] intValue] == MCSendTagsAUDIOSET || [[messageDic objectForKey:@"tags"] intValue] == MCSendTagsVIDEOSET){
             for (id <tmMessageReceive> object in self.messageListeners) {
                 
                 if ([object respondsToSelector:@selector(videoAudioSet:action:)] && [object receiveMessageEnable]) {
                     
-                    if (![[messageDic objectForKey:@"from"] isEqualToString:[SvUDIDTools UDID]]) {
+                    if (![[messageDic objectForKey:@"from"] isEqualToString:[SvUDIDTools shead].UUID]) {
                         
                         if ([[messageDic objectForKey:@"tags"] intValue] == MCSendTagsAUDIOSET) {
                              [object videoAudioSet:[messageDic objectForKey:@"cont"] action:[[messageDic objectForKey:@"tags"] intValue]];

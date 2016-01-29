@@ -22,6 +22,7 @@
 
 @property (weak, nonatomic) IBOutlet UITableView *chatTableView;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *bottomConstraint;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *topConstraint;
 @property (assign,nonatomic) BOOL isViewLoad;
 @property (assign,nonatomic) BOOL receiveEnable;
 @end
@@ -65,6 +66,9 @@
     closeButton.frame = CGRectMake(0, 0, 28, 28);
     UIBarButtonItem *groupButton1 =[[UIBarButtonItem alloc] initWithCustomView:closeButton];
     self.navigationItem.leftBarButtonItem = groupButton1;
+    if (ISIPAD) {
+        [self.topConstraint setConstant:64];
+    }
 }
 
 - (void)closeChatView
@@ -267,9 +271,10 @@
 
 #pragma mark - tmMessageReceive
 
-- (void)messageDidReceiveWithContent:(NSString *)content messageTime:(NSString *)time {
+- (void)messageDidReceiveWithContent:(NSString *)content messageTime:(NSString *)time withNickName:(NSString*)nickName{
     
     NSDictionary *dic = @{@"strContent": content,
+                          @"strName":nickName,
                           @"type": @(UUMessageTypeText)};
     [self.chatModel addOtherItem:dic];
     [self.chatTableView reloadData];
@@ -293,12 +298,13 @@
         return;
     }
     NSDictionary *dic = @{@"strContent": message,
+                          @"strName":@"我",
                           @"type": @(UUMessageTypeText)};
     funcView.TextViewInput.text = @"";
     [funcView changeSendBtnWithPhoto:YES];
     [self dealTheFunctionData:dic];
     VideoViewController *videoCon = (VideoViewController *)self.parentViewCon;
-    [[TMMessageManage sharedManager]sendMsgWithRoomid:videoCon.roomItem.roomID msg:message];
+    [[TMMessageManage sharedManager]sendMsgWithRoomid:videoCon.roomItem.roomID withRoomName:videoCon.roomItem.roomName msg:message];
 }
 
 - (void)UUInputFunctionView:(UUInputFunctionView *)funcView sendPicture:(UIImage *)image

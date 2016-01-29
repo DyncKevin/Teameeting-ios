@@ -196,7 +196,7 @@
                         item.mettingDesc = [roomInfo objectForKey:@"meetdesc"];
                         item.mettingNum = [[roomInfo objectForKey:@"memnumber"] integerValue];
                         item.mettingType = [[roomInfo objectForKey:@"meettype"] integerValue];
-                        item.mettingState = [[roomInfo objectForKey:@"meetusable"] integerValue];
+                        item.mettingState = [[roomInfo objectForKey:@"meetenable"] integerValue];
                         item.userID = [roomInfo objectForKey:@"userid"];
                         item.canNotification = [[roomInfo objectForKey:@"pushable"] stringValue];
                         [weakSelf enterMeeting:item];

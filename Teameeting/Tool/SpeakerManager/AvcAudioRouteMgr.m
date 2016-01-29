@@ -149,6 +149,7 @@
     }
     else if ([output.portType isEqualToString:AVAudioSessionPortBuiltInSpeaker]) {
         NSLog(@"] Audio Route: Output Port: BuiltInSpeaker");
+         [self setSpeakerOn];
     }
     else if ([output.portType isEqualToString:AVAudioSessionPortHDMI]) {
         NSLog(@"] Audio Route: Output Port: HDMI");

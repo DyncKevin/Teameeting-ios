@@ -17,6 +17,7 @@
 #import "RoomApp.h"
 #import "APService.h"
 #import "ToolUtils.h"
+#import "SvUDIDTools.h"
 
 #import "TMMessageManage.h"
 
@@ -35,7 +36,7 @@
     [[UINavigationBar appearance] setBarTintColor: [UIColor blackColor]];
     [[UIApplication sharedApplication] setIdleTimerDisabled:YES];
     [ASNetwork sharedNetwork];
-  
+    [SvUDIDTools shead];
     [RoomApp shead].appDelgate = self;
     // Override point for customization after application launch.
     if (launchOptions) {

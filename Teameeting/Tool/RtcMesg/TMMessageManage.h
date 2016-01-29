@@ -13,7 +13,7 @@
 @protocol tmMessageReceive <NSObject>
 
 //for Chat
-- (void)messageDidReceiveWithContent:(NSString *)content messageTime:(NSString *)time;
+- (void)messageDidReceiveWithContent:(NSString *)content messageTime:(NSString *)time withNickName:(NSString*)nickName;
 //for VideoSubscribe
 - (void)videoSubscribeWith:(NSString *)publishId action:(NSInteger)action;
 //for Video Audio Setting
@@ -32,14 +32,18 @@
 + (TMMessageManage *)sharedManager;
 - (void)inintTMMessage;
 - (int)sendMsgWithRoomid:(NSString*) roomid
+            withRoomName:(NSString*)roomName
                      msg:(NSString*) msg;
 - (int)tmRoomCmd:(MCMeetCmd) cmd
           roomid:(NSString*) roomid
+    withRoomName:(NSString*)roomName
           remain:(NSString*) remain;
 
 - (int)tMNotifyMsgRoomid:(NSString*)roomid
                 withTags:(MCSendTags)tags
              withMessage:(NSString*)meg;
+
+- (void) tmUpdateNickNameNname:(NSString*)nickName;
 
 - (BOOL)connectEnable;
 

@@ -33,7 +33,7 @@
         
         datas = [NSMutableArray array];
     }
-    data.udid = [SvUDIDTools UDID];
+    data.udid = [SvUDIDTools shead].UUID;
     data.lastModifyDate = [NSDate new];
     [datas addObject:data];
     return [NSKeyedArchiver archiveRootObject:datas toFile:path];

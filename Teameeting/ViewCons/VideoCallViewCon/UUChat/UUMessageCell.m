@@ -163,7 +163,7 @@
     UUMessage *message = messageFrame.message;
     
     // 1、设置时间
-    self.labelTime.text = message.strTime;
+    self.labelTime.text = [NSString stringWithFormat:@"%@-%@",message.strName,message.strTime];
     //self.labelTime.frame = messageFrame.timeF;
     
     // 2、设置头像
