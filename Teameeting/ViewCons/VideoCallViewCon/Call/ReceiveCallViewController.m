@@ -53,7 +53,7 @@
 @synthesize _dicRemoteVideoView;
 
 @synthesize _client;
-@synthesize roomID;
+@synthesize roomItem;
 @synthesize _userArray,_channelArray;
 
 - (void)dealloc
@@ -216,34 +216,7 @@
 - (void)fullSreenNoti:(NSNotification *)noti {
     
     self.isFullScreen = !self.isFullScreen;
-    if (self.isFullScreen ) {
-        
-        if (_peerSelectedId) {
-            VideoShowItem *item = [_dicRemoteVideoView objectForKey:_peerSelectedId];
-            [item setFullScreen:YES];
-        }else{
-            [_localVideoView setFullScreen:YES];
-        }
-        
-        [UIView animateWithDuration:0.2 animations:^{
-            
-            self.videosScrollView.frame = CGRectMake(self.videosScrollView.frame.origin.x, self.view.bounds.size.height - 180, self.view.bounds.size.width, 180);
-        }];
-        
-    } else {
-        if (_peerSelectedId) {
-            VideoShowItem *item = [_dicRemoteVideoView objectForKey:_peerSelectedId];
-            [item setFullScreen:NO];
-        }else{
-            [_localVideoView setFullScreen:NO];
-        }
-        
-        [UIView animateWithDuration:0.2 animations:^{
-            
-            self.videosScrollView.frame = CGRectMake(self.videosScrollView.frame.origin.x, self.view.bounds.size.height - 280, self.view.bounds.size.width, 180);
-        }];
-    }
-    
+    [self layoutSubView];
 }
 
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch {
@@ -266,11 +239,11 @@
         if (enable) {
             [_localVideoView setVideoHidden:NO];
             NSDictionary *dict = [NSDictionary dictionaryWithObjectsAndKeys:_localVideoView.publishID,@"PublishId",@"Open",@"Media", nil];
-            [[TMMessageManage sharedManager] tMNotifyMsgRoomid:self.roomID withTags:MCSendTagsVIDEOSET withMessage:[ToolUtils JSONTOString:dict]];
+            [[TMMessageManage sharedManager] tMNotifyMsgRoomid:self.roomItem.roomID withTags:MCSendTagsVIDEOSET withMessage:[ToolUtils JSONTOString:dict]];
         }else{
             [_localVideoView setVideoHidden:YES];
             NSDictionary *dict = [NSDictionary dictionaryWithObjectsAndKeys:_localVideoView.publishID,@"PublishId",@"Close",@"Media", nil];
-            [[TMMessageManage sharedManager] tMNotifyMsgRoomid:self.roomID withTags:MCSendTagsVIDEOSET withMessage:[ToolUtils JSONTOString:dict]];
+            [[TMMessageManage sharedManager] tMNotifyMsgRoomid:self.roomItem.roomID withTags:MCSendTagsVIDEOSET withMessage:[ToolUtils JSONTOString:dict]];
         }
     }
 }
@@ -281,12 +254,12 @@
         if (enable) {
             [_localVideoView setAudioClose:NO];
             NSDictionary *dict = [NSDictionary dictionaryWithObjectsAndKeys:_localVideoView.publishID,@"PublishId",@"Open",@"Media", nil];
-            [[TMMessageManage sharedManager] tMNotifyMsgRoomid:self.roomID withTags:MCSendTagsAUDIOSET withMessage:[ToolUtils JSONTOString:dict]];
+            [[TMMessageManage sharedManager] tMNotifyMsgRoomid:self.roomItem.roomID withTags:MCSendTagsAUDIOSET withMessage:[ToolUtils JSONTOString:dict]];
 
         }else{
              [_localVideoView setAudioClose:YES];
             NSDictionary *dict = [NSDictionary dictionaryWithObjectsAndKeys:_localVideoView.publishID,@"PublishId",@"Close",@"Media", nil];
-            [[TMMessageManage sharedManager] tMNotifyMsgRoomid:self.roomID withTags:MCSendTagsAUDIOSET withMessage:[ToolUtils JSONTOString:dict]];
+            [[TMMessageManage sharedManager] tMNotifyMsgRoomid:self.roomItem.roomID withTags:MCSendTagsAUDIOSET withMessage:[ToolUtils JSONTOString:dict]];
         }
     }
 }
@@ -301,8 +274,8 @@
 {
     if (_client) {
         [_client CloseAll];
-        [_client UnSubscribe:self.roomID];
-        [[TMMessageManage sharedManager] tmRoomCmd:MCMeetCmdLEAVE roomid:self.roomID remain:@""];
+        [_client UnSubscribe:_localVideoView.publishID];
+        [[TMMessageManage sharedManager] tmRoomCmd:MCMeetCmdLEAVE roomid:self.roomItem.roomID withRoomName:self.roomItem.roomName remain:@""];
         [[TMMessageManage sharedManager] removeMessageListener:self];
     }
     
@@ -313,6 +286,21 @@
 - (void)sendMessageWithCmmand:(NSString *)cmd userID:(NSString *)userid {
     
 }
+
+- (void)transitionVideoView:(BOOL)isRigth
+{
+    if (isRigth) {
+        [UIView animateWithDuration:.2 animations:^{
+            self.videosScrollView.frame = CGRectMake(self.videosScrollView.frame.origin.x+340, self.videosScrollView.frame.origin.y, self.videosScrollView.frame.size.width-340, self.videosScrollView.frame.size.height);
+        }];
+    }else{
+        [UIView animateWithDuration:.2 animations:^{
+            self.videosScrollView.frame = CGRectMake(self.videosScrollView.frame.origin.x-340, self.videosScrollView.frame.origin.y, self.videosScrollView.frame.size.width+340, self.videosScrollView.frame.size.height);
+        }];
+    }
+   
+}
+
 
 #pragma mark - notification
 // 程序进入后台时，停止视频
@@ -337,8 +325,9 @@
 {
     [ASHUD hideHUD];
     if (self.isFullScreen) {
-            self.videosScrollView.frame = CGRectMake(self.videosScrollView.frame.origin.x, self.view.bounds.size.height - 180, self.view.bounds.size.width, 180);
-        
+        [UIView animateWithDuration:.2 animations:^{
+              self.videosScrollView.frame = CGRectMake(self.videosScrollView.frame.origin.x, self.view.bounds.size.height - 180, self.view.bounds.size.width, 180);
+        }];
         if (_peerSelectedId) {
             VideoShowItem *item = [_dicRemoteVideoView objectForKey:_peerSelectedId];
             [item setFullScreen:YES];
@@ -353,18 +342,18 @@
         }
         
     } else {
+        [UIView animateWithDuration:.2 animations:^{
             self.videosScrollView.frame = CGRectMake(self.videosScrollView.frame.origin.x, self.view.bounds.size.height - 280, self.view.bounds.size.width, 180);
+        }];
         if (_peerSelectedId) {
             VideoShowItem *item = [_dicRemoteVideoView objectForKey:_peerSelectedId];
             [item setFullScreen:NO];
-            if (_peerOldSelectedId) {
-                VideoShowItem *item = [_dicRemoteVideoView objectForKey:_peerOldSelectedId];
-                [item setFullScreen:YES];
-            }else{
-                [_localVideoView setFullScreen:NO];
-            }
         }else{
-              [_localVideoView setFullScreen:NO];
+             [_localVideoView setFullScreen:NO];
+        }
+        if (_peerOldSelectedId) {
+            VideoShowItem *item = [_dicRemoteVideoView objectForKey:_peerOldSelectedId];
+            [item setFullScreen:YES];
         }
     }
     
@@ -614,6 +603,7 @@
     if (CGRectGetWidth(view.frame) < self.view.bounds.size.width) {
         for (id key in [_dicRemoteVideoView allKeys]) {
             VideoShowItem *item = [_dicRemoteVideoView objectForKey:key];
+         
             if (item.showVideoView == view) {
                 _peerOldSelectedId = _peerSelectedId;
                 _peerSelectedId = key;
@@ -648,7 +638,7 @@
 {
     [ASHUD hideHUD];
     _localVideoView.publishID = strPublishId;
-    [[TMMessageManage sharedManager] tMNotifyMsgRoomid:roomID withTags:MCSendTagsSUBSCRIBE withMessage:strPublishId];
+    [[TMMessageManage sharedManager] tMNotifyMsgRoomid:self.roomItem.roomID withTags:MCSendTagsSUBSCRIBE withMessage:strPublishId];
 }
 /** 发布失败
  * @param nCode		失败的代码
@@ -736,7 +726,7 @@
     item.publishID = publishID;
     
     [_dicRemoteVideoView setObject:item forKey:peerChannelID];
-  //  [self layoutSubView];
+    [self layoutSubView];
     //While the number of remote image change, send a notification
     NSNumber *remoteVideoCount = [NSNumber numberWithInteger:[_dicRemoteVideoView count]];
     [[NSNotificationCenter defaultCenter] postNotificationName:@"REMOTEVIDEOCHANGE" object:remoteVideoCount];

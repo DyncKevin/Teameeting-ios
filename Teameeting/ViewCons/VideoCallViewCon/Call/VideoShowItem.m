@@ -123,14 +123,14 @@
              }
              if (self.isFull) {
                  
-                 if (_showVideoView.frame.size.height>[UIScreen mainScreen].bounds.size.height) {
+                 if (round(_showVideoView.frame.size.height)>=[UIScreen mainScreen].bounds.size.height) {
                      [self.constraintTop setConstant:(_showVideoView.frame.size.height -[UIScreen mainScreen].bounds.size.height)/2];
                  }else{
                      [self.constraintTop setConstant:[UIScreen mainScreen].bounds.size.height -_showVideoView.frame.size.height];
                  }
              }else{
                  
-                 if (_showVideoView.frame.size.height>[UIScreen mainScreen].bounds.size.height) {
+                 if (round(_showVideoView.frame.size.height)>=[UIScreen mainScreen].bounds.size.height) {
                      if ([[UIApplication sharedApplication] isStatusBarHidden]) {
                          if (ISIPAD) {
                              [self.constraintTop setConstant:(_showVideoView.frame.size.height -[UIScreen mainScreen].bounds.size.height)/2+64];

@@ -66,7 +66,7 @@
         self.imageView.hidden = YES;
     }else{
         
-        if ([item.userID isEqualToString:[SvUDIDTools UDID]]) {
+        if ([item.userID isEqualToString:[SvUDIDTools shead].UUID]) {
             self.nameLabel.textColor = [UIColor colorWithRed:200.0/255.0 green:139.0/255.0 blue:75.0/255.0 alpha:1.0];
             if (item.mettingState ==2) {
                 //private meeting

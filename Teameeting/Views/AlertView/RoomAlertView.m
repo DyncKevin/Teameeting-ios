@@ -7,20 +7,29 @@
 //
 
 #import "RoomAlertView.h"
+#import "ServerVisit.h"
 
 @interface RoomAlertView()
 {
     UIActivityIndicatorView *activityIndicatorView;
+    UITextField *inputTextField;
+    
 }
+@property (nonatomic,weak)id<RoomAlertViewDelegate>delegate;
 @property (nonatomic, strong) UIView *alertView;
 @end
 
 @implementation RoomAlertView
 
-- (id)initType:(AlertViewType)type
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+- (id)initType:(AlertViewType)type withDelegate:(id<RoomAlertViewDelegate>)delegate
 {
     self = [super init];
     if (self) {
+        self.delegate = delegate;
         self.frame = CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height);
         self.backgroundColor = [UIColor colorWithRed:0.1 green:0.1 blue:0.1 alpha:0.4];
         if (type == AlertViewNotNetType) {
@@ -72,7 +81,45 @@
             activityIndicatorView.center = CGPointMake(tryButton.center.x + tryButton.center.x/2, tryButton.center.y);
             [self.alertView addSubview:activityIndicatorView];
             
-        }else{
+        }else if(type == AlertViewModifyNameType){
+            if (ISIPAD) {
+                self.alertView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 200)];
+            }else{
+                self.alertView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth([UIScreen mainScreen].bounds) - 80, 200)];
+            }
+            
+            UIButton *closeButton = [UIButton buttonWithType:UIButtonTypeCustom];
+            closeButton.frame = CGRectMake(10, 10, 30, 30);
+            [closeButton addTarget:self action:@selector(closeButtonEvent:) forControlEvents:UIControlEventTouchUpInside];
+            [closeButton setImage:[UIImage imageNamed:@"nick_close"] forState:UIControlStateNormal];
+            [self.alertView addSubview:closeButton];
+            
+            UILabel *orderLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 20, CGRectGetWidth(self.alertView.frame), 25)];
+            orderLabel.textAlignment = NSTextAlignmentCenter;
+            orderLabel.font = [UIFont boldSystemFontOfSize:20];
+            orderLabel.text = @"修改昵称";
+            orderLabel.center = CGPointMake(self.alertView.center.x, 50);
+            [self.alertView addSubview:orderLabel];
+            
+            inputTextField = [[UITextField alloc] initWithFrame:CGRectMake(20, CGRectGetMaxY(orderLabel.frame)+25, CGRectGetWidth(self.alertView.frame)-40, 45)];
+            inputTextField.textAlignment = NSTextAlignmentCenter;
+            inputTextField.backgroundColor = [UIColor colorWithRed:242.0/255.0 green:241.0/255.0 blue:239.0/255.0 alpha:1.0];
+            inputTextField.text = [ServerVisit shead].nickName;
+            [self.alertView addSubview:inputTextField];
+            [inputTextField addTarget:self action:@selector(textFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
+            
+            UIButton *doneButton = [UIButton buttonWithType:UIButtonTypeCustom];
+            doneButton.frame = CGRectMake(0, CGRectGetHeight(self.alertView.frame)-45, CGRectGetWidth(self.alertView.frame), 45);
+            [doneButton setTitle:@"确定" forState:UIControlStateNormal];
+            [doneButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+            [doneButton setTitleColor:[UIColor yellowColor] forState:UIControlStateHighlighted];
+            doneButton.backgroundColor = [UIColor colorWithRed:235.0/255.0 green:139.0/255.0 blue:75.0/255.0 alpha:1.0];
+            
+            [doneButton addTarget:self action:@selector(doneButtonEvent:) forControlEvents:UIControlEventTouchUpInside];
+            [self.alertView addSubview:doneButton];
+            
+            [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(keyboardChange:) name:UIKeyboardWillShowNotification object:nil];
+            [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(keyboardChange:) name:UIKeyboardWillHideNotification object:nil];
             
         }
         
@@ -87,6 +134,54 @@
     }
     return self;
 }
+
+-(void)keyboardChange:(NSNotification *)notification
+{
+    NSDictionary *userInfo = [notification userInfo];
+    NSTimeInterval animationDuration;
+    UIViewAnimationCurve animationCurve;
+    CGRect keyboardEndFrame;
+    
+    [[userInfo objectForKey:UIKeyboardAnimationCurveUserInfoKey] getValue:&animationCurve];
+    [[userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey] getValue:&animationDuration];
+    [[userInfo objectForKey:UIKeyboardFrameEndUserInfoKey] getValue:&keyboardEndFrame];
+    
+    [UIView beginAnimations:nil context:nil];
+    [UIView setAnimationDuration:animationDuration];
+    [UIView setAnimationCurve:animationCurve];
+    
+  
+    BOOL isVertical = YES;
+    NSUInteger width = [UIScreen mainScreen].bounds.size.width;
+    NSUInteger height = [UIScreen mainScreen].bounds.size.height;
+    isVertical = width > height ? NO : YES;
+    
+    //adjust ChatTableView's height
+    if (notification.name == UIKeyboardWillShowNotification) {
+        
+        float keyBordHeight = keyboardEndFrame.size.width > keyboardEndFrame.size.height ? keyboardEndFrame.size.height : keyboardEndFrame.size.width;
+        self.alertView.frame = CGRectMake(self.alertView.frame.origin.x, [UIScreen mainScreen].bounds.size.height-keyBordHeight-CGRectGetHeight(self.alertView.frame), CGRectGetWidth(self.alertView.frame), CGRectGetHeight(self.alertView.frame));
+
+
+        
+    } else if (notification.name == UIKeyboardWillHideNotification){
+        
+        self.alertView.center = CGPointMake(self.center.x, self.center.y);
+    }
+    [UIView commitAnimations];
+}
+
+- (void)textFieldDidChange:(UITextField*)textField
+{
+    if (textField == inputTextField) {
+        NSLog(@"%lu",textField.text.length);
+        if (textField.text.length > 16) {
+            textField.text = [textField.text substringToIndex:16];
+        }
+    }
+}
+
+
 - (void)tryButtonEvent:(UIButton*)tryButton
 {
     if (activityIndicatorView) {
@@ -95,6 +190,39 @@
             [activityIndicatorView stopAnimating];
         });
     }
+}
+
+- (void)doneButtonEvent:(UIButton*)doneButton
+{
+    if (inputTextField.text.length==0) {
+        CGPoint point  = inputTextField.layer.position;
+        CABasicAnimation *shake = [CABasicAnimation animationWithKeyPath:@"position"];
+        shake.duration = 0.1;
+        shake.autoreverses = YES;
+        shake.repeatCount = 4;
+        shake.fromValue = [NSValue valueWithCGPoint:point];
+        shake.toValue = [NSValue valueWithCGPoint:CGPointMake(point.x+10, point.y)];
+        [inputTextField.layer addAnimation:shake forKey:@"move-layer"];
+        return;
+    }
+    
+    if ([self.delegate respondsToSelector:@selector(modifyNickName:)]) {
+        [self.delegate modifyNickName:inputTextField.text];
+    }
+}
+
+- (void)closeButtonEvent:(UIButton*)button
+{
+    if ([self.delegate respondsToSelector:@selector(closeModifyNickName)]) {
+        [self.delegate closeModifyNickName];
+    }
+}
+
+- (void)updateFrame
+{
+    self.frame = CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height);
+    self.alertView.center = CGPointMake(self.bounds.size.width/2, self.bounds.size.height/2);
+    
 }
 
 - (void)show

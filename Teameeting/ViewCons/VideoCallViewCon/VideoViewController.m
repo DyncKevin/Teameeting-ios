@@ -67,7 +67,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    [[TMMessageManage sharedManager] tmRoomCmd:MCMeetCmdENTER roomid:self.roomItem.roomID remain:@""];
+    [[TMMessageManage sharedManager] tmRoomCmd:MCMeetCmdENTER roomid:self.roomItem.roomID withRoomName:self.roomItem.roomName remain:@""];
     self.navigationController.delegate = self;
     self.title = self.roomItem.roomName;
     self.view.backgroundColor = [UIColor blackColor];
@@ -100,7 +100,7 @@
     }
     
     self.callViewCon = [[ReceiveCallViewController alloc] init];
-    self.callViewCon.roomID = self.roomItem.roomID;
+    self.callViewCon.roomItem = self.roomItem;
     self.menuView = [[LockerView alloc] initWithFrame:CGRectMake(0, self.view.bounds.size.height - 60, 300, 60)];
     [self.menuView setCenter:CGPointMake(self.view.bounds.size.width/2, self.menuView.center.y)];
     self.menuView.delegate = self;
@@ -465,7 +465,11 @@
     
     self.isChat = YES;
     if (ISIPAD) {
-        
+        if (self.rootView.view.frame.origin.x<0) {
+            [self.callViewCon transitionVideoView:YES];
+        }else{
+            [self.callViewCon transitionVideoView:NO];
+        }
         [UIView animateWithDuration:0.2 animations:^{
             
             if (self.rootView.view.frame.origin.x < 0) {
@@ -519,6 +523,7 @@
             NSLog(@"left");
             if (self.rootView.view.frame.origin.x>=0) {
                 self.isChat = NO;
+                [self.callViewCon transitionVideoView:NO];
                 [UIView animateWithDuration:0.2 animations:^{
                     CGFloat rootViewWidth =340;// [self isVertical] == YES ? (self.view.bounds.size.width/2 - 50) : (self.view.bounds.size.width/2 - 150);
 
@@ -539,6 +544,8 @@
                 self.isChat = YES;
                 [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationNone];
                 [self.navigationController setNavigationBarHidden:NO animated:YES];
+                [self.callViewCon transitionVideoView:YES];
+
                 [UIView animateWithDuration:0.2 animations:^{
                     
                     [self.rootView.view setFrame:CGRectMake(0,self.rootView.view.frame.origin.y, self.rootView.view.bounds.size.width, self.rootView.view.bounds.size.height)];
@@ -568,8 +575,9 @@
     if (self.isChat) {
         if (self.rootView.view.frame.origin.x>=0) {
             self.isChat = NO;
+            [self.callViewCon transitionVideoView:NO];
             [UIView animateWithDuration:0.2 animations:^{
-                CGFloat rootViewWidth = [self isVertical] == YES ? (self.view.bounds.size.width/2 - 50) : (self.view.bounds.size.width/2 - 150);
+                CGFloat rootViewWidth =340;// [self isVertical] == YES ? (self.view.bounds.size.width/2 - 50) : (self.view.bounds.size.width/2 - 150);
                 
                 [self.rootView.view setFrame:CGRectMake(0 - rootViewWidth,self.rootView.view.frame.origin.y, self.rootView.view.bounds.size.width, self.rootView.view.bounds.size.height)];
                 [self.menuView setCenter:CGPointMake(self.view.bounds.size.width/2, self.menuView.center.y)];

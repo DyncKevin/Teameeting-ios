@@ -15,7 +15,7 @@
 @property (nonatomic, strong) NSString *deviceToken;
 
 @property (nonatomic, strong) NSString *authorization;  // 验证头信息
-
+@property (nonatomic, strong) NSString *nickName;       // 昵称
 
 + (void)userInitWithUserid:(NSString *)uid
                    uactype:(NSString *)utype
@@ -136,4 +136,8 @@
 
 + (void)getMeetingInfoWithId:(NSString*)meetingID
                   completion:(void (^)(AFHTTPRequestOperation *operation ,id responseData,NSError *error))completion;
+
++ (void)updataNickNameWithSign:(NSString*)gn
+                        userID:(NSString*)userID
+                    completion:(void (^)(AFHTTPRequestOperation *operation ,id responseData,NSError *error))completion;
 @end

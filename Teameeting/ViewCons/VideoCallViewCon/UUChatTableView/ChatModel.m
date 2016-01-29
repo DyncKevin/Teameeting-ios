@@ -45,7 +45,7 @@
     
     [dataDic setObject:@(UUMessageFromOther) forKey:@"from"];
     [dataDic setObject:[[NSDate date] description] forKey:@"strTime"];
-    [dataDic setObject:@"Hello,Sister" forKey:@"strName"];
+//    [dataDic setObject:@"Hello,Sister" forKey:@"strName"];
     
     [message setWithDict:dataDic];
     [message minuteOffSetStart:previousTime end:dataDic[@"strTime"]];
@@ -64,7 +64,7 @@
     
     [dataDic setObject:@(UUMessageFromMe) forKey:@"from"];
     [dataDic setObject:[[NSDate date] description] forKey:@"strTime"];
-    [dataDic setObject:@"Hello,Sister" forKey:@"strName"];
+//    [dataDic setObject:@"Hello,Sister" forKey:@"strName"];
     
     [message setWithDict:dataDic];
     [message minuteOffSetStart:previousTime end:dataDic[@"strTime"]];
@@ -85,14 +85,16 @@
         [dataDic setObject:[netDict objectForKey:@"message"] forKey:@"strContent"];
         [dataDic setObject:@(UUMessageTypeText) forKey:@"type"];
         
-        if ([[netDict objectForKey:@"userid"]isEqualToString:[SvUDIDTools UDID]]) {
+        if ([[netDict objectForKey:@"userid"]isEqualToString:[SvUDIDTools shead].UUID]) {
             [dataDic setObject:@(UUMessageFromMe) forKey:@"from"];
+              [dataDic setObject:@"我" forKey:@"strName"];
         }else{
             [dataDic setObject:@(UUMessageFromOther) forKey:@"from"];
+              [dataDic setObject:[netDict objectForKey:@"username"]  forKey:@"strName"];
         }
         
         [dataDic setObject:[[TimeManager shead] timestampTransformationTime:[[netDict objectForKey:@"sendtime"] longValue]] forKey:@"strTime"];
-        [dataDic setObject:@"Hello,Sister" forKey:@"strName"];
+      
         
         [message setWithDict:dataDic];
         [message minuteOffSetStart:previousTime end:dataDic[@"strTime"]];

@@ -13,6 +13,8 @@
 		780455C61C51FB11003ADDCC /* sharebackgroud@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 780455C41C51FB11003ADDCC /* sharebackgroud@2x.png */; };
 		780455C71C51FB11003ADDCC /* sharebackgroud@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 780455C51C51FB11003ADDCC /* sharebackgroud@3x.png */; };
 		7810288E1C48DA2200CD9FA6 /* ASBadgeView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7810288D1C48DA2200CD9FA6 /* ASBadgeView.m */; };
+		7810F7F01C5A073C00B77955 /* nick_close@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7810F7EE1C5A073C00B77955 /* nick_close@2x.png */; };
+		7810F7F11C5A073C00B77955 /* nick_close@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7810F7EF1C5A073C00B77955 /* nick_close@3x.png */; };
 		781F6E0E1C44A33F00026160 /* meeting_num@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 781F6E0A1C44A33F00026160 /* meeting_num@2x.png */; };
 		781F6E0F1C44A33F00026160 /* meeting_num@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 781F6E0B1C44A33F00026160 /* meeting_num@3x.png */; };
 		781F6E101C44A33F00026160 /* meeting_private@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 781F6E0C1C44A33F00026160 /* meeting_private@2x.png */; };
@@ -103,7 +105,6 @@
 		783702D31C43DF64006C80DE /* videoBackgroud.png in Resources */ = {isa = PBXBuildFile; fileRef = 783701B91C43DF64006C80DE /* videoBackgroud.png */; };
 		783702D41C43DF64006C80DE /* weixin_main@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 783701BA1C43DF64006C80DE /* weixin_main@2x.png */; };
 		783702D51C43DF64006C80DE /* weixin_main@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 783701BB1C43DF64006C80DE /* weixin_main@3x.png */; };
-		783702D61C43DF64006C80DE /* libPushSDK-1.8.8.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 783701BF1C43DF64006C80DE /* libPushSDK-1.8.8.a */; };
 		783702D71C43DF64006C80DE /* ASHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 783701C31C43DF64006C80DE /* ASHUD.m */; };
 		783702D81C43DF64006C80DE /* Base64Generater.m in Sources */ = {isa = PBXBuildFile; fileRef = 783701C61C43DF64006C80DE /* Base64Generater.m */; };
 		783702D91C43DF64006C80DE /* GTMBase64.m in Sources */ = {isa = PBXBuildFile; fileRef = 783701C81C43DF64006C80DE /* GTMBase64.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
@@ -205,6 +206,7 @@
 		785643E71C50D3EC00836850 /* AnimatedTransitioning.m in Sources */ = {isa = PBXBuildFile; fileRef = 785643E41C50D3EC00836850 /* AnimatedTransitioning.m */; };
 		785643E81C50D3EC00836850 /* TransitionDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 785643E61C50D3EC00836850 /* TransitionDelegate.m */; };
 		7861D0291C4F8E7200B2F30D /* VideoShowItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 7861D0281C4F8E7200B2F30D /* VideoShowItem.m */; };
+		78A893841C59AFB100C4CD49 /* libPushSDK-1.8.8.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 78A893831C59AFB100C4CD49 /* libPushSDK-1.8.8.a */; };
 		78C5ECC61C4E447600193322 /* weixin@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 78C5ECC41C4E447600193322 /* weixin@2x.png */; };
 		78C5ECC71C4E447600193322 /* weixin@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 78C5ECC51C4E447600193322 /* weixin@3x.png */; };
 		78C5ECCA1C4E45B300193322 /* copy_scuess@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 78C5ECC81C4E45B300193322 /* copy_scuess@2x.png */; };
@@ -242,6 +244,8 @@
 		780455C51C51FB11003ADDCC /* sharebackgroud@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "sharebackgroud@3x.png"; sourceTree = "<group>"; };
 		7810288C1C48DA2200CD9FA6 /* ASBadgeView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASBadgeView.h; sourceTree = "<group>"; };
 		7810288D1C48DA2200CD9FA6 /* ASBadgeView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ASBadgeView.m; sourceTree = "<group>"; };
+		7810F7EE1C5A073C00B77955 /* nick_close@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "nick_close@2x.png"; sourceTree = "<group>"; };
+		7810F7EF1C5A073C00B77955 /* nick_close@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "nick_close@3x.png"; sourceTree = "<group>"; };
 		781F6E0A1C44A33F00026160 /* meeting_num@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "meeting_num@2x.png"; sourceTree = "<group>"; };
 		781F6E0B1C44A33F00026160 /* meeting_num@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "meeting_num@3x.png"; sourceTree = "<group>"; };
 		781F6E0C1C44A33F00026160 /* meeting_private@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "meeting_private@2x.png"; sourceTree = "<group>"; };
@@ -345,8 +349,6 @@
 		783701B91C43DF64006C80DE /* videoBackgroud.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = videoBackgroud.png; sourceTree = "<group>"; };
 		783701BA1C43DF64006C80DE /* weixin_main@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "weixin_main@2x.png"; sourceTree = "<group>"; };
 		783701BB1C43DF64006C80DE /* weixin_main@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "weixin_main@3x.png"; sourceTree = "<group>"; };
-		783701BE1C43DF64006C80DE /* APService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = APService.h; sourceTree = "<group>"; };
-		783701BF1C43DF64006C80DE /* libPushSDK-1.8.8.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = "libPushSDK-1.8.8.a"; sourceTree = "<group>"; };
 		783701C21C43DF64006C80DE /* ASHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASHUD.h; sourceTree = "<group>"; };
 		783701C31C43DF64006C80DE /* ASHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ASHUD.m; sourceTree = "<group>"; };
 		783701C51C43DF64006C80DE /* Base64Generater.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Base64Generater.h; sourceTree = "<group>"; };
@@ -522,6 +524,8 @@
 		785643E61C50D3EC00836850 /* TransitionDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TransitionDelegate.m; sourceTree = "<group>"; };
 		7861D0271C4F8E7200B2F30D /* VideoShowItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VideoShowItem.h; sourceTree = "<group>"; };
 		7861D0281C4F8E7200B2F30D /* VideoShowItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VideoShowItem.m; sourceTree = "<group>"; };
+		78A893821C59AFB100C4CD49 /* APService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = APService.h; sourceTree = "<group>"; };
+		78A893831C59AFB100C4CD49 /* libPushSDK-1.8.8.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = "libPushSDK-1.8.8.a"; sourceTree = "<group>"; };
 		78C5ECC41C4E447600193322 /* weixin@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "weixin@2x.png"; sourceTree = "<group>"; };
 		78C5ECC51C4E447600193322 /* weixin@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "weixin@3x.png"; sourceTree = "<group>"; };
 		78C5ECC81C4E45B300193322 /* copy_scuess@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "copy_scuess@2x.png"; sourceTree = "<group>"; };
@@ -540,6 +544,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				78A893841C59AFB100C4CD49 /* libPushSDK-1.8.8.a in Frameworks */,
 				7837034D1C43E405006C80DE /* libicucore.tbd in Frameworks */,
 				7837034B1C43E3FC006C80DE /* libstdc++.6.0.9.tbd in Frameworks */,
 				783703491C43E3F5006C80DE /* libstdc++.tbd in Frameworks */,
@@ -556,7 +561,6 @@
 				783703351C43E3AD006C80DE /* Security.framework in Frameworks */,
 				783703331C43E3A6006C80DE /* CoreData.framework in Frameworks */,
 				783702E81C43DF64006C80DE /* libSdkMsgClientTmIos.a in Frameworks */,
-				783702D61C43DF64006C80DE /* libPushSDK-1.8.8.a in Frameworks */,
 				783702F81C43DF64006C80DE /* libWeChatSDK.a in Frameworks */,
 				EC157AD0B3A13035EAD046BB /* libPods.a in Frameworks */,
 			);
@@ -619,7 +623,6 @@
 				783701671C43DF64006C80DE /* AppDelegate */,
 				7837016D1C43DF64006C80DE /* Model */,
 				783701741C43DF64006C80DE /* Resources */,
-				783701BC1C43DF64006C80DE /* Three */,
 				783701C01C43DF64006C80DE /* Tool */,
 				7837021C1C43DF64006C80DE /* ViewCons */,
 				7837026F1C43DF64006C80DE /* Views */,
@@ -693,6 +696,8 @@
 		783701741C43DF64006C80DE /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				7810F7EE1C5A073C00B77955 /* nick_close@2x.png */,
+				7810F7EF1C5A073C00B77955 /* nick_close@3x.png */,
 				780198C91C5896BA00D9BEF4 /* nav_bar@2x.png */,
 				780455C41C51FB11003ADDCC /* sharebackgroud@2x.png */,
 				780455C51C51FB11003ADDCC /* sharebackgroud@3x.png */,
@@ -783,26 +788,10 @@
 			path = Resources;
 			sourceTree = "<group>";
 		};
-		783701BC1C43DF64006C80DE /* Three */ = {
-			isa = PBXGroup;
-			children = (
-				783701BD1C43DF64006C80DE /* JPush */,
-			);
-			path = Three;
-			sourceTree = "<group>";
-		};
-		783701BD1C43DF64006C80DE /* JPush */ = {
-			isa = PBXGroup;
-			children = (
-				783701BE1C43DF64006C80DE /* APService.h */,
-				783701BF1C43DF64006C80DE /* libPushSDK-1.8.8.a */,
-			);
-			path = JPush;
-			sourceTree = "<group>";
-		};
 		783701C01C43DF64006C80DE /* Tool */ = {
 			isa = PBXGroup;
 			children = (
+				78A893811C59AFB100C4CD49 /* JPush */,
 				785643E21C50D3EC00836850 /* TransitionDelegate */,
 				783701C11C43DF64006C80DE /* ASProgressHUD */,
 				783701C41C43DF64006C80DE /* Base64Util */,
@@ -1292,6 +1281,15 @@
 			path = TransitionDelegate;
 			sourceTree = "<group>";
 		};
+		78A893811C59AFB100C4CD49 /* JPush */ = {
+			isa = PBXGroup;
+			children = (
+				78A893821C59AFB100C4CD49 /* APService.h */,
+				78A893831C59AFB100C4CD49 /* libPushSDK-1.8.8.a */,
+			);
+			path = JPush;
+			sourceTree = "<group>";
+		};
 		A8A98EB2C59EDD5F8E7C4717 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -1452,6 +1450,7 @@
 				7837028F1C43DF64006C80DE /* cancelChat@2x.png in Resources */,
 				783701441C43DDFB006C80DE /* LaunchScreen.storyboard in Resources */,
 				783702C91C43DF64006C80DE /* notification_not_main@3x.png in Resources */,
+				7810F7F01C5A073C00B77955 /* nick_close@2x.png in Resources */,
 				783702B91C43DF64006C80DE /* mic@3x.png in Resources */,
 				783703221C43DF64006C80DE /* RootViewController.xib in Resources */,
 				783702B01C43DF64006C80DE /* mailInvite@2x.png in Resources */,
@@ -1504,6 +1503,7 @@
 				7837030F1C43DF64006C80DE /* chat_send_message.png in Resources */,
 				781F6E1A1C44DA5300026160 /* metting_nonotification@2x.png in Resources */,
 				783702D11C43DF64006C80DE /* video@2x.png in Resources */,
+				7810F7F11C5A073C00B77955 /* nick_close@3x.png in Resources */,
 				782807A41C463AED0061D6CD /* Icon-1@2x.png in Resources */,
 				783703081C43DF64006C80DE /* chat_animation3.png in Resources */,
 				783702B21C43DF64006C80DE /* menucancel@2x.png in Resources */,
@@ -1855,6 +1855,7 @@
 					"$(PROJECT_DIR)/Teameeting/Tool/RtcMesg",
 					"$(PROJECT_DIR)/Teameeting/Tool/WeChat",
 					"$(PROJECT_DIR)/Teameeting/ViewCons/VideoCallViewCon/AnyrtcSDK",
+					"$(PROJECT_DIR)/Teameeting/Tool/JPush",
 				);
 				OTHER_LDFLAGS = (
 					"$(inherited)",
@@ -1910,6 +1911,7 @@
 					"$(PROJECT_DIR)/Teameeting/Tool/RtcMesg",
 					"$(PROJECT_DIR)/Teameeting/Tool/WeChat",
 					"$(PROJECT_DIR)/Teameeting/ViewCons/VideoCallViewCon/AnyrtcSDK",
+					"$(PROJECT_DIR)/Teameeting/Tool/JPush",
 				);
 				OTHER_LDFLAGS = (
 					"$(inherited)",
