@@ -294,14 +294,14 @@
     if (isRigth) {
         isRightTran = YES;
         [UIView animateWithDuration:.2 animations:^{
-            self.videosScrollView.frame = CGRectMake(self.videosScrollView.frame.origin.x+TalkPannelWidth, self.videosScrollView.frame.origin.y, self.videosScrollView.frame.size.width-TalkPannelWidth, self.videosScrollView.frame.size.height);
+            self.videosScrollView.frame = CGRectMake(self.videosScrollView.frame.origin.x+TalkPannelWidth, self.videosScrollView.frame.origin.y, self.videosScrollView.frame.size.width-TalkPannelWidth, VideoParViewHeight);
             [self layoutSubView];
         }completion:^(BOOL finished) {
         }];
     }else{
         isRightTran = NO;
         [UIView animateWithDuration:.2 animations:^{
-            self.videosScrollView.frame = CGRectMake(self.videosScrollView.frame.origin.x-TalkPannelWidth, self.videosScrollView.frame.origin.y, self.videosScrollView.frame.size.width+TalkPannelWidth, self.videosScrollView.frame.size.height);
+            self.videosScrollView.frame = CGRectMake(self.videosScrollView.frame.origin.x-TalkPannelWidth, self.videosScrollView.frame.origin.y, self.videosScrollView.frame.size.width+TalkPannelWidth, VideoParViewHeight);
             [self layoutSubView];
         }completion:^(BOOL finished) {
         }];

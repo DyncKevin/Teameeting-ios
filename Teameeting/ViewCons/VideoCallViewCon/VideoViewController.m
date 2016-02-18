@@ -12,7 +12,6 @@
 #import "DXPopover.h"
 #import "ReceiveCallViewController.h"
 #import "TMMessageManage.h"
-//#import "UINavigationBar+Category.h"
 #import "WXApiRequestHandler.h"
 #import "WXApi.h"
 #import <MessageUI/MFMessageComposeViewController.h>
@@ -287,17 +286,20 @@
     } else {
         tapGesture.enabled = NO;
         [self.noUserTip setHidden:NO];
-        if (self.isFullScreen) {
-            [UIView animateWithDuration:0.2 animations:^{
-                
-                [self.menuView setCenter:CGPointMake(self.menuView.center.x, self.isFullScreen == YES ? (self.view.bounds.size.height + self.menuView.bounds.size.height) : (self.view.bounds.size.height - self.menuView.bounds.size.height))];
-                
-                [self.noUserTip setCenter:CGPointMake(self.view.bounds.size.width/2, self.isFullScreen == YES ? (self.view.bounds.size.height + self.noUserTip.bounds.size.height) : (CGRectGetMinY(self.menuView.frame) - self.noUserTip.bounds.size.height))];
-                
-            }completion:^(BOOL finished) {
-                 self.isFullScreen =  NO;
-            }];
-        }
+        
+        self.isFullScreen = NO;
+        [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationNone];
+        [self.navigationController setNavigationBarHidden:NO animated:YES];
+        
+        [UIView animateWithDuration:0.2 animations:^{
+            
+            [self.menuView setCenter:CGPointMake(self.menuView.center.x, (self.view.bounds.size.height - self.menuView.bounds.size.height))];
+            
+            [self.noUserTip setCenter:CGPointMake(self.view.bounds.size.width/2, (CGRectGetMinY(self.menuView.frame) - self.noUserTip.bounds.size.height))];
+            
+        }completion:^(BOOL finished) {
+        }];
+        
     }
 }
 
@@ -577,7 +579,7 @@
             self.isChat = NO;
             [self.callViewCon transitionVideoView:NO];
             [UIView animateWithDuration:0.2 animations:^{
-                CGFloat rootViewWidth =TalkPannelWidth;// [self isVertical] == YES ? (self.view.bounds.size.width/2 - 50) : (self.view.bounds.size.width/2 - 150);
+                CGFloat rootViewWidth = TalkPannelWidth;// [self isVertical] == YES ? (self.view.bounds.size.width/2 - 50) : (self.view.bounds.size.width/2 - 150);
                 
                 [self.rootView.view setFrame:CGRectMake(0 - rootViewWidth,self.rootView.view.frame.origin.y, self.rootView.view.bounds.size.width, self.rootView.view.bounds.size.height)];
                 [self.menuView setCenter:CGPointMake(self.view.bounds.size.width/2, self.menuView.center.y)];

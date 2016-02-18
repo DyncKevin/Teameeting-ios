@@ -119,7 +119,7 @@ static NSString *kRoomCellID = @"RoomCell";
     [self.getRoomButton setTitleColor:[UIColor grayColor] forState:UIControlStateHighlighted];
     [self.view addSubview:self.getRoomButton];
     [self.getRoomButton addTarget:self action:@selector(getRoomButtonEvent:) forControlEvents:UIControlEventTouchUpInside];
-    [self.getRoomButton setBackgroundColor:[UIColor colorWithRed:235.0/255.0 green:139.0/255.0 blue:75.0/255.0 alpha:1.0]];
+    [self.getRoomButton setBackgroundColor:[UIColor colorWithRed:230.0/255.0 green:156.0/255.0 blue:55.0/255.0 alpha:1.0]];
     self.getRoomButton.layer.cornerRadius = 2;
     
     
@@ -889,7 +889,7 @@ static NSString *kRoomCellID = @"RoomCell";
                         [alertView show];
                     }else if ([[dict objectForKey:@"code"] integerValue] == 200){
                         NSDictionary *roomInfo = [dict objectForKey:@"meetingInfo"];
-                        if ([[roomInfo objectForKey:@"meetusable"] integerValue]==2) {
+                        if ([[roomInfo objectForKey:@"meetenable"] integerValue]==2) {
                             // 私密会议不能添加和进入
                             UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:@"私密会议不能添加，请联系其主人，让其关闭私密" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
                             [alertView show];
@@ -1055,11 +1055,13 @@ static NSString *kRoomCellID = @"RoomCell";
         self.reNameAlertView = nil;
         return;
     }
+    [[TMMessageManage sharedManager] tmUpdateNickNameNname:nickName];
+    
     [ServerVisit updataNickNameWithSign:[ServerVisit shead].authorization userID:nickName completion:^(AFHTTPRequestOperation *operation, id responseData, NSError *error) {
         if (!error) {
             NSDictionary *dict = (NSDictionary*)responseData;
             if ([[dict objectForKey:@"code"] integerValue]== 200) {
-                [[TMMessageManage sharedManager] tmUpdateNickNameNname:nickName];
+              
                 [SvUDIDTools shead].notFirstStart = YES;
             }
         }
