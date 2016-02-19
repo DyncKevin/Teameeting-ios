@@ -59,7 +59,7 @@
     self.pageNum = 1;
     [[TMMessageManage sharedManager] registerMessageListener:self];
     UIButton *closeButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    [closeButton setImage:[UIImage imageNamed:@"cancelChat"] forState:UIControlStateNormal];
+    [closeButton setImage:[UIImage imageNamed:@"close_enter"] forState:UIControlStateNormal];
     [closeButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [closeButton addTarget:self action:@selector(closeChatView) forControlEvents:UIControlEventTouchUpInside];
     [closeButton setBackgroundColor:[UIColor clearColor]];
@@ -162,7 +162,12 @@
         [self.chatTableView reloadData];
     }
     if (isFirst) {
-         [self performSelector:@selector(tableViewScrollToBottom) withObject:nil afterDelay:0.0];
+         //[self performSelector:@selector(tableViewScrollToBottom) withObject:nil afterDelay:0.0];
+//        [self tableViewScrollToBottom];
+        if (self.chatModel.dataSource.count==0)
+            return;
+        NSIndexPath *indexPath = [NSIndexPath indexPathForRow:self.chatModel.dataSource.count-1 inSection:0];
+        [self.chatTableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionBottom animated:NO];
     }
    
 }

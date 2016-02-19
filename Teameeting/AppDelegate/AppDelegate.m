@@ -29,6 +29,8 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     
+    [UIApplication sharedApplication].applicationIconBadgeNumber = 0;
+    
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
     NSDictionary *navbarTitleTextAttributes = @{NSForegroundColorAttributeName:[UIColor whiteColor]};
     [[UINavigationBar appearance] setTitleTextAttributes:navbarTitleTextAttributes];
@@ -83,6 +85,10 @@
     
     [APService handleRemoteNotification:userInfo];
     completionHandler(UIBackgroundFetchResultNewData);
+    NSLog(@"%ld",(long)application.applicationState);
+    if (application.applicationState) {
+        
+    }
     
 }
 
@@ -94,6 +100,7 @@
     realDeviceToken = [realDeviceToken stringByReplacingOccurrencesOfString:@" " withString:@""];
     
     [APService registerDeviceToken:deviceToken];
+    [APService setTags:[NSSet setWithObject:[SvUDIDTools shead].UUID] alias:[SvUDIDTools shead].UUID callbackSelector:nil object:nil];
 }
 
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo
@@ -125,7 +132,11 @@
     if (rangeleft.length <= 0 || rangeleft.location+1>URL.length) {
         return;
     }
+    
     NSString *mID = [URL substringFromIndex:rangeleft.location+rangeleft.length];
+    if (mID.length>12) {
+        mID = [mID substringToIndex:12];
+    }
     NSLog(@"meetingName:%@",mID);
     [[UIApplication sharedApplication] cancelAllLocalNotifications];
     
@@ -154,6 +165,7 @@
 
 - (void)applicationWillEnterForeground:(UIApplication *)application {
     // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
+    [application setApplicationIconBadgeNumber:0];
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {

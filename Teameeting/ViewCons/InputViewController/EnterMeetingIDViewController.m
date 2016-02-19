@@ -184,7 +184,7 @@
                     [alertView show];
                 }else if ([[dict objectForKey:@"code"] integerValue] == 200){
                     NSDictionary *roomInfo = [dict objectForKey:@"meetingInfo"];
-                    if ([[roomInfo objectForKey:@"meetusable"] integerValue]==2) {
+                    if ([[roomInfo objectForKey:@"meetenable"] integerValue]==2) {
                         // 私密会议不能添加和进入
                         UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:@"私密会议不能添加，请联系其主人，让其关闭私密" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
                         [alertView show];

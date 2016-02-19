@@ -195,11 +195,13 @@
     
     if (message.from == UUMessageFromMe) {
         self.btnContent.isMyMessage = YES;
+        self.labelTime.textColor = [UIColor whiteColor];
         [self.btnContent setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         self.btnContent.contentEdgeInsets = UIEdgeInsetsMake(ChatContentTop, ChatContentRight, ChatContentBottom, ChatContentLeft);
     }else{
         self.btnContent.isMyMessage = NO;
-        [self.btnContent setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        self.labelTime.textColor = [UIColor blackColor];
+        [self.btnContent setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
         self.btnContent.contentEdgeInsets = UIEdgeInsetsMake(ChatContentTop, ChatContentLeft, ChatContentBottom, ChatContentRight);
     }
     
@@ -208,14 +210,16 @@
     if (message.from == UUMessageFromMe) {
         normal = [UIImage imageNamed:@"chatto_bg_normal"];
         normal = [normal resizableImageWithCapInsets:UIEdgeInsetsMake(35, 10, 10, 22)];
+         [self.btnContent setBackgroundColor:[UIColor colorWithRed:234.f/255.f green:85.f/255.f blue:20.f/255.f alpha:1]];
     }
     else{
         normal = [UIImage imageNamed:@"chatfrom_bg_normal"];
         normal = [normal resizableImageWithCapInsets:UIEdgeInsetsMake(35, 22, 10, 10)];
+         [self.btnContent setBackgroundColor:[UIColor whiteColor]];
     }
     //[self.btnContent setBackgroundImage:normal forState:UIControlStateNormal];
     //[self.btnContent setBackgroundImage:normal forState:UIControlStateHighlighted];
-    [self.btnContent setBackgroundColor:[UIColor colorWithRed:234.f/255.f green:85.f/255.f blue:20.f/255.f alpha:1]];
+   
 
     switch (message.type) {
         case UUMessageTypeText:

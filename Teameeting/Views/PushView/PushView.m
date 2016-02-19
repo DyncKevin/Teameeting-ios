@@ -29,6 +29,7 @@
     UIImageView *lineImageView;
     UIImageView *notificationLineImageView;
     PushViewType viewType;
+    RoomItem *roomItem;
     
     BOOL tryOpen;
 }
@@ -67,7 +68,7 @@
     self = [super initWithFrame:frame];
     
     if (self) {
-    
+        roomItem = item;
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidBecomeActive) name:UIApplicationDidBecomeActiveNotification object:nil];
         self.isViewEnable = YES;
         indexPath = index;
@@ -120,7 +121,7 @@
             switchView = [UISwitch new];
             switchView.onTintColor = [UIColor colorWithRed:235.0/255.0 green:139.0/255.0 blue:75.0/255.0 alpha:1.0];
             switchView.tag = index;
-            [switchView addTarget:self action:@selector(switchAction:) forControlEvents:UIControlEventValueChanged];
+            [switchView addTarget:self action:@selector(switchAction:) forControlEvents:UIControlEventTouchUpInside];
             [self addSubview:switchView];
             if (item.mettingState ==2) {
                 switchView.on = YES;
@@ -984,6 +985,7 @@
             }
         }
     }else if (lastPushViewType == PushViewTypeSettingConferee){
+          [self close];
         if (index == 0) {
             if ([delegate respondsToSelector:@selector(pushViewJoinRoom:)]) {
                 [delegate pushViewJoinRoom:roomItem];
@@ -999,10 +1001,16 @@
 - (void)openOrCloseNotification:(BOOL)isOpen
 {
     if (roomItem) {
-        roomItem.canNotification = [[NSNumber numberWithBool:isOpen] stringValue];
-        if ([delegate respondsToSelector:@selector(pushViewCloseOrOpenNotifications:withOpen:withIndex:)]) {
-            [delegate pushViewCloseOrOpenNotifications:roomItem withOpen:isOpen withIndex:self.index];
+        if ([roomItem.canNotification isEqualToString:[[NSNumber numberWithBool:isOpen] stringValue]]) {
+            return;
+        }else{
+            roomItem.canNotification = [[NSNumber numberWithBool:isOpen] stringValue];
+            
+            if ([delegate respondsToSelector:@selector(pushViewCloseOrOpenNotifications:withOpen:withIndex:)]) {
+                [delegate pushViewCloseOrOpenNotifications:roomItem withOpen:isOpen withIndex:self.index];
+            }
         }
+      
     }
 }
 - (void)privateMeeting:(BOOL)isPrivate
@@ -1016,6 +1024,9 @@
         }
         if (copyInviteView) {
             [copyInviteView setViewEnable:NO];
+        }
+        if (roomItem.mettingState ==2) {
+            return;
         }
         roomItem.mettingState = 2;
         if ([delegate respondsToSelector:@selector(pushViewPrivateMeeting:withPrivate:withIndex:)]) {
