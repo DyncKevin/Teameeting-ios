@@ -1055,13 +1055,13 @@ static NSString *kRoomCellID = @"RoomCell";
         self.reNameAlertView = nil;
         return;
     }
-    [[TMMessageManage sharedManager] tmUpdateNickNameNname:nickName];
+   
     
     [ServerVisit updataNickNameWithSign:[ServerVisit shead].authorization userID:nickName completion:^(AFHTTPRequestOperation *operation, id responseData, NSError *error) {
         if (!error) {
             NSDictionary *dict = (NSDictionary*)responseData;
             if ([[dict objectForKey:@"code"] integerValue]== 200) {
-              
+               [[TMMessageManage sharedManager] tmUpdateNickNameNname:nickName];
                 [SvUDIDTools shead].notFirstStart = YES;
             }
         }

@@ -27,7 +27,7 @@ static SvUDIDTools *uuidTool = nil;
 {
     self = [super init];
     if (self) {
-        _UUID = [SSKeychain passwordForService:@"com.dync.teameeting"account:@"userUDID"];
+        _UUID = [SSKeychain passwordForService:@"com.dync.teameeting"account:@"userUDIDS"];
        self.notFirstStart = [[[NSUserDefaults standardUserDefaults] objectForKey:@"isUpateNickName"] boolValue];
         
         if (!_UUID) {
@@ -35,9 +35,11 @@ static SvUDIDTools *uuidTool = nil;
             assert(uuid != NULL);
             CFStringRef uuidStr = CFUUIDCreateString(NULL, uuid);
             _UUID = [[NSString stringWithFormat:@"%@",uuidStr] lowercaseString];
+            _UUID = [_UUID stringByReplacingOccurrencesOfString:@"-" withString:@""];
             NSError *error;
             [SSKeychain setPassword: _UUID
-                         forService:@"com.dync.teameeting"account:@"userUDID" error:&error];
+                         forService:@"com.dync.teameeting"account:@"userUDIDS" error:&error];
+           
             if (error) {
                 NSLog(@"SSKeychain Faile");
             }
@@ -48,6 +50,7 @@ static SvUDIDTools *uuidTool = nil;
 }
 - (void)setNotFirstStart:(BOOL)notFirstStart
 {
+    
     _notFirstStart = notFirstStart;
     [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithBool:notFirstStart] forKey:@"isUpateNickName"];
     [[NSUserDefaults standardUserDefaults] synchronize];
