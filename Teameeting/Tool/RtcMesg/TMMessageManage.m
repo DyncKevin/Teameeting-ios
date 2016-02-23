@@ -11,6 +11,9 @@
 #import "Rooms.h"
 #import "SvUDIDTools.h"
 #import "ServerVisit.h"
+#import "ToolUtils.h"
+#import "JPUSHService.h"
+
 @interface TMMessageManage() <MsgClientProtocol>
 
 
@@ -42,6 +45,7 @@
         
         _msg = [[TMMsgSender alloc] init];
         _messageListeners = [NSMutableArray array];
+        [[UIApplication sharedApplication] cancelAllLocalNotifications];
     }
     return self;
 }
@@ -399,6 +403,31 @@
                     }
                 }
             }
+            if ([ToolUtils shead].isBack) {
+                
+                UILocalNotification *notification = [[UILocalNotification alloc] init];
+                NSDate *pushDate = [NSDate dateWithTimeIntervalSinceNow:1];
+                if (notification != nil) {
+                    // 设置推送时间（5秒后）
+                    notification.fireDate = pushDate;
+                    // 设置时区（此为默认时区）
+                    notification.timeZone = [NSTimeZone defaultTimeZone];
+                    // 设置重复间隔（默认0，不重复推送）
+                    notification.repeatInterval = 0;
+                    // 推送声音（系统默认）
+                    notification.soundName = UILocalNotificationDefaultSoundName;
+                    // 推送内容
+                    notification.alertBody = [NSString stringWithFormat:@"%@ - %@:%@",[messageDic objectForKey:@"rname"],[messageDic objectForKey:@"nname"],[messageDic objectForKey:@"cont"]];
+                    //设置userinfo 方便在之后需要撤销的时候使用
+                    NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithInt:1],@"tags",[messageDic objectForKey:@"room"],@"roomid", nil];
+                    notification.userInfo = info;
+                    //添加推送到UIApplication
+                    UIApplication *app = [UIApplication sharedApplication];
+                    [app scheduleLocalNotification:notification];
+                }
+                
+            }
+
             
         } else if ([[messageDic objectForKey:@"tags"] intValue] == MCSendTagsENTER || [[messageDic objectForKey:@"tags"] intValue] == MCSendTagsLEAVE) {
         

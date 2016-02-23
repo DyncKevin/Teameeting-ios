@@ -18,6 +18,7 @@
     NSTimer *playTimer;
     
     UILabel *placeHold;
+    float height;
 }
 @end
 
@@ -77,14 +78,14 @@
         [self addSubview:self.TextViewInput];
         
         //输入框的提示语
-        placeHold = [[UILabel alloc]initWithFrame:CGRectMake(20, 0, 200, 30)];
-        //placeHold = [UILabel new];
+        placeHold = [[UILabel alloc]initWithFrame:CGRectMake(10, 0, 200, 30)];
+        placeHold.backgroundColor = [UIColor clearColor];
         placeHold.text = @"发送消息";
         placeHold.font = [UIFont systemFontOfSize:13];
         placeHold.textColor = [[UIColor lightGrayColor] colorWithAlphaComponent:0.8];
         [self.TextViewInput addSubview:placeHold];
+
         [self addSubview:self.btnSendMessage];
-            //[self layout];
         //分割线
         self.layer.borderWidth = 1;
         self.layer.borderColor = [[UIColor lightGrayColor] colorWithAlphaComponent:0.3].CGColor;
@@ -94,44 +95,20 @@
     }
     return self;
 }
-
-- (void)layout
+- (void)layoutWithChange
 {
-    self.btnSendMessage.translatesAutoresizingMaskIntoConstraints = NO;
-    self.TextViewInput.translatesAutoresizingMaskIntoConstraints = NO;
-    placeHold.translatesAutoresizingMaskIntoConstraints = NO;
+    if (self.superVC.view.bounds.size.height == height) {
+        
+        return;
+    }
+    height = self.superVC.view.bounds.size.height;
     
-    // btnSendMessage
-    NSLayoutConstraint * constraint = [NSLayoutConstraint constraintWithItem:_btnSendMessage attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeHeight multiplier:0.8f constant:0.0f];
-    NSLayoutConstraint * constraint1 = [NSLayoutConstraint constraintWithItem:_btnSendMessage attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0f constant:60.0f];
-    NSLayoutConstraint * constraint2 = [NSLayoutConstraint constraintWithItem:_btnSendMessage attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeCenterX multiplier:1.0f constant:0.0f];
-    NSLayoutConstraint * constraint3 = [NSLayoutConstraint constraintWithItem:_btnSendMessage attribute:NSLayoutAttributeRight relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeRight multiplier:1.0f constant:0.0f];
-    [self addConstraint:constraint];
-    [self addConstraint:constraint1];
-    [self addConstraint:constraint2];
-    [self addConstraint:constraint3];
-    
-    // TextViewInput
-    NSLayoutConstraint * constraint4 = [NSLayoutConstraint constraintWithItem:_TextViewInput attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeHeight multiplier:1.0f constant:0.0f];
-    NSLayoutConstraint * constraint5 = [NSLayoutConstraint constraintWithItem:_TextViewInput attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeWidth multiplier:1.0f constant:-70.0f];
-    NSLayoutConstraint * constraint6 = [NSLayoutConstraint constraintWithItem:_TextViewInput attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeCenterX multiplier:1.0f constant:0.0f];
-    NSLayoutConstraint * constraint7 = [NSLayoutConstraint constraintWithItem:_TextViewInput attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeLeft multiplier:1.0f constant:5.0f];
-    [self addConstraint:constraint4];
-    [self addConstraint:constraint5];
-    [self addConstraint:constraint6];
-    [self addConstraint:constraint7];
-    
-    // placeHold
-    NSLayoutConstraint * constraint8 = [NSLayoutConstraint constraintWithItem:placeHold attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:_TextViewInput attribute:NSLayoutAttributeHeight multiplier:1.0f constant:0.0f];
-    NSLayoutConstraint * constraint9 = [NSLayoutConstraint constraintWithItem:placeHold attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:_TextViewInput attribute:NSLayoutAttributeWidth multiplier:0.8f constant:0.0f];
-    NSLayoutConstraint * constraint10 = [NSLayoutConstraint constraintWithItem:placeHold attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:_TextViewInput attribute:NSLayoutAttributeCenterX multiplier:1.0f constant:0.0f];
-    NSLayoutConstraint * constraint11 = [NSLayoutConstraint constraintWithItem:placeHold attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:_TextViewInput attribute:NSLayoutAttributeLeft multiplier:1.0f constant:5.0f];
-    [_TextViewInput addConstraint:constraint8];
-    [_TextViewInput addConstraint:constraint9];
-    [_TextViewInput addConstraint:constraint10];
-    [_TextViewInput addConstraint:constraint11];
-    
+    self.frame = CGRectMake(0,  self.superVC.view.bounds.size.height -40, self.superVC.view.bounds.size.width, 40);
+    self.btnSendMessage.frame = CGRectMake(self.superVC.view.bounds.size.width - 60, 0, 60, 40);
+    self.TextViewInput.frame = CGRectMake(10, 5, self.superVC.view.bounds.size.width - 55, 30);
+//    placeHold.frame = CGRectMake(10, 0, 200, 30);
 }
+
 #pragma mark - 录音touch事件
 - (void)beginRecordVoice:(UIButton *)button
 {
@@ -257,9 +234,15 @@
     //[self.btnSendMessage setBackgroundImage:image forState:UIControlStateNormal];
     self.btnSendMessage.enabled = !isPhoto;
 }
+- (void)clearInputView
+{
+    self.TextViewInput.text = @"";
+    placeHold.hidden = NO;
+}
 
 - (void)textViewDidEndEditing:(UITextView *)textView
 {
+    NSLog(@"textViewDidEndEditing:%@",self.TextViewInput.text);
     placeHold.hidden = self.TextViewInput.text.length > 0;
 }
 

@@ -9,6 +9,20 @@
 #import "ToolUtils.h"
 #import "UIDevice+Category.h"
 
+@implementation NotificationObject
+
+- (id)init
+{
+    self = [super init];
+    if (self) {
+        
+    }
+    return self;
+}
+
+@end
+
+
 @implementation ToolUtils
 
 - (id)init
@@ -16,6 +30,7 @@
     self = [super init];
     if (self) {
         self.meetingID = nil;
+        self.notificationObject = nil;
     }
     return self;
 }

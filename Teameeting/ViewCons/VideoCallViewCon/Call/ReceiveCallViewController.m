@@ -40,7 +40,9 @@
     BOOL isRightTran;
     
 }
-@property (nonatomic, strong)  NSMutableDictionary *_dicRemoteVideoView;
+@property (nonatomic, strong) NSMutableDictionary *_dicRemoteVideoView;
+@property (nonatomic, strong) NSMutableArray *_audioOperateArray;
+@property (nonatomic, strong) NSMutableArray *_videoOperateArray;
 @property (nonatomic, strong) NSMutableArray *_userArray;
 @property (nonatomic, strong) NSMutableArray *_channelArray;
 
@@ -56,7 +58,7 @@
 
 @synthesize _client;
 @synthesize roomItem;
-@synthesize _userArray,_channelArray;
+@synthesize _userArray,_channelArray,_audioOperateArray,_videoOperateArray;
 
 - (void)dealloc
 {
@@ -110,6 +112,8 @@
     _peerSelectedId = nil;
     _userArray = [[NSMutableArray alloc] initWithCapacity:5];
     _channelArray = [[NSMutableArray alloc] initWithCapacity:5];
+    _videoOperateArray = [[NSMutableArray alloc] initWithCapacity:5];
+    _audioOperateArray = [[NSMutableArray alloc] initWithCapacity:5];
     
     _dicRemoteVideoView = [[NSMutableDictionary alloc] initWithCapacity:5];
     [AnyrtcM2Mutlier InitAnyRTC:@"mzw0001" andToken:@"defq34hj92mxxjhaxxgjfdqi1s332dd" andAESKey:@"d74TcmQDMB5nWx9zfJ5al7JdEg3XwySwCkhdB9lvnd1" andAppId:@"org.dync.app"];
@@ -160,11 +164,16 @@
 - (void)videoAudioSet:(NSString *)content action:(NSInteger)action
 {
      NSDictionary *dict = [ToolUtils JSONValue:content];
+    
+    BOOL isvideoFound = NO;
+    BOOL isaudioFound = NO;
     if (action==6) {
         
+        NSLog(@"%@",[_dicRemoteVideoView allKeys]);
         for (NSString *strTag in [_dicRemoteVideoView allKeys]) {
             VideoShowItem *item = [_dicRemoteVideoView objectForKey:strTag];
             if ([item.publishID isEqualToString:[dict objectForKey:@"PublishId"]]) {
+                isaudioFound = YES;
                 if ([[dict objectForKey:@"Media"] isEqualToString:@"Close"]) {
                       [item setAudioClose:YES];
                 }else{
@@ -173,15 +182,67 @@
                 break;
             }
         }
+        // not found
+        if (!isaudioFound) {
+            [_audioOperateArray addObject:content];
+        }
     }else{
         for (NSString *strTag in [_dicRemoteVideoView allKeys]) {
             VideoShowItem *item = [_dicRemoteVideoView objectForKey:strTag];
+            if ([item.publishID isEqualToString:[dict objectForKey:@"PublishId"]]) {
+                isvideoFound = YES;
+                if ([[dict objectForKey:@"Media"] isEqualToString:@"Close"]) {
+                    [item setVideoHidden:YES];
+                }else{
+                    [item setVideoHidden:NO];
+                }
+                break;
+            }
+        }
+        if (!isvideoFound) {
+            [_videoOperateArray addObject:content];
+        }
+    }
+   
+  
+}
+// setting pre operate to view
+- (void)settingMediaToViewOperate:(VideoShowItem*)item
+{
+    if (_audioOperateArray.count != 0) {
+        for (NSString *content in _audioOperateArray) {
+            NSDictionary *dict = [ToolUtils JSONValue:content];
+            if ([item.publishID isEqualToString:[dict objectForKey:@"PublishId"]]) {
+                if ([[dict objectForKey:@"Media"] isEqualToString:@"Close"]) {
+                    [item setAudioClose:YES];
+                }else{
+                    [item setAudioClose:NO];
+                    if ([item.selectedTag isEqualToString:_peerSelectedId]) {
+                        if (self.isFullScreen) {
+                            [item setFullScreen:YES];
+                        }else{
+                            [item setFullScreen:NO];
+                        }
+                    }else{
+                        [item setFullScreen:YES];
+                    }
+                }
+                [_audioOperateArray removeObject:content];
+                break;
+            }
+        }
+    }
+    
+    if(_videoOperateArray.count != 0) {
+        for (NSString *content in _videoOperateArray) {
+            NSDictionary *dict = [ToolUtils JSONValue:content];
             if ([item.publishID isEqualToString:[dict objectForKey:@"PublishId"]]) {
                 if ([[dict objectForKey:@"Media"] isEqualToString:@"Close"]) {
                     [item setVideoHidden:YES];
                 }else{
                     [item setVideoHidden:NO];
                 }
+                [_videoOperateArray removeObject:content];
                 break;
             }
         }
@@ -405,8 +466,13 @@
         [self.view addSubview:view.showVideoView];
         [self.view sendSubviewToBack:view.showVideoView];
         
-
-        CGFloat scalelocal = _localVideoSize.width/_localVideoSize.height;
+       
+        CGFloat scalelocal;
+         
+         if (_localVideoSize.width>0 && _localVideoSize.height>0) {
+             scalelocal = _localVideoSize.width/_localVideoSize.height;
+         }
+         
         CGFloat localViewwidth =0.0;
         CGFloat localViewheight =0.0;
         
@@ -676,10 +742,13 @@
     [removeView addGestureRecognizer:singleTapGestureRecognizer];
     [self.view addSubview:removeView];
     VideoShowItem *item = [[VideoShowItem alloc] init];
+    item.selectedTag = peerChannelID;
     item.showVideoView = removeView;
     item.publishID = publishID;
     
     [_dicRemoteVideoView setObject:item forKey:peerChannelID];
+    // setting
+    [self settingMediaToViewOperate:item];
     [self layoutSubView];
     //While the number of remote image change, send a notification
     NSNumber *remoteVideoCount = [NSNumber numberWithInteger:[_dicRemoteVideoView count]];

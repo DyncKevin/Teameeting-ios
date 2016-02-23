@@ -23,6 +23,7 @@
 		781F6E171C44CCA600026160 /* NSString+Category.m in Sources */ = {isa = PBXBuildFile; fileRef = 781F6E161C44CCA600026160 /* NSString+Category.m */; };
 		781F6E1A1C44DA5300026160 /* metting_nonotification@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 781F6E181C44DA5300026160 /* metting_nonotification@2x.png */; };
 		781F6E1B1C44DA5300026160 /* metting_nonotification@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 781F6E191C44DA5300026160 /* metting_nonotification@3x.png */; };
+		7825DBF91C771CC700D5E6BA /* jpush-ios-2.1.0.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7825DBF71C771CC700D5E6BA /* jpush-ios-2.1.0.a */; };
 		782807A41C463AED0061D6CD /* Icon-1@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 782807A31C463AED0061D6CD /* Icon-1@2x.png */; };
 		783701361C43DDFB006C80DE /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 783701351C43DDFB006C80DE /* main.m */; };
 		7837013F1C43DDFB006C80DE /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7837013D1C43DDFB006C80DE /* Main.storyboard */; };
@@ -188,7 +189,6 @@
 		7837032A1C43DF64006C80DE /* PushView.m in Sources */ = {isa = PBXBuildFile; fileRef = 783702841C43DF64006C80DE /* PushView.m */; };
 		7837032B1C43DF64006C80DE /* MemberView.m in Sources */ = {isa = PBXBuildFile; fileRef = 783702871C43DF64006C80DE /* MemberView.m */; };
 		7837032C1C43DF64006C80DE /* RoomViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 783702891C43DF64006C80DE /* RoomViewCell.m */; };
-		783703311C43DF97006C80DE /* PushConfig.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7837032E1C43DF97006C80DE /* PushConfig.plist */; };
 		783703331C43E3A6006C80DE /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 783703321C43E3A6006C80DE /* CoreData.framework */; };
 		783703351C43E3AD006C80DE /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 783703341C43E3AD006C80DE /* Security.framework */; };
 		783703371C43E3B2006C80DE /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 783703361C43E3B2006C80DE /* CoreGraphics.framework */; };
@@ -206,7 +206,6 @@
 		785643E71C50D3EC00836850 /* AnimatedTransitioning.m in Sources */ = {isa = PBXBuildFile; fileRef = 785643E41C50D3EC00836850 /* AnimatedTransitioning.m */; };
 		785643E81C50D3EC00836850 /* TransitionDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 785643E61C50D3EC00836850 /* TransitionDelegate.m */; };
 		7861D0291C4F8E7200B2F30D /* VideoShowItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 7861D0281C4F8E7200B2F30D /* VideoShowItem.m */; };
-		78A893841C59AFB100C4CD49 /* libPushSDK-1.8.8.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 78A893831C59AFB100C4CD49 /* libPushSDK-1.8.8.a */; };
 		78C5ECC61C4E447600193322 /* weixin@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 78C5ECC41C4E447600193322 /* weixin@2x.png */; };
 		78C5ECC71C4E447600193322 /* weixin@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 78C5ECC51C4E447600193322 /* weixin@3x.png */; };
 		78C5ECCA1C4E45B300193322 /* copy_scuess@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 78C5ECC81C4E45B300193322 /* copy_scuess@2x.png */; };
@@ -256,6 +255,8 @@
 		781F6E161C44CCA600026160 /* NSString+Category.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+Category.m"; sourceTree = "<group>"; };
 		781F6E181C44DA5300026160 /* metting_nonotification@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "metting_nonotification@2x.png"; sourceTree = "<group>"; };
 		781F6E191C44DA5300026160 /* metting_nonotification@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "metting_nonotification@3x.png"; sourceTree = "<group>"; };
+		7825DBF71C771CC700D5E6BA /* jpush-ios-2.1.0.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = "jpush-ios-2.1.0.a"; sourceTree = "<group>"; };
+		7825DBF81C771CC700D5E6BA /* JPUSHService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JPUSHService.h; sourceTree = "<group>"; };
 		782807A31C463AED0061D6CD /* Icon-1@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-1@2x.png"; sourceTree = "<group>"; };
 		783701311C43DDFB006C80DE /* Teameeting.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Teameeting.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		783701351C43DDFB006C80DE /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -502,7 +503,6 @@
 		783702871C43DF64006C80DE /* MemberView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MemberView.m; sourceTree = "<group>"; };
 		783702881C43DF64006C80DE /* RoomViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoomViewCell.h; sourceTree = "<group>"; };
 		783702891C43DF64006C80DE /* RoomViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RoomViewCell.m; sourceTree = "<group>"; };
-		7837032E1C43DF97006C80DE /* PushConfig.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = PushConfig.plist; sourceTree = "<group>"; };
 		7837032F1C43DF97006C80DE /* Teameeting-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Teameeting-Prefix.pch"; sourceTree = "<group>"; };
 		783703321C43E3A6006C80DE /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		783703341C43E3AD006C80DE /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
@@ -524,8 +524,6 @@
 		785643E61C50D3EC00836850 /* TransitionDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TransitionDelegate.m; sourceTree = "<group>"; };
 		7861D0271C4F8E7200B2F30D /* VideoShowItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VideoShowItem.h; sourceTree = "<group>"; };
 		7861D0281C4F8E7200B2F30D /* VideoShowItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VideoShowItem.m; sourceTree = "<group>"; };
-		78A893821C59AFB100C4CD49 /* APService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = APService.h; sourceTree = "<group>"; };
-		78A893831C59AFB100C4CD49 /* libPushSDK-1.8.8.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = "libPushSDK-1.8.8.a"; sourceTree = "<group>"; };
 		78C5ECC41C4E447600193322 /* weixin@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "weixin@2x.png"; sourceTree = "<group>"; };
 		78C5ECC51C4E447600193322 /* weixin@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "weixin@3x.png"; sourceTree = "<group>"; };
 		78C5ECC81C4E45B300193322 /* copy_scuess@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "copy_scuess@2x.png"; sourceTree = "<group>"; };
@@ -544,7 +542,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				78A893841C59AFB100C4CD49 /* libPushSDK-1.8.8.a in Frameworks */,
 				7837034D1C43E405006C80DE /* libicucore.tbd in Frameworks */,
 				7837034B1C43E3FC006C80DE /* libstdc++.6.0.9.tbd in Frameworks */,
 				783703491C43E3F5006C80DE /* libstdc++.tbd in Frameworks */,
@@ -557,6 +554,7 @@
 				7837033D1C43E3C4006C80DE /* libsqlite3.0.tbd in Frameworks */,
 				7837033B1C43E3BE006C80DE /* Accelerate.framework in Frameworks */,
 				783703391C43E3B8006C80DE /* CFNetwork.framework in Frameworks */,
+				7825DBF91C771CC700D5E6BA /* jpush-ios-2.1.0.a in Frameworks */,
 				783703371C43E3B2006C80DE /* CoreGraphics.framework in Frameworks */,
 				783703351C43E3AD006C80DE /* Security.framework in Frameworks */,
 				783703331C43E3A6006C80DE /* CoreData.framework in Frameworks */,
@@ -596,7 +594,6 @@
 			isa = PBXGroup;
 			children = (
 				FC6A0F481C464B9400D8C56D /* TMessage.xcdatamodeld */,
-				7837032E1C43DF97006C80DE /* PushConfig.plist */,
 				7837032F1C43DF97006C80DE /* Teameeting-Prefix.pch */,
 				783701331C43DDFB006C80DE /* Teameeting */,
 				7837014D1C43DDFC006C80DE /* TeameetingTests */,
@@ -1284,8 +1281,8 @@
 		78A893811C59AFB100C4CD49 /* JPush */ = {
 			isa = PBXGroup;
 			children = (
-				78A893821C59AFB100C4CD49 /* APService.h */,
-				78A893831C59AFB100C4CD49 /* libPushSDK-1.8.8.a */,
+				7825DBF71C771CC700D5E6BA /* jpush-ios-2.1.0.a */,
+				7825DBF81C771CC700D5E6BA /* JPUSHService.h */,
 			);
 			path = JPush;
 			sourceTree = "<group>";
@@ -1538,7 +1535,6 @@
 				781F6E0F1C44A33F00026160 /* meeting_num@3x.png in Resources */,
 				783702A21C43DF64006C80DE /* delegate_main@3x.png in Resources */,
 				783702A51C43DF64006C80DE /* enter_main@2x.png in Resources */,
-				783703311C43DF97006C80DE /* PushConfig.plist in Resources */,
 				783702901C43DF64006C80DE /* changeSelectVideo@2x.png in Resources */,
 				783702CA1C43DF64006C80DE /* rename_main@2x.png in Resources */,
 				783703001C43DF64006C80DE /* expressionImage_custom.plist in Resources */,

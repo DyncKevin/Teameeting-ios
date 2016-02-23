@@ -10,6 +10,9 @@
 #import <Security/Security.h>
 #import "SSKeychain.h"
 
+static NSString *const kSSKeychainServiceName = @"TeameetingService";
+static NSString *const kSSKeychainAccountName = @"TeameetingAccount";
+
 @implementation SvUDIDTools
 
 static SvUDIDTools *uuidTool = nil;
@@ -27,18 +30,18 @@ static SvUDIDTools *uuidTool = nil;
 {
     self = [super init];
     if (self) {
-        _UUID = [SSKeychain passwordForService:@"com.dync.teameeting"account:@"userUDIDS"];
+         NSError *error;
+         _UUID = [SSKeychain passwordForService:kSSKeychainServiceName account:kSSKeychainAccountName error:&error];
        self.notFirstStart = [[[NSUserDefaults standardUserDefaults] objectForKey:@"isUpateNickName"] boolValue];
-        
+        NSArray *array = [SSKeychain allAccounts];
         if (!_UUID) {
             CFUUIDRef uuid = CFUUIDCreate(NULL);
             assert(uuid != NULL);
             CFStringRef uuidStr = CFUUIDCreateString(NULL, uuid);
             _UUID = [[NSString stringWithFormat:@"%@",uuidStr] lowercaseString];
             _UUID = [_UUID stringByReplacingOccurrencesOfString:@"-" withString:@""];
-            NSError *error;
             [SSKeychain setPassword: _UUID
-                         forService:@"com.dync.teameeting"account:@"userUDIDS" error:&error];
+                         forService:kSSKeychainServiceName account:kSSKeychainAccountName error:&error];
            
             if (error) {
                 NSLog(@"SSKeychain Faile");

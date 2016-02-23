@@ -59,6 +59,7 @@ static NSString *kRoomCellID = @"RoomCell";
 @property (nonatomic, strong) UIImageView *listBgView;
 @property (nonatomic, strong) UIView *bgView;
 
+@property (nonatomic, strong) VideoViewController *videoViewController;
 @end
 
 @implementation MainViewController
@@ -68,6 +69,7 @@ static NSString *kRoomCellID = @"RoomCell";
 - (void)dealloc
 {
     [[ASNetwork sharedNetwork] removeObserver:self forKeyPath:@"_netType" context:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 - (void)viewWillAppear:(BOOL)animated
 {
@@ -166,6 +168,9 @@ static NSString *kRoomCellID = @"RoomCell";
     [self.view bringSubviewToFront:self.navView];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(shareMettingNotification:) name:ShareMettingNotification object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(notificationEnterNotification:) name:NotificationEntNotification object:nil];
+    
 }
 // 旋转屏幕适配
 - (void)viewDidLayoutSubviews
@@ -242,6 +247,67 @@ static NSString *kRoomCellID = @"RoomCell";
         [ToolUtils shead].meetingID = meetingID;
     }
 }
+
+- (void)notificationEnterNotification:(NSNotification*)notification
+{
+    NotificationObject *not = [notification object];
+    if (![[ServerVisit shead].authorization isEqualToString:@""]) {
+        [self.push close];
+        if (self.videoViewController) {
+            if ([self.videoViewController.roomItem.roomID isEqualToString:not.roomID]) {
+                if (not.notificationType == NotificationMessageType) {
+                    [self.videoViewController openOrCloseTalk:YES];
+                }else{
+                    [self.videoViewController openOrCloseTalk:NO];
+                }
+            }else{
+                [self.videoViewController dismissMyself];
+                [self gotoVideoWithNotification:not];
+                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                    if (not.notificationType == NotificationMessageType) {
+                        [self.videoViewController openOrCloseTalk:YES];
+                    }
+                });
+            }
+        }else{
+            [self gotoVideoWithNotification:not];
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                if (not.notificationType == NotificationMessageType) {
+                    [self.videoViewController openOrCloseTalk:YES];
+                }
+            });
+           
+        }
+    }else{
+        [ToolUtils shead].notificationObject = not;
+    }
+}
+- (void)gotoVideoWithNotification:(NotificationObject*)obj
+{
+    RoomItem *item;
+    for (RoomItem *roomItem in self.dataArray) {
+        if ([roomItem.roomID isEqualToString:obj.roomID]) {
+            item = roomItem;
+        }
+    }
+    self.videoViewController = [[VideoViewController alloc] init];
+    self.videoViewController.roomItem = item;
+    __weak MainViewController *weakSelf = self;
+    [self.videoViewController setDismissVideoViewController:^{
+        weakSelf.videoViewController = nil;
+    }];
+ 
+    UINavigationController *nai = [[UINavigationController alloc] initWithRootViewController:self.videoViewController];
+    [self presentViewController:nai animated:YES completion:^{
+        [ServerVisit updateUserMeetingJointimeWithSign:[ServerVisit shead].authorization meetingID:item.roomID completion:^(AFHTTPRequestOperation *operation, id responseData, NSError *error) {
+            NSDictionary *dict = (NSDictionary*)responseData;
+            item.jointime = [[dict objectForKey:@"jointime"] longValue];
+            [weakSelf updataMeetingTime:item];
+        }];
+    }];
+    [ToolUtils shead].notificationObject = nil;
+}
+
 #pragma mark -private methods
 - (void)initUser
 {
@@ -348,6 +414,14 @@ static NSString *kRoomCellID = @"RoomCell";
                 [[NtreatedDataManage sharedManager] dealwithDataWithTarget:self];
                 if ([ToolUtils shead].meetingID != nil) {
                     [weakSelf addItemAndEnterMettingWithID:[ToolUtils shead].meetingID];
+                }
+                if ([ToolUtils shead].notificationObject != nil) {
+                    [weakSelf gotoVideoWithNotification:[ToolUtils shead].notificationObject];
+                    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                        if ([ToolUtils shead].notificationObject.notificationType == NotificationMessageType) {
+                            [weakSelf.videoViewController openOrCloseTalk:YES];
+                        }
+                    });
                 }
                 // get not read message num
                 [weakSelf getNotReadMessageNum];
@@ -474,9 +548,12 @@ static NSString *kRoomCellID = @"RoomCell";
             }else if ([[dict objectForKey:@"code"] integerValue] == 200){
                 dispatch_async(dispatch_get_main_queue(), ^{
                    // VideoCallViewController *video = [[VideoCallViewController alloc] init];
-                    VideoViewController *video = [[VideoViewController alloc] init];
-                    video.roomItem = item;
-                    UINavigationController *nai = [[UINavigationController alloc] initWithRootViewController:video];
+                    weakSelf.videoViewController = [[VideoViewController alloc] init];
+                    weakSelf.videoViewController.roomItem = item;
+                    [weakSelf.videoViewController setDismissVideoViewController:^{
+                        weakSelf.videoViewController = nil;
+                    }];
+                    UINavigationController *nai = [[UINavigationController alloc] initWithRootViewController:self.videoViewController];
                     [weakSelf presentViewController:nai animated:YES completion:^{
                         [ServerVisit updateUserMeetingJointimeWithSign:[ServerVisit shead].authorization meetingID:item.roomID completion:^(AFHTTPRequestOperation *operation, id responseData, NSError *error) {
                             NSDictionary *dict = (NSDictionary*)responseData;
@@ -859,9 +936,13 @@ static NSString *kRoomCellID = @"RoomCell";
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             [self.roomList reloadData];
             
-            VideoViewController *video = [[VideoViewController alloc] init];
-            video.roomItem = item;
-            UINavigationController *nai = [[UINavigationController alloc] initWithRootViewController:video];
+            self.videoViewController = [[VideoViewController alloc] init];
+            self.videoViewController.roomItem = item;
+            __weak MainViewController *weakSelf = self;
+            [self.videoViewController setDismissVideoViewController:^{
+                weakSelf.videoViewController = nil;
+            }];
+            UINavigationController *nai = [[UINavigationController alloc] initWithRootViewController:self.videoViewController];
             [self presentViewController:nai animated:YES completion:^{
                 if (self.dataArray.count>20) {
                     [self deleteRoomWithItem:[dataArray lastObject] withIndex:(dataArray.count -1)];
@@ -1124,10 +1205,14 @@ static NSString *kRoomCellID = @"RoomCell";
 
 - (void)pushViewJoinRoom:(RoomItem*)obj
 {
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        VideoViewController *video = [[VideoViewController alloc] init];
-        video.roomItem = obj;
-        UINavigationController *nai = [[UINavigationController alloc] initWithRootViewController:video];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        self.videoViewController = [[VideoViewController alloc] init];
+        self.videoViewController.roomItem = obj;
+        __weak MainViewController *weakSelf = self;
+        [self.videoViewController setDismissVideoViewController:^{
+            weakSelf.videoViewController = nil;
+        }];
+        UINavigationController *nai = [[UINavigationController alloc] initWithRootViewController:self.videoViewController];
         [self presentViewController:nai animated:YES completion:^{
         }];
     });

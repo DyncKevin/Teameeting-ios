@@ -178,7 +178,7 @@
 //        [self.rootView resetInputFrame:CGRectMake(0, self.view.bounds.size.height - 40, self.view.bounds.size.width, 40)];
        
     }
-    [self.rootView resetInputFrame:CGRectMake(0, self.view.bounds.size.height - 40, self.view.bounds.size.width, 40)];
+//    [self.rootView resetInputFrame:CGRectMake(0, self.view.bounds.size.height - 40, self.view.bounds.size.width, 40)];
     if (self.view.bounds.size.width>self.view.bounds.size.height) {
     
         if (!self.isFullScreen) {
@@ -203,6 +203,34 @@
     NSUInteger height = self.view.bounds.size.height;
     isVertical = width > height ? NO : YES;
     return isVertical;
+}
+
+- (void)openOrCloseTalk:(BOOL)isOpen
+{
+    if (isOpen) {
+        if (self.isChat) {
+            return;
+        }else{
+            [self goToChat:nil];
+        }
+    }else{
+        if (self.isChat) {
+            [self.rootView closeChatView];
+        }
+    }
+}
+- (void)dismissMyself
+{
+    [self dismissViewControllerAnimated:YES completion:^{
+        if (self.callViewCon) {
+            [self.callViewCon hangeUp];
+            [[TMMessageManage sharedManager] removeMessageListener:self.rootView];
+        }
+        if (self.DismissVideoViewController) {
+            self.DismissVideoViewController();
+        }
+    }];
+
 }
 
 - (void)loadTableView {
@@ -689,10 +717,12 @@
     if (item.tag == 10) {
         
         [self dismissViewControllerAnimated:YES completion:^{
-            
             if (self.callViewCon) {
                 [self.callViewCon hangeUp];
                 [[TMMessageManage sharedManager] removeMessageListener:self.rootView];
+            }
+            if (self.DismissVideoViewController) {
+                self.DismissVideoViewController();
             }
         }];
         
