@@ -217,15 +217,6 @@
                     [item setAudioClose:YES];
                 }else{
                     [item setAudioClose:NO];
-                    if ([item.selectedTag isEqualToString:_peerSelectedId]) {
-                        if (self.isFullScreen) {
-                            [item setFullScreen:YES];
-                        }else{
-                            [item setFullScreen:NO];
-                        }
-                    }else{
-                        [item setFullScreen:YES];
-                    }
                 }
                 [_audioOperateArray removeObject:content];
                 break;
@@ -400,7 +391,6 @@
             }else{
                 self.videosScrollView.frame = CGRectMake(self.videosScrollView.frame.origin.x, self.view.bounds.size.height - 200, self.view.bounds.size.width, VideoParViewHeight);
             }
-            
         }];
         if (_peerSelectedId) {
             VideoShowItem *item = [_dicRemoteVideoView objectForKey:_peerSelectedId];
@@ -413,9 +403,13 @@
             }
         }else{
               [_localVideoView setFullScreen:YES];
+            if (_peerOldSelectedId) {
+                VideoShowItem *item = [_dicRemoteVideoView objectForKey:_peerOldSelectedId];
+                [item setFullScreen:YES];
+            }
         }
         
-    } else {
+    }else {
         [UIView animateWithDuration:.2 animations:^{
             if (isRightTran) {
                 self.videosScrollView.frame = CGRectMake(self.videosScrollView.frame.origin.x, self.view.bounds.size.height - 300, self.view.bounds.size.width-TalkPannelWidth, VideoParViewHeight);
@@ -471,6 +465,8 @@
          
          if (_localVideoSize.width>0 && _localVideoSize.height>0) {
              scalelocal = _localVideoSize.width/_localVideoSize.height;
+         }else{
+             return;
          }
          
         CGFloat localViewwidth =0.0;
@@ -731,7 +727,7 @@
     if (findView.showVideoView == removeView) {
         return;
     }
-    if (!_peerSelectedId) {
+    if (!_peerSelectedId&&_dicRemoteVideoView.count==0) {
         _peerSelectedId = peerChannelID;
         _client.selectedTag = peerChannelID;
     }
@@ -747,12 +743,16 @@
     item.publishID = publishID;
     
     [_dicRemoteVideoView setObject:item forKey:peerChannelID];
-    // setting
-    [self settingMediaToViewOperate:item];
+    
     [self layoutSubView];
     //While the number of remote image change, send a notification
     NSNumber *remoteVideoCount = [NSNumber numberWithInteger:[_dicRemoteVideoView count]];
     [[NSNotificationCenter defaultCenter] postNotificationName:@"REMOTEVIDEOCHANGE" object:remoteVideoCount];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        // setting
+        [self settingMediaToViewOperate:item];
+    });
+   
     
 }
 

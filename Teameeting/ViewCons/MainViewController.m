@@ -296,16 +296,18 @@ static NSString *kRoomCellID = @"RoomCell";
     [self.videoViewController setDismissVideoViewController:^{
         weakSelf.videoViewController = nil;
     }];
- 
-    UINavigationController *nai = [[UINavigationController alloc] initWithRootViewController:self.videoViewController];
-    [self presentViewController:nai animated:YES completion:^{
-        [ServerVisit updateUserMeetingJointimeWithSign:[ServerVisit shead].authorization meetingID:item.roomID completion:^(AFHTTPRequestOperation *operation, id responseData, NSError *error) {
-            NSDictionary *dict = (NSDictionary*)responseData;
-            item.jointime = [[dict objectForKey:@"jointime"] longValue];
-            [weakSelf updataMeetingTime:item];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        UINavigationController *nai = [[UINavigationController alloc] initWithRootViewController:self.videoViewController];
+        [self presentViewController:nai animated:YES completion:^{
+            [ServerVisit updateUserMeetingJointimeWithSign:[ServerVisit shead].authorization meetingID:item.roomID completion:^(AFHTTPRequestOperation *operation, id responseData, NSError *error) {
+                NSDictionary *dict = (NSDictionary*)responseData;
+                item.jointime = [[dict objectForKey:@"jointime"] longValue];
+                [weakSelf updataMeetingTime:item];
+            }];
         }];
-    }];
-    [ToolUtils shead].notificationObject = nil;
+        [ToolUtils shead].notificationObject = nil;
+    });
+   
 }
 
 #pragma mark -private methods
