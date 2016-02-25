@@ -114,12 +114,6 @@
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
-    if (self.isHiddenMic) {
-        self.micImageView.hidden = NO;
-    }else{
-        self.micImageView.hidden = YES;
-    }
-    
     return;
      if ([keyPath isEqualToString:@"frame"]){
          if (_showVideoView) {

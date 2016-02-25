@@ -64,6 +64,8 @@
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationWillResignActiveNotification object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidBecomeActiveNotification object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"FULLSCREEN" object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"TALKCHAT_NOTIFICATION" object:nil];
     
     if (_audioManager) {
         _audioManager = nil;
@@ -136,7 +138,6 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidBecomeActive) name:UIApplicationDidBecomeActiveNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(fullSreenNoti:) name:@"FULLSCREEN" object:nil];
      [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(chatViewNoti:) name:@"TALKCHAT_NOTIFICATION" object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(rotateChange:) name:@"ROTATECHANGE" object:nil];
 
     {//@Eric - Publish myself
         PublishParams *pramas = [[PublishParams alloc]init];
@@ -145,7 +146,10 @@
         [pramas setStreamType:kSTRtc];
         [_client Publish:pramas];
     }
-    _audioManager = [[AvcAudioRouteMgr alloc] init];
+    if (!ISIPAD) {
+         _audioManager = [[AvcAudioRouteMgr alloc] init];
+    }
+   
 }
 
 - (void)videoSubscribeWith:(NSString *)publishId action:(NSInteger)action {
@@ -245,11 +249,6 @@
     return YES;
 }
 
-- (void)rotateChange:(NSNotification *)noti {
-    
-    //[self.videosScrollView setContentSize:CGSizeMake([[noti object] integerValue], 300)];
-    //[self.videosScrollView setContentOffset:CGPointMake(self.videosScrollView.contentSize.width/4, 0)];
-}
 // ios iphone notification
 - (void)chatViewNoti:(NSNotification*)noti
 {
@@ -389,7 +388,7 @@
             if (isRightTran) {
                 self.videosScrollView.frame = CGRectMake(self.videosScrollView.frame.origin.x, self.view.bounds.size.height - 200, self.view.bounds.size.width-TalkPannelWidth, VideoParViewHeight);
             }else{
-                self.videosScrollView.frame = CGRectMake(self.videosScrollView.frame.origin.x, self.view.bounds.size.height - 200, self.view.bounds.size.width, VideoParViewHeight);
+                self.videosScrollView.frame = CGRectMake(0, self.view.bounds.size.height - 200, self.view.bounds.size.width, VideoParViewHeight);
             }
         }];
         if (_peerSelectedId) {
@@ -414,7 +413,7 @@
             if (isRightTran) {
                 self.videosScrollView.frame = CGRectMake(self.videosScrollView.frame.origin.x, self.view.bounds.size.height - 300, self.view.bounds.size.width-TalkPannelWidth, VideoParViewHeight);
             }else{
-                self.videosScrollView.frame = CGRectMake(self.videosScrollView.frame.origin.x, self.view.bounds.size.height - 300, self.view.bounds.size.width, VideoParViewHeight);
+                self.videosScrollView.frame = CGRectMake(0, self.view.bounds.size.height - 300, self.view.bounds.size.width, VideoParViewHeight);
             }
         }];
         if (_peerSelectedId) {

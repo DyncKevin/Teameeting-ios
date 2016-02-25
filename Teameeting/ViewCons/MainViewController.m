@@ -262,20 +262,13 @@ static NSString *kRoomCellID = @"RoomCell";
                 }
             }else{
                 [self.videoViewController dismissMyself];
-                [self gotoVideoWithNotification:not];
-                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                    if (not.notificationType == NotificationMessageType) {
-                        [self.videoViewController openOrCloseTalk:YES];
-                    }
+                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                     [self gotoVideoWithNotification:not];
                 });
+               
             }
         }else{
             [self gotoVideoWithNotification:not];
-            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                if (not.notificationType == NotificationMessageType) {
-                    [self.videoViewController openOrCloseTalk:YES];
-                }
-            });
            
         }
     }else{
@@ -290,24 +283,32 @@ static NSString *kRoomCellID = @"RoomCell";
             item = roomItem;
         }
     }
-    self.videoViewController = [[VideoViewController alloc] init];
-    self.videoViewController.roomItem = item;
-    __weak MainViewController *weakSelf = self;
-    [self.videoViewController setDismissVideoViewController:^{
-        weakSelf.videoViewController = nil;
-    }];
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        UINavigationController *nai = [[UINavigationController alloc] initWithRootViewController:self.videoViewController];
-        [self presentViewController:nai animated:YES completion:^{
-            [ServerVisit updateUserMeetingJointimeWithSign:[ServerVisit shead].authorization meetingID:item.roomID completion:^(AFHTTPRequestOperation *operation, id responseData, NSError *error) {
-                NSDictionary *dict = (NSDictionary*)responseData;
-                item.jointime = [[dict objectForKey:@"jointime"] longValue];
-                [weakSelf updataMeetingTime:item];
-            }];
+    if (item) {
+        self.videoViewController = [[VideoViewController alloc] init];
+        self.videoViewController.roomItem = item;
+        __weak MainViewController *weakSelf = self;
+        [self.videoViewController setDismissVideoViewController:^{
+            weakSelf.videoViewController = nil;
         }];
-        [ToolUtils shead].notificationObject = nil;
-    });
-   
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            UINavigationController *nai = [[UINavigationController alloc] initWithRootViewController:self.videoViewController];
+            [self presentViewController:nai animated:YES completion:^{
+                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                    if (obj.notificationType == NotificationMessageType) {
+                        [weakSelf.videoViewController openOrCloseTalk:YES];
+                    }
+                });
+                
+                [ServerVisit updateUserMeetingJointimeWithSign:[ServerVisit shead].authorization meetingID:item.roomID completion:^(AFHTTPRequestOperation *operation, id responseData, NSError *error) {
+                    NSDictionary *dict = (NSDictionary*)responseData;
+                    item.jointime = [[dict objectForKey:@"jointime"] longValue];
+                    [weakSelf updataMeetingTime:item];
+                }];
+            }];
+            [ToolUtils shead].notificationObject = nil;
+        });
+    }
+
 }
 
 #pragma mark -private methods
@@ -419,11 +420,6 @@ static NSString *kRoomCellID = @"RoomCell";
                 }
                 if ([ToolUtils shead].notificationObject != nil) {
                     [weakSelf gotoVideoWithNotification:[ToolUtils shead].notificationObject];
-                    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                        if ([ToolUtils shead].notificationObject.notificationType == NotificationMessageType) {
-                            [weakSelf.videoViewController openOrCloseTalk:YES];
-                        }
-                    });
                 }
                 // get not read message num
                 [weakSelf getNotReadMessageNum];
@@ -685,8 +681,6 @@ static NSString *kRoomCellID = @"RoomCell";
                     if (weakSelf.dataArray.count>20) {
                         [weakSelf deleteRoomWithItem:[dataArray lastObject] withIndex:(dataArray.count -1)];
                     }
-                    //this TMCMD_CREATE has deprecated
-                    //[[TMMessageManage sharedManager] tmRoomCmd:TMCMD_CREATE Userid:nil pass:[ServerVisit shead].authorization roomid:[NSString stringWithFormat:@"%@",[[dict objectForKey:@"meetingInfo"] objectForKey:@"meetingid"]] remain:@""];
                 }
             }
             
