@@ -66,11 +66,7 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidBecomeActiveNotification object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"FULLSCREEN" object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"TALKCHAT_NOTIFICATION" object:nil];
-    
-    if (_audioManager) {
-        _audioManager = nil;
-    }
-    
+
     if (_dicRemoteVideoView) {
         _dicRemoteVideoView = nil;
     }
@@ -91,6 +87,9 @@
 - (void)viewDidDisappear:(BOOL)animated
 {
     [super viewDidDisappear:animated];
+    if (_audioManager) {
+        _audioManager = nil;
+    }
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -103,13 +102,14 @@
     
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor clearColor];
-    self.videosScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, self.view.bounds.size.height - 390, self.view.bounds.size.width, VideoParViewHeight)];
+    self.videosScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, self.view.bounds.size.height - 100 - VideoParViewHeight, self.view.bounds.size.width, VideoParViewHeight)];
     self.videosScrollView.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleWidth;
     self.videosScrollView.bounces = YES;
     self.videosScrollView.indicatorStyle = UIScrollViewIndicatorStyleWhite;
     [self.videosScrollView setUserInteractionEnabled:YES];
     [self.videosScrollView setHidden:NO];
-    [self.videosScrollView setScrollEnabled:NO];
+    self.videosScrollView.alwaysBounceVertical = NO;
+//    [self.videosScrollView setScrollEnabled:NO];
     self.videosScrollView.backgroundColor = [UIColor clearColor];
     _peerSelectedId = nil;
     _userArray = [[NSMutableArray alloc] initWithCapacity:5];
@@ -125,13 +125,14 @@
     UIView *local = [[UIView alloc] initWithFrame:self.view.frame];
     _client.delegate = self;
     _client.localView = local;
+    _localVideoView.showVideoView = local;
     
     UITapGestureRecognizer *singleTapGestureRecognizer = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(locolvideoSingleTap:)];
     singleTapGestureRecognizer.delegate = self;
     [singleTapGestureRecognizer setNumberOfTapsRequired:1];
-    [local addGestureRecognizer:singleTapGestureRecognizer];
-    [self.view addSubview:local];
-    _localVideoView.showVideoView = local;
+    [_localVideoView.showVideoView addGestureRecognizer:singleTapGestureRecognizer];
+    [self.view addSubview:_localVideoView.showVideoView];
+ 
     
     [self.view addSubview:self.videosScrollView];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationWillResignActive) name:UIApplicationWillResignActiveNotification object:nil];
@@ -261,7 +262,7 @@
     }else{
         [UIView animateWithDuration:0.2 animations:^{
             
-            self.videosScrollView.frame = CGRectMake(self.videosScrollView.frame.origin.x, self.view.bounds.size.height - 300, self.view.bounds.size.width, VideoParViewHeight);
+            self.videosScrollView.frame = CGRectMake(self.videosScrollView.frame.origin.x, self.view.bounds.size.height - 100 - VideoParViewHeight, self.view.bounds.size.width, VideoParViewHeight);
         }];
     }
 }
@@ -275,7 +276,7 @@
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch {
     
     Class class = NSClassFromString(@"GLKView");
-    if ([touch.view isKindOfClass:class] && CGRectGetWidth(touch.view.frame) < self.view.bounds.size.width/2){
+    if ([touch.view isKindOfClass:class] && CGRectGetWidth(touch.view.frame) < self.view.bounds.size.width){
         
         return YES;
         
@@ -346,15 +347,19 @@
         isRightTran = YES;
         [UIView animateWithDuration:.2 animations:^{
             self.videosScrollView.frame = CGRectMake(self.videosScrollView.frame.origin.x+TalkPannelWidth, self.videosScrollView.frame.origin.y, self.videosScrollView.frame.size.width-TalkPannelWidth, VideoParViewHeight);
+             self.videosScrollView.contentOffset = CGPointMake(0, 0);
             [self layoutSubView];
         }completion:^(BOOL finished) {
+//           [self layoutSubView];
         }];
     }else{
         isRightTran = NO;
         [UIView animateWithDuration:.2 animations:^{
             self.videosScrollView.frame = CGRectMake(self.videosScrollView.frame.origin.x-TalkPannelWidth, self.videosScrollView.frame.origin.y, self.videosScrollView.frame.size.width+TalkPannelWidth, VideoParViewHeight);
+             self.videosScrollView.contentOffset = CGPointZero;
             [self layoutSubView];
         }completion:^(BOOL finished) {
+//            [self layoutSubView];
         }];
     }
    
@@ -386,9 +391,9 @@
     if (self.isFullScreen) {
         [UIView animateWithDuration:.2 animations:^{
             if (isRightTran) {
-                self.videosScrollView.frame = CGRectMake(self.videosScrollView.frame.origin.x, self.view.bounds.size.height - 200, self.view.bounds.size.width-TalkPannelWidth, VideoParViewHeight);
+                self.videosScrollView.frame = CGRectMake(self.videosScrollView.frame.origin.x, self.view.bounds.size.height - VideoParViewHeight, self.view.bounds.size.width-TalkPannelWidth, VideoParViewHeight);
             }else{
-                self.videosScrollView.frame = CGRectMake(0, self.view.bounds.size.height - 200, self.view.bounds.size.width, VideoParViewHeight);
+                self.videosScrollView.frame = CGRectMake(0, self.view.bounds.size.height - VideoParViewHeight, self.view.bounds.size.width, VideoParViewHeight);
             }
         }];
         if (_peerSelectedId) {
@@ -411,9 +416,9 @@
     }else {
         [UIView animateWithDuration:.2 animations:^{
             if (isRightTran) {
-                self.videosScrollView.frame = CGRectMake(self.videosScrollView.frame.origin.x, self.view.bounds.size.height - 300, self.view.bounds.size.width-TalkPannelWidth, VideoParViewHeight);
+                self.videosScrollView.frame = CGRectMake(self.videosScrollView.frame.origin.x, self.view.bounds.size.height - 100 - VideoParViewHeight, self.view.bounds.size.width-TalkPannelWidth, VideoParViewHeight);
             }else{
-                self.videosScrollView.frame = CGRectMake(0, self.view.bounds.size.height - 300, self.view.bounds.size.width, VideoParViewHeight);
+                self.videosScrollView.frame = CGRectMake(0, self.view.bounds.size.height - 100 - VideoParViewHeight, self.view.bounds.size.width, VideoParViewHeight);
             }
         }];
         if (_peerSelectedId) {
@@ -452,75 +457,63 @@
             view.showVideoView.center = CGPointMake(self.view.bounds.size.width/2,self.view.bounds.size.height/2);
             
         }else{
-            view.showVideoView.frame = CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height);;
+            return;
         }
-        
-        [view.showVideoView removeFromSuperview];
-        [self.view addSubview:view.showVideoView];
-        [self.view sendSubviewToBack:view.showVideoView];
-        
-       
-        CGFloat scalelocal;
-         
-         if (_localVideoSize.width>0 && _localVideoSize.height>0) {
-             scalelocal = _localVideoSize.width/_localVideoSize.height;
-         }else{
-             return;
-         }
-         
-        CGFloat localViewwidth =0.0;
-        CGFloat localViewheight =0.0;
-        
-        CGFloat remoteViewHeight = 0.0;
-        CGFloat remoteViewWidth = 0.0;
-        
-        if (ISIPAD) {
-            
-            localViewwidth = 140;
-            localViewheight = localViewwidth/scalelocal;
-            remoteViewWidth = 140;
-            if ((_dicRemoteVideoView.count+1)*140>self.videosScrollView.bounds.size.width) {
-                self.videosScrollView.contentSize = CGSizeMake((_dicRemoteVideoView.count)*140, CGRectGetHeight(self.videosScrollView.frame));
-            }else{
-                self.videosScrollView.contentSize = CGSizeZero;
-            }
+        if ([view.showVideoView.superview isKindOfClass:[self.videosScrollView class]]) {
+            [view.showVideoView removeFromSuperview];
+            [self.view addSubview:view.showVideoView];
+            [self.view sendSubviewToBack:view.showVideoView];
+        }else if([view.showVideoView.superview isKindOfClass:[self.view class]]){
+             [self.view sendSubviewToBack:view.showVideoView];
         }else{
-            localViewwidth = 90;
-            localViewheight = localViewwidth/scalelocal;
-            remoteViewWidth = 90;
-            if ((_dicRemoteVideoView.count+1)*90>self.videosScrollView.bounds.size.width) {
-                self.videosScrollView.contentSize = CGSizeMake((_dicRemoteVideoView.count)*90, CGRectGetHeight(self.videosScrollView.frame));
-            }else{
-                self.videosScrollView.contentSize = CGSizeZero;
-            }
+            [self.view addSubview:view.showVideoView];
+            [self.view sendSubviewToBack:view.showVideoView];
         }
         
-        CGFloat x = (self.videosScrollView.bounds.size.width - (_dicRemoteVideoView.count-1)*remoteViewWidth - localViewwidth)/2;
-        CGFloat y = self.videosScrollView.bounds.size.height - localViewheight - bottonSpace;
-        
-        if (_localVideoSize.width && _localVideoSize.height > 0 ) {
-            
-            _localVideoView.showVideoView.frame =  CGRectMake(0, 0, localViewwidth, localViewheight);
-            [_localVideoView.showVideoView removeFromSuperview];
-        }
         [self.videosScrollView.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
         
-        VideoShowItem* viewsmail = nil;
+        BOOL localHasSize = NO;
+        float sizeViewAllWidth = 0;
+        if (_localVideoSize.width>0 && _localVideoSize.height>0) {
+            if ([_localVideoView.showVideoView.superview isKindOfClass:[self.view class]]) {
+                [_localVideoView.showVideoView removeFromSuperview];
+            }
+            localHasSize = YES;
+        }
+        
+        CGFloat videoViewHeight = 0.0;
+        if (ISIPAD) {
+            videoViewHeight = self.view.bounds.size.height/4.5;
+        }else{
+            videoViewHeight = self.view.bounds.size.height/4;
+        }
+        CGFloat localViewWidth = 0.0;
+        CGFloat remoteViewWidth = 0.0;
+
+        float scaleHeight = [self getAllWidthWithHeight:videoViewHeight withAllHeight:&sizeViewAllWidth withLocal:YES];
+        videoViewHeight = scaleHeight;
+        if (localHasSize) {
+            localViewWidth = (_localVideoSize.width/_localVideoSize.height)*videoViewHeight;
+        }
+        
+        CGFloat x = (self.videosScrollView.bounds.size.width - (sizeViewAllWidth))/2;
+      
+        CGFloat y = self.videosScrollView.bounds.size.height - videoViewHeight;
+        
         for (id key in [_dicRemoteVideoView allKeys]) {
             if (![key isEqualToString:_peerSelectedId]) {
-                viewsmail = [_dicRemoteVideoView objectForKey:key];
+                VideoShowItem * viewsmail = [_dicRemoteVideoView objectForKey:key];
                 if (viewsmail.videoSize.width>0&& viewsmail.videoSize.height>0) {
-                    CGFloat scale = viewsmail.videoSize.width/viewsmail.videoSize.height;
-                    remoteViewHeight = remoteViewWidth/scale;
+                   remoteViewWidth = (viewsmail.videoSize.width/viewsmail.videoSize.height)*videoViewHeight;
+                   viewsmail.showVideoView.frame = CGRectMake(x,y, remoteViewWidth, videoViewHeight);
+                    [self.videosScrollView addSubview:viewsmail.showVideoView];
+                    x = x+remoteViewWidth;
                 }
-                viewsmail.showVideoView.frame = CGRectMake(x, self.videosScrollView.bounds.size.height - remoteViewHeight - bottonSpace, remoteViewWidth, remoteViewHeight);
-                x+=remoteViewWidth;
-                [self.videosScrollView addSubview:viewsmail.showVideoView];
             }
         }
-        _localVideoView.showVideoView.frame = CGRectMake(x, y, localViewwidth, localViewheight);
+        _localVideoView.showVideoView.frame = CGRectMake(x, y, localViewWidth, videoViewHeight);
         [self.videosScrollView addSubview:_localVideoView.showVideoView];
-        
+  
     } else {
         
         if (_dicRemoteVideoView.count==0) {
@@ -561,42 +554,62 @@
         [self.view sendSubviewToBack:_localVideoView.showVideoView];
     
         
-        CGFloat remoteViewHeight = 0.0;
+        float sizeViewAllWidth = 0;
+        CGFloat videoViewHeight = 0.0;
+        if (ISIPAD) {
+            videoViewHeight = self.view.bounds.size.height/4.5;
+        }else{
+            videoViewHeight = self.view.bounds.size.height/4;
+        }
         CGFloat remoteViewWidth = 0.0;
         
-        if (ISIPAD) {
-            remoteViewWidth = 140;
-            if ((_dicRemoteVideoView.count+1)*140>self.videosScrollView.bounds.size.width) {
-                self.videosScrollView.contentSize = CGSizeMake((_dicRemoteVideoView.count)*140, CGRectGetHeight(self.videosScrollView.frame));
-            }else{
-                self.videosScrollView.contentSize = CGSizeZero;
-            }
-        }else{
-            remoteViewWidth = 90;
-            if ((_dicRemoteVideoView.count+1)*90>self.videosScrollView.bounds.size.width) {
-                self.videosScrollView.contentSize = CGSizeMake((_dicRemoteVideoView.count)*90, CGRectGetHeight(self.videosScrollView.frame));
-            }else{
-                self.videosScrollView.contentSize = CGSizeZero;
-            }
-        }
+        float scaleHeight = [self getAllWidthWithHeight:videoViewHeight withAllHeight:&sizeViewAllWidth withLocal:NO];
+        videoViewHeight = scaleHeight;
         
-        CGFloat x = (self.videosScrollView.bounds.size.width - _dicRemoteVideoView.count*remoteViewWidth)/2;
+        CGFloat x = (self.videosScrollView.bounds.size.width - sizeViewAllWidth)/2;
+     
+        CGFloat y = self.videosScrollView.bounds.size.height - videoViewHeight;
         
-        VideoShowItem* viewsmail = nil;
         for (id key in [_dicRemoteVideoView allKeys]) {
-            viewsmail = [_dicRemoteVideoView objectForKey:key];
-            if (viewsmail.videoSize.width>0&& viewsmail.videoSize.height>0) {
-                CGFloat scale = viewsmail.videoSize.width/viewsmail.videoSize.height;
-                remoteViewHeight = remoteViewWidth/scale;
+            if (![key isEqualToString:_peerSelectedId]) {
+                VideoShowItem * viewsmail = [_dicRemoteVideoView objectForKey:key];
+                if (viewsmail.videoSize.width>0&& viewsmail.videoSize.height>0) {
+                    remoteViewWidth = (viewsmail.videoSize.width/viewsmail.videoSize.height)*videoViewHeight;
+                    viewsmail.showVideoView.frame = CGRectMake(x,y, remoteViewWidth, videoViewHeight);
+                    [self.videosScrollView addSubview:viewsmail.showVideoView];
+                    x = x+remoteViewWidth;
+                }
             }
-            if ([viewsmail.showVideoView.superview isKindOfClass:[self.view class]]) {
-                [viewsmail.showVideoView removeFromSuperview];
-            }
-            viewsmail.showVideoView.frame = CGRectMake(x, self.videosScrollView.bounds.size.height - remoteViewHeight - bottonSpace, remoteViewWidth, remoteViewHeight);
-            x+=remoteViewWidth;
-            [self.videosScrollView addSubview:viewsmail.showVideoView];
         }
     }
+}
+- (float)getAllWidthWithHeight:(float)height withAllHeight:(float*)allWidth withLocal:(BOOL)hasLocal{
+    float width = 0.0f;
+    float videowidth = 0.0f;
+    for (id key in [_dicRemoteVideoView allKeys]) {
+        if (![key isEqualToString:_peerSelectedId]) {
+            VideoShowItem * viewsmail = [_dicRemoteVideoView objectForKey:key];
+            if (viewsmail.videoSize.width>0&& viewsmail.videoSize.height>0) {
+               videowidth = (viewsmail.videoSize.width/viewsmail.videoSize.height)*height;
+            }
+            viewsmail.showVideoView.frame = CGRectMake(0,0, videowidth, height);
+            width += videowidth;
+        }
+    }
+    float localWidth = 0.0;
+    if (hasLocal) {
+        if (_localVideoSize.width>0 && _localVideoSize.height>0) {
+            localWidth = (_localVideoSize.width/_localVideoSize.height)*height;
+        }
+    }
+  
+    *allWidth = width+localWidth;
+    
+    if ((width + localWidth)>self.videosScrollView.bounds.size.width) {
+        height-=20;
+        return [self getAllWidthWithHeight:height withAllHeight:allWidth withLocal:hasLocal];
+    }
+    return height;
 }
 
 #pragma mark -  UITapGestureRecognizer
@@ -696,12 +709,17 @@
 - (void) OnRtcVideoView:(UIView*)videoView didChangeVideoSize:(CGSize)size {
     
     if (videoView == _localVideoView.showVideoView) {
+        _localVideoView.videoSize = size;
         _localVideoSize = size;
     }else{
+        NSLog(@"didChangeVideoSize:%f  %f",size.width,size.height);
         for (NSString *strTag in [_dicRemoteVideoView allKeys]) {
            VideoShowItem *remoteView = (VideoShowItem*)[_dicRemoteVideoView objectForKey:strTag];
             if (remoteView.showVideoView == videoView) {
                 remoteView.videoSize = size;
+                // setting
+                [self settingMediaToViewOperate:remoteView];
+                 [self layoutSubView];
                 break;
             }
         }
@@ -716,6 +734,7 @@
  *  @param peerChannelID  该通道标识符
  */
 - (void) OnRtcInRemoveView:(UIView *)removeView  withChannelID:(NSString *)peerChannelID withPublishID:(NSString *)publishID{
+
     if (!ISIPAD) {
         if (![_audioManager _isSpeakerOn]) {
             [_audioManager setSpeakerOn];
@@ -731,11 +750,6 @@
         _client.selectedTag = peerChannelID;
     }
     
-    UITapGestureRecognizer *singleTapGestureRecognizer = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(singleTap:)];
-    [singleTapGestureRecognizer setNumberOfTapsRequired:1];
-    singleTapGestureRecognizer.delegate = self;
-    [removeView addGestureRecognizer:singleTapGestureRecognizer];
-    [self.view addSubview:removeView];
     VideoShowItem *item = [[VideoShowItem alloc] init];
     item.selectedTag = peerChannelID;
     item.showVideoView = removeView;
@@ -743,14 +757,17 @@
     
     [_dicRemoteVideoView setObject:item forKey:peerChannelID];
     
+    UITapGestureRecognizer *singleTapGestureRecognizer = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(singleTap:)];
+    [singleTapGestureRecognizer setNumberOfTapsRequired:1];
+    singleTapGestureRecognizer.delegate = self;
+    [item.showVideoView  addGestureRecognizer:singleTapGestureRecognizer];
+
+    
     [self layoutSubView];
     //While the number of remote image change, send a notification
     NSNumber *remoteVideoCount = [NSNumber numberWithInteger:[_dicRemoteVideoView count]];
     [[NSNotificationCenter defaultCenter] postNotificationName:@"REMOTEVIDEOCHANGE" object:remoteVideoCount];
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        // setting
-        [self settingMediaToViewOperate:item];
-    });
+
    
     
 }

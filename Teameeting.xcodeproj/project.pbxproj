@@ -1398,6 +1398,7 @@
 				TargetAttributes = {
 					783701301C43DDFB006C80DE = {
 						CreatedOnToolsVersion = 7.2;
+						DevelopmentTeam = 5543CP4MRT;
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
 								enabled = 1;
@@ -1838,8 +1839,8 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_ENTITLEMENTS = "";
-				CODE_SIGN_IDENTITY = "iPhone Developer: yangyang wang (3VG6DLPKJ2)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: yangyang wang (3VG6DLPKJ2)";
+				CODE_SIGN_IDENTITY = "iPhone Developer: xiaochuan zhou (63ZHPEL54J)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: xiaochuan zhou (63ZHPEL54J)";
 				ENABLE_BITCODE = NO;
 				GCC_PREFIX_HEADER = "$(SRCROOT)/Teameeting-Prefix.pch";
 				INFOPLIST_FILE = Teameeting/Info.plist;
@@ -1882,7 +1883,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.dync.teameeting;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "7d32f09c-b6f0-422a-a8bf-8203617a9a56";
+				PROVISIONING_PROFILE = "f076ca58-afc7-4641-845c-bb68f67308ad";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -1894,8 +1895,8 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_ENTITLEMENTS = "";
-				CODE_SIGN_IDENTITY = "iPhone Distribution: AVCON Information Technology Co., Ltd.";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: AVCON Information Technology Co., Ltd.";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Shanghai Boyuan Electronic Technology Co. Ltd (5543CP4MRT)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Shanghai Boyuan Electronic Technology Co. Ltd (5543CP4MRT)";
 				ENABLE_BITCODE = NO;
 				GCC_PREFIX_HEADER = "$(SRCROOT)/Teameeting-Prefix.pch";
 				INFOPLIST_FILE = Teameeting/Info.plist;
@@ -1938,7 +1939,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.dync.teameeting;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "326a786e-bfa0-4b80-9f8b-1c5309d941c4";
+				PROVISIONING_PROFILE = "1893e366-80fb-4fd0-9b87-fb65233bf578";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;

@@ -101,7 +101,8 @@
     self.callViewCon = [[ReceiveCallViewController alloc] init];
     self.callViewCon.roomItem = self.roomItem;
     self.menuView = [[LockerView alloc] initWithFrame:CGRectMake(0, self.view.bounds.size.height - 60, 300, 60)];
-    [self.menuView setCenter:CGPointMake(self.view.bounds.size.width/2, self.menuView.center.y)];
+    self.menuView.backgroundColor = [UIColor clearColor];
+    [self.menuView setCenter:CGPointMake(self.view.bounds.size.width/2, self.view.bounds.size.height - self.menuView.bounds.size.height)];
     self.menuView.delegate = self;
     
     tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapEvent:)];
@@ -151,6 +152,9 @@
 {
     [super viewDidLayoutSubviews];
     CGFloat rootViewWidth = TalkPannelWidth;//isVertical == YES ? (self.view.bounds.size.width/2 - 50) : (self.view.bounds.size.width/2 - 150);
+    if (!self.rootView) {
+        return;
+    }
     if (ISIPAD) {
         if (self.rootView.view.frame.origin.x < 0) {
             
@@ -174,11 +178,8 @@
             [self.noUserTip setCenter:CGPointMake(self.view.bounds.size.width/2, self.isFullScreen == YES ? (self.view.bounds.size.height + self.noUserTip.bounds.size.height) : (CGRectGetMinY(self.menuView.frame) - self.noUserTip.bounds.size.height/2))];
             [self.rootView.view setFrame:self.view.bounds];
         }
-        
-//        [self.rootView resetInputFrame:CGRectMake(0, self.view.bounds.size.height - 40, self.view.bounds.size.width, 40)];
        
     }
-//    [self.rootView resetInputFrame:CGRectMake(0, self.view.bounds.size.height - 40, self.view.bounds.size.width, 40)];
     if (self.view.bounds.size.width>self.view.bounds.size.height) {
     
         if (!self.isFullScreen) {
