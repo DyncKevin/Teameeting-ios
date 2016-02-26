@@ -29,6 +29,7 @@
     if (self = [super init]) {
         if (params) {
             self.roomID = [params valueForKey:@"meetingid"];
+            self.anyRtcID = [params valueForKey:@"anyrtcid"];
             self.roomName = [params valueForKey:@"meetname"];
             self.canNotification = [[params valueForKey:@"pushable"] stringValue];
             self.jointime = [[params valueForKey:@"jointime"] longValue];

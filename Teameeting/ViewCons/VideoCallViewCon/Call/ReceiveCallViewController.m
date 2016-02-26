@@ -7,7 +7,8 @@
 //
 
 #import "ReceiveCallViewController.h"
-#import "AnyrtcM2Mutlier.h"
+//#import "AnyrtcM2Mutlier.h"
+#import "AnyrtcMeet.h"
 #import "AvcAudioRouteMgr.h"
 #import <AVFoundation/AVFoundation.h>
 #import "ASHUD.h"
@@ -17,7 +18,7 @@
 #import "ToolUtils.h"
 
 #define bottonSpace 10
-@interface ReceiveCallViewController ()<AnyrtcM2MDelegate,UIGestureRecognizerDelegate,tmMessageReceive>
+@interface ReceiveCallViewController ()<AnyrtcMeetDelegate,UIGestureRecognizerDelegate,tmMessageReceive>
 {
     AvcAudioRouteMgr *_audioManager;
     VideoShowItem *_localVideoView;
@@ -46,7 +47,7 @@
 @property (nonatomic, strong) NSMutableArray *_userArray;
 @property (nonatomic, strong) NSMutableArray *_channelArray;
 
-@property(nonatomic, strong) AnyrtcM2Mutlier *_client;
+@property(nonatomic, strong) AnyrtcMeet *_client;
 @property(nonatomic, strong) UIScrollView *videosScrollView;
 @property(nonatomic, assign) BOOL isFullScreen;
 
@@ -118,8 +119,8 @@
     _audioOperateArray = [[NSMutableArray alloc] initWithCapacity:5];
     
     _dicRemoteVideoView = [[NSMutableDictionary alloc] initWithCapacity:5];
-    [AnyrtcM2Mutlier InitAnyRTC:@"mzw0001" andToken:@"defq34hj92mxxjhaxxgjfdqi1s332dd" andAESKey:@"d74TcmQDMB5nWx9zfJ5al7JdEg3XwySwCkhdB9lvnd1" andAppId:@"org.dync.app"];
-    _client = [[AnyrtcM2Mutlier alloc] init];
+    [AnyrtcMeet InitAnyRTC:@"mzw0001" andToken:@"defq34hj92mxxjhaxxgjfdqi1s332dd" andAESKey:@"d74TcmQDMB5nWx9zfJ5al7JdEg3XwySwCkhdB9lvnd1" andAppId:@"org.dync.app"];
+    _client = [[AnyrtcMeet alloc] init];
     _localVideoView = [[VideoShowItem alloc] init];
     [_localVideoView setFullScreen:NO];
     UIView *local = [[UIView alloc] initWithFrame:self.view.frame];
@@ -140,31 +141,33 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(fullSreenNoti:) name:@"FULLSCREEN" object:nil];
      [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(chatViewNoti:) name:@"TALKCHAT_NOTIFICATION" object:nil];
 
-    {//@Eric - Publish myself
-        PublishParams *pramas = [[PublishParams alloc]init];
-        [pramas setEnableVideo:true];
-        [pramas setEnableRecord:false];
-        [pramas setStreamType:kSTRtc];
-        [_client Publish:pramas];
-    }
+//    {//@Eric - Publish myself
+//        PublishParams *pramas = [[PublishParams alloc]init];
+//        [pramas setEnableVideo:true];
+//        [pramas setEnableRecord:false];
+//        [pramas setStreamType:kSTRtc];
+//        [_client Join:pramas];
+//    }
+     [_client Join:roomItem.anyRtcID];
+    
     if (!ISIPAD) {
          _audioManager = [[AvcAudioRouteMgr alloc] init];
     }
    
 }
 
-- (void)videoSubscribeWith:(NSString *)publishId action:(NSInteger)action {
-    
-    if (action == 4) {
-        
-        [_client Subscribe:publishId andEnableVideo:YES];
-        
-    } else {
-        
-        [_client UnSubscribe:publishId];
-    }
-    
-}
+//- (void)videoSubscribeWith:(NSString *)publishId action:(NSInteger)action {
+//    
+//    if (action == 4) {
+//        
+//        [_client Subscribe:publishId andEnableVideo:YES];
+//        
+//    } else {
+//        
+//        [_client UnSubscribe:publishId];
+//    }
+//    
+//}
 
 - (void)videoAudioSet:(NSString *)content action:(NSInteger)action
 {
@@ -329,6 +332,7 @@
     if (_client) {
         [_client CloseAll];
         [_client UnSubscribe:_localVideoView.publishID];
+         [_client Leave];
         [[TMMessageManage sharedManager] tmRoomCmd:MCMeetCmdLEAVE roomid:self.roomItem.roomID withRoomName:self.roomItem.roomName remain:@""];
         [[TMMessageManage sharedManager] removeMessageListener:self];
     }
@@ -763,7 +767,7 @@
     [item.showVideoView  addGestureRecognizer:singleTapGestureRecognizer];
 
     
-    [self layoutSubView];
+//    [self layoutSubView];
     //While the number of remote image change, send a notification
     NSNumber *remoteVideoCount = [NSNumber numberWithInteger:[_dicRemoteVideoView count]];
     [[NSNotificationCenter defaultCenter] postNotificationName:@"REMOTEVIDEOCHANGE" object:remoteVideoCount];

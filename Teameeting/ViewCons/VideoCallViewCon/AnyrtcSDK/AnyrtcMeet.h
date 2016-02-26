@@ -9,40 +9,26 @@
 #ifndef AnyrtcM2Mutlier_h
 #define AnyrtcM2Mutlier_h
 #import <UIKit/UIKit.h>
-#import "AnyrtcVideoCallView.h"
 #import "M2MPublisher.h"
 
-@protocol AnyrtcM2MDelegate <NSObject>
+@protocol AnyrtcMeetDelegate <NSObject>
 
-/** 发布成功
- * @param strPublishId	实时流的ID
- * @param strRtmpUrl	rtmp直播流的地址
- * @param strHlsUrl		hls直播流的地址
+/** 进会成功
+ * @param strAnyrtcId	AnyRTC的ID
  */
-- (void) OnRtcPublishOK:(NSString*)strPublishId withRtmpUrl:(NSString*)strRtmpUtl withHlsUrl:(NSString*)strHlsUrl;
-/** 发布失败
- * @param nCode		失败的代码
- * @param strErr	错误的具体原因
- */
-- (void) OnRtcPublishFailed:(int)code withErr:(NSString*)strErr;
-/** 发布通道关闭
- */
-- (void) OnRtcPublishClosed;
+- (void) OnRtcJoinMeetOK:(NSString*) strAnyrtcId;
 
-/** 订阅成功
- * @param strPublishId	订阅的通道ID
+/** 进会失败
+ * @param strAnyrtcId	AnyRTC的ID
+ * @param code	错误代码
+ * @param strReason		原因
  */
-- (void) OnRtcSubscribeOK:(NSString*)strPublishId;
-/** 订阅失败
- * @param strPublishId	订阅的通道ID
- * @param nCode			失败的代码
- * @param strErr		错误的具体原因
+- (void) OnRtcJoinMeetFailed:(NSString*) strAnyrtcId withCode:(int) code withReason:(NSString*) strReason;
+
+/** 离开会议
+ *
  */
-- (void) OnRtcSubscribeFailed:(NSString*)strPublishId withCode:(int)code withErr:(NSString*)strErr;
-/** 订阅通道关闭
- * @param strPublishId	订阅的通道ID
- */
-- (void) OnRtcSubscribeClosed:(NSString*)strPublishId;
+- (void) OnRtcLeaveMeet;
 /** 视频大小
  * @param strPublishId	订阅的通道ID
  */
@@ -63,7 +49,7 @@
 - (void)OnRtcLeaveRemoveView:(UIView *)removeView  withChannelID:(NSString *)peerChannelID;
 @end
 
-@interface AnyrtcM2Mutlier : NSObject {
+@interface AnyrtcMeet : NSObject {
     
 }
 
@@ -71,11 +57,13 @@
 
 @property (nonatomic, strong) NSString *selectedTag;//大视图的tag 本地localView为大视图的时候请设置为nil
 
-@property (nonatomic, weak) id<AnyrtcM2MDelegate> delegate;
+@property (nonatomic, weak) id<AnyrtcMeetDelegate> delegate;
 
 + (void) InitAnyRTC:(NSString*)strDeveloperId andToken:(NSString*)strToken andAESKey:(NSString*)strAESKey andAppId:(NSString*)strAppId;
 
-- (BOOL) Publish:(PublishParams*)params;
+- (BOOL) Join:(NSString*)strAnyrtcId;
+- (void) Leave;
+
 - (void) UnPublish;
 
 - (BOOL) Subscribe:(NSString*)strPublishId andEnableVideo:(BOOL)enabelVideo;

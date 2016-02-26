@@ -12,6 +12,7 @@
 		780455C31C51E736003ADDCC /* no_video_show@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 780455C11C51E736003ADDCC /* no_video_show@3x.png */; };
 		780455C61C51FB11003ADDCC /* sharebackgroud@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 780455C41C51FB11003ADDCC /* sharebackgroud@2x.png */; };
 		780455C71C51FB11003ADDCC /* sharebackgroud@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 780455C51C51FB11003ADDCC /* sharebackgroud@3x.png */; };
+		7809A9DD1C805E9D00B7C0F6 /* libanrtcsdk.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7809A9DC1C805E9D00B7C0F6 /* libanrtcsdk.a */; };
 		7810288E1C48DA2200CD9FA6 /* ASBadgeView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7810288D1C48DA2200CD9FA6 /* ASBadgeView.m */; };
 		7810F7F01C5A073C00B77955 /* nick_close@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7810F7EE1C5A073C00B77955 /* nick_close@2x.png */; };
 		7810F7F11C5A073C00B77955 /* nick_close@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7810F7EF1C5A073C00B77955 /* nick_close@3x.png */; };
@@ -213,7 +214,6 @@
 		78FA86871C50731A00BAF72B /* VideoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 78FA86861C50731A00BAF72B /* VideoViewController.m */; };
 		EC157AD0B3A13035EAD046BB /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2E4CBCA8C81B4B1BFCC1872C /* libPods.a */; };
 		FC6A0F4A1C464B9400D8C56D /* TMessage.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = FC6A0F481C464B9400D8C56D /* TMessage.xcdatamodeld */; };
-		FCA4D5971C44F94D005CDF99 /* libanrtcsdk.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FCA4D5961C44F94D005CDF99 /* libanrtcsdk.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -241,6 +241,8 @@
 		780455C11C51E736003ADDCC /* no_video_show@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "no_video_show@3x.png"; sourceTree = "<group>"; };
 		780455C41C51FB11003ADDCC /* sharebackgroud@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "sharebackgroud@2x.png"; sourceTree = "<group>"; };
 		780455C51C51FB11003ADDCC /* sharebackgroud@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "sharebackgroud@3x.png"; sourceTree = "<group>"; };
+		7809A9D51C80549D00B7C0F6 /* AnyrtcMeet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AnyrtcMeet.h; sourceTree = "<group>"; };
+		7809A9DC1C805E9D00B7C0F6 /* libanrtcsdk.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libanrtcsdk.a; sourceTree = "<group>"; };
 		7810288C1C48DA2200CD9FA6 /* ASBadgeView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASBadgeView.h; sourceTree = "<group>"; };
 		7810288D1C48DA2200CD9FA6 /* ASBadgeView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ASBadgeView.m; sourceTree = "<group>"; };
 		7810F7EE1C5A073C00B77955 /* nick_close@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "nick_close@2x.png"; sourceTree = "<group>"; };
@@ -532,8 +534,6 @@
 		78FA86861C50731A00BAF72B /* VideoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VideoViewController.m; sourceTree = "<group>"; };
 		DFBC29C224EA228C97676A8B /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		FC6A0F491C464B9400D8C56D /* TMessage.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = TMessage.xcdatamodel; sourceTree = "<group>"; };
-		FCA4D5961C44F94D005CDF99 /* libanrtcsdk.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libanrtcsdk.a; sourceTree = "<group>"; };
-		FCBC48571C44A6B300A9A63F /* AnyrtcM2Mutlier.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AnyrtcM2Mutlier.h; sourceTree = "<group>"; };
 		FCBC485A1C44A6B300A9A63F /* M2MPublisher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = M2MPublisher.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -549,7 +549,7 @@
 				783703451C43E3E7006C80DE /* GLKit.framework in Frameworks */,
 				783703431C43E3DF006C80DE /* VideoToolbox.framework in Frameworks */,
 				783703411C43E3D6006C80DE /* CoreTelephony.framework in Frameworks */,
-				FCA4D5971C44F94D005CDF99 /* libanrtcsdk.a in Frameworks */,
+				7809A9DD1C805E9D00B7C0F6 /* libanrtcsdk.a in Frameworks */,
 				7837033F1C43E3CE006C80DE /* SystemConfiguration.framework in Frameworks */,
 				7837033D1C43E3C4006C80DE /* libsqlite3.0.tbd in Frameworks */,
 				7837033B1C43E3BE006C80DE /* Accelerate.framework in Frameworks */,
@@ -1321,8 +1321,8 @@
 		FCBC48561C44A6B300A9A63F /* AnyrtcSDK */ = {
 			isa = PBXGroup;
 			children = (
-				FCA4D5961C44F94D005CDF99 /* libanrtcsdk.a */,
-				FCBC48571C44A6B300A9A63F /* AnyrtcM2Mutlier.h */,
+				7809A9DC1C805E9D00B7C0F6 /* libanrtcsdk.a */,
+				7809A9D51C80549D00B7C0F6 /* AnyrtcMeet.h */,
 				FCBC485A1C44A6B300A9A63F /* M2MPublisher.h */,
 			);
 			path = AnyrtcSDK;
@@ -1854,6 +1854,7 @@
 					"$(PROJECT_DIR)/Teameeting/ViewCons/VideoCallViewCon/AnyrtcSDK",
 					"$(PROJECT_DIR)/Teameeting/Tool/JPush",
 				);
+				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -1910,6 +1911,7 @@
 					"$(PROJECT_DIR)/Teameeting/ViewCons/VideoCallViewCon/AnyrtcSDK",
 					"$(PROJECT_DIR)/Teameeting/Tool/JPush",
 				);
+				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
