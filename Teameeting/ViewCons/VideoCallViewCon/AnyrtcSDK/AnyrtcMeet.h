@@ -64,13 +64,6 @@
 - (BOOL) Join:(NSString*)strAnyrtcId;
 - (void) Leave;
 
-- (void) UnPublish;
-
-- (BOOL) Subscribe:(NSString*)strPublishId andEnableVideo:(BOOL)enabelVideo;
-- (void) UnSubscribe:(NSString*)strPublishId;
-
-- (void) CloseAll;
-
 - (void) setLocalAudioEnable:(BOOL)enable;
 - (void) setLocalVideoEnable:(BOOL)enable;
 - (void) switchCamera;

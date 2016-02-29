@@ -207,6 +207,7 @@
 		785643E71C50D3EC00836850 /* AnimatedTransitioning.m in Sources */ = {isa = PBXBuildFile; fileRef = 785643E41C50D3EC00836850 /* AnimatedTransitioning.m */; };
 		785643E81C50D3EC00836850 /* TransitionDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 785643E61C50D3EC00836850 /* TransitionDelegate.m */; };
 		7861D0291C4F8E7200B2F30D /* VideoShowItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 7861D0281C4F8E7200B2F30D /* VideoShowItem.m */; };
+		78C4824B1C8474C500D2DB8F /* AudioManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 78C4824A1C8474C500D2DB8F /* AudioManager.m */; };
 		78C5ECC61C4E447600193322 /* weixin@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 78C5ECC41C4E447600193322 /* weixin@2x.png */; };
 		78C5ECC71C4E447600193322 /* weixin@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 78C5ECC51C4E447600193322 /* weixin@3x.png */; };
 		78C5ECCA1C4E45B300193322 /* copy_scuess@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 78C5ECC81C4E45B300193322 /* copy_scuess@2x.png */; };
@@ -526,6 +527,8 @@
 		785643E61C50D3EC00836850 /* TransitionDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TransitionDelegate.m; sourceTree = "<group>"; };
 		7861D0271C4F8E7200B2F30D /* VideoShowItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VideoShowItem.h; sourceTree = "<group>"; };
 		7861D0281C4F8E7200B2F30D /* VideoShowItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VideoShowItem.m; sourceTree = "<group>"; };
+		78C482491C8474C500D2DB8F /* AudioManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AudioManager.h; sourceTree = "<group>"; };
+		78C4824A1C8474C500D2DB8F /* AudioManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AudioManager.m; sourceTree = "<group>"; };
 		78C5ECC41C4E447600193322 /* weixin@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "weixin@2x.png"; sourceTree = "<group>"; };
 		78C5ECC51C4E447600193322 /* weixin@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "weixin@3x.png"; sourceTree = "<group>"; };
 		78C5ECC81C4E45B300193322 /* copy_scuess@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "copy_scuess@2x.png"; sourceTree = "<group>"; };
@@ -926,6 +929,8 @@
 			children = (
 				783701FD1C43DF64006C80DE /* AvcAudioRouteMgr.h */,
 				783701FE1C43DF64006C80DE /* AvcAudioRouteMgr.m */,
+				78C482491C8474C500D2DB8F /* AudioManager.h */,
+				78C4824A1C8474C500D2DB8F /* AudioManager.m */,
 			);
 			path = SpeakerManager;
 			sourceTree = "<group>";
@@ -1672,6 +1677,7 @@
 				783702E91C43DF64006C80DE /* Message+CoreDataProperties.m in Sources */,
 				783702F11C43DF64006C80DE /* ToolUtils.m in Sources */,
 				783702FD1C43DF64006C80DE /* ReceiveCallViewController.m in Sources */,
+				78C4824B1C8474C500D2DB8F /* AudioManager.m in Sources */,
 				783702F01C43DF64006C80DE /* TimeManager.m in Sources */,
 				783702DD1C43DF64006C80DE /* UILabel+Category.m in Sources */,
 				785643E71C50D3EC00836850 /* AnimatedTransitioning.m in Sources */,
@@ -1839,8 +1845,8 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_ENTITLEMENTS = "";
-				CODE_SIGN_IDENTITY = "iPhone Developer: xiaochuan zhou (63ZHPEL54J)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: xiaochuan zhou (63ZHPEL54J)";
+				CODE_SIGN_IDENTITY = "iPhone Developer: yangyang wang (3VG6DLPKJ2)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: yangyang wang (3VG6DLPKJ2)";
 				ENABLE_BITCODE = NO;
 				GCC_PREFIX_HEADER = "$(SRCROOT)/Teameeting-Prefix.pch";
 				INFOPLIST_FILE = Teameeting/Info.plist;
@@ -1884,7 +1890,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.dync.teameeting;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "f076ca58-afc7-4641-845c-bb68f67308ad";
+				PROVISIONING_PROFILE = "b81a1991-c1a1-4f23-9b06-a241a4eff599";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -1941,7 +1947,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.dync.teameeting;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "1893e366-80fb-4fd0-9b87-fb65233bf578";
+				PROVISIONING_PROFILE = "4a7d2db1-4e0a-411f-aa3b-eda43e5d340e";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;

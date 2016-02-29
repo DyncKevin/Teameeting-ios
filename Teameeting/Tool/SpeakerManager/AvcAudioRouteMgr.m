@@ -24,18 +24,18 @@
 {
     self = [super init];
     if (self) {
-        _isSpeakerOn = NO;
+        _isSpeakerOn = YES;
         // Set audio propety.
         AVAudioSession *audioSession = [AVAudioSession sharedInstance];
         NSError *audioSessionError;
-        [audioSession setCategory:AVAudioSessionCategoryPlayAndRecord error:&audioSessionError];
+        [audioSession setCategory:AVAudioSessionCategoryPlayback error:&audioSessionError];
         
         [[AVAudioSession sharedInstance] setActive:YES error:nil];
         
         [[NSNotificationCenter defaultCenter] addObserver: self
                                                  selector: @selector(routeChanged:)
                                                      name: AVAudioSessionRouteChangeNotification
-                                                   object: nil];
+                                                   object: [AVAudioSession sharedInstance]];
         
     }
     
@@ -44,7 +44,7 @@
 
 - (void) dealloc
 {
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:AVAudioSessionRouteChangeNotification object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:AVAudioSessionRouteChangeNotification object:[AVAudioSession sharedInstance]];
 }
 
 - (void)setSpeakerOn
@@ -145,11 +145,11 @@
     else if ([output.portType isEqualToString:AVAudioSessionPortBuiltInReceiver]) {
         NSLog(@"] Audio Route: Output Port: BuiltInReceiver");
         // 打开扬声器
-        [self setSpeakerOn];
+       // [self setSpeakerOn];
     }
     else if ([output.portType isEqualToString:AVAudioSessionPortBuiltInSpeaker]) {
         NSLog(@"] Audio Route: Output Port: BuiltInSpeaker");
-         [self setSpeakerOn];
+        // [self setSpeakerOn];
     }
     else if ([output.portType isEqualToString:AVAudioSessionPortHDMI]) {
         NSLog(@"] Audio Route: Output Port: HDMI");

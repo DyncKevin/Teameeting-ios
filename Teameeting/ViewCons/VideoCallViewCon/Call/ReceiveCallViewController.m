@@ -7,20 +7,19 @@
 //
 
 #import "ReceiveCallViewController.h"
-//#import "AnyrtcM2Mutlier.h"
 #import "AnyrtcMeet.h"
-#import "AvcAudioRouteMgr.h"
+#import "AudioManager.h"
+
 #import <AVFoundation/AVFoundation.h>
 #import "ASHUD.h"
 #import "TMMessageManage.h"
-//#import "VideoShowView.h"
 #import "VideoShowItem.h"
 #import "ToolUtils.h"
 
 #define bottonSpace 10
 @interface ReceiveCallViewController ()<AnyrtcMeetDelegate,UIGestureRecognizerDelegate,tmMessageReceive>
 {
-    AvcAudioRouteMgr *_audioManager;
+    AudioManager *_audioManager;
     VideoShowItem *_localVideoView;
     
     CGSize _localVideoSize;
@@ -89,6 +88,7 @@
 {
     [super viewDidDisappear:animated];
     if (_audioManager) {
+        [_audioManager openOrCloseProximityMonitorEnable:NO];
         _audioManager = nil;
     }
 }
@@ -141,19 +141,13 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(fullSreenNoti:) name:@"FULLSCREEN" object:nil];
      [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(chatViewNoti:) name:@"TALKCHAT_NOTIFICATION" object:nil];
 
-//    {//@Eric - Publish myself
-//        PublishParams *pramas = [[PublishParams alloc]init];
-//        [pramas setEnableVideo:true];
-//        [pramas setEnableRecord:false];
-//        [pramas setStreamType:kSTRtc];
-//        [_client Join:pramas];
-//    }
      [_client Join:roomItem.anyRtcID];
     
-    if (!ISIPAD) {
-         _audioManager = [[AvcAudioRouteMgr alloc] init];
-    }
-   
+//    if (!ISIPAD) {
+//         _audioManager = [[AvcAudioRouteMgr alloc] init];
+//    }
+    _audioManager = [[AudioManager alloc] init];
+    [_audioManager openOrCloseProximityMonitorEnable:YES];
 }
 
 //- (void)videoSubscribeWith:(NSString *)publishId action:(NSInteger)action {
@@ -330,9 +324,8 @@
 - (void)hangeUp      // hunge up
 {
     if (_client) {
-        [_client CloseAll];
-        [_client UnSubscribe:_localVideoView.publishID];
          [_client Leave];
+        _client.delegate = nil;
         [[TMMessageManage sharedManager] tmRoomCmd:MCMeetCmdLEAVE roomid:self.roomItem.roomID withRoomName:self.roomItem.roomName remain:@""];
         [[TMMessageManage sharedManager] removeMessageListener:self];
     }
@@ -654,7 +647,6 @@
     }else if (_exitRoomAlertView == alertView){
         if (buttonIndex == 1) {
             [ASHUD showHUDWithStayLoadingStyleInView:self.view belowView:nil content:@"正在退出。。。"];
-            [_client CloseAll];
         }
     }
     
@@ -711,7 +703,7 @@
 }
 
 - (void) OnRtcVideoView:(UIView*)videoView didChangeVideoSize:(CGSize)size {
-    
+    NSLog(@"-------%d",[NSThread isMainThread]);
     if (videoView == _localVideoView.showVideoView) {
         _localVideoView.videoSize = size;
         _localVideoSize = size;
@@ -723,7 +715,6 @@
                 remoteView.videoSize = size;
                 // setting
                 [self settingMediaToViewOperate:remoteView];
-                 [self layoutSubView];
                 break;
             }
         }
@@ -740,9 +731,10 @@
 - (void) OnRtcInRemoveView:(UIView *)removeView  withChannelID:(NSString *)peerChannelID withPublishID:(NSString *)publishID{
 
     if (!ISIPAD) {
-        if (![_audioManager _isSpeakerOn]) {
-            [_audioManager setSpeakerOn];
-        }
+//        if (![_audioManager _isSpeakerOn]) {
+//            [_audioManager setSpeakerOn];
+//        }
+       // [_audioManager setSpeakerOn];
     }
    
     VideoShowItem* findView = [_dicRemoteVideoView objectForKey:peerChannelID];
@@ -790,8 +782,10 @@
             [_dicRemoteVideoView removeObjectForKey:peerChannelID];
             if (_dicRemoteVideoView.count!=0) {
                 _peerSelectedId =[[_dicRemoteVideoView allKeys] firstObject];
+                _client.selectedTag = _peerSelectedId;
             }else{
                 _peerSelectedId = nil;
+                _client.selectedTag = nil;
             }
         }else{
             [findView.showVideoView removeFromSuperview];

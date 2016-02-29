@@ -198,7 +198,8 @@
                         item.mettingType = [[roomInfo objectForKey:@"meettype"] integerValue];
                         item.mettingState = [[roomInfo objectForKey:@"meetenable"] integerValue];
                         item.userID = [roomInfo objectForKey:@"userid"];
-                        item.canNotification = [[roomInfo objectForKey:@"pushable"] stringValue];
+                        item.canNotification = [NSString stringWithFormat:@"%@",[roomInfo objectForKey:@"pushable"]];
+                        item.anyRtcID = [NSString stringWithFormat:@"%@",[roomInfo objectForKey:@"anyrtcid"]];
                         [weakSelf enterMeeting:item];
                     }
                 }

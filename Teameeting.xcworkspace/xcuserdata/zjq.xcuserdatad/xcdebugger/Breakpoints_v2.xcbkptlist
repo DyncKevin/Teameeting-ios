@@ -72,11 +72,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Teameeting/ViewCons/VideoCallViewCon/Call/ReceiveCallViewController.m"
-            timestampString = "478176380.263926"
+            timestampString = "478443373.623973"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "263"
-            endingLineNumber = "263"
+            startingLineNumber = "257"
+            endingLineNumber = "257"
             landmarkName = "-chatViewNoti:"
             landmarkType = "5">
          </BreakpointContent>
@@ -88,11 +88,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Teameeting/ViewCons/VideoCallViewCon/Call/ReceiveCallViewController.m"
-            timestampString = "478176380.263926"
+            timestampString = "478443373.623973"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "268"
-            endingLineNumber = "268"
+            startingLineNumber = "262"
+            endingLineNumber = "262"
             landmarkName = "-chatViewNoti:"
             landmarkType = "5">
          </BreakpointContent>
@@ -120,11 +120,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Teameeting/ViewCons/VideoCallViewCon/Call/ReceiveCallViewController.m"
-            timestampString = "478186256.193257"
+            timestampString = "478443373.623973"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "573"
-            endingLineNumber = "573"
+            startingLineNumber = "566"
+            endingLineNumber = "566"
             landmarkName = "-layoutSubView"
             landmarkType = "5">
          </BreakpointContent>
@@ -136,107 +136,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Teameeting/ViewCons/VideoCallViewCon/Call/ReceiveCallViewController.m"
-            timestampString = "478186256.193257"
+            timestampString = "478443373.623973"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "786"
-            endingLineNumber = "786"
-            landmarkName = "-OnRtcLeaveRemoveView:withChannelID:"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Teameeting/ViewCons/VideoCallViewCon/Call/ReceiveCallViewController.m"
-            timestampString = "478186256.193257"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "759"
-            endingLineNumber = "759"
-            landmarkName = "-OnRtcInRemoveView:withChannelID:withPublishID:"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Teameeting/ViewCons/VideoCallViewCon/Call/ReceiveCallViewController.m"
-            timestampString = "478186256.193257"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "749"
-            endingLineNumber = "749"
-            landmarkName = "-OnRtcInRemoveView:withChannelID:withPublishID:"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Teameeting/ViewCons/VideoCallViewCon/Call/ReceiveCallViewController.m"
-            timestampString = "478183978.775994"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "151"
-            endingLineNumber = "151"
-            landmarkName = "-viewDidLoad"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Teameeting/ViewCons/VideoCallViewCon/Call/ReceiveCallViewController.m"
-            timestampString = "478186256.193257"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "719"
-            endingLineNumber = "719"
-            landmarkName = "-OnRtcVideoView:didChangeVideoSize:"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Teameeting/ViewCons/VideoCallViewCon/Call/ReceiveCallViewController.m"
-            timestampString = "478186256.193257"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "726"
-            endingLineNumber = "726"
-            landmarkName = "-OnRtcVideoView:didChangeVideoSize:"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Teameeting/ViewCons/VideoCallViewCon/Call/ReceiveCallViewController.m"
-            timestampString = "478186256.193257"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "464"
-            endingLineNumber = "464"
+            startingLineNumber = "457"
+            endingLineNumber = "457"
             landmarkName = "-layoutSubView"
             landmarkType = "5">
          </BreakpointContent>
@@ -247,13 +151,109 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Teameeting/ViewCons/VideoCallViewCon/Call/ReceiveCallViewController.m"
-            timestampString = "478186256.193257"
+            filePath = "Teameeting/ViewCons/MainViewController.m"
+            timestampString = "478431314.936664"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "446"
-            endingLineNumber = "446"
-            landmarkName = "-layoutSubView"
+            startingLineNumber = "889"
+            endingLineNumber = "889"
+            landmarkName = "-insertUserMeetingRoomWithID:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Teameeting/ViewCons/MainViewController.m"
+            timestampString = "478438303.938009"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "985"
+            endingLineNumber = "985"
+            landmarkName = "-addItemAndEnterMettingWithID:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Teameeting/ViewCons/MainViewController.m"
+            timestampString = "478438260.189163"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "955"
+            endingLineNumber = "955"
+            landmarkName = "-addItemAndEnterMettingWithID:"
+            landmarkType = "5">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "-[MainViewController addItemAndEnterMettingWithID:]"
+                  moduleName = "Teameeting"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/zjq/Documents/GitFinder/Teameeting-ios/Teameeting/ViewCons/MainViewController.m"
+                  timestampString = "478444706.654455"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "955"
+                  endingLineNumber = "955"
+                  offsetFromSymbolStart = "56">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "__51-[MainViewController addItemAndEnterMettingWithID:]_block_invoke"
+                  moduleName = "Teameeting"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/zjq/Documents/GitFinder/Teameeting-ios/Teameeting/ViewCons/MainViewController.m"
+                  timestampString = "478444706.654596"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "955"
+                  endingLineNumber = "955"
+                  offsetFromSymbolStart = "28">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Teameeting/ViewCons/InputViewController/EnterMeetingIDViewController.m"
+            timestampString = "478438294.863066"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "202"
+            endingLineNumber = "202"
+            landmarkName = "-enterButtonEvent:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Teameeting/Tool/SpeakerManager/AudioManager.m"
+            timestampString = "478444705.597939"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "71"
+            endingLineNumber = "71"
+            landmarkName = "-HasHeadsetMic"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
