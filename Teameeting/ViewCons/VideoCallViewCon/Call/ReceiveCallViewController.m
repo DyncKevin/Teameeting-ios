@@ -8,7 +8,6 @@
 
 #import "ReceiveCallViewController.h"
 #import "AnyrtcMeet.h"
-#import "AudioManager.h"
 
 #import <AVFoundation/AVFoundation.h>
 #import "ASHUD.h"
@@ -19,7 +18,6 @@
 #define bottonSpace 10
 @interface ReceiveCallViewController ()<AnyrtcMeetDelegate,UIGestureRecognizerDelegate,tmMessageReceive>
 {
-    AudioManager *_audioManager;
     VideoShowItem *_localVideoView;
     
     CGSize _localVideoSize;
@@ -33,9 +31,6 @@
     UIButton *_muteButton;
     UIButton *_cameraSwitchButton;
     BOOL videoEnable;
-    
-    UIAlertView *_exitErrorAlertView;   // 退出房间失败的问题
-    UIAlertView *_exitRoomAlertView;    // 退出房间
     
     BOOL isRightTran;
     
@@ -87,10 +82,6 @@
 - (void)viewDidDisappear:(BOOL)animated
 {
     [super viewDidDisappear:animated];
-    if (_audioManager) {
-        [_audioManager openOrCloseProximityMonitorEnable:NO];
-        _audioManager = nil;
-    }
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -142,26 +133,7 @@
      [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(chatViewNoti:) name:@"TALKCHAT_NOTIFICATION" object:nil];
 
      [_client Join:roomItem.anyRtcID];
-    
-//    if (!ISIPAD) {
-//         _audioManager = [[AvcAudioRouteMgr alloc] init];
-//    }
-    _audioManager = [[AudioManager alloc] init];
-    [_audioManager openOrCloseProximityMonitorEnable:YES];
 }
-
-//- (void)videoSubscribeWith:(NSString *)publishId action:(NSInteger)action {
-//    
-//    if (action == 4) {
-//        
-//        [_client Subscribe:publishId andEnableVideo:YES];
-//        
-//    } else {
-//        
-//        [_client UnSubscribe:publishId];
-//    }
-//    
-//}
 
 - (void)videoAudioSet:(NSString *)content action:(NSInteger)action
 {
@@ -329,10 +301,6 @@
         [[TMMessageManage sharedManager] tmRoomCmd:MCMeetCmdLEAVE roomid:self.roomItem.roomID withRoomName:self.roomItem.roomName remain:@""];
         [[TMMessageManage sharedManager] removeMessageListener:self];
     }
-    
-    return;
-    _exitRoomAlertView = [[UIAlertView alloc] initWithTitle:nil message:@"你确定要退出吗？" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
-    [_exitRoomAlertView show];
 }
 - (void)sendMessageWithCmmand:(NSString *)cmd userID:(NSString *)userid {
     
@@ -642,13 +610,6 @@
 #pragma mark -  UIAlertViewDelegate
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
-    if (_exitErrorAlertView == alertView) {
-//        [self dismissViewControllerAnimated:YES completion:nil];
-    }else if (_exitRoomAlertView == alertView){
-        if (buttonIndex == 1) {
-            [ASHUD showHUDWithStayLoadingStyleInView:self.view belowView:nil content:@"正在退出。。。"];
-        }
-    }
     
 }
 
@@ -729,13 +690,6 @@
  *  @param peerChannelID  该通道标识符
  */
 - (void) OnRtcInRemoveView:(UIView *)removeView  withChannelID:(NSString *)peerChannelID withPublishID:(NSString *)publishID{
-
-    if (!ISIPAD) {
-//        if (![_audioManager _isSpeakerOn]) {
-//            [_audioManager setSpeakerOn];
-//        }
-       // [_audioManager setSpeakerOn];
-    }
    
     VideoShowItem* findView = [_dicRemoteVideoView objectForKey:peerChannelID];
     if (findView.showVideoView == removeView) {
