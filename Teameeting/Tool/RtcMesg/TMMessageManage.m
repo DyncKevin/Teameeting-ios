@@ -443,7 +443,8 @@
                 }
             }
             
-        } else if ([[messageDic objectForKey:@"tags"] intValue] == MCSendTagsSUBSCRIBE || [[messageDic objectForKey:@"tags"] intValue] == MCSendTagsUNSUBSCRIBE) {
+        }
+        /*else if ([[messageDic objectForKey:@"tags"] intValue] == MCSendTagsSUBSCRIBE || [[messageDic objectForKey:@"tags"] intValue] == MCSendTagsUNSUBSCRIBE) {
             
             for (id <tmMessageReceive> object in self.messageListeners) {
                 
@@ -473,7 +474,7 @@
                     
                 }
             }
-        }
+        }*/
         
     });
 }
