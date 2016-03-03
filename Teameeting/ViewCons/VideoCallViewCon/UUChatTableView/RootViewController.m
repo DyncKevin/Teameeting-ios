@@ -59,7 +59,7 @@
     self.pageNum = 1;
     [[TMMessageManage sharedManager] registerMessageListener:self];
     UIButton *closeButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    [closeButton setImage:[UIImage imageNamed:@"cancelChat"] forState:UIControlStateNormal];
+    [closeButton setImage:[UIImage imageNamed:@"close_enter"] forState:UIControlStateNormal];
     [closeButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [closeButton addTarget:self action:@selector(closeChatView) forControlEvents:UIControlEventTouchUpInside];
     [closeButton setBackgroundColor:[UIColor clearColor]];
@@ -93,6 +93,10 @@
         }else{
              [[UIApplication sharedApplication] setStatusBarHidden:NO];
         }
+    }
+    if(IFView){
+      [IFView layoutWithChange];
+       [self.chatTableView reloadData];
     }
 }
 - (void)viewWillDisappear:(BOOL)animated
@@ -162,7 +166,12 @@
         [self.chatTableView reloadData];
     }
     if (isFirst) {
-         [self performSelector:@selector(tableViewScrollToBottom) withObject:nil afterDelay:0.0];
+         //[self performSelector:@selector(tableViewScrollToBottom) withObject:nil afterDelay:0.0];
+//        [self tableViewScrollToBottom];
+        if (self.chatModel.dataSource.count==0)
+            return;
+        NSIndexPath *indexPath = [NSIndexPath indexPathForRow:self.chatModel.dataSource.count-1 inSection:0];
+        [self.chatTableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionBottom animated:NO];
     }
    
 }
@@ -196,28 +205,6 @@
     [IFView.TextViewInput setText:@""];
     [IFView.TextViewInput resignFirstResponder];
     
-}
-
-- (void)hidenInput {
-    
-    [IFView removeFromSuperview];
-}
-
-- (void)resetInputFrame:(CGRect)rect {
-    
-    [IFView removeFromSuperview];
-    IFView = [[UUInputFunctionView alloc]initWithSuperVC:self];
-    IFView.delegate = self;
-    [self.view addSubview:IFView];
-    
-    NSArray *visible = [self.chatTableView visibleCells];
-    NSMutableArray *indexPaths = [NSMutableArray array];
-    for (UITableViewCell *cell in visible) {
-        
-        NSIndexPath *path = [self.chatTableView  indexPathForCell:cell];
-        [indexPaths addObject:path];
-    }
-    [self.chatTableView reloadRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationNone];
 }
 
 -(void)keyboardChange:(NSNotification *)notification
@@ -300,7 +287,7 @@
     NSDictionary *dic = @{@"strContent": message,
                           @"strName":@"我",
                           @"type": @(UUMessageTypeText)};
-    funcView.TextViewInput.text = @"";
+    [funcView clearInputView];
     [funcView changeSendBtnWithPhoto:YES];
     [self dealTheFunctionData:dic];
     VideoViewController *videoCon = (VideoViewController *)self.parentViewCon;

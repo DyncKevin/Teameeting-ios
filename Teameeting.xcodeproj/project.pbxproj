@@ -12,6 +12,7 @@
 		780455C31C51E736003ADDCC /* no_video_show@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 780455C11C51E736003ADDCC /* no_video_show@3x.png */; };
 		780455C61C51FB11003ADDCC /* sharebackgroud@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 780455C41C51FB11003ADDCC /* sharebackgroud@2x.png */; };
 		780455C71C51FB11003ADDCC /* sharebackgroud@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 780455C51C51FB11003ADDCC /* sharebackgroud@3x.png */; };
+		7809A9DD1C805E9D00B7C0F6 /* libanrtcsdk.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7809A9DC1C805E9D00B7C0F6 /* libanrtcsdk.a */; };
 		7810288E1C48DA2200CD9FA6 /* ASBadgeView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7810288D1C48DA2200CD9FA6 /* ASBadgeView.m */; };
 		7810F7F01C5A073C00B77955 /* nick_close@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7810F7EE1C5A073C00B77955 /* nick_close@2x.png */; };
 		7810F7F11C5A073C00B77955 /* nick_close@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7810F7EF1C5A073C00B77955 /* nick_close@3x.png */; };
@@ -23,6 +24,7 @@
 		781F6E171C44CCA600026160 /* NSString+Category.m in Sources */ = {isa = PBXBuildFile; fileRef = 781F6E161C44CCA600026160 /* NSString+Category.m */; };
 		781F6E1A1C44DA5300026160 /* metting_nonotification@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 781F6E181C44DA5300026160 /* metting_nonotification@2x.png */; };
 		781F6E1B1C44DA5300026160 /* metting_nonotification@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 781F6E191C44DA5300026160 /* metting_nonotification@3x.png */; };
+		7825DBF91C771CC700D5E6BA /* jpush-ios-2.1.0.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7825DBF71C771CC700D5E6BA /* jpush-ios-2.1.0.a */; };
 		782807A41C463AED0061D6CD /* Icon-1@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 782807A31C463AED0061D6CD /* Icon-1@2x.png */; };
 		783701361C43DDFB006C80DE /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 783701351C43DDFB006C80DE /* main.m */; };
 		7837013F1C43DDFB006C80DE /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7837013D1C43DDFB006C80DE /* Main.storyboard */; };
@@ -127,7 +129,6 @@
 		783702EB1C43DF64006C80DE /* Rooms+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 783701F71C43DF64006C80DE /* Rooms+CoreDataProperties.m */; };
 		783702EC1C43DF64006C80DE /* Rooms.m in Sources */ = {isa = PBXBuildFile; fileRef = 783701F91C43DF64006C80DE /* Rooms.m */; };
 		783702ED1C43DF64006C80DE /* TMMessageManage.m in Sources */ = {isa = PBXBuildFile; fileRef = 783701FB1C43DF64006C80DE /* TMMessageManage.m */; };
-		783702EE1C43DF64006C80DE /* AvcAudioRouteMgr.m in Sources */ = {isa = PBXBuildFile; fileRef = 783701FE1C43DF64006C80DE /* AvcAudioRouteMgr.m */; };
 		783702EF1C43DF64006C80DE /* SvUDIDTools.m in Sources */ = {isa = PBXBuildFile; fileRef = 783702011C43DF64006C80DE /* SvUDIDTools.m */; };
 		783702F01C43DF64006C80DE /* TimeManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 783702041C43DF64006C80DE /* TimeManager.m */; };
 		783702F11C43DF64006C80DE /* ToolUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 783702071C43DF64006C80DE /* ToolUtils.m */; };
@@ -188,7 +189,6 @@
 		7837032A1C43DF64006C80DE /* PushView.m in Sources */ = {isa = PBXBuildFile; fileRef = 783702841C43DF64006C80DE /* PushView.m */; };
 		7837032B1C43DF64006C80DE /* MemberView.m in Sources */ = {isa = PBXBuildFile; fileRef = 783702871C43DF64006C80DE /* MemberView.m */; };
 		7837032C1C43DF64006C80DE /* RoomViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 783702891C43DF64006C80DE /* RoomViewCell.m */; };
-		783703311C43DF97006C80DE /* PushConfig.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7837032E1C43DF97006C80DE /* PushConfig.plist */; };
 		783703331C43E3A6006C80DE /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 783703321C43E3A6006C80DE /* CoreData.framework */; };
 		783703351C43E3AD006C80DE /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 783703341C43E3AD006C80DE /* Security.framework */; };
 		783703371C43E3B2006C80DE /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 783703361C43E3B2006C80DE /* CoreGraphics.framework */; };
@@ -206,7 +206,6 @@
 		785643E71C50D3EC00836850 /* AnimatedTransitioning.m in Sources */ = {isa = PBXBuildFile; fileRef = 785643E41C50D3EC00836850 /* AnimatedTransitioning.m */; };
 		785643E81C50D3EC00836850 /* TransitionDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 785643E61C50D3EC00836850 /* TransitionDelegate.m */; };
 		7861D0291C4F8E7200B2F30D /* VideoShowItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 7861D0281C4F8E7200B2F30D /* VideoShowItem.m */; };
-		78A893841C59AFB100C4CD49 /* libPushSDK-1.8.8.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 78A893831C59AFB100C4CD49 /* libPushSDK-1.8.8.a */; };
 		78C5ECC61C4E447600193322 /* weixin@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 78C5ECC41C4E447600193322 /* weixin@2x.png */; };
 		78C5ECC71C4E447600193322 /* weixin@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 78C5ECC51C4E447600193322 /* weixin@3x.png */; };
 		78C5ECCA1C4E45B300193322 /* copy_scuess@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 78C5ECC81C4E45B300193322 /* copy_scuess@2x.png */; };
@@ -214,7 +213,6 @@
 		78FA86871C50731A00BAF72B /* VideoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 78FA86861C50731A00BAF72B /* VideoViewController.m */; };
 		EC157AD0B3A13035EAD046BB /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2E4CBCA8C81B4B1BFCC1872C /* libPods.a */; };
 		FC6A0F4A1C464B9400D8C56D /* TMessage.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = FC6A0F481C464B9400D8C56D /* TMessage.xcdatamodeld */; };
-		FCA4D5971C44F94D005CDF99 /* libanrtcsdk.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FCA4D5961C44F94D005CDF99 /* libanrtcsdk.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -242,6 +240,8 @@
 		780455C11C51E736003ADDCC /* no_video_show@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "no_video_show@3x.png"; sourceTree = "<group>"; };
 		780455C41C51FB11003ADDCC /* sharebackgroud@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "sharebackgroud@2x.png"; sourceTree = "<group>"; };
 		780455C51C51FB11003ADDCC /* sharebackgroud@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "sharebackgroud@3x.png"; sourceTree = "<group>"; };
+		7809A9D51C80549D00B7C0F6 /* AnyrtcMeet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AnyrtcMeet.h; sourceTree = "<group>"; };
+		7809A9DC1C805E9D00B7C0F6 /* libanrtcsdk.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libanrtcsdk.a; sourceTree = "<group>"; };
 		7810288C1C48DA2200CD9FA6 /* ASBadgeView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASBadgeView.h; sourceTree = "<group>"; };
 		7810288D1C48DA2200CD9FA6 /* ASBadgeView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ASBadgeView.m; sourceTree = "<group>"; };
 		7810F7EE1C5A073C00B77955 /* nick_close@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "nick_close@2x.png"; sourceTree = "<group>"; };
@@ -256,6 +256,8 @@
 		781F6E161C44CCA600026160 /* NSString+Category.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+Category.m"; sourceTree = "<group>"; };
 		781F6E181C44DA5300026160 /* metting_nonotification@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "metting_nonotification@2x.png"; sourceTree = "<group>"; };
 		781F6E191C44DA5300026160 /* metting_nonotification@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "metting_nonotification@3x.png"; sourceTree = "<group>"; };
+		7825DBF71C771CC700D5E6BA /* jpush-ios-2.1.0.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = "jpush-ios-2.1.0.a"; sourceTree = "<group>"; };
+		7825DBF81C771CC700D5E6BA /* JPUSHService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JPUSHService.h; sourceTree = "<group>"; };
 		782807A31C463AED0061D6CD /* Icon-1@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-1@2x.png"; sourceTree = "<group>"; };
 		783701311C43DDFB006C80DE /* Teameeting.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Teameeting.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		783701351C43DDFB006C80DE /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -397,8 +399,6 @@
 		783701F91C43DF64006C80DE /* Rooms.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Rooms.m; sourceTree = "<group>"; };
 		783701FA1C43DF64006C80DE /* TMMessageManage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TMMessageManage.h; sourceTree = "<group>"; };
 		783701FB1C43DF64006C80DE /* TMMessageManage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TMMessageManage.m; sourceTree = "<group>"; };
-		783701FD1C43DF64006C80DE /* AvcAudioRouteMgr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AvcAudioRouteMgr.h; sourceTree = "<group>"; };
-		783701FE1C43DF64006C80DE /* AvcAudioRouteMgr.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AvcAudioRouteMgr.m; sourceTree = "<group>"; };
 		783702001C43DF64006C80DE /* SvUDIDTools.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SvUDIDTools.h; sourceTree = "<group>"; };
 		783702011C43DF64006C80DE /* SvUDIDTools.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SvUDIDTools.m; sourceTree = "<group>"; };
 		783702031C43DF64006C80DE /* TimeManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimeManager.h; sourceTree = "<group>"; };
@@ -502,7 +502,6 @@
 		783702871C43DF64006C80DE /* MemberView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MemberView.m; sourceTree = "<group>"; };
 		783702881C43DF64006C80DE /* RoomViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoomViewCell.h; sourceTree = "<group>"; };
 		783702891C43DF64006C80DE /* RoomViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RoomViewCell.m; sourceTree = "<group>"; };
-		7837032E1C43DF97006C80DE /* PushConfig.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = PushConfig.plist; sourceTree = "<group>"; };
 		7837032F1C43DF97006C80DE /* Teameeting-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Teameeting-Prefix.pch"; sourceTree = "<group>"; };
 		783703321C43E3A6006C80DE /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		783703341C43E3AD006C80DE /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
@@ -524,8 +523,6 @@
 		785643E61C50D3EC00836850 /* TransitionDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TransitionDelegate.m; sourceTree = "<group>"; };
 		7861D0271C4F8E7200B2F30D /* VideoShowItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VideoShowItem.h; sourceTree = "<group>"; };
 		7861D0281C4F8E7200B2F30D /* VideoShowItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VideoShowItem.m; sourceTree = "<group>"; };
-		78A893821C59AFB100C4CD49 /* APService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = APService.h; sourceTree = "<group>"; };
-		78A893831C59AFB100C4CD49 /* libPushSDK-1.8.8.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = "libPushSDK-1.8.8.a"; sourceTree = "<group>"; };
 		78C5ECC41C4E447600193322 /* weixin@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "weixin@2x.png"; sourceTree = "<group>"; };
 		78C5ECC51C4E447600193322 /* weixin@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "weixin@3x.png"; sourceTree = "<group>"; };
 		78C5ECC81C4E45B300193322 /* copy_scuess@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "copy_scuess@2x.png"; sourceTree = "<group>"; };
@@ -534,8 +531,6 @@
 		78FA86861C50731A00BAF72B /* VideoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VideoViewController.m; sourceTree = "<group>"; };
 		DFBC29C224EA228C97676A8B /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		FC6A0F491C464B9400D8C56D /* TMessage.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = TMessage.xcdatamodel; sourceTree = "<group>"; };
-		FCA4D5961C44F94D005CDF99 /* libanrtcsdk.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libanrtcsdk.a; sourceTree = "<group>"; };
-		FCBC48571C44A6B300A9A63F /* AnyrtcM2Mutlier.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AnyrtcM2Mutlier.h; sourceTree = "<group>"; };
 		FCBC485A1C44A6B300A9A63F /* M2MPublisher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = M2MPublisher.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -544,7 +539,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				78A893841C59AFB100C4CD49 /* libPushSDK-1.8.8.a in Frameworks */,
 				7837034D1C43E405006C80DE /* libicucore.tbd in Frameworks */,
 				7837034B1C43E3FC006C80DE /* libstdc++.6.0.9.tbd in Frameworks */,
 				783703491C43E3F5006C80DE /* libstdc++.tbd in Frameworks */,
@@ -552,11 +546,12 @@
 				783703451C43E3E7006C80DE /* GLKit.framework in Frameworks */,
 				783703431C43E3DF006C80DE /* VideoToolbox.framework in Frameworks */,
 				783703411C43E3D6006C80DE /* CoreTelephony.framework in Frameworks */,
-				FCA4D5971C44F94D005CDF99 /* libanrtcsdk.a in Frameworks */,
+				7809A9DD1C805E9D00B7C0F6 /* libanrtcsdk.a in Frameworks */,
 				7837033F1C43E3CE006C80DE /* SystemConfiguration.framework in Frameworks */,
 				7837033D1C43E3C4006C80DE /* libsqlite3.0.tbd in Frameworks */,
 				7837033B1C43E3BE006C80DE /* Accelerate.framework in Frameworks */,
 				783703391C43E3B8006C80DE /* CFNetwork.framework in Frameworks */,
+				7825DBF91C771CC700D5E6BA /* jpush-ios-2.1.0.a in Frameworks */,
 				783703371C43E3B2006C80DE /* CoreGraphics.framework in Frameworks */,
 				783703351C43E3AD006C80DE /* Security.framework in Frameworks */,
 				783703331C43E3A6006C80DE /* CoreData.framework in Frameworks */,
@@ -596,7 +591,6 @@
 			isa = PBXGroup;
 			children = (
 				FC6A0F481C464B9400D8C56D /* TMessage.xcdatamodeld */,
-				7837032E1C43DF97006C80DE /* PushConfig.plist */,
 				7837032F1C43DF97006C80DE /* Teameeting-Prefix.pch */,
 				783701331C43DDFB006C80DE /* Teameeting */,
 				7837014D1C43DDFC006C80DE /* TeameetingTests */,
@@ -802,7 +796,6 @@
 				783701E21C43DF64006C80DE /* Mp3Recoder */,
 				783701E51C43DF64006C80DE /* NetUtil */,
 				783701EC1C43DF64006C80DE /* RtcMesg */,
-				783701FC1C43DF64006C80DE /* SpeakerManager */,
 				783701FF1C43DF64006C80DE /* SvUDID */,
 				783702021C43DF64006C80DE /* TimeManager */,
 				783702051C43DF64006C80DE /* ToolUtils */,
@@ -922,15 +915,6 @@
 				783701F01C43DF64006C80DE /* TMMsgSender.h */,
 			);
 			path = include;
-			sourceTree = "<group>";
-		};
-		783701FC1C43DF64006C80DE /* SpeakerManager */ = {
-			isa = PBXGroup;
-			children = (
-				783701FD1C43DF64006C80DE /* AvcAudioRouteMgr.h */,
-				783701FE1C43DF64006C80DE /* AvcAudioRouteMgr.m */,
-			);
-			path = SpeakerManager;
 			sourceTree = "<group>";
 		};
 		783701FF1C43DF64006C80DE /* SvUDID */ = {
@@ -1284,8 +1268,8 @@
 		78A893811C59AFB100C4CD49 /* JPush */ = {
 			isa = PBXGroup;
 			children = (
-				78A893821C59AFB100C4CD49 /* APService.h */,
-				78A893831C59AFB100C4CD49 /* libPushSDK-1.8.8.a */,
+				7825DBF71C771CC700D5E6BA /* jpush-ios-2.1.0.a */,
+				7825DBF81C771CC700D5E6BA /* JPUSHService.h */,
 			);
 			path = JPush;
 			sourceTree = "<group>";
@@ -1324,8 +1308,8 @@
 		FCBC48561C44A6B300A9A63F /* AnyrtcSDK */ = {
 			isa = PBXGroup;
 			children = (
-				FCA4D5961C44F94D005CDF99 /* libanrtcsdk.a */,
-				FCBC48571C44A6B300A9A63F /* AnyrtcM2Mutlier.h */,
+				7809A9DC1C805E9D00B7C0F6 /* libanrtcsdk.a */,
+				7809A9D51C80549D00B7C0F6 /* AnyrtcMeet.h */,
 				FCBC485A1C44A6B300A9A63F /* M2MPublisher.h */,
 			);
 			path = AnyrtcSDK;
@@ -1401,6 +1385,7 @@
 				TargetAttributes = {
 					783701301C43DDFB006C80DE = {
 						CreatedOnToolsVersion = 7.2;
+						DevelopmentTeam = 5543CP4MRT;
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
 								enabled = 1;
@@ -1538,7 +1523,6 @@
 				781F6E0F1C44A33F00026160 /* meeting_num@3x.png in Resources */,
 				783702A21C43DF64006C80DE /* delegate_main@3x.png in Resources */,
 				783702A51C43DF64006C80DE /* enter_main@2x.png in Resources */,
-				783703311C43DF97006C80DE /* PushConfig.plist in Resources */,
 				783702901C43DF64006C80DE /* changeSelectVideo@2x.png in Resources */,
 				783702CA1C43DF64006C80DE /* rename_main@2x.png in Resources */,
 				783703001C43DF64006C80DE /* expressionImage_custom.plist in Resources */,
@@ -1629,7 +1613,6 @@
 			files = (
 				783702F91C43DF64006C80DE /* EnterMeetingIDViewController.m in Sources */,
 				783703181C43DF64006C80DE /* UUAVAudioPlayer.m in Sources */,
-				783702EE1C43DF64006C80DE /* AvcAudioRouteMgr.m in Sources */,
 				7837028A1C43DF64006C80DE /* AppDelegate.m in Sources */,
 				783702FA1C43DF64006C80DE /* MainViewController.m in Sources */,
 				783703191C43DF64006C80DE /* UUImageAvatarBrowser.m in Sources */,
@@ -1857,6 +1840,7 @@
 					"$(PROJECT_DIR)/Teameeting/ViewCons/VideoCallViewCon/AnyrtcSDK",
 					"$(PROJECT_DIR)/Teameeting/Tool/JPush",
 				);
+				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -1886,7 +1870,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.dync.teameeting;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "326a786e-bfa0-4b80-9f8b-1c5309d941c4";
+				PROVISIONING_PROFILE = "b81a1991-c1a1-4f23-9b06-a241a4eff599";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -1898,8 +1882,8 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_ENTITLEMENTS = "";
-				CODE_SIGN_IDENTITY = "iPhone Distribution: AVCON Information Technology Co., Ltd.";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: AVCON Information Technology Co., Ltd.";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Shanghai Boyuan Electronic Technology Co. Ltd (5543CP4MRT)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Shanghai Boyuan Electronic Technology Co. Ltd (5543CP4MRT)";
 				ENABLE_BITCODE = NO;
 				GCC_PREFIX_HEADER = "$(SRCROOT)/Teameeting-Prefix.pch";
 				INFOPLIST_FILE = Teameeting/Info.plist;
@@ -1913,6 +1897,7 @@
 					"$(PROJECT_DIR)/Teameeting/ViewCons/VideoCallViewCon/AnyrtcSDK",
 					"$(PROJECT_DIR)/Teameeting/Tool/JPush",
 				);
+				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -1942,7 +1927,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.dync.teameeting;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "326a786e-bfa0-4b80-9f8b-1c5309d941c4";
+				PROVISIONING_PROFILE = "4a7d2db1-4e0a-411f-aa3b-eda43e5d340e";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;

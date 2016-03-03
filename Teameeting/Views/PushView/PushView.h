@@ -36,4 +36,7 @@ typedef NS_ENUM(NSInteger, PushViewType) {
 - (void)showWithType:(PushViewType)type withObject:(id)object withIndex:(NSInteger)index;
 
 - (void)updateLayout;
+
+- (void)close;
+
 @end

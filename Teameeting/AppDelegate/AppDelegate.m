@@ -15,7 +15,7 @@
 #import "WXApi.h"
 #import "WXApiManager.h"
 #import "RoomApp.h"
-#import "APService.h"
+#import "JPUSHService.h"
 #import "ToolUtils.h"
 #import "SvUDIDTools.h"
 
@@ -28,6 +28,8 @@
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+    
+    //[application setApplicationIconBadgeNumber:0];
     
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
     NSDictionary *navbarTitleTextAttributes = @{NSForegroundColorAttributeName:[UIColor whiteColor]};
@@ -47,27 +49,21 @@
         }
     }
     
-#if __IPHONE_OS_VERSION_MAX_ALLOWED > __IPHONE_7_1
     if ([[UIDevice currentDevice].systemVersion floatValue] >= 8.0) {
-        
-        [APService registerForRemoteNotificationTypes:(UIUserNotificationTypeBadge |
-                                                       UIUserNotificationTypeSound |
-                                                       UIUserNotificationTypeAlert)
-                                           categories:nil];
+        //可以添加自定义categories
+        [JPUSHService registerForRemoteNotificationTypes:(UIUserNotificationTypeBadge |
+                                                          UIUserNotificationTypeSound |
+                                                          UIUserNotificationTypeAlert)
+                                              categories:nil];
     } else {
-        
-        [APService registerForRemoteNotificationTypes:(UIRemoteNotificationTypeBadge |
-                                                       UIRemoteNotificationTypeSound |
-                                                       UIRemoteNotificationTypeAlert)
-                                           categories:nil];
+        //categories 必须为nil
+        [JPUSHService registerForRemoteNotificationTypes:(UIRemoteNotificationTypeBadge |
+                                                          UIRemoteNotificationTypeSound |
+                                                          UIRemoteNotificationTypeAlert)
+                                              categories:nil];
     }
-#else
-    [APService registerForRemoteNotificationTypes:(UIRemoteNotificationTypeBadge |
-                                                   UIRemoteNotificationTypeSound |
-                                                   UIRemoteNotificationTypeAlert)
-                                       categories:nil];
-#endif
-    [APService setupWithOption:launchOptions];
+    
+    [JPUSHService setupWithOption:launchOptions appKey:appKey channel:channel apsForProduction:isProduction];
     
     [WXApi registerApp:@"wx4d9fbaec0a4c368f" withDescription:@"demo 2.0"];
     UINavigationController *nai = [[UINavigationController alloc] initWithRootViewController:[MainViewController new]];
@@ -80,10 +76,18 @@
 }
 
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler {
-    
-    [APService handleRemoteNotification:userInfo];
+    NSLog(@"UIBackgroundFetchResult");
+    [JPUSHService handleRemoteNotification:userInfo];
+    NotificationObject *noti = [[NotificationObject alloc] init];
+    if ([[userInfo objectForKey:@"tags"] intValue] == 1) {
+        noti.notificationType = NotificationMessageType;
+    }else{
+        noti.notificationType = NOtificationEnterMeetingType;
+    }
+    noti.roomID = [NSString stringWithFormat:@"%@",[userInfo objectForKey:@"roomid"]];
+    [[NSNotificationCenter defaultCenter] postNotificationName:NotificationEntNotification object:noti userInfo:nil];
+    [ToolUtils shead].notificationObject = noti;
     completionHandler(UIBackgroundFetchResultNewData);
-    
 }
 
 - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken
@@ -93,17 +97,39 @@
     realDeviceToken = [realDeviceToken stringByReplacingOccurrencesOfString:@">" withString:@""];
     realDeviceToken = [realDeviceToken stringByReplacingOccurrencesOfString:@" " withString:@""];
     
-    [APService registerDeviceToken:deviceToken];
+    [JPUSHService registerDeviceToken:deviceToken];
+    [JPUSHService setTags:[NSSet setWithObject:[SvUDIDTools shead].UUID] alias:[SvUDIDTools shead].UUID callbackSelector:nil object:nil];
 }
 
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo
 {
-    [[[UIAlertView alloc] initWithTitle:@"" message:@"ok" delegate:nil cancelButtonTitle:nil otherButtonTitles:nil, nil] show];
-    [APService handleRemoteNotification:userInfo];
+    NSLog(@"didReceiveRemoteNotification");
+    [JPUSHService handleRemoteNotification:userInfo];
+    NotificationObject *noti = [[NotificationObject alloc] init];
+    if ([[userInfo objectForKey:@"tags"] intValue] == 1) {
+        noti.notificationType = NotificationMessageType;
+    }else{
+        noti.notificationType = NOtificationEnterMeetingType;
+    }
+    noti.roomID = [NSString stringWithFormat:@"%@",[userInfo objectForKey:@"roomid"]];
+   [[NSNotificationCenter defaultCenter] postNotificationName:NotificationEntNotification object:noti userInfo:nil];
 }
 
 - (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error {
     NSLog(@"did Fail To Register For Remote Notifications With Error: %@", error);
+}
+- (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification {
+   // [JPUSHService showLocalNotificationAtFront:notification identifierKey:nil];
+    NSDictionary *userInfo = notification.userInfo;
+    NSLog(@"%@",[userInfo description]);
+    NotificationObject *noti = [[NotificationObject alloc] init];
+    if ([[userInfo objectForKey:@"tags"] intValue] == 1) {
+        noti.notificationType = NotificationMessageType;
+    }else{
+        noti.notificationType = NOtificationEnterMeetingType;
+    }
+    noti.roomID = [NSString stringWithFormat:@"%@",[userInfo objectForKey:@"roomid"]];
+    [[NSNotificationCenter defaultCenter] postNotificationName:NotificationEntNotification object:noti userInfo:nil];
 }
 
 - (BOOL)application:(UIApplication *)application
@@ -125,7 +151,11 @@
     if (rangeleft.length <= 0 || rangeleft.location+1>URL.length) {
         return;
     }
+    
     NSString *mID = [URL substringFromIndex:rangeleft.location+rangeleft.length];
+    if (mID.length>12) {
+        mID = [mID substringToIndex:12];
+    }
     NSLog(@"meetingName:%@",mID);
     [[UIApplication sharedApplication] cancelAllLocalNotifications];
     
@@ -150,10 +180,32 @@
 - (void)applicationDidEnterBackground:(UIApplication *)application {
     // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
     // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
+    UIApplication*   app = [UIApplication sharedApplication];
+    __block    UIBackgroundTaskIdentifier bgTask;
+    bgTask = [app beginBackgroundTaskWithExpirationHandler:^{
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (bgTask != UIBackgroundTaskInvalid)
+            {
+                bgTask = UIBackgroundTaskInvalid;
+            }
+        });
+    }];
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (bgTask != UIBackgroundTaskInvalid)
+            {
+                bgTask = UIBackgroundTaskInvalid;
+            }
+        });
+    });
+    
+    [ToolUtils shead].isBack = YES;
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application {
     // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
+    [application setApplicationIconBadgeNumber:0];
+    [ToolUtils shead].isBack = NO;
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {

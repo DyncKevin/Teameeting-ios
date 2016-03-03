@@ -14,8 +14,7 @@
 
 @property (nonatomic, strong)void(^closeRootViewBlock)(void);
 @property (nonatomic, assign)VideoViewController *parentViewCon;
-- (void)resetInputFrame:(CGRect)rect;
-- (void)hidenInput;
 - (void)resginKeyBord;
 - (void)setReceiveMessageEnable:(BOOL)enable;
+- (void)closeChatView;
 @end

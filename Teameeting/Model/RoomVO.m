@@ -28,7 +28,8 @@
 - (id)initWithParams:(NSDictionary *)params{
     if (self = [super init]) {
         if (params) {
-            self.roomID = [params valueForKey:@"meetingid"];
+            self.roomID = [NSString stringWithFormat:@"%@",[params valueForKey:@"meetingid"]];
+            self.anyRtcID = [NSString stringWithFormat:@"%@",[params valueForKey:@"anyrtcid"]];
             self.roomName = [params valueForKey:@"meetname"];
             self.canNotification = [[params valueForKey:@"pushable"] stringValue];
             self.jointime = [[params valueForKey:@"jointime"] longValue];

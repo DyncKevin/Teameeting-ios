@@ -12,7 +12,6 @@
 #import "DXPopover.h"
 #import "ReceiveCallViewController.h"
 #import "TMMessageManage.h"
-//#import "UINavigationBar+Category.h"
 #import "WXApiRequestHandler.h"
 #import "WXApi.h"
 #import <MessageUI/MFMessageComposeViewController.h>
@@ -102,7 +101,8 @@
     self.callViewCon = [[ReceiveCallViewController alloc] init];
     self.callViewCon.roomItem = self.roomItem;
     self.menuView = [[LockerView alloc] initWithFrame:CGRectMake(0, self.view.bounds.size.height - 60, 300, 60)];
-    [self.menuView setCenter:CGPointMake(self.view.bounds.size.width/2, self.menuView.center.y)];
+    self.menuView.backgroundColor = [UIColor clearColor];
+    [self.menuView setCenter:CGPointMake(self.view.bounds.size.width/2, self.view.bounds.size.height - self.menuView.bounds.size.height)];
     self.menuView.delegate = self;
     
     tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapEvent:)];
@@ -152,6 +152,9 @@
 {
     [super viewDidLayoutSubviews];
     CGFloat rootViewWidth = TalkPannelWidth;//isVertical == YES ? (self.view.bounds.size.width/2 - 50) : (self.view.bounds.size.width/2 - 150);
+    if (!self.rootView) {
+        return;
+    }
     if (ISIPAD) {
         if (self.rootView.view.frame.origin.x < 0) {
             
@@ -175,11 +178,8 @@
             [self.noUserTip setCenter:CGPointMake(self.view.bounds.size.width/2, self.isFullScreen == YES ? (self.view.bounds.size.height + self.noUserTip.bounds.size.height) : (CGRectGetMinY(self.menuView.frame) - self.noUserTip.bounds.size.height/2))];
             [self.rootView.view setFrame:self.view.bounds];
         }
-        
-//        [self.rootView resetInputFrame:CGRectMake(0, self.view.bounds.size.height - 40, self.view.bounds.size.width, 40)];
        
     }
-    [self.rootView resetInputFrame:CGRectMake(0, self.view.bounds.size.height - 40, self.view.bounds.size.width, 40)];
     if (self.view.bounds.size.width>self.view.bounds.size.height) {
     
         if (!self.isFullScreen) {
@@ -204,6 +204,34 @@
     NSUInteger height = self.view.bounds.size.height;
     isVertical = width > height ? NO : YES;
     return isVertical;
+}
+
+- (void)openOrCloseTalk:(BOOL)isOpen
+{
+    if (isOpen) {
+        if (self.isChat) {
+            return;
+        }else{
+            [self goToChat:nil];
+        }
+    }else{
+        if (self.isChat) {
+            [self.rootView closeChatView];
+        }
+    }
+}
+- (void)dismissMyself
+{
+    [self dismissViewControllerAnimated:YES completion:^{
+        if (self.callViewCon) {
+            [self.callViewCon hangeUp];
+            [[TMMessageManage sharedManager] removeMessageListener:self.rootView];
+        }
+        if (self.DismissVideoViewController) {
+            self.DismissVideoViewController();
+        }
+    }];
+
 }
 
 - (void)loadTableView {
@@ -287,17 +315,20 @@
     } else {
         tapGesture.enabled = NO;
         [self.noUserTip setHidden:NO];
-        if (self.isFullScreen) {
-            [UIView animateWithDuration:0.2 animations:^{
-                
-                [self.menuView setCenter:CGPointMake(self.menuView.center.x, self.isFullScreen == YES ? (self.view.bounds.size.height + self.menuView.bounds.size.height) : (self.view.bounds.size.height - self.menuView.bounds.size.height))];
-                
-                [self.noUserTip setCenter:CGPointMake(self.view.bounds.size.width/2, self.isFullScreen == YES ? (self.view.bounds.size.height + self.noUserTip.bounds.size.height) : (CGRectGetMinY(self.menuView.frame) - self.noUserTip.bounds.size.height))];
-                
-            }completion:^(BOOL finished) {
-                 self.isFullScreen =  NO;
-            }];
-        }
+        
+        self.isFullScreen = NO;
+        [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationNone];
+        [self.navigationController setNavigationBarHidden:NO animated:YES];
+        
+        [UIView animateWithDuration:0.2 animations:^{
+            
+            [self.menuView setCenter:CGPointMake(self.menuView.center.x, (self.view.bounds.size.height - self.menuView.bounds.size.height))];
+            
+            [self.noUserTip setCenter:CGPointMake(self.view.bounds.size.width/2, (CGRectGetMinY(self.menuView.frame) - self.noUserTip.bounds.size.height))];
+            
+        }completion:^(BOOL finished) {
+        }];
+        
     }
 }
 
@@ -577,7 +608,7 @@
             self.isChat = NO;
             [self.callViewCon transitionVideoView:NO];
             [UIView animateWithDuration:0.2 animations:^{
-                CGFloat rootViewWidth =TalkPannelWidth;// [self isVertical] == YES ? (self.view.bounds.size.width/2 - 50) : (self.view.bounds.size.width/2 - 150);
+                CGFloat rootViewWidth = TalkPannelWidth;// [self isVertical] == YES ? (self.view.bounds.size.width/2 - 50) : (self.view.bounds.size.width/2 - 150);
                 
                 [self.rootView.view setFrame:CGRectMake(0 - rootViewWidth,self.rootView.view.frame.origin.y, self.rootView.view.bounds.size.width, self.rootView.view.bounds.size.height)];
                 [self.menuView setCenter:CGPointMake(self.view.bounds.size.width/2, self.menuView.center.y)];
@@ -687,10 +718,12 @@
     if (item.tag == 10) {
         
         [self dismissViewControllerAnimated:YES completion:^{
-            
             if (self.callViewCon) {
                 [self.callViewCon hangeUp];
                 [[TMMessageManage sharedManager] removeMessageListener:self.rootView];
+            }
+            if (self.DismissVideoViewController) {
+                self.DismissVideoViewController();
             }
         }];
         
