@@ -262,11 +262,11 @@
         if (enable) {
             [_localVideoView setVideoHidden:NO];
             NSDictionary *dict = [NSDictionary dictionaryWithObjectsAndKeys:_localVideoView.publishID,@"PublishId",@"Open",@"Media", nil];
-            [[TMMessageManage sharedManager] tMNotifyMsgRoomid:self.roomItem.roomID withTags:MCSendTagsVIDEOSET withMessage:[ToolUtils JSONTOString:dict]];
+            //[[TMMessageManage sharedManager] tMNotifyMsgRoomid:self.roomItem.roomID withTags:MCSendTagsVIDEOSET withMessage:[ToolUtils JSONTOString:dict]];
         }else{
             [_localVideoView setVideoHidden:YES];
             NSDictionary *dict = [NSDictionary dictionaryWithObjectsAndKeys:_localVideoView.publishID,@"PublishId",@"Close",@"Media", nil];
-            [[TMMessageManage sharedManager] tMNotifyMsgRoomid:self.roomItem.roomID withTags:MCSendTagsVIDEOSET withMessage:[ToolUtils JSONTOString:dict]];
+            //[[TMMessageManage sharedManager] tMNotifyMsgRoomid:self.roomItem.roomID withTags:MCSendTagsVIDEOSET withMessage:[ToolUtils JSONTOString:dict]];
         }
     }
 }
@@ -277,12 +277,12 @@
         if (enable) {
             [_localVideoView setAudioClose:NO];
             NSDictionary *dict = [NSDictionary dictionaryWithObjectsAndKeys:_localVideoView.publishID,@"PublishId",@"Open",@"Media", nil];
-            [[TMMessageManage sharedManager] tMNotifyMsgRoomid:self.roomItem.roomID withTags:MCSendTagsAUDIOSET withMessage:[ToolUtils JSONTOString:dict]];
+            //[[TMMessageManage sharedManager] tMNotifyMsgRoomid:self.roomItem.roomID withTags:MCSendTagsAUDIOSET withMessage:[ToolUtils JSONTOString:dict]];
 
         }else{
              [_localVideoView setAudioClose:YES];
             NSDictionary *dict = [NSDictionary dictionaryWithObjectsAndKeys:_localVideoView.publishID,@"PublishId",@"Close",@"Media", nil];
-            [[TMMessageManage sharedManager] tMNotifyMsgRoomid:self.roomItem.roomID withTags:MCSendTagsAUDIOSET withMessage:[ToolUtils JSONTOString:dict]];
+            //[[TMMessageManage sharedManager] tMNotifyMsgRoomid:self.roomItem.roomID withTags:MCSendTagsAUDIOSET withMessage:[ToolUtils JSONTOString:dict]];
         }
     }
 }
@@ -623,7 +623,7 @@
 {
     [ASHUD hideHUD];
     _localVideoView.publishID = strPublishId;
-    [[TMMessageManage sharedManager] tMNotifyMsgRoomid:self.roomItem.roomID withTags:MCSendTagsSUBSCRIBE withMessage:strPublishId];
+    //[[TMMessageManage sharedManager] tMNotifyMsgRoomid:self.roomItem.roomID withTags:MCSendTagsSUBSCRIBE withMessage:strPublishId];
 }
 /** 发布失败
  * @param nCode		失败的代码
