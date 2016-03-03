@@ -41,4 +41,8 @@
 
 - (void)changeSendBtnWithPhoto:(BOOL)isPhoto;
 
+- (void)clearInputView;
+
+- (void)layoutWithChange;
+
 @end

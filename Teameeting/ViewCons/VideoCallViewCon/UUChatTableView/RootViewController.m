@@ -94,6 +94,10 @@
              [[UIApplication sharedApplication] setStatusBarHidden:NO];
         }
     }
+    if(IFView){
+      [IFView layoutWithChange];
+       [self.chatTableView reloadData];
+    }
 }
 - (void)viewWillDisappear:(BOOL)animated
 {
@@ -203,28 +207,6 @@
     
 }
 
-- (void)hidenInput {
-    
-    [IFView removeFromSuperview];
-}
-
-- (void)resetInputFrame:(CGRect)rect {
-    
-    [IFView removeFromSuperview];
-    IFView = [[UUInputFunctionView alloc]initWithSuperVC:self];
-    IFView.delegate = self;
-    [self.view addSubview:IFView];
-    
-    NSArray *visible = [self.chatTableView visibleCells];
-    NSMutableArray *indexPaths = [NSMutableArray array];
-    for (UITableViewCell *cell in visible) {
-        
-        NSIndexPath *path = [self.chatTableView  indexPathForCell:cell];
-        [indexPaths addObject:path];
-    }
-    [self.chatTableView reloadRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationNone];
-}
-
 -(void)keyboardChange:(NSNotification *)notification
 {
     NSDictionary *userInfo = [notification userInfo];
@@ -305,7 +287,7 @@
     NSDictionary *dic = @{@"strContent": message,
                           @"strName":@"我",
                           @"type": @(UUMessageTypeText)};
-    funcView.TextViewInput.text = @"";
+    [funcView clearInputView];
     [funcView changeSendBtnWithPhoto:YES];
     [self dealTheFunctionData:dic];
     VideoViewController *videoCon = (VideoViewController *)self.parentViewCon;

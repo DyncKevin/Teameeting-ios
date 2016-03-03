@@ -21,6 +21,7 @@
 @property (nonatomic, assign) BOOL isOwn;                   // is own  1：own  0：other
 @property (nonatomic, assign) NSInteger messageNum;         // no read message num
 @property (nonatomic, strong) NSString *lastMessagTime;     // last message time
+@property (nonatomic, strong) NSString *anyRtcID;           // anyrtcID 
 
 
 - (id)initWithParams:(NSDictionary *)params;
