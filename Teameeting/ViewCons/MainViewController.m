@@ -596,6 +596,7 @@ static NSString *kRoomCellID = @"RoomCell";
         roomItem.jointime = [[dict objectForKey:@"jointime"] longValue];
         roomItem.mettingType = [[dict objectForKey:@"meettype"] integerValue];
         roomItem.mettingState = [[dict objectForKey:@"meetenable"] integerValue];
+        roomItem.anyRtcID = [NSString stringWithFormat:@"%@",[dict objectForKey:@"anyrtcid"]];
         
         [dataArray replaceObjectAtIndex:0 withObject:roomItem];
         [self.roomList reloadData];

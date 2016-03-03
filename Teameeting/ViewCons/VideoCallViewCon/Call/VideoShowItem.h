@@ -14,9 +14,8 @@
 
 @property (nonatomic, strong) NSString *publishID;
 
-@property (nonatomic)CGSize videoSize; // reality video Size
+@property (nonatomic,assign) CGSize videoSize; // reality video Size
 
-@property (nonatomic, strong) NSString *selectedTag;
 
 - (void)setVideoHidden:(BOOL)isVideoHidden;
 - (void)setAudioClose:(BOOL)isAudioClose;

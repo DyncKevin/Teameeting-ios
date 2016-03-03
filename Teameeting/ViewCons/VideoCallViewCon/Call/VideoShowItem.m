@@ -11,6 +11,7 @@
 @property (nonatomic, strong) UIImageView *micImageView;
 @property (nonatomic, strong) UIImageView *videoHiddenView;
 @property (nonatomic, strong) UIImageView *videoHiddenImageView;
+@property (nonatomic, strong) UIActivityIndicatorView *activityIndicatorView;
 @property (nonatomic, strong) NSLayoutConstraint * constraintTop;
 @property (nonatomic, strong) NSLayoutConstraint * constraintRight;
 @property (nonatomic, strong) NSLayoutConstraint * constraintWidth;
@@ -23,6 +24,8 @@
 @synthesize micImageView = _micImageView;
 @synthesize videoHiddenView = _videoHiddenView;
 @synthesize videoHiddenImageView = _videoHiddenImageView;
+@synthesize videoSize = _videoSize;
+@synthesize activityIndicatorView = _activityIndicatorView;
 - (id)init
 {
     self = [super init];
@@ -33,20 +36,28 @@
 }
 - (void)dealloc
 {
-    if (_showVideoView) {
-        [_showVideoView removeObserver:self forKeyPath:@"frame" context:nil];
-    }
+//    if (_showVideoView) {
+//        [_showVideoView removeObserver:self forKeyPath:@"frame" context:nil];
+//    }
 }
-- (void)setSelectedTag:(NSString *)selectedTag
+- (void)setVideoSize:(CGSize)videoSize
 {
-    _selectedTag = selectedTag;
+    _videoSize = videoSize;
+    if (CGSizeEqualToSize(videoSize, CGSizeZero)) {
+        if (_activityIndicatorView) {
+            [_activityIndicatorView startAnimating];
+        }
+    }else{
+        if (_activityIndicatorView) {
+            [_activityIndicatorView stopAnimating];
+        }
+    }
 }
 
 - (void)setShowVideoView:(UIView *)showVideoView
 {
     _showVideoView = showVideoView;
-    
-    [_showVideoView addObserver:self forKeyPath:@"frame" options:NSKeyValueObservingOptionNew context:nil];
+    //[_showVideoView addObserver:self forKeyPath:@"frame" options:NSKeyValueObservingOptionNew context:nil];
     
     self.videoHiddenView = [UIImageView new];
     self.videoHiddenView.backgroundColor = [UIColor grayColor];
@@ -64,9 +75,15 @@
     [_showVideoView addSubview:self.micImageView];
     self.micImageView.hidden = YES;
     
+    self.activityIndicatorView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
+    [self.activityIndicatorView startAnimating];
+    [_showVideoView addSubview:self.activityIndicatorView];
+    
+    
     self.videoHiddenView.translatesAutoresizingMaskIntoConstraints = NO;
     self.micImageView.translatesAutoresizingMaskIntoConstraints = NO;
     self.videoHiddenImageView.translatesAutoresizingMaskIntoConstraints = NO;
+    self.activityIndicatorView.translatesAutoresizingMaskIntoConstraints = NO;
     
     NSLayoutConstraint * consv = [NSLayoutConstraint constraintWithItem:_videoHiddenView attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:_showVideoView attribute:NSLayoutAttributeWidth multiplier:1.0f constant:0.0f];
     
@@ -85,6 +102,9 @@
     
     NSLayoutConstraint * cons3 = [NSLayoutConstraint constraintWithItem:_videoHiddenImageView attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:_videoHiddenView attribute:NSLayoutAttributeCenterY multiplier:1.0f constant:0.0f];
     
+    NSLayoutConstraint * consAV1 = [NSLayoutConstraint constraintWithItem:_activityIndicatorView attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:_showVideoView attribute:NSLayoutAttributeCenterX multiplier:1.0f constant:0.0f];
+    
+    NSLayoutConstraint * consAV2 = [NSLayoutConstraint constraintWithItem:_activityIndicatorView attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:_showVideoView attribute:NSLayoutAttributeCenterY multiplier:1.0f constant:0.0f];
     
     // mic
     self.constraintHeight = [NSLayoutConstraint constraintWithItem:_micImageView attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0f constant:30.0f];
@@ -110,6 +130,9 @@
     [_showVideoView addConstraint:self.constraintHeight];
     [_showVideoView addConstraint:self.constraintTop];
     [_showVideoView addConstraint:self.constraintRight];
+    
+    [_showVideoView addConstraint:consAV1];
+    [_showVideoView addConstraint:consAV2];
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
@@ -203,24 +226,24 @@
     }else{
         self.micImageView.hidden = YES;
     }
-    if (_showVideoView.superview.bounds.size.height<260) {
+    if (_showVideoView.superview.bounds.size.height<[UIScreen mainScreen].bounds.size.height/2) {
         self.isFull = YES;
     }else{
         self.isFull = NO;
     }
     if (self.isFull) {
-        if (_showVideoView.frame.size.height>[UIScreen mainScreen].bounds.size.height) {
-            [self.constraintTop setConstant:(_showVideoView.frame.size.height -[UIScreen mainScreen].bounds.size.height)/2];
+        if (round(_showVideoView.frame.size.height)>[UIScreen mainScreen].bounds.size.height) {
+            [self.constraintTop setConstant:(round(_showVideoView.frame.size.height) -[UIScreen mainScreen].bounds.size.height)/2];
         }else{
             [self.constraintTop setConstant:0.0f];
         }
     }else{
-        if (_showVideoView.frame.size.height>=[UIScreen mainScreen].bounds.size.height) {
+        if (round(_showVideoView.frame.size.height)>=[UIScreen mainScreen].bounds.size.height) {
             if ([[UIApplication sharedApplication] isStatusBarHidden]) {
-                [self.constraintTop setConstant:(_showVideoView.frame.size.height -[UIScreen mainScreen].bounds.size.height)/2+32];
+                [self.constraintTop setConstant:(round(_showVideoView.frame.size.height) -[UIScreen mainScreen].bounds.size.height)/2+32];
                 
             }else{
-                [self.constraintTop setConstant:(_showVideoView.frame.size.height -[UIScreen mainScreen].bounds.size.height)/2+64];
+                [self.constraintTop setConstant:(round(_showVideoView.frame.size.height) -[UIScreen mainScreen].bounds.size.height)/2+64];
             }
         }else{
             

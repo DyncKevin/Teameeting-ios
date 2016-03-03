@@ -35,27 +35,34 @@
 - (void) OnRtcVideoView:(UIView*)videoView didChangeVideoSize:(CGSize)size;
 /*! @brief 远程图像进入p2p会议
  *
- *  @param removeView 远程图像
- *  @param peerChannelID  该通道标识符
- *  @param publishID  发布的ID
+ *  @param publishID  通道的ID
+ *  @param remoteView 远程图像
  */
-- (void) OnRtcInRemoveView:(UIView *)removeView  withChannelID:(NSString *)peerChannelID withPublishID:(NSString*)publishID;
+- (void) OnRtcOpenRemoteView:(NSString*)publishID  withRemoteView:(UIView *)removeView;
 
 /*! @brief 远程图像离开会议
  *
- *  @param removeView 远程图像
- *  @param peerChannelID  该通道标识符
+ *  @param publishID 通道的ID
  */
-- (void)OnRtcLeaveRemoveView:(UIView *)removeView  withChannelID:(NSString *)peerChannelID;
+- (void)OnRtcRemoveRemoteView:(NSString*)publishID;
+
+/*! @brief 远程视频的音视频状态
+ *
+ *  @param publishID 通道的ID
+ *  @param audioEnable  音频是否开启
+ *  @param videoEnable  视频是否开启
+ */
+- (void)OnRtcRemoteAVStatus:(NSString*)publishID withAudioEnable:(BOOL)audioEnable withVideoEnable:(BOOL)videoEnable;
 @end
 
 @interface AnyrtcMeet : NSObject {
     
 }
+@property (nonatomic, assign) BOOL proximityMonitoringEnabled; // 默认 YES
 
 @property (nonatomic, weak) UIView *localView;
 
-@property (nonatomic, strong) NSString *selectedTag;//大视图的tag 本地localView为大视图的时候请设置为nil
+
 
 @property (nonatomic, weak) id<AnyrtcMeetDelegate> delegate;
 
@@ -64,9 +71,17 @@
 - (BOOL) Join:(NSString*)strAnyrtcId;
 - (void) Leave;
 
+- (void) setBigVideoBitsWithPulishId:(NSString*)publishID;
+
 - (void) setLocalAudioEnable:(BOOL)enable;
 - (void) setLocalVideoEnable:(BOOL)enable;
 - (void) switchCamera;
+/**
+ *  Enable / Disable speaker
+ *
+ *  @param enableSpeaker set YES to enable, NO to disable.
+ */
+- (void)setEnableSpeaker:(BOOL)enableSpeaker;
 
 @end
 
