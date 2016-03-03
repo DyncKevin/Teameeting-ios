@@ -252,12 +252,8 @@
        
         if (enable) {
             [_localVideoView setVideoHidden:NO];
-            NSDictionary *dict = [NSDictionary dictionaryWithObjectsAndKeys:_localVideoView.publishID,@"PublishId",@"Open",@"Media", nil];
-            [[TMMessageManage sharedManager] tMNotifyMsgRoomid:self.roomItem.roomID withTags:MCSendTagsVIDEOSET withMessage:[ToolUtils JSONTOString:dict]];
         }else{
             [_localVideoView setVideoHidden:YES];
-            NSDictionary *dict = [NSDictionary dictionaryWithObjectsAndKeys:_localVideoView.publishID,@"PublishId",@"Close",@"Media", nil];
-            [[TMMessageManage sharedManager] tMNotifyMsgRoomid:self.roomItem.roomID withTags:MCSendTagsVIDEOSET withMessage:[ToolUtils JSONTOString:dict]];
         }
     }
 }
@@ -267,13 +263,8 @@
         [_client setLocalAudioEnable:enable];
         if (enable) {
             [_localVideoView setAudioClose:NO];
-            NSDictionary *dict = [NSDictionary dictionaryWithObjectsAndKeys:_localVideoView.publishID,@"PublishId",@"Open",@"Media", nil];
-            [[TMMessageManage sharedManager] tMNotifyMsgRoomid:self.roomItem.roomID withTags:MCSendTagsAUDIOSET withMessage:[ToolUtils JSONTOString:dict]];
-
         }else{
              [_localVideoView setAudioClose:YES];
-            NSDictionary *dict = [NSDictionary dictionaryWithObjectsAndKeys:_localVideoView.publishID,@"PublishId",@"Close",@"Media", nil];
-            [[TMMessageManage sharedManager] tMNotifyMsgRoomid:self.roomItem.roomID withTags:MCSendTagsAUDIOSET withMessage:[ToolUtils JSONTOString:dict]];
         }
     }
 }
@@ -619,6 +610,7 @@
 }
 
 #pragma mark - AnyrtcM2MDelegate
+
 
 /** 进会成功
  * @param strAnyrtcId	AnyRTC的ID
