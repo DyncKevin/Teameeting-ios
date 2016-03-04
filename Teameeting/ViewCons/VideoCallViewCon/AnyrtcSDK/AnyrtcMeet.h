@@ -9,7 +9,7 @@
 #ifndef AnyrtcM2Mutlier_h
 #define AnyrtcM2Mutlier_h
 #import <UIKit/UIKit.h>
-#import "M2MPublisher.h"
+
 
 @protocol AnyrtcMeetDelegate <NSObject>
 
@@ -28,7 +28,7 @@
 /** 离开会议
  *
  */
-- (void) OnRtcLeaveMeet;
+- (void) OnRtcLeaveMeet:(int) code;
 /** 视频大小
  * @param strPublishId	订阅的通道ID
  */
@@ -70,7 +70,11 @@
 
 - (BOOL) Join:(NSString*)strAnyrtcId;
 - (void) Leave;
-
+/**
+ *  Big Video Bits
+ *
+ *  @param if local video view is big View please set publishID to nil or set video view publishID.
+ */
 - (void) setBigVideoBitsWithPulishId:(NSString*)publishID;
 
 - (void) setLocalAudioEnable:(BOOL)enable;

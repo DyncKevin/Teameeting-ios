@@ -330,10 +330,14 @@
         videoenable = NO;
         [_client setLocalVideoEnable:YES];
     }
+    [self layoutSubView];
 }
 
 - (void)layoutSubView
 {
+    if ([ToolUtils shead].isBack) {
+        return;
+    }
     [ASHUD hideHUD];
     if (self.isFullScreen) {
         [UIView animateWithDuration:.2 animations:^{
@@ -633,7 +637,7 @@
 /** 离开会议
  *
  */
-- (void) OnRtcLeaveMeet
+- (void) OnRtcLeaveMeet:(int) code
 {
     
 }
