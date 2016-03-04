@@ -196,7 +196,7 @@ static NSString *kRoomCellID = @"RoomCell";
             self.push.frame = self.view.bounds;
             [self.push updateLayout];
             UIImageView *bgImageView = [self.bgView viewWithTag:500];
-            bgImageView.image = [UIImage imageNamed:@"Default-Portrait"];
+            bgImageView.image = [UIImage imageNamed:@"homeBackGroundPortrait"];
         }else if(self.interfaceOrientation == UIInterfaceOrientationLandscapeLeft || self.interfaceOrientation == UIInterfaceOrientationLandscapeRight){
             if (initView) {
                 initView.frame = [UIScreen mainScreen].bounds;
@@ -208,7 +208,7 @@ static NSString *kRoomCellID = @"RoomCell";
              self.push.frame = self.view.bounds;
             [self.push updateLayout];
             UIImageView *bgImageView = [self.bgView viewWithTag:500];
-            bgImageView.image = [UIImage imageNamed:@"Default-Landscape"];
+            bgImageView.image = [UIImage imageNamed:@"homeBackGroundLandscape"];
         }
     }
     
@@ -465,6 +465,8 @@ static NSString *kRoomCellID = @"RoomCell";
 
 - (void)setBackGroundImageView
 {
+    
+    //todo  wyy
     self.bgView = [[UIView alloc] init];
     [self.view addSubview:self.bgView ];
     UIImageView *bgImageView = [UIImageView new];
@@ -486,25 +488,25 @@ static NSString *kRoomCellID = @"RoomCell";
     NSString *imageName;
     switch (height) {
         case 480:
-            imageName = @"Default.png";
+            imageName = @"homeBackGround";
             break;
         case 568:
-            imageName = @"Default-568h";
+            imageName = @"homeBackGround";
             break;
         case 667:
-            imageName = @"Default-667h";
+            imageName = @"homeBackGround";
             break;
         case 736:
-            imageName = @"Default-736h";
+            imageName = @"homeBackGround";
             break;
         case 768:
-            imageName = @"Default-Landscape";
+            imageName = @"homeBackGroundLandscape";
             break;
         case 1024:
-            imageName = @"Default-Portrait";
+            imageName = @"homeBackGroundPortrait";
             break;
         default:
-            imageName = @"Default-736h";
+            imageName = @"homeBackGround";
             
             break;
     }

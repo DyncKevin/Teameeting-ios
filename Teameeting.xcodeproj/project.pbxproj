@@ -205,6 +205,9 @@
 		EC157AD0B3A13035EAD046BB /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2E4CBCA8C81B4B1BFCC1872C /* libPods.a */; };
 		FC19C2D51C85B78B003419B2 /* GuideViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FC19C2D41C85B78B003419B2 /* GuideViewController.m */; };
 		FC6A0F4A1C464B9400D8C56D /* TMessage.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = FC6A0F481C464B9400D8C56D /* TMessage.xcdatamodeld */; };
+		FCA8ADCC1C89968A00D28F01 /* homeBackGround@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FCA8ADC91C89968A00D28F01 /* homeBackGround@2x.png */; };
+		FCA8ADCD1C89968A00D28F01 /* homeBackGroundLandscape@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FCA8ADCA1C89968A00D28F01 /* homeBackGroundLandscape@2x.png */; };
+		FCA8ADCE1C89968A00D28F01 /* homeBackGroundPortrait@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FCA8ADCB1C89968A00D28F01 /* homeBackGroundPortrait@2x.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -516,6 +519,9 @@
 		FC19C2D31C85B78B003419B2 /* GuideViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GuideViewController.h; sourceTree = "<group>"; };
 		FC19C2D41C85B78B003419B2 /* GuideViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GuideViewController.m; sourceTree = "<group>"; };
 		FC6A0F491C464B9400D8C56D /* TMessage.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = TMessage.xcdatamodel; sourceTree = "<group>"; };
+		FCA8ADC91C89968A00D28F01 /* homeBackGround@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "homeBackGround@2x.png"; sourceTree = "<group>"; };
+		FCA8ADCA1C89968A00D28F01 /* homeBackGroundLandscape@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "homeBackGroundLandscape@2x.png"; sourceTree = "<group>"; };
+		FCA8ADCB1C89968A00D28F01 /* homeBackGroundPortrait@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "homeBackGroundPortrait@2x.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -674,6 +680,9 @@
 		783701741C43DF64006C80DE /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				FCA8ADC91C89968A00D28F01 /* homeBackGround@2x.png */,
+				FCA8ADCA1C89968A00D28F01 /* homeBackGroundLandscape@2x.png */,
+				FCA8ADCB1C89968A00D28F01 /* homeBackGroundPortrait@2x.png */,
 				7810F7EE1C5A073C00B77955 /* nick_close@2x.png */,
 				7810F7EF1C5A073C00B77955 /* nick_close@3x.png */,
 				780198C91C5896BA00D9BEF4 /* nav_bar@2x.png */,
@@ -1463,10 +1472,12 @@
 				783702B51C43DF64006C80DE /* message_main@3x.png in Resources */,
 				783703121C43DF64006C80DE /* chatfrom_bg_normal.png in Resources */,
 				783702921C43DF64006C80DE /* changeVideo@2x.png in Resources */,
+				FCA8ADCE1C89968A00D28F01 /* homeBackGroundPortrait@2x.png in Resources */,
 				7837030F1C43DF64006C80DE /* chat_send_message.png in Resources */,
 				781F6E1A1C44DA5300026160 /* metting_nonotification@2x.png in Resources */,
 				783702D11C43DF64006C80DE /* video@2x.png in Resources */,
 				7810F7F11C5A073C00B77955 /* nick_close@3x.png in Resources */,
+				FCA8ADCD1C89968A00D28F01 /* homeBackGroundLandscape@2x.png in Resources */,
 				782807A41C463AED0061D6CD /* Icon-1@2x.png in Resources */,
 				783703081C43DF64006C80DE /* chat_animation3.png in Resources */,
 				783702B21C43DF64006C80DE /* menucancel@2x.png in Resources */,
@@ -1502,6 +1513,7 @@
 				783702901C43DF64006C80DE /* changeSelectVideo@2x.png in Resources */,
 				783702CA1C43DF64006C80DE /* rename_main@2x.png in Resources */,
 				783703001C43DF64006C80DE /* expressionImage_custom.plist in Resources */,
+				FCA8ADCC1C89968A00D28F01 /* homeBackGround@2x.png in Resources */,
 				783702BA1C43DF64006C80DE /* micselect@2x.png in Resources */,
 				783702911C43DF64006C80DE /* changeSelectVideo@3x.png in Resources */,
 				783702971C43DF64006C80DE /* close_enter@3x.png in Resources */,
