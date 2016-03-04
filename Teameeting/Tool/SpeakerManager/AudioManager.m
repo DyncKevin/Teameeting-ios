@@ -9,16 +9,17 @@
 #import "AudioManager.h"
 #import <AudioToolbox/AudioToolbox.h>
 #import <AVFoundation/AVFoundation.h>
+@interface AudioManager()
+{
+    BOOL isSpeaker;
+}
+@end
 
 @implementation AudioManager
 
-- (void)openOrCloseProximityMonitorEnable:(BOOL)isOpen
+- (void)closeProximityMonitorEnable;
 {
-    if (isOpen) {
-        [[UIDevice currentDevice] setProximityMonitoringEnabled:YES];
-    }else{
-        [[UIDevice currentDevice] setProximityMonitoringEnabled:NO];
-    }
+   [[UIDevice currentDevice] setProximityMonitoringEnabled:NO];
 }
 - (void)dealloc
 {
@@ -28,51 +29,32 @@
 {
     self = [super init];
     if (self) {
-        NSError *error;
-        AVAudioSession *audioSession = [AVAudioSession sharedInstance];
-        [audioSession overrideOutputAudioPort:AVAudioSessionPortOverrideSpeaker error:&error];
-        if(error)
-        {
-            NSLog(@"AvcAudioRouteMgr: AudioSession cannot use speakers");
-        }
-        //默认情况下扬声器播放
-        [audioSession setCategory:AVAudioSessionCategoryPlayback error:nil];
-        [audioSession setActive:YES error:nil];
+        [[UIDevice currentDevice] setProximityMonitoringEnabled:YES];
         //红外线感应监听
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(sensorStateChange:)
                                                      name:UIDeviceProximityStateDidChangeNotification
                                                    object:nil];
-      
+        
+        AVAudioSession *audioSession = [AVAudioSession sharedInstance];
+        NSError *audioSessionError;
+        [audioSession setCategory:AVAudioSessionCategoryPlayback error:&audioSessionError];
+        
+        [[AVAudioSession sharedInstance] setActive:YES error:nil];
         
     }
     return self;
 }
 - (void)setSpeakerOn
 {
-    if ([self HasHeadsetMic]) {
-        return;
+    if (!isSpeaker) {
+        if (!ISIPAD) {
+            [[AVAudioSession sharedInstance] overrideOutputAudioPort:AVAudioSessionPortOverrideSpeaker error:nil];
+        }
+        
+        isSpeaker = YES;
     }
-    NSError *error;
-    AVAudioSession *audioSession = [AVAudioSession sharedInstance];
-    [audioSession overrideOutputAudioPort:AVAudioSessionPortOverrideSpeaker error:&error];
-    if(error)
-    {
-        NSLog(@"AvcAudioRouteMgr: AudioSession cannot use speakers");
-    }
-    
-}
-
-- (BOOL)HasHeadsetMic
-{
-    AVAudioSession *session = [AVAudioSession sharedInstance];
-    // Input
-    AVAudioSessionPortDescription *input = [[session.currentRoute.inputs count] ? session.currentRoute.inputs:nil objectAtIndex:0];
-    NSLog(@"%@",input.portType);
-    if ([input.portType isEqualToString:AVAudioSessionPortHeadsetMic]) {
-        return YES;
-    }
-    return NO;
+   
 }
 
 //处理监听触发事件

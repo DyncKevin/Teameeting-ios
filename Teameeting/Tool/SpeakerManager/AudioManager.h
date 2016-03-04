@@ -10,7 +10,7 @@
 
 @interface AudioManager : NSObject
 
-- (void)openOrCloseProximityMonitorEnable:(BOOL)isOpen;
+- (void)closeProximityMonitorEnable;
 // 打开扬声器
 - (void)setSpeakerOn;
 
