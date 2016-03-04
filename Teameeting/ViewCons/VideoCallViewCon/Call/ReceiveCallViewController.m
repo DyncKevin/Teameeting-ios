@@ -16,6 +16,7 @@
 #import "ToolUtils.h"
 
 #define bottonSpace 10
+#define VideoWidth 100
 @interface ReceiveCallViewController ()<AnyrtcMeetDelegate,UIGestureRecognizerDelegate,tmMessageReceive>
 {
     VideoShowItem *_localVideoView;
@@ -30,14 +31,14 @@
     UIButton *_videoButton;
     UIButton *_muteButton;
     UIButton *_cameraSwitchButton;
-    BOOL videoEnable;
+    BOOL videoenable;
     
     BOOL isRightTran;
     
 }
 @property (nonatomic, strong) NSMutableDictionary *_dicRemoteVideoView;
-@property (nonatomic, strong) NSMutableArray *_audioOperateArray;
-@property (nonatomic, strong) NSMutableArray *_videoOperateArray;
+@property (nonatomic, strong) NSMutableDictionary *_audioOperateDict;
+@property (nonatomic, strong) NSMutableDictionary *_videoOperateDict;
 @property (nonatomic, strong) NSMutableArray *_userArray;
 @property (nonatomic, strong) NSMutableArray *_channelArray;
 
@@ -53,7 +54,7 @@
 
 @synthesize _client;
 @synthesize roomItem;
-@synthesize _userArray,_channelArray,_audioOperateArray,_videoOperateArray;
+@synthesize _userArray,_channelArray,_audioOperateDict,_videoOperateDict;
 
 - (void)dealloc
 {
@@ -106,8 +107,8 @@
     _peerSelectedId = nil;
     _userArray = [[NSMutableArray alloc] initWithCapacity:5];
     _channelArray = [[NSMutableArray alloc] initWithCapacity:5];
-    _videoOperateArray = [[NSMutableArray alloc] initWithCapacity:5];
-    _audioOperateArray = [[NSMutableArray alloc] initWithCapacity:5];
+    _videoOperateDict = [[NSMutableDictionary alloc] initWithCapacity:5];
+    _audioOperateDict = [[NSMutableDictionary alloc] initWithCapacity:5];
     
     _dicRemoteVideoView = [[NSMutableDictionary alloc] initWithCapacity:5];
     [AnyrtcMeet InitAnyRTC:@"mzw0001" andToken:@"defq34hj92mxxjhaxxgjfdqi1s332dd" andAESKey:@"d74TcmQDMB5nWx9zfJ5al7JdEg3XwySwCkhdB9lvnd1" andAppId:@"org.dync.app"];
@@ -137,80 +138,70 @@
 
 - (void)videoAudioSet:(NSString *)content action:(NSInteger)action
 {
-     NSDictionary *dict = [ToolUtils JSONValue:content];
-    
-    BOOL isvideoFound = NO;
-    BOOL isaudioFound = NO;
-    if (action==6) {
-        
-        NSLog(@"%@",[_dicRemoteVideoView allKeys]);
-        for (NSString *strTag in [_dicRemoteVideoView allKeys]) {
-            VideoShowItem *item = [_dicRemoteVideoView objectForKey:strTag];
-            if ([item.publishID isEqualToString:[dict objectForKey:@"PublishId"]]) {
-                isaudioFound = YES;
-                if ([[dict objectForKey:@"Media"] isEqualToString:@"Close"]) {
-                      [item setAudioClose:YES];
-                }else{
-                     [item setAudioClose:NO];
-                }
-                break;
-            }
-        }
-        // not found
-        if (!isaudioFound) {
-            [_audioOperateArray addObject:content];
-        }
-    }else{
-        for (NSString *strTag in [_dicRemoteVideoView allKeys]) {
-            VideoShowItem *item = [_dicRemoteVideoView objectForKey:strTag];
-            if ([item.publishID isEqualToString:[dict objectForKey:@"PublishId"]]) {
-                isvideoFound = YES;
-                if ([[dict objectForKey:@"Media"] isEqualToString:@"Close"]) {
-                    [item setVideoHidden:YES];
-                }else{
-                    [item setVideoHidden:NO];
-                }
-                break;
-            }
-        }
-        if (!isvideoFound) {
-            [_videoOperateArray addObject:content];
-        }
-    }
+//     NSDictionary *dict = [ToolUtils JSONValue:content];
+//    
+//    BOOL isvideoFound = NO;
+//    BOOL isaudioFound = NO;
+//    if (action==6) {
+//        
+//        NSLog(@"%@",[_dicRemoteVideoView allKeys]);
+//        for (NSString *strTag in [_dicRemoteVideoView allKeys]) {
+//            VideoShowItem *item = [_dicRemoteVideoView objectForKey:strTag];
+//            if ([item.publishID isEqualToString:[dict objectForKey:@"PublishId"]]) {
+//                isaudioFound = YES;
+//                if ([[dict objectForKey:@"Media"] isEqualToString:@"Close"]) {
+//                      [item setAudioClose:YES];
+//                }else{
+//                     [item setAudioClose:NO];
+//                }
+//                break;
+//            }
+//        }
+//        // not found
+//        if (!isaudioFound) {
+//            [_audioOperateArray addObject:content];
+//        }
+//    }else{
+//        for (NSString *strTag in [_dicRemoteVideoView allKeys]) {
+//            VideoShowItem *item = [_dicRemoteVideoView objectForKey:strTag];
+//            if ([item.publishID isEqualToString:[dict objectForKey:@"PublishId"]]) {
+//                isvideoFound = YES;
+//                if ([[dict objectForKey:@"Media"] isEqualToString:@"Close"]) {
+//                    [item setVideoHidden:YES];
+//                }else{
+//                    [item setVideoHidden:NO];
+//                }
+//                break;
+//            }
+//        }
+//        if (!isvideoFound) {
+//            [_videoOperateArray addObject:content];
+//        }
+//    }
    
   
 }
 // setting pre operate to view
 - (void)settingMediaToViewOperate:(VideoShowItem*)item
 {
-    if (_audioOperateArray.count != 0) {
-        for (NSString *content in _audioOperateArray) {
-            NSDictionary *dict = [ToolUtils JSONValue:content];
-            if ([item.publishID isEqualToString:[dict objectForKey:@"PublishId"]]) {
-                if ([[dict objectForKey:@"Media"] isEqualToString:@"Close"]) {
-                    [item setAudioClose:YES];
-                }else{
-                    [item setAudioClose:NO];
-                }
-                [_audioOperateArray removeObject:content];
-                break;
-            }
-        }
-    }
+    NSNumber *audio = [_audioOperateDict objectForKey:item.publishID];
+    NSNumber *video = [_videoOperateDict objectForKey:item.publishID];
     
-    if(_videoOperateArray.count != 0) {
-        for (NSString *content in _videoOperateArray) {
-            NSDictionary *dict = [ToolUtils JSONValue:content];
-            if ([item.publishID isEqualToString:[dict objectForKey:@"PublishId"]]) {
-                if ([[dict objectForKey:@"Media"] isEqualToString:@"Close"]) {
-                    [item setVideoHidden:YES];
-                }else{
-                    [item setVideoHidden:NO];
-                }
-                [_videoOperateArray removeObject:content];
-                break;
-            }
+    if (audio) {
+        if (![audio boolValue]) {
+            [item setAudioClose:YES];
+        }else{
+            [item setAudioClose:NO];
         }
+        [_audioOperateDict removeObjectForKey:item.publishID];
+    }
+    if (video) {
+        if (![video boolValue]) {
+            [item setVideoHidden:YES];
+        }else{
+            [item setVideoHidden:NO];
+        }
+        [_videoOperateDict removeObjectForKey:item.publishID];
     }
 }
 
@@ -261,12 +252,8 @@
        
         if (enable) {
             [_localVideoView setVideoHidden:NO];
-            NSDictionary *dict = [NSDictionary dictionaryWithObjectsAndKeys:_localVideoView.publishID,@"PublishId",@"Open",@"Media", nil];
-            [[TMMessageManage sharedManager] tMNotifyMsgRoomid:self.roomItem.roomID withTags:MCSendTagsVIDEOSET withMessage:[ToolUtils JSONTOString:dict]];
         }else{
             [_localVideoView setVideoHidden:YES];
-            NSDictionary *dict = [NSDictionary dictionaryWithObjectsAndKeys:_localVideoView.publishID,@"PublishId",@"Close",@"Media", nil];
-            [[TMMessageManage sharedManager] tMNotifyMsgRoomid:self.roomItem.roomID withTags:MCSendTagsVIDEOSET withMessage:[ToolUtils JSONTOString:dict]];
         }
     }
 }
@@ -276,13 +263,8 @@
         [_client setLocalAudioEnable:enable];
         if (enable) {
             [_localVideoView setAudioClose:NO];
-            NSDictionary *dict = [NSDictionary dictionaryWithObjectsAndKeys:_localVideoView.publishID,@"PublishId",@"Open",@"Media", nil];
-            [[TMMessageManage sharedManager] tMNotifyMsgRoomid:self.roomItem.roomID withTags:MCSendTagsAUDIOSET withMessage:[ToolUtils JSONTOString:dict]];
-
         }else{
              [_localVideoView setAudioClose:YES];
-            NSDictionary *dict = [NSDictionary dictionaryWithObjectsAndKeys:_localVideoView.publishID,@"PublishId",@"Close",@"Media", nil];
-            [[TMMessageManage sharedManager] tMNotifyMsgRoomid:self.roomItem.roomID withTags:MCSendTagsAUDIOSET withMessage:[ToolUtils JSONTOString:dict]];
         }
     }
 }
@@ -336,7 +318,7 @@
 - (void)applicationWillResignActive
 {
     if (!_videoButton.selected) {
-        videoEnable = YES;
+        videoenable = YES;
         [_client setLocalVideoEnable:NO];
     }
 }
@@ -344,14 +326,18 @@
 // 程序进入前台时，重启视频
 - (void)applicationDidBecomeActive
 {
-    if (videoEnable) {
-        videoEnable = NO;
+    if (videoenable) {
+        videoenable = NO;
         [_client setLocalVideoEnable:YES];
     }
+    [self layoutSubView];
 }
 
 - (void)layoutSubView
 {
+    if ([ToolUtils shead].isBack) {
+        return;
+    }
     [ASHUD hideHUD];
     if (self.isFullScreen) {
         [UIView animateWithDuration:.2 animations:^{
@@ -422,7 +408,8 @@
             view.showVideoView.center = CGPointMake(self.view.bounds.size.width/2,self.view.bounds.size.height/2);
             
         }else{
-            return;
+            view.showVideoView.frame = self.view.bounds;
+            view.showVideoView.center = CGPointMake(self.view.bounds.size.width/2,self.view.bounds.size.height/2);
         }
         if ([view.showVideoView.superview isKindOfClass:[self.videosScrollView class]]) {
             [view.showVideoView removeFromSuperview];
@@ -437,13 +424,10 @@
         
         [self.videosScrollView.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
         
-        BOOL localHasSize = NO;
         float sizeViewAllWidth = 0;
-        if (_localVideoSize.width>0 && _localVideoSize.height>0) {
-            if ([_localVideoView.showVideoView.superview isKindOfClass:[self.view class]]) {
-                [_localVideoView.showVideoView removeFromSuperview];
-            }
-            localHasSize = YES;
+
+        if ([_localVideoView.showVideoView.superview isKindOfClass:[self.view class]]) {
+            [_localVideoView.showVideoView removeFromSuperview];
         }
         
         CGFloat videoViewHeight = 0.0;
@@ -457,8 +441,10 @@
 
         float scaleHeight = [self getAllWidthWithHeight:videoViewHeight withAllHeight:&sizeViewAllWidth withLocal:YES];
         videoViewHeight = scaleHeight;
-        if (localHasSize) {
+        if (_localVideoSize.width>0 && _localVideoSize.height>0) {
             localViewWidth = (_localVideoSize.width/_localVideoSize.height)*videoViewHeight;
+        }else{
+            localViewWidth = VideoWidth;
         }
         
         CGFloat x = (self.videosScrollView.bounds.size.width - (sizeViewAllWidth))/2;
@@ -471,6 +457,11 @@
                 if (viewsmail.videoSize.width>0&& viewsmail.videoSize.height>0) {
                    remoteViewWidth = (viewsmail.videoSize.width/viewsmail.videoSize.height)*videoViewHeight;
                    viewsmail.showVideoView.frame = CGRectMake(x,y, remoteViewWidth, videoViewHeight);
+                    [self.videosScrollView addSubview:viewsmail.showVideoView];
+                    x = x+remoteViewWidth;
+                }else{
+                    remoteViewWidth = VideoWidth;
+                    viewsmail.showVideoView.frame = CGRectMake(x,y, remoteViewWidth, videoViewHeight);
                     [self.videosScrollView addSubview:viewsmail.showVideoView];
                     x = x+remoteViewWidth;
                 }
@@ -543,6 +534,11 @@
                     viewsmail.showVideoView.frame = CGRectMake(x,y, remoteViewWidth, videoViewHeight);
                     [self.videosScrollView addSubview:viewsmail.showVideoView];
                     x = x+remoteViewWidth;
+                }else{
+                    remoteViewWidth = VideoWidth;
+                    viewsmail.showVideoView.frame = CGRectMake(x,y, remoteViewWidth, videoViewHeight);
+                    [self.videosScrollView addSubview:viewsmail.showVideoView];
+                    x = x+remoteViewWidth;
                 }
             }
         }
@@ -556,6 +552,8 @@
             VideoShowItem * viewsmail = [_dicRemoteVideoView objectForKey:key];
             if (viewsmail.videoSize.width>0&& viewsmail.videoSize.height>0) {
                videowidth = (viewsmail.videoSize.width/viewsmail.videoSize.height)*height;
+            }else{
+                videowidth = VideoWidth;
             }
             viewsmail.showVideoView.frame = CGRectMake(0,0, videowidth, height);
             width += videowidth;
@@ -565,6 +563,8 @@
     if (hasLocal) {
         if (_localVideoSize.width>0 && _localVideoSize.height>0) {
             localWidth = (_localVideoSize.width/_localVideoSize.height)*height;
+        }else{
+            localWidth = VideoWidth;
         }
     }
   
@@ -583,7 +583,7 @@
     if (_peerSelectedId) {
         _peerOldSelectedId = _peerSelectedId;
         _peerSelectedId = nil;
-         _client.selectedTag = nil;
+        [_client setBigVideoBitsWithPulishId:nil];
         [self layoutSubView];
     }
    
@@ -600,7 +600,7 @@
             if (item.showVideoView == view) {
                 _peerOldSelectedId = _peerSelectedId;
                 _peerSelectedId = key;
-                _client.selectedTag = key;
+                [_client setBigVideoBitsWithPulishId:key];
                 [self layoutSubView];
                 return;
             }
@@ -614,51 +614,30 @@
 }
 
 #pragma mark - AnyrtcM2MDelegate
-/** 发布成功
- * @param strPublishId	实时流的ID
- * @param strRtmpUrl	rtmp直播流的地址
- * @param strHlsUrl		hls直播流的地址
+
+
+/** 进会成功
+ * @param strAnyrtcId	AnyRTC的ID
  */
-- (void) OnRtcPublishOK:(NSString*)strPublishId withRtmpUrl:(NSString*)strRtmpUtl withHlsUrl:(NSString*)strHlsUrl
-{
-    [ASHUD hideHUD];
-    _localVideoView.publishID = strPublishId;
-    [[TMMessageManage sharedManager] tMNotifyMsgRoomid:self.roomItem.roomID withTags:MCSendTagsSUBSCRIBE withMessage:strPublishId];
-}
-/** 发布失败
- * @param nCode		失败的代码
- * @param strErr	错误的具体原因
- */
-- (void) OnRtcPublishFailed:(int)code withErr:(NSString*)strErr
-{
-    
-}
-/** 发布通道关闭
- */
-- (void) OnRtcPublishClosed
+- (void) OnRtcJoinMeetOK:(NSString*) strAnyrtcId
 {
     
 }
 
-/** 订阅成功
- * @param strPublishId	订阅的通道ID
+/** 进会失败
+ * @param strAnyrtcId	AnyRTC的ID
+ * @param code	错误代码
+ * @param strReason		原因
  */
-- (void) OnRtcSubscribeOK:(NSString*)strPublishId
+- (void) OnRtcJoinMeetFailed:(NSString*) strAnyrtcId withCode:(int) code withReason:(NSString*) strReason
 {
     
 }
-/** 订阅失败
- * @param strPublishId	订阅的通道ID
- * @param nCode			失败的代码
- * @param strErr		错误的具体原因
+
+/** 离开会议
+ *
  */
-- (void) OnRtcSubscribeFailed:(NSString*)strPublishId withCode:(int)code withErr:(NSString*)strErr
-{
-}
-/** 订阅通道关闭
- * @param strPublishId	订阅的通道ID
- */
-- (void) OnRtcSubscribeClosed:(NSString*)strPublishId
+- (void) OnRtcLeaveMeet:(int) code
 {
     
 }
@@ -689,23 +668,23 @@
  *  @param removeView 远程图像
  *  @param peerChannelID  该通道标识符
  */
-- (void) OnRtcInRemoveView:(UIView *)removeView  withChannelID:(NSString *)peerChannelID withPublishID:(NSString *)publishID{
+- (void) OnRtcOpenRemoteView:(NSString*)publishID  withRemoteView:(UIView *)removeView
+{
    
-    VideoShowItem* findView = [_dicRemoteVideoView objectForKey:peerChannelID];
+    VideoShowItem* findView = [_dicRemoteVideoView objectForKey:publishID];
     if (findView.showVideoView == removeView) {
         return;
     }
     if (!_peerSelectedId&&_dicRemoteVideoView.count==0) {
-        _peerSelectedId = peerChannelID;
-        _client.selectedTag = peerChannelID;
+        _peerSelectedId = publishID;
+         [_client setBigVideoBitsWithPulishId:publishID];
     }
     
     VideoShowItem *item = [[VideoShowItem alloc] init];
-    item.selectedTag = peerChannelID;
     item.showVideoView = removeView;
     item.publishID = publishID;
     
-    [_dicRemoteVideoView setObject:item forKey:peerChannelID];
+    [_dicRemoteVideoView setObject:item forKey:publishID];
     
     UITapGestureRecognizer *singleTapGestureRecognizer = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(singleTap:)];
     [singleTapGestureRecognizer setNumberOfTapsRequired:1];
@@ -713,7 +692,7 @@
     [item.showVideoView  addGestureRecognizer:singleTapGestureRecognizer];
 
     
-//    [self layoutSubView];
+    [self layoutSubView];
     //While the number of remote image change, send a notification
     NSNumber *remoteVideoCount = [NSNumber numberWithInteger:[_dicRemoteVideoView count]];
     [[NSNotificationCenter defaultCenter] postNotificationName:@"REMOTEVIDEOCHANGE" object:remoteVideoCount];
@@ -724,26 +703,26 @@
 
 /*! @brief 远程图像离开会议
  *
- *  @param removeView 远程图像
- *  @param peerChannelID  该通道标识符
+ *  @param publishID  该通道标识符
  */
-- (void)OnRtcLeaveRemoveView:(UIView *)removeView  withChannelID:(NSString *)peerChannelID{
+- (void)OnRtcRemoveRemoteView:(NSString*)publishID
+{
     
-    VideoShowItem *findView = [_dicRemoteVideoView objectForKey:peerChannelID];
+    VideoShowItem *findView = [_dicRemoteVideoView objectForKey:publishID];
     if (findView) {
-        if ([peerChannelID isEqualToString:_peerSelectedId]) {
+        if ([publishID isEqualToString:_peerSelectedId]) {
             [findView.showVideoView removeFromSuperview];
-            [_dicRemoteVideoView removeObjectForKey:peerChannelID];
+            [_dicRemoteVideoView removeObjectForKey:publishID];
             if (_dicRemoteVideoView.count!=0) {
                 _peerSelectedId =[[_dicRemoteVideoView allKeys] firstObject];
-                _client.selectedTag = _peerSelectedId;
+                 [_client setBigVideoBitsWithPulishId:_peerSelectedId];
             }else{
                 _peerSelectedId = nil;
-                _client.selectedTag = nil;
+                 [_client setBigVideoBitsWithPulishId:nil];
             }
         }else{
             [findView.showVideoView removeFromSuperview];
-            [_dicRemoteVideoView removeObjectForKey:peerChannelID];
+            [_dicRemoteVideoView removeObjectForKey:publishID];
            
         }
         if (_dicRemoteVideoView.count ==0) {
@@ -757,7 +736,37 @@
     [[NSNotificationCenter defaultCenter] postNotificationName:@"REMOTEVIDEOCHANGE" object:remoteVideoCount];
     
 }
-
+/*! @brief 远程视频的音视频状态
+ *
+ *  @param publishID 通道的ID
+ *  @param audioEnable  音频是否开启
+ *  @param videoEnable  视频是否开启
+ */
+- (void)OnRtcRemoteAVStatus:(NSString*)publishID withAudioEnable:(BOOL)audioEnable withVideoEnable:(BOOL)videoEnable
+{
+    
+    VideoShowItem *item = [_dicRemoteVideoView objectForKey:publishID];
+    if (item) {
+        if (audioEnable) {
+            [item setAudioClose:NO];
+        }else{
+            [item setAudioClose:YES];
+        }
+        if (videoEnable) {
+            [item setVideoHidden:NO];
+        }else{
+            [item setVideoHidden:YES];
+        }
+    }else{
+        if (!audioEnable) {
+            [_audioOperateDict setObject:[NSNumber numberWithBool:audioEnable] forKey:publishID];
+        }
+        
+        if (!videoEnable) {
+            [_videoOperateDict setObject:[NSNumber numberWithBool:videoEnable] forKey:publishID];
+        }
+    }
+}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

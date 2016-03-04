@@ -516,7 +516,6 @@
 		FC19C2D31C85B78B003419B2 /* GuideViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GuideViewController.h; sourceTree = "<group>"; };
 		FC19C2D41C85B78B003419B2 /* GuideViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GuideViewController.m; sourceTree = "<group>"; };
 		FC6A0F491C464B9400D8C56D /* TMessage.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = TMessage.xcdatamodel; sourceTree = "<group>"; };
-		FCBC485A1C44A6B300A9A63F /* M2MPublisher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = M2MPublisher.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1296,7 +1295,6 @@
 			children = (
 				7809A9DC1C805E9D00B7C0F6 /* libanrtcsdk.a */,
 				7809A9D51C80549D00B7C0F6 /* AnyrtcMeet.h */,
-				FCBC485A1C44A6B300A9A63F /* M2MPublisher.h */,
 			);
 			path = AnyrtcSDK;
 			sourceTree = "<group>";
