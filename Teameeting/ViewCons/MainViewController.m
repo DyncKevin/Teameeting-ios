@@ -336,33 +336,30 @@ static NSString *kRoomCellID = @"RoomCell";
     [initView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-0-[initViewBg]-0-|" options:NSLayoutFormatAlignmentMask metrics:nil views:views]];
     
 
-    int height = CGRectGetHeight(self.view.bounds);
-    NSString *imageName;
-    switch (height) {
-        case 480:
-            imageName = @"Default.png";
-            break;
-        case 568:
-            imageName = @"Default-568h";
-            break;
-        case 667:
-            imageName = @"Default-667h";
-            break;
-        case 736:
-            imageName = @"Default-736h";
-            break;
-        case 768:
-            imageName = @"Default-Landscape";
-            break;
-        case 1024:
-            imageName = @"Default-Portrait";
-            break;
-        default:
-            imageName = @"Default-736h";
-            
-            break;
+    CGSize viewSize = self.view.bounds.size;
+    
+    NSString *launchImage = nil;
+    
+    NSArray* imagesDict = [[[NSBundle mainBundle] infoDictionary] valueForKey:@"UILaunchImages"];
+    NSString *viewOrientation = @"Portrait";//横屏请设置成 @"Landscape"
+    if (self.view.bounds.size.width>self.view.bounds.size.height) {
+        viewOrientation = @"Landscape";
+    }else{
+        viewOrientation = @"Portrait";
     }
-    initViewBg.image = [UIImage imageNamed:imageName];
+    for(NSDictionary* dict in imagesDict)
+    {
+        
+        CGSize imageSize = CGSizeFromString(dict[@"UILaunchImageSize"]);
+        
+        if(CGSizeEqualToSize(imageSize, viewSize) && [viewOrientation isEqualToString:dict[@"UILaunchImageOrientation"]])
+        {
+            launchImage = dict[@"UILaunchImageName"];
+        }
+        
+    }
+    
+    initViewBg.image = [UIImage imageNamed:launchImage];
     UIActivityIndicatorView *activityIndicatorView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
     [initView addSubview:activityIndicatorView];
     
