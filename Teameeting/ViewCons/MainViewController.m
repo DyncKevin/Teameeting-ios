@@ -196,7 +196,7 @@ static NSString *kRoomCellID = @"RoomCell";
             self.push.frame = self.view.bounds;
             [self.push updateLayout];
             UIImageView *bgImageView = [self.bgView viewWithTag:500];
-            bgImageView.image = [UIImage imageNamed:@"Default-Portrait"];
+            bgImageView.image = [UIImage imageNamed:@"homeBackGroundPortrait"];
         }else if(self.interfaceOrientation == UIInterfaceOrientationLandscapeLeft || self.interfaceOrientation == UIInterfaceOrientationLandscapeRight){
             if (initView) {
                 initView.frame = [UIScreen mainScreen].bounds;
@@ -208,7 +208,7 @@ static NSString *kRoomCellID = @"RoomCell";
              self.push.frame = self.view.bounds;
             [self.push updateLayout];
             UIImageView *bgImageView = [self.bgView viewWithTag:500];
-            bgImageView.image = [UIImage imageNamed:@"Default-Landscape"];
+            bgImageView.image = [UIImage imageNamed:@"homeBackGroundLandscape"];
         }
     }
     
@@ -336,33 +336,30 @@ static NSString *kRoomCellID = @"RoomCell";
     [initView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-0-[initViewBg]-0-|" options:NSLayoutFormatAlignmentMask metrics:nil views:views]];
     
 
-    int height = CGRectGetHeight(self.view.bounds);
-    NSString *imageName;
-    switch (height) {
-        case 480:
-            imageName = @"Default.png";
-            break;
-        case 568:
-            imageName = @"Default-568h";
-            break;
-        case 667:
-            imageName = @"Default-667h";
-            break;
-        case 736:
-            imageName = @"Default-736h";
-            break;
-        case 768:
-            imageName = @"Default-Landscape";
-            break;
-        case 1024:
-            imageName = @"Default-Portrait";
-            break;
-        default:
-            imageName = @"Default-736h";
-            
-            break;
+    CGSize viewSize = self.view.bounds.size;
+    
+    NSString *launchImage = nil;
+    
+    NSArray* imagesDict = [[[NSBundle mainBundle] infoDictionary] valueForKey:@"UILaunchImages"];
+    NSString *viewOrientation = @"Portrait";//横屏请设置成 @"Landscape"
+    if (self.view.bounds.size.width>self.view.bounds.size.height) {
+        viewOrientation = @"Landscape";
+    }else{
+        viewOrientation = @"Portrait";
     }
-    initViewBg.image = [UIImage imageNamed:imageName];
+    for(NSDictionary* dict in imagesDict)
+    {
+        
+        CGSize imageSize = CGSizeFromString(dict[@"UILaunchImageSize"]);
+        
+        if(CGSizeEqualToSize(imageSize, viewSize) && [viewOrientation isEqualToString:dict[@"UILaunchImageOrientation"]])
+        {
+            launchImage = dict[@"UILaunchImageName"];
+        }
+        
+    }
+    
+    initViewBg.image = [UIImage imageNamed:launchImage];
     UIActivityIndicatorView *activityIndicatorView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
     [initView addSubview:activityIndicatorView];
     
@@ -468,6 +465,8 @@ static NSString *kRoomCellID = @"RoomCell";
 
 - (void)setBackGroundImageView
 {
+    
+    //todo  wyy
     self.bgView = [[UIView alloc] init];
     [self.view addSubview:self.bgView ];
     UIImageView *bgImageView = [UIImageView new];
@@ -489,25 +488,25 @@ static NSString *kRoomCellID = @"RoomCell";
     NSString *imageName;
     switch (height) {
         case 480:
-            imageName = @"Default.png";
+            imageName = @"homeBackGround";
             break;
         case 568:
-            imageName = @"Default-568h";
+            imageName = @"homeBackGround";
             break;
         case 667:
-            imageName = @"Default-667h";
+            imageName = @"homeBackGround";
             break;
         case 736:
-            imageName = @"Default-736h";
+            imageName = @"homeBackGround";
             break;
         case 768:
-            imageName = @"Default-Landscape";
+            imageName = @"homeBackGroundLandscape";
             break;
         case 1024:
-            imageName = @"Default-Portrait";
+            imageName = @"homeBackGroundPortrait";
             break;
         default:
-            imageName = @"Default-736h";
+            imageName = @"homeBackGround";
             
             break;
     }
@@ -596,6 +595,7 @@ static NSString *kRoomCellID = @"RoomCell";
         roomItem.jointime = [[dict objectForKey:@"jointime"] longValue];
         roomItem.mettingType = [[dict objectForKey:@"meettype"] integerValue];
         roomItem.mettingState = [[dict objectForKey:@"meetenable"] integerValue];
+        roomItem.anyRtcID = [NSString stringWithFormat:@"%@",[dict objectForKey:@"anyrtcid"]];
         
         [dataArray replaceObjectAtIndex:0 withObject:roomItem];
         [self.roomList reloadData];
