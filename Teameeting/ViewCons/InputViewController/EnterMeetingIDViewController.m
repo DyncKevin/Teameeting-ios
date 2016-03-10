@@ -145,14 +145,14 @@
     if (ISIPAD) {
         if (CGRectGetWidth(self.view.frame)>CGRectGetHeight(self.view.frame)) {
             UIColor *color = [UIColor colorWithRed:.1 green:.1 blue:.1 alpha:.8];
-            initViewBg.image = [[UIImage imageNamed:@"Default-Landscape"] applyBlurWithRadius:20 tintColor:color saturationDeltaFactor:1.8 maskImage:nil];
+            initViewBg.image = [[UIImage imageNamed:@"homeBackGroundLandscape"] applyBlurWithRadius:20 tintColor:color saturationDeltaFactor:1.8 maskImage:nil];
         }else{
             UIColor *color = [UIColor colorWithRed:.1 green:.1 blue:.1 alpha:.8];
-            initViewBg.image = [[UIImage imageNamed:@"Default-Portrait"] applyBlurWithRadius:20 tintColor:color saturationDeltaFactor:1.8 maskImage:nil];
+            initViewBg.image = [[UIImage imageNamed:@"homeBackGroundPortrait"] applyBlurWithRadius:20 tintColor:color saturationDeltaFactor:1.8 maskImage:nil];
         }
     }else{
         UIColor *color = [UIColor colorWithRed:.1 green:.1 blue:.1 alpha:.8];
-        initViewBg.image = [[UIImage imageNamed:@"Default-667h"] applyBlurWithRadius:20 tintColor:color saturationDeltaFactor:1.8 maskImage:nil];
+        initViewBg.image = [[UIImage imageNamed:@"homeBackGround"] applyBlurWithRadius:20 tintColor:color saturationDeltaFactor:1.8 maskImage:nil];
     }
 }
 
