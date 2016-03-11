@@ -32,8 +32,10 @@ static SvUDIDTools *uuidTool = nil;
     if (self) {
          NSError *error;
          _UUID = [SSKeychain passwordForService:kSSKeychainServiceName account:kSSKeychainAccountName error:&error];
+        if (!_UUID) {
+             _UUID = [SSKeychain passwordForService:kSSKeychainServiceName account:kSSKeychainAccountName error:&error];
+        }
        self.notFirstStart = [[[NSUserDefaults standardUserDefaults] objectForKey:@"isUpateNickName"] boolValue];
-        NSArray *array = [SSKeychain allAccounts];
         if (!_UUID) {
             CFUUIDRef uuid = CFUUIDCreate(NULL);
             assert(uuid != NULL);

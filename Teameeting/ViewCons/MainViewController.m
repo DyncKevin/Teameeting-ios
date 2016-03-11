@@ -188,6 +188,8 @@ static NSString *kRoomCellID = @"RoomCell";
         if (self.interfaceOrientation == UIInterfaceOrientationPortrait) {
             if (initView) {
                 initView.frame = [UIScreen mainScreen].bounds;
+                UIImageView *bg = [initView viewWithTag:401];
+                bg.image = [self getLaunchImage];
             }
             self.listBgView.frame = CGRectMake(0, 0, IPADLISTWIDTH, CGRectGetHeight(self.view.frame));
             self.navView.frame = CGRectMake(0, 0, IPADLISTWIDTH, 64);
@@ -196,10 +198,12 @@ static NSString *kRoomCellID = @"RoomCell";
             self.push.frame = self.view.bounds;
             [self.push updateLayout];
             UIImageView *bgImageView = [self.bgView viewWithTag:500];
-            bgImageView.image = [UIImage imageNamed:@"Default-Portrait"];
+            bgImageView.image = [UIImage imageNamed:@"homeBackGroundPortrait"];
         }else if(self.interfaceOrientation == UIInterfaceOrientationLandscapeLeft || self.interfaceOrientation == UIInterfaceOrientationLandscapeRight){
             if (initView) {
                 initView.frame = [UIScreen mainScreen].bounds;
+                UIImageView *bg = [initView viewWithTag:401];
+                bg.image = [self getLaunchImage];
             }
             self.listBgView.frame = CGRectMake(0, 0, IPADLISTWIDTH, CGRectGetHeight(self.view.frame));
             self.navView.frame = CGRectMake(0, 0, IPADLISTWIDTH, 64);
@@ -208,7 +212,7 @@ static NSString *kRoomCellID = @"RoomCell";
              self.push.frame = self.view.bounds;
             [self.push updateLayout];
             UIImageView *bgImageView = [self.bgView viewWithTag:500];
-            bgImageView.image = [UIImage imageNamed:@"Default-Landscape"];
+            bgImageView.image = [UIImage imageNamed:@"homeBackGroundLandscape"];
         }
     }
     
@@ -322,6 +326,7 @@ static NSString *kRoomCellID = @"RoomCell";
     [apple.window.rootViewController.view addSubview:initView];
     
     UIImageView *initViewBg = [UIImageView new];
+    initViewBg.tag = 401;
     [initView addSubview:initViewBg];
     
     initViewBg.translatesAutoresizingMaskIntoConstraints = NO;
@@ -335,34 +340,8 @@ static NSString *kRoomCellID = @"RoomCell";
     [initView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-0-[initViewBg]-0-|" options:NSLayoutFormatAlignmentMask metrics:nil views:views]];
     [initView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-0-[initViewBg]-0-|" options:NSLayoutFormatAlignmentMask metrics:nil views:views]];
     
-
-    int height = CGRectGetHeight(self.view.bounds);
-    NSString *imageName;
-    switch (height) {
-        case 480:
-            imageName = @"Default.png";
-            break;
-        case 568:
-            imageName = @"Default-568h";
-            break;
-        case 667:
-            imageName = @"Default-667h";
-            break;
-        case 736:
-            imageName = @"Default-736h";
-            break;
-        case 768:
-            imageName = @"Default-Landscape";
-            break;
-        case 1024:
-            imageName = @"Default-Portrait";
-            break;
-        default:
-            imageName = @"Default-736h";
-            
-            break;
-    }
-    initViewBg.image = [UIImage imageNamed:imageName];
+    initViewBg.image = [self getLaunchImage];
+    
     UIActivityIndicatorView *activityIndicatorView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
     [initView addSubview:activityIndicatorView];
     
@@ -445,6 +424,39 @@ static NSString *kRoomCellID = @"RoomCell";
         }
     }];
 }
+- (UIImage*)getLaunchImage
+{
+    CGSize viewSize = self.view.bounds.size;
+    
+    NSString *launchImage = nil;
+    
+    NSArray* imagesDict = [[[NSBundle mainBundle] infoDictionary] valueForKey:@"UILaunchImages"];
+    NSString *viewOrientation = @"Portrait";//横屏请设置成 @"Landscape"
+    if (self.view.bounds.size.width>self.view.bounds.size.height) {
+        viewOrientation = @"Landscape";
+    }else{
+        viewOrientation = @"Portrait";
+    }
+    for(NSDictionary* dict in imagesDict)
+    {
+        
+        CGSize imageSize = CGSizeFromString(dict[@"UILaunchImageSize"]);
+        
+        if([viewOrientation isEqualToString:dict[@"UILaunchImageOrientation"]])
+        {
+            if (CGSizeEqualToSize(imageSize, viewSize)) {
+                 launchImage = dict[@"UILaunchImageName"];
+            }else{
+                if (ISIPAD) {
+                    launchImage = dict[@"UILaunchImageName"];
+                }
+            }
+           
+        }
+        
+    }
+    return [UIImage imageNamed:launchImage];
+}
 
 - (void)getNotReadMessageNum
 {
@@ -468,6 +480,8 @@ static NSString *kRoomCellID = @"RoomCell";
 
 - (void)setBackGroundImageView
 {
+    
+    //todo  wyy
     self.bgView = [[UIView alloc] init];
     [self.view addSubview:self.bgView ];
     UIImageView *bgImageView = [UIImageView new];
@@ -483,35 +497,15 @@ static NSString *kRoomCellID = @"RoomCell";
     
     [_bgView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-0-[bgImageView]-0-|" options:NSLayoutFormatAlignmentMask metrics:nil views:views]];
     [_bgView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-0-[bgImageView]-0-|" options:NSLayoutFormatAlignmentMask metrics:nil views:views]];
-    
-    int height = CGRectGetHeight(self.view.bounds);
-    
-    NSString *imageName;
-    switch (height) {
-        case 480:
-            imageName = @"Default.png";
-            break;
-        case 568:
-            imageName = @"Default-568h";
-            break;
-        case 667:
-            imageName = @"Default-667h";
-            break;
-        case 736:
-            imageName = @"Default-736h";
-            break;
-        case 768:
-            imageName = @"Default-Landscape";
-            break;
-        case 1024:
-            imageName = @"Default-Portrait";
-            break;
-        default:
-            imageName = @"Default-736h";
-            
-            break;
+    if (ISIPAD) {
+        if (self.view.bounds.size.width>self.view.bounds.size.height) {
+             bgImageView.image = [UIImage imageNamed:@"homeBackGroundLandscape"];
+        }else{
+            bgImageView.image = [UIImage imageNamed:@"homeBackGroundPortrait"];
+        }
+    }else{
+         bgImageView.image = [UIImage imageNamed:@"homeBackGround"];
     }
-    bgImageView.image = [UIImage imageNamed:imageName];
 }
 
 -(void)displaySMSComposerSheet:(NSString*)roomID
@@ -596,6 +590,7 @@ static NSString *kRoomCellID = @"RoomCell";
         roomItem.jointime = [[dict objectForKey:@"jointime"] longValue];
         roomItem.mettingType = [[dict objectForKey:@"meettype"] integerValue];
         roomItem.mettingState = [[dict objectForKey:@"meetenable"] integerValue];
+        roomItem.anyRtcID = [NSString stringWithFormat:@"%@",[dict objectForKey:@"anyrtcid"]];
         
         [dataArray replaceObjectAtIndex:0 withObject:roomItem];
         [self.roomList reloadData];

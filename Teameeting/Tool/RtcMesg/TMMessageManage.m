@@ -269,6 +269,7 @@
     return resultArray;
 }
 
+
 -(void)deleteDataFromRoomTableWithKey:(NSString *)key
 {
     NSManagedObjectContext *context = [self managedObjectContext];
@@ -444,37 +445,6 @@
             }
             
         }
-        /*else if ([[messageDic objectForKey:@"tags"] intValue] == MCSendTagsSUBSCRIBE || [[messageDic objectForKey:@"tags"] intValue] == MCSendTagsUNSUBSCRIBE) {
-            
-            for (id <tmMessageReceive> object in self.messageListeners) {
-                
-                if ([object respondsToSelector:@selector(videoSubscribeWith:action:)] && [object receiveMessageEnable]) {
-                    
-                    if (![[messageDic objectForKey:@"from"] isEqualToString:[SvUDIDTools shead].UUID]) {
-                        
-                        [object videoSubscribeWith:[messageDic objectForKey:@"cont"] action:[[messageDic objectForKey:@"tags"] intValue]];
-                    }
-                    
-                }
-            }
-        }else if([[messageDic objectForKey:@"tags"] intValue] == MCSendTagsAUDIOSET || [[messageDic objectForKey:@"tags"] intValue] == MCSendTagsVIDEOSET){
-            for (id <tmMessageReceive> object in self.messageListeners) {
-                
-                if ([object respondsToSelector:@selector(videoAudioSet:action:)] && [object receiveMessageEnable]) {
-                    
-                    if (![[messageDic objectForKey:@"from"] isEqualToString:[SvUDIDTools shead].UUID]) {
-                        
-                        if ([[messageDic objectForKey:@"tags"] intValue] == MCSendTagsAUDIOSET) {
-                             [object videoAudioSet:[messageDic objectForKey:@"cont"] action:[[messageDic objectForKey:@"tags"] intValue]];
-                        }else{
-                             [object videoAudioSet:[messageDic objectForKey:@"cont"] action:[[messageDic objectForKey:@"tags"] intValue]];
-                        }
-                       
-                    }
-                    
-                }
-            }
-        }*/
         
     });
 }
