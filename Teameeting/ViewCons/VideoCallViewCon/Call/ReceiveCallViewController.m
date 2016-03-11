@@ -135,52 +135,6 @@
 
      [_client Join:roomItem.anyRtcID];
 }
-
-- (void)videoAudioSet:(NSString *)content action:(NSInteger)action
-{
-//     NSDictionary *dict = [ToolUtils JSONValue:content];
-//    
-//    BOOL isvideoFound = NO;
-//    BOOL isaudioFound = NO;
-//    if (action==6) {
-//        
-//        NSLog(@"%@",[_dicRemoteVideoView allKeys]);
-//        for (NSString *strTag in [_dicRemoteVideoView allKeys]) {
-//            VideoShowItem *item = [_dicRemoteVideoView objectForKey:strTag];
-//            if ([item.publishID isEqualToString:[dict objectForKey:@"PublishId"]]) {
-//                isaudioFound = YES;
-//                if ([[dict objectForKey:@"Media"] isEqualToString:@"Close"]) {
-//                      [item setAudioClose:YES];
-//                }else{
-//                     [item setAudioClose:NO];
-//                }
-//                break;
-//            }
-//        }
-//        // not found
-//        if (!isaudioFound) {
-//            [_audioOperateArray addObject:content];
-//        }
-//    }else{
-//        for (NSString *strTag in [_dicRemoteVideoView allKeys]) {
-//            VideoShowItem *item = [_dicRemoteVideoView objectForKey:strTag];
-//            if ([item.publishID isEqualToString:[dict objectForKey:@"PublishId"]]) {
-//                isvideoFound = YES;
-//                if ([[dict objectForKey:@"Media"] isEqualToString:@"Close"]) {
-//                    [item setVideoHidden:YES];
-//                }else{
-//                    [item setVideoHidden:NO];
-//                }
-//                break;
-//            }
-//        }
-//        if (!isvideoFound) {
-//            [_videoOperateArray addObject:content];
-//        }
-//    }
-   
-  
-}
 // setting pre operate to view
 - (void)settingMediaToViewOperate:(VideoShowItem*)item
 {
