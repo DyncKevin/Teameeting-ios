@@ -7,12 +7,15 @@
 //
 
 #import "GuideViewController.h"
-
+#import "UIImage+Category.h"
+#import "Common.h"
 @interface GuideViewController ()<UIScrollViewDelegate>
 
 
 @property(nonatomic,strong)UIScrollView *scrollview;
 @property(nonatomic,strong)UIPageControl *pageControl;
+@property(nonatomic,strong)NSArray *array;
+@property(nonatomic,strong)NSMutableArray *imageArray;
 
 @end
 
@@ -21,10 +24,33 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    UIImageView *groudImageView = [[UIImageView alloc] initWithFrame:self.view.bounds];
+    groudImageView.translatesAutoresizingMaskIntoConstraints = NO;
+    if (ISIPAD) {
+        
+        if (CGRectGetWidth(self.view.frame)>CGRectGetHeight(self.view.frame)) {
+            
+            groudImageView.image = [[UIImage imageNamed:@"homeBackGroundLandscape"] applyBlurWithRadius:0 tintColor:[UIColor colorWithRed:.1 green:.1 blue:.1 alpha:.8] saturationDeltaFactor:0 maskImage:nil];
+            
+        } else {
+            
+            groudImageView.image = [[UIImage imageNamed:@"homeBackGroundPortrait"] applyBlurWithRadius:0 tintColor:[UIColor colorWithRed:.1 green:.1 blue:.1 alpha:.8] saturationDeltaFactor:0 maskImage:nil];
+        }
+
+    } else {
+        
+        groudImageView.image = [[UIImage imageNamed:@"homeBackGround"] applyBlurWithRadius:0 tintColor:[UIColor colorWithRed:.1 green:.1 blue:.1 alpha:.8] saturationDeltaFactor:0 maskImage:nil];
+    }
+    [self.view addSubview:groudImageView];
+    NSLayoutConstraint* groudImageControllerLeftConstraint = [NSLayoutConstraint constraintWithItem:groudImageView attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeWidth multiplier:1.0f constant:0.f];
+    NSLayoutConstraint* groudImageControllerTopConstraint = [NSLayoutConstraint constraintWithItem:groudImageView attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeHeight multiplier:1.0f constant:0.f];
+    groudImageControllerLeftConstraint.active = YES;
+    groudImageControllerTopConstraint.active = YES;
+
     self.scrollview = [[UIScrollView alloc] init];
     self.scrollview.translatesAutoresizingMaskIntoConstraints = NO;
     self.scrollview.delegate = self;
-    self.scrollview.backgroundColor = [UIColor groupTableViewBackgroundColor];
+    self.scrollview.backgroundColor = [UIColor clearColor];
     [self.view addSubview:self.scrollview];
     self.automaticallyAdjustsScrollViewInsets = NO;
     self.pageControl = [[UIPageControl alloc] initWithFrame:CGRectMake(10, self.view.frame.size.height - 30, self.view.frame.size.width - 20, 20)];
@@ -32,7 +58,22 @@
     self.pageControl.backgroundColor = [UIColor clearColor];
     [self.view addSubview:self.pageControl];
     
-    NSArray *array = [NSArray arrayWithObjects:@"2X-img-59",@"2X-img-60",@"2X-img-61", nil];
+    if (ISIPAD) {
+        
+        if (CGRectGetWidth(self.view.frame)>CGRectGetHeight(self.view.frame)) {
+        
+            self.array = [NSArray arrayWithObjects:@"ipadGuideFirstLandscape",@"ipadGuideSecondLandscape",@"ipadGuideThirdLandscape",@"", nil];
+            
+        } else {
+            
+            self.array = [NSArray arrayWithObjects:@"ipadGuideFirstPortrait",@"ipadGuideSecondPortrait",@"ipadGuideThirdPortrait",@"", nil];
+        }
+
+    } else {
+        
+        self.array = [NSArray arrayWithObjects:@"iphoneGuideFirst",@"iphoneGuideSecond",@"iphoneGuideThird",@"", nil];
+    }
+    self.imageArray = [[NSMutableArray alloc] init];
     self.scrollview.bounces = YES;
     self.scrollview.pagingEnabled = YES;
     self.scrollview.showsHorizontalScrollIndicator = YES;
@@ -52,17 +93,18 @@
     pageControllerLeftConstraint.active = YES;
     pageControllerTopConstraint.active = YES;
     
-
+    [self.scrollview.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
     static UIImageView *tempImageView = nil;
     NSArray* tempvConstraintArray = nil;
-    for (int i = 0; i < [array count]; i ++) {
+    for (int i = 0; i < [self.array count]; i ++) {
         
         if (i != 0) {
             
             UIImageView *imageView = [[UIImageView alloc] init];
             [self.scrollview addSubview:imageView];
             imageView.translatesAutoresizingMaskIntoConstraints = NO;
-            imageView.image = [UIImage imageNamed:[array objectAtIndex:i]];
+            imageView.image = [UIImage imageNamed:[self.array objectAtIndex:i]];
+            [self.imageArray addObject:imageView];
             if (tempvConstraintArray) {
                 
                 [NSLayoutConstraint deactivateConstraints:tempvConstraintArray];
@@ -92,12 +134,11 @@
             tempImageView = imageView;
             [self.scrollview addSubview:imageView];
             imageView.translatesAutoresizingMaskIntoConstraints = NO;
-            imageView.image = [UIImage imageNamed:[array objectAtIndex:i]];
-            
+            imageView.image = [UIImage imageNamed:[self.array objectAtIndex:i]];
+            [self.imageArray addObject:imageView];
             
             NSArray* vConstraintArray = [NSLayoutConstraint constraintsWithVisualFormat:@"V:|-0-[imageView]-0-|" options:0 metrics:nil views:@{@"imageView": imageView}];
             [NSLayoutConstraint activateConstraints:vConstraintArray];
-            
             
             NSArray* v2ConstraintArray = [NSLayoutConstraint constraintsWithVisualFormat:@"H:|-0-[imageView]" options:0 metrics:nil views:@{@"imageView": imageView}];
             [NSLayoutConstraint activateConstraints:v2ConstraintArray];
@@ -109,7 +150,7 @@
         }
         
     }
-    self.pageControl.numberOfPages = [array count];
+    self.pageControl.numberOfPages = [self.array count] - 1;
     self.pageControl.currentPage = 0;
 }
 
@@ -124,17 +165,54 @@
         
         int index = fabs(scrollView.contentOffset.x)/scrollView.frame.size.width;
         self.pageControl.currentPage = index;
+        if (index == 3) {
+            
+            [UIView animateWithDuration:0.2 animations:^{
+                
+                self.view.alpha = 0;
+                
+            } completion:^(BOOL finished) {
+                
+                [self.view removeFromSuperview];
+            }];
+             
+        }
     }
 }
 
-- (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
-{
+- (void)viewDidLayoutSubviews {
     
+    if (!ISIPAD)
+        return;
+        
+    if (self.interfaceOrientation == UIInterfaceOrientationPortrait) {
+    
+        self.array = [NSArray arrayWithObjects:@"ipadGuideFirstPortrait",@"ipadGuideSecondPortrait",@"ipadGuideThirdPortrait",@"", nil];
+        for (int i = 0; i < [self.imageArray count]; i++) {
+            
+            UIImageView *item = [self.imageArray objectAtIndex:i];
+            item.image = [UIImage imageNamed:[self.array objectAtIndex:i]];
+            
+        }
+        
+    } else if(self.interfaceOrientation == UIInterfaceOrientationLandscapeLeft || self.interfaceOrientation == UIInterfaceOrientationLandscapeRight) {
+        
+        self.array = [NSArray arrayWithObjects:@"ipadGuideFirstLandscape",@"ipadGuideSecondLandscape",@"ipadGuideThirdLandscape",@"", nil];
+        for (int i = 0; i < [self.imageArray count]; i++) {
+            
+            UIImageView *item = [self.imageArray objectAtIndex:i];
+            item.image = [UIImage imageNamed:[self.array objectAtIndex:i]];
+            
+        }
+        
+    }
+    [self performSelector:@selector(layoutScrollView) withObject:nil afterDelay:0.1];
 }
 
-- (BOOL)shouldAutorotate {
+- (void)layoutScrollView {
     
-    return YES;
+    
+    [self.scrollview setContentOffset:CGPointMake(self.pageControl.currentPage*self.view.bounds.size.width, 0) animated:YES];
 }
 
 - (void)didReceiveMemoryWarning {

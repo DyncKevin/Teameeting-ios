@@ -204,6 +204,15 @@
 		78FA86871C50731A00BAF72B /* VideoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 78FA86861C50731A00BAF72B /* VideoViewController.m */; };
 		EC157AD0B3A13035EAD046BB /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2E4CBCA8C81B4B1BFCC1872C /* libPods.a */; };
 		FC19C2D51C85B78B003419B2 /* GuideViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FC19C2D41C85B78B003419B2 /* GuideViewController.m */; };
+		FC56BB401C993C41001EAFF6 /* iphoneGuideFirst@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FC56BB3C1C993C41001EAFF6 /* iphoneGuideFirst@2x.png */; };
+		FC56BB421C993C41001EAFF6 /* iphoneGuideSecond@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FC56BB3E1C993C41001EAFF6 /* iphoneGuideSecond@2x.png */; };
+		FC56BB431C993C41001EAFF6 /* iphoneGuideThird@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FC56BB3F1C993C41001EAFF6 /* iphoneGuideThird@2x.png */; };
+		FC56BB471C99558F001EAFF6 /* ipadGuideFirstPortrait@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FC56BB441C99558F001EAFF6 /* ipadGuideFirstPortrait@2x.png */; };
+		FC56BB481C99558F001EAFF6 /* ipadGuideSecondPortrait@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FC56BB451C99558F001EAFF6 /* ipadGuideSecondPortrait@2x.png */; };
+		FC56BB491C99558F001EAFF6 /* ipadGuideThirdPortrait@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FC56BB461C99558F001EAFF6 /* ipadGuideThirdPortrait@2x.png */; };
+		FC56BB4D1C9957E9001EAFF6 /* ipadGuideFirstLandscape@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FC56BB4A1C9957E9001EAFF6 /* ipadGuideFirstLandscape@2x.png */; };
+		FC56BB4E1C9957E9001EAFF6 /* ipadGuideSecondLandscape@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FC56BB4B1C9957E9001EAFF6 /* ipadGuideSecondLandscape@2x.png */; };
+		FC56BB4F1C9957E9001EAFF6 /* ipadGuideThirdLandscape@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FC56BB4C1C9957E9001EAFF6 /* ipadGuideThirdLandscape@2x.png */; };
 		FC6A0F4A1C464B9400D8C56D /* TMessage.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = FC6A0F481C464B9400D8C56D /* TMessage.xcdatamodeld */; };
 		FCA8ADCC1C89968A00D28F01 /* homeBackGround@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FCA8ADC91C89968A00D28F01 /* homeBackGround@2x.png */; };
 		FCA8ADCD1C89968A00D28F01 /* homeBackGroundLandscape@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FCA8ADCA1C89968A00D28F01 /* homeBackGroundLandscape@2x.png */; };
@@ -518,6 +527,15 @@
 		DFBC29C224EA228C97676A8B /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		FC19C2D31C85B78B003419B2 /* GuideViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GuideViewController.h; sourceTree = "<group>"; };
 		FC19C2D41C85B78B003419B2 /* GuideViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GuideViewController.m; sourceTree = "<group>"; };
+		FC56BB3C1C993C41001EAFF6 /* iphoneGuideFirst@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "iphoneGuideFirst@2x.png"; sourceTree = "<group>"; };
+		FC56BB3E1C993C41001EAFF6 /* iphoneGuideSecond@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "iphoneGuideSecond@2x.png"; sourceTree = "<group>"; };
+		FC56BB3F1C993C41001EAFF6 /* iphoneGuideThird@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "iphoneGuideThird@2x.png"; sourceTree = "<group>"; };
+		FC56BB441C99558F001EAFF6 /* ipadGuideFirstPortrait@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ipadGuideFirstPortrait@2x.png"; sourceTree = "<group>"; };
+		FC56BB451C99558F001EAFF6 /* ipadGuideSecondPortrait@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ipadGuideSecondPortrait@2x.png"; sourceTree = "<group>"; };
+		FC56BB461C99558F001EAFF6 /* ipadGuideThirdPortrait@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ipadGuideThirdPortrait@2x.png"; sourceTree = "<group>"; };
+		FC56BB4A1C9957E9001EAFF6 /* ipadGuideFirstLandscape@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ipadGuideFirstLandscape@2x.png"; sourceTree = "<group>"; };
+		FC56BB4B1C9957E9001EAFF6 /* ipadGuideSecondLandscape@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ipadGuideSecondLandscape@2x.png"; sourceTree = "<group>"; };
+		FC56BB4C1C9957E9001EAFF6 /* ipadGuideThirdLandscape@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ipadGuideThirdLandscape@2x.png"; sourceTree = "<group>"; };
 		FC6A0F491C464B9400D8C56D /* TMessage.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = TMessage.xcdatamodel; sourceTree = "<group>"; };
 		FCA8ADC91C89968A00D28F01 /* homeBackGround@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "homeBackGround@2x.png"; sourceTree = "<group>"; };
 		FCA8ADCA1C89968A00D28F01 /* homeBackGroundLandscape@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "homeBackGroundLandscape@2x.png"; sourceTree = "<group>"; };
@@ -680,6 +698,15 @@
 		783701741C43DF64006C80DE /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				FC56BB4A1C9957E9001EAFF6 /* ipadGuideFirstLandscape@2x.png */,
+				FC56BB4B1C9957E9001EAFF6 /* ipadGuideSecondLandscape@2x.png */,
+				FC56BB4C1C9957E9001EAFF6 /* ipadGuideThirdLandscape@2x.png */,
+				FC56BB441C99558F001EAFF6 /* ipadGuideFirstPortrait@2x.png */,
+				FC56BB451C99558F001EAFF6 /* ipadGuideSecondPortrait@2x.png */,
+				FC56BB461C99558F001EAFF6 /* ipadGuideThirdPortrait@2x.png */,
+				FC56BB3C1C993C41001EAFF6 /* iphoneGuideFirst@2x.png */,
+				FC56BB3E1C993C41001EAFF6 /* iphoneGuideSecond@2x.png */,
+				FC56BB3F1C993C41001EAFF6 /* iphoneGuideThird@2x.png */,
 				FCA8ADC91C89968A00D28F01 /* homeBackGround@2x.png */,
 				FCA8ADCA1C89968A00D28F01 /* homeBackGroundLandscape@2x.png */,
 				FCA8ADCB1C89968A00D28F01 /* homeBackGroundPortrait@2x.png */,
@@ -1424,6 +1451,7 @@
 				780455C61C51FB11003ADDCC /* sharebackgroud@2x.png in Resources */,
 				78C5ECCA1C4E45B300193322 /* copy_scuess@2x.png in Resources */,
 				783702B11C43DF64006C80DE /* mailInvite@3x.png in Resources */,
+				FC56BB431C993C41001EAFF6 /* iphoneGuideThird@2x.png in Resources */,
 				7837028F1C43DF64006C80DE /* cancelChat@2x.png in Resources */,
 				783701441C43DDFB006C80DE /* LaunchScreen.storyboard in Resources */,
 				783702C91C43DF64006C80DE /* notification_not_main@3x.png in Resources */,
@@ -1432,14 +1460,17 @@
 				783703221C43DF64006C80DE /* RootViewController.xib in Resources */,
 				783702B01C43DF64006C80DE /* mailInvite@2x.png in Resources */,
 				783702961C43DF64006C80DE /* close_enter@2x.png in Resources */,
+				FC56BB471C99558F001EAFF6 /* ipadGuideFirstPortrait@2x.png in Resources */,
 				781F6E101C44A33F00026160 /* meeting_private@2x.png in Resources */,
 				783703151C43DF64006C80DE /* 0.jpeg in Resources */,
 				783702AF1C43DF64006C80DE /* mail_main@3x.png in Resources */,
 				783702A41C43DF64006C80DE /* enter_go@3x.png in Resources */,
+				FC56BB4F1C9957E9001EAFF6 /* ipadGuideThirdLandscape@2x.png in Resources */,
 				783703091C43DF64006C80DE /* chat_animation_white1.png in Resources */,
 				783703141C43DF64006C80DE /* chatto_bg_normal.png in Resources */,
 				783702BC1C43DF64006C80DE /* micState@2x.png in Resources */,
 				7837030B1C43DF64006C80DE /* chat_animation_white3.png in Resources */,
+				FC56BB491C99558F001EAFF6 /* ipadGuideThirdPortrait@2x.png in Resources */,
 				783702B71C43DF64006C80DE /* messageInvite@3x.png in Resources */,
 				783702D31C43DF64006C80DE /* videoBackgroud.png in Resources */,
 				783702C81C43DF64006C80DE /* notification_not_main@2x.png in Resources */,
@@ -1456,6 +1487,7 @@
 				783702A71C43DF64006C80DE /* hangup@2x.png in Resources */,
 				783702AD1C43DF64006C80DE /* link_main@3x.png in Resources */,
 				783702BE1C43DF64006C80DE /* no_net_alert@2x.png in Resources */,
+				FC56BB421C993C41001EAFF6 /* iphoneGuideSecond@2x.png in Resources */,
 				783703061C43DF64006C80DE /* chat_animation1.png in Resources */,
 				783702AE1C43DF64006C80DE /* mail_main@2x.png in Resources */,
 				783703161C43DF64006C80DE /* 1.jpeg in Resources */,
@@ -1466,6 +1498,7 @@
 				783702C01C43DF64006C80DE /* no_room@2x.png in Resources */,
 				783702BB1C43DF64006C80DE /* micselect@3x.png in Resources */,
 				783702D21C43DF64006C80DE /* video@3x.png in Resources */,
+				FC56BB4D1C9957E9001EAFF6 /* ipadGuideFirstLandscape@2x.png in Resources */,
 				783702C71C43DF64006C80DE /* notification_line_main@3x.png in Resources */,
 				783702941C43DF64006C80DE /* chat@2x.png in Resources */,
 				783702B41C43DF64006C80DE /* message_main@2x.png in Resources */,
@@ -1477,10 +1510,12 @@
 				781F6E1A1C44DA5300026160 /* metting_nonotification@2x.png in Resources */,
 				783702D11C43DF64006C80DE /* video@2x.png in Resources */,
 				7810F7F11C5A073C00B77955 /* nick_close@3x.png in Resources */,
+				FC56BB401C993C41001EAFF6 /* iphoneGuideFirst@2x.png in Resources */,
 				FCA8ADCD1C89968A00D28F01 /* homeBackGroundLandscape@2x.png in Resources */,
 				782807A41C463AED0061D6CD /* Icon-1@2x.png in Resources */,
 				783703081C43DF64006C80DE /* chat_animation3.png in Resources */,
 				783702B21C43DF64006C80DE /* menucancel@2x.png in Resources */,
+				FC56BB4E1C9957E9001EAFF6 /* ipadGuideSecondLandscape@2x.png in Resources */,
 				783702CD1C43DF64006C80DE /* setting_main_point@3x.png in Resources */,
 				783702BD1C43DF64006C80DE /* micState@3x.png in Resources */,
 				783702931C43DF64006C80DE /* changeVideo@3x.png in Resources */,
@@ -1493,6 +1528,7 @@
 				7837030A1C43DF64006C80DE /* chat_animation_white2.png in Resources */,
 				781F6E0E1C44A33F00026160 /* meeting_num@2x.png in Resources */,
 				783702D41C43DF64006C80DE /* weixin_main@2x.png in Resources */,
+				FC56BB481C99558F001EAFF6 /* ipadGuideSecondPortrait@2x.png in Resources */,
 				783702B81C43DF64006C80DE /* mic@2x.png in Resources */,
 				783702A61C43DF64006C80DE /* enter_main@3x.png in Resources */,
 				783702CB1C43DF64006C80DE /* rename_main@3x.png in Resources */,
@@ -1813,7 +1849,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_ENTITLEMENTS = "";
-				CODE_SIGN_IDENTITY = "iPhone Developer: yangyang wang (3VG6DLPKJ2)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: yangyang wang (3VG6DLPKJ2)";
 				ENABLE_BITCODE = NO;
 				GCC_PREFIX_HEADER = "$(SRCROOT)/Teameeting-Prefix.pch";
@@ -1870,7 +1906,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_ENTITLEMENTS = "";
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Shanghai Boyuan Electronic Technology Co. Ltd (5543CP4MRT)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Shanghai Boyuan Electronic Technology Co. Ltd (5543CP4MRT)";
 				ENABLE_BITCODE = NO;
 				GCC_PREFIX_HEADER = "$(SRCROOT)/Teameeting-Prefix.pch";
