@@ -73,6 +73,7 @@
         //self.TextViewInput.layer.cornerRadius = 4;
         //self.TextViewInput.layer.masksToBounds = YES;
         self.TextViewInput.delegate = self;
+        self.TextViewInput.font = [UIFont systemFontOfSize:14];
         //self.TextViewInput.layer.borderWidth = 1;
         //self.TextViewInput.layer.borderColor = [[[UIColor lightGrayColor] colorWithAlphaComponent:0.4] CGColor];
         [self addSubview:self.TextViewInput];
@@ -81,7 +82,7 @@
         placeHold = [[UILabel alloc]initWithFrame:CGRectMake(10, 0, 200, 30)];
         placeHold.backgroundColor = [UIColor clearColor];
         placeHold.text = @"发送消息";
-        placeHold.font = [UIFont systemFontOfSize:13];
+        placeHold.font = [UIFont systemFontOfSize:14];
         placeHold.textColor = [[UIColor lightGrayColor] colorWithAlphaComponent:0.8];
         [self.TextViewInput addSubview:placeHold];
 

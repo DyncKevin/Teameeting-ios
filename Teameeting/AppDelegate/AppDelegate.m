@@ -39,7 +39,7 @@
     [[UIApplication sharedApplication] setIdleTimerDisabled:YES];
     [ASNetwork sharedNetwork];
     [SvUDIDTools shead];
-    [RoomApp shead].appDelgate = self;
+   
     // Override point for customization after application launch.
     if (launchOptions) {
         NSString *string =  [NSString stringWithFormat:@"%@",launchOptions[UIApplicationLaunchOptionsURLKey]];
@@ -66,7 +66,11 @@
     [JPUSHService setupWithOption:launchOptions appKey:appKey channel:channel apsForProduction:isProduction];
     
     [WXApi registerApp:@"wx4d9fbaec0a4c368f" withDescription:@"demo 2.0"];
-    UINavigationController *nai = [[UINavigationController alloc] initWithRootViewController:[MainViewController new]];
+    MainViewController *mainViewController = [MainViewController new];
+    UINavigationController *nai = [[UINavigationController alloc] initWithRootViewController:mainViewController];
+    [RoomApp shead].appDelgate = self;
+    [RoomApp shead].mainViewController = mainViewController;
+    
     self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
     nai.navigationBarHidden = YES;
     [self.window setRootViewController:nai];

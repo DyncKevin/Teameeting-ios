@@ -113,6 +113,7 @@
     _dicRemoteVideoView = [[NSMutableDictionary alloc] initWithCapacity:5];
     [AnyrtcMeet InitAnyRTC:@"mzw0001" andToken:@"defq34hj92mxxjhaxxgjfdqi1s332dd" andAESKey:@"d74TcmQDMB5nWx9zfJ5al7JdEg3XwySwCkhdB9lvnd1" andAppId:@"org.dync.app"];
     _client = [[AnyrtcMeet alloc] init];
+    _client.proximityMonitoringEnabled = NO;
     _localVideoView = [[VideoShowItem alloc] init];
     [_localVideoView setFullScreen:NO];
     UIView *local = [[UIView alloc] initWithFrame:self.view.frame];

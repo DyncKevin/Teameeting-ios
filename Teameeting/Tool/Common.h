@@ -20,4 +20,5 @@
 #define requesturlid  @"http://123.59.68.21:8055"
 //#define TMMessageUrl @"192.168.7.61"
 #define TMMessageUrl @"180.150.179.128"
+//#define TMMessageUrl @"message.anyrtc.io"
 #endif /* Common_h */

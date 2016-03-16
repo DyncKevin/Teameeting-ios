@@ -13,6 +13,7 @@
 #import "ServerVisit.h"
 #import "ToolUtils.h"
 #import "JPUSHService.h"
+#import "RoomApp.h"
 
 @interface TMMessageManage() <MsgClientProtocol>
 
@@ -405,7 +406,9 @@
                 }
             }
             if ([ToolUtils shead].isBack) {
-                
+                if (![[RoomApp shead] canSendLocalNotificationWithRoomID:[messageDic objectForKey:@"room"]]) {
+                    return;
+                }
                 UILocalNotification *notification = [[UILocalNotification alloc] init];
                 NSDate *pushDate = [NSDate dateWithTimeIntervalSinceNow:1];
                 if (notification != nil) {
