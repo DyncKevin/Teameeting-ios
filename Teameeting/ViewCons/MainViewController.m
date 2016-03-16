@@ -238,7 +238,7 @@ static NSString *kRoomCellID = @"RoomCell";
         return;
     }
     UIColor *color = [UIColor colorWithRed:.1 green:.1 blue:.1 alpha:.8];
-   UIImage * bgimage = [image applyBlurWithRadius:20 tintColor:color saturationDeltaFactor:1.8 maskImage:nil];
+    UIImage * bgimage = [image applyBlurWithRadius:20 tintColor:color saturationDeltaFactor:1.8 maskImage:nil];
     [self.listBgView setImage:bgimage];
    // [self.listBgView setImageToBlur:image  blurRadius:20 completionBlock:^(){}];
 }

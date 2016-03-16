@@ -18,11 +18,13 @@
 #import "JPUSHService.h"
 #import "ToolUtils.h"
 #import "SvUDIDTools.h"
-
+#import "GuideViewController.h"
 #import "TMMessageManage.h"
 
 @interface AppDelegate () <UISplitViewControllerDelegate>
 
+
+@property(nonatomic,strong)GuideViewController *guideView;
 @end
 
 @implementation AppDelegate
@@ -72,6 +74,13 @@
     [self.window setRootViewController:nai];
     self.window.backgroundColor = [UIColor whiteColor];
     [self.window makeKeyAndVisible];
+    if (![[NSUserDefaults standardUserDefaults] boolForKey:@"FirstLoad"]) {
+        
+        self.guideView = [[GuideViewController alloc] init];
+        [self.guideView.view setFrame:self.window.rootViewController.view.bounds];
+        [self.window addSubview:self.guideView.view];
+        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"FirstLoad"];
+    }
     return YES;
 }
 
@@ -201,6 +210,7 @@
     
     [ToolUtils shead].isBack = YES;
 }
+
 
 - (void)applicationWillEnterForeground:(UIApplication *)application {
     // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
