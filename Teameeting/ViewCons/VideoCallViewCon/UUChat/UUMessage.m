@@ -59,6 +59,21 @@
         NSInteger days = [NSDate daysOffsetBetweenStartDate:lastDate endDate:[NSDate date]];
         if (days <= 2) {
             dateStr = [lastDate stringYearMonthDayCompareToday];
+            if ([lastDate hour]>=5 && [lastDate hour]<12) {
+                period = @"上午";
+                hour = [NSString stringWithFormat:@"%02d",(int)[lastDate hour]];
+            }else if ([lastDate hour]>=12 && [lastDate hour]<=18){
+                period = @"下午";
+                hour = [NSString stringWithFormat:@"%02d",(int)[lastDate hour]-12];
+            }else if ([lastDate hour]>18 && [lastDate hour]<=23){
+                period = @"晚上";
+                hour = [NSString stringWithFormat:@"%02d",(int)[lastDate hour]-12];
+            }else{
+                period = @"早上";
+                hour = [NSString stringWithFormat:@"%02d",(int)[lastDate hour]];
+            }
+            return [NSString stringWithFormat:@"%@ %@ %@:%02d",dateStr,period,hour,(int)[lastDate minute]];
+            
         }else{
             dateStr = [lastDate stringMonthDay];
         }
@@ -66,21 +81,8 @@
         dateStr = [lastDate stringYearMonthDay];
     }
     
-    
-    if ([lastDate hour]>=5 && [lastDate hour]<12) {
-        period = @"AM";
-        hour = [NSString stringWithFormat:@"%02d",(int)[lastDate hour]];
-    }else if ([lastDate hour]>=12 && [lastDate hour]<=18){
-        period = @"PM";
-        hour = [NSString stringWithFormat:@"%02d",(int)[lastDate hour]-12];
-    }else if ([lastDate hour]>18 && [lastDate hour]<=23){
-        period = @"Night";
-        hour = [NSString stringWithFormat:@"%02d",(int)[lastDate hour]-12];
-    }else{
-        period = @"Dawn";
-        hour = [NSString stringWithFormat:@"%02d",(int)[lastDate hour]];
-    }
-    return [NSString stringWithFormat:@"%@ %@ %@:%02d",dateStr,period,hour,(int)[lastDate minute]];
+    return [NSString stringWithFormat:@"%@ %@:%02d",dateStr,hour,(int)[lastDate minute]];
+   
 }
 
 - (void)minuteOffSetStart:(NSString *)start end:(NSString *)end

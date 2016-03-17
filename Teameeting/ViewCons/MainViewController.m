@@ -180,6 +180,9 @@ static NSString *kRoomCellID = @"RoomCell";
         if (self.netAlertView) {
             [self.netAlertView updateFrame];
         }
+        if (self.reNameAlertView) {
+            [self.reNameAlertView updateFrame];
+        }
     }
     if (self.oldInterface == self.interfaceOrientation || !ISIPAD) {
         return;
@@ -387,6 +390,9 @@ static NSString *kRoomCellID = @"RoomCell";
             if ([[dict objectForKey:@"code"] integerValue] == 200) {
                 RoomVO *roomVO = [[RoomVO alloc] initWithParams:[dict objectForKey:@"meetingList"]];
                 if (roomVO.deviceItemsList.count!=0) {
+                    if (weakSelf.dataArray.count != 0) {
+                        [weakSelf.dataArray removeAllObjects];
+                    }
                     [weakSelf.dataArray addObjectsFromArray:roomVO.deviceItemsList];
                 }
                 [weakSelf.roomList reloadData];
@@ -948,7 +954,7 @@ static NSString *kRoomCellID = @"RoomCell";
 - (void)addItemAndEnterMettingWithID:(NSString*)meeting
 {
     dispatch_async(dispatch_get_main_queue(), ^{
-        NSString* number=@"^\\d{12}$";
+        NSString* number=@"^\\d{10}$";
         NSPredicate *numberPre = [NSPredicate predicateWithFormat:@"SELF MATCHES %@",number];
         BOOL isTrue = [numberPre evaluateWithObject:meeting];
         if (isTrue) {

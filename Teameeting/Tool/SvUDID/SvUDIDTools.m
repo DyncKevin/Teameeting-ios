@@ -8,7 +8,8 @@
 
 #import "SvUDIDTools.h"
 #import <Security/Security.h>
-#import "SSKeychain.h"
+#import <SSKeychain/SSKeychain.h>
+#import <SSKeychain/SSKeychainQuery.h>
 
 static NSString *const kSSKeychainServiceName = @"TeameetingService";
 static NSString *const kSSKeychainAccountName = @"TeameetingAccount";
@@ -44,6 +45,8 @@ static SvUDIDTools *uuidTool = nil;
             _UUID = [_UUID stringByReplacingOccurrencesOfString:@"-" withString:@""];
             [SSKeychain setPassword: _UUID
                          forService:kSSKeychainServiceName account:kSSKeychainAccountName error:&error];
+            CFRelease(uuid);
+            CFRelease(uuidStr);
            
             if (error) {
                 NSLog(@"SSKeychain Faile");

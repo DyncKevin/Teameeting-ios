@@ -295,7 +295,7 @@
         }];
          [[NSNotificationCenter defaultCenter] postNotificationName:@"TALKCHAT_NOTIFICATION" object:[NSNumber numberWithBool:NO]];
         //weakSelf.talkNav.view.hidden = YES;
-        [weakSelf.navigationController setNavigationBarHidden:NO animated:YES];
+//        [weakSelf.navigationController setNavigationBarHidden:NO animated:YES];
         
         [weakSelf.rootView resginKeyBord];
         [weakSelf.rootView setReceiveMessageEnable:NO];
@@ -521,7 +521,7 @@
         }];
         
     } else {
-        [self.navigationController setNavigationBarHidden:YES animated:NO];
+//        [self.navigationController setNavigationBarHidden:YES animated:YES];
         if ([[[UIDevice currentDevice] systemVersion] floatValue] < 8.0)
         {
             [self.talkNav setTransitioningDelegate:self.transDelegate];
