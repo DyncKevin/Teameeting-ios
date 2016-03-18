@@ -34,7 +34,6 @@
 #import "WXApi.h"
 
 
-
 static NSString *kRoomCellID = @"RoomCell";
 
 #define IPADLISTWIDTH 320
@@ -519,7 +518,7 @@ static NSString *kRoomCellID = @"RoomCell";
     
     MFMessageComposeViewController *picker = [[MFMessageComposeViewController alloc] init];
     picker.messageComposeDelegate =self;
-    NSString *smsBody =[NSString stringWithFormat:@"让我们在会议中见!👉 %@#%@",ShearUrl,roomID];
+    NSString *smsBody =[NSString stringWithFormat:@"让我们在会议中见!👉 %@#/%@",ShearUrl,roomID];
     
     picker.body=smsBody;
     
@@ -1180,7 +1179,8 @@ static NSString *kRoomCellID = @"RoomCell";
 - (void)pushViewInviteViaWeiXin:(RoomItem*)obj
 {
     if ([WXApi isWXAppInstalled]) {
-        [WXApiRequestHandler sendLinkURL:[NSString stringWithFormat:@"%@#%@",ShearUrl,obj.roomID]
+        NSLog(@"%@#/%@",ShearUrl,obj.roomID);
+        [WXApiRequestHandler sendLinkURL:[NSString stringWithFormat:@"%@#/%@",ShearUrl,obj.roomID]
                                  TagName:nil
                                    Title:@"Teameeting"
                              Description:@"视频邀请"
@@ -1197,7 +1197,7 @@ static NSString *kRoomCellID = @"RoomCell";
 - (void)pushViewInviteViaLink:(RoomItem*)obj
 {
     UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
-    pasteboard.string = [NSString stringWithFormat:@"%@#%@",ShearUrl,obj.roomID];
+    pasteboard.string = [NSString stringWithFormat:@"%@#/%@",ShearUrl,obj.roomID];
     [ASHUD showHUDWithCompleteStyleInView:self.view content:@"拷贝成功" icon:@"copy_scuess"];
 }
 

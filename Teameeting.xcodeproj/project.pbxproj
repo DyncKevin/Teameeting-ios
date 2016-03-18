@@ -202,6 +202,8 @@
 		78C5ECCA1C4E45B300193322 /* copy_scuess@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 78C5ECC81C4E45B300193322 /* copy_scuess@2x.png */; };
 		78C5ECCB1C4E45B300193322 /* copy_scuess@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 78C5ECC91C4E45B300193322 /* copy_scuess@3x.png */; };
 		78FA86871C50731A00BAF72B /* VideoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 78FA86861C50731A00BAF72B /* VideoViewController.m */; };
+		78FD19181C9BD94B0080870A /* A0SimpleKeychain.m in Sources */ = {isa = PBXBuildFile; fileRef = 78FD19141C9BD94B0080870A /* A0SimpleKeychain.m */; };
+		78FD19191C9BD94B0080870A /* A0SimpleKeychain+KeyPair.m in Sources */ = {isa = PBXBuildFile; fileRef = 78FD19161C9BD94B0080870A /* A0SimpleKeychain+KeyPair.m */; };
 		EC157AD0B3A13035EAD046BB /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2E4CBCA8C81B4B1BFCC1872C /* libPods.a */; };
 		FC19C2D51C85B78B003419B2 /* GuideViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FC19C2D41C85B78B003419B2 /* GuideViewController.m */; };
 		FC56BB401C993C41001EAFF6 /* iphoneGuideFirst@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FC56BB3C1C993C41001EAFF6 /* iphoneGuideFirst@2x.png */; };
@@ -524,6 +526,11 @@
 		78C5ECC91C4E45B300193322 /* copy_scuess@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "copy_scuess@3x.png"; sourceTree = "<group>"; };
 		78FA86851C50731A00BAF72B /* VideoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VideoViewController.h; sourceTree = "<group>"; };
 		78FA86861C50731A00BAF72B /* VideoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VideoViewController.m; sourceTree = "<group>"; };
+		78FD19131C9BD94B0080870A /* A0SimpleKeychain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A0SimpleKeychain.h; sourceTree = "<group>"; };
+		78FD19141C9BD94B0080870A /* A0SimpleKeychain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A0SimpleKeychain.m; sourceTree = "<group>"; };
+		78FD19151C9BD94B0080870A /* A0SimpleKeychain+KeyPair.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "A0SimpleKeychain+KeyPair.h"; sourceTree = "<group>"; };
+		78FD19161C9BD94B0080870A /* A0SimpleKeychain+KeyPair.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "A0SimpleKeychain+KeyPair.m"; sourceTree = "<group>"; };
+		78FD19171C9BD94B0080870A /* SimpleKeychain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SimpleKeychain.h; sourceTree = "<group>"; };
 		DFBC29C224EA228C97676A8B /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		FC19C2D31C85B78B003419B2 /* GuideViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GuideViewController.h; sourceTree = "<group>"; };
 		FC19C2D41C85B78B003419B2 /* GuideViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GuideViewController.m; sourceTree = "<group>"; };
@@ -931,6 +938,11 @@
 		783701FF1C43DF64006C80DE /* SvUDID */ = {
 			isa = PBXGroup;
 			children = (
+				78FD19131C9BD94B0080870A /* A0SimpleKeychain.h */,
+				78FD19141C9BD94B0080870A /* A0SimpleKeychain.m */,
+				78FD19151C9BD94B0080870A /* A0SimpleKeychain+KeyPair.h */,
+				78FD19161C9BD94B0080870A /* A0SimpleKeychain+KeyPair.m */,
+				78FD19171C9BD94B0080870A /* SimpleKeychain.h */,
 				783702001C43DF64006C80DE /* SvUDIDTools.h */,
 				783702011C43DF64006C80DE /* SvUDIDTools.m */,
 			);
@@ -1650,6 +1662,7 @@
 				7837031D1C43DF64006C80DE /* UUMessageContentButton.m in Sources */,
 				7837031B1C43DF64006C80DE /* UUMessage.m in Sources */,
 				7837031E1C43DF64006C80DE /* UUMessageFrame.m in Sources */,
+				78FD19181C9BD94B0080870A /* A0SimpleKeychain.m in Sources */,
 				78FA86871C50731A00BAF72B /* VideoViewController.m in Sources */,
 				783702E31C43DF64006C80DE /* ErrorUtil.m in Sources */,
 				783703041C43DF64006C80DE /* MessageView.m in Sources */,
@@ -1701,6 +1714,7 @@
 				7837031F1C43DF64006C80DE /* UUProgressHUD.m in Sources */,
 				783702E21C43DF64006C80DE /* FORScrollViewEmptyAssistant.m in Sources */,
 				781F6E171C44CCA600026160 /* NSString+Category.m in Sources */,
+				78FD19191C9BD94B0080870A /* A0SimpleKeychain+KeyPair.m in Sources */,
 				783702F21C43DF64006C80DE /* WXApiManager.m in Sources */,
 				781F6E141C44C5E200026160 /* RoomNameView.m in Sources */,
 				783703291C43DF64006C80DE /* NavView.m in Sources */,

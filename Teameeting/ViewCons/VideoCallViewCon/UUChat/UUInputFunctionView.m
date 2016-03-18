@@ -222,8 +222,15 @@
 
 - (void)textViewDidChange:(UITextView *)textView
 {
+    if (textView.text.length > 256) {
+        textView.text = [textView.text substringToIndex:256];
+    }
+    
     [self changeSendBtnWithPhoto:textView.text.length>0?NO:YES];
     placeHold.hidden = textView.text.length>0;
+    
+
+    
 }
 
 - (void)changeSendBtnWithPhoto:(BOOL)isPhoto
