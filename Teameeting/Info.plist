@@ -24,10 +24,10 @@
 			<key>CFBundleTypeRole</key>
 			<string>Editor</string>
 			<key>CFBundleURLName</key>
-			<string>com.dync.Teameeting</string>
+			<string></string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>teameeting</string>
+				<string>wx4d9fbaec0a4c368f</string>
 			</array>
 		</dict>
 	</array>
