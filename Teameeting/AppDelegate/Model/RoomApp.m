@@ -7,7 +7,7 @@
 //
 
 #import "RoomApp.h"
-
+#import "RoomVO.h"
 @implementation RoomApp
 static RoomApp *roomApp = nil;
 +(RoomApp*)shead
@@ -18,5 +18,19 @@ static RoomApp *roomApp = nil;
     });
     return roomApp;
 }
-
+- (BOOL)canSendLocalNotificationWithRoomID:(NSString *)roomID
+{
+    if (_mainViewController && roomID) {
+        for (RoomItem *roomItem in _mainViewController.dataArray) {
+            if ([roomItem.roomID isEqualToString:roomID]) {
+                if ([roomItem.canNotification isEqualToString:@"1"]) {
+                    return YES;
+                }else{
+                    return NO;
+                }
+            }
+        }
+    }
+    return NO;
+}
 @end

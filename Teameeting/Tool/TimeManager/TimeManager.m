@@ -7,6 +7,7 @@
 //
 
 #import "TimeManager.h"
+#import "NSDate+Utils.h"
 
 @implementation TimeManager
 
@@ -29,144 +30,50 @@ static TimeManager *timeManger = nil;
 //智能时间处理 传入时间戳
 -(NSString *)friendTimeWithTimesTamp:(long)timestamp
 {
-    NSString *time;
     if (timestamp<10) {
         return @"";
     }
     long bb=  timestamp/1000;
     
-    NSCalendar* calendar= [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
-    NSCalendarUnit unitFlags = NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit;
-    
-    NSDateFormatter* dateFormatter = [self dateFormatter];
-//    double dd = [time doubleValue];
     NSDate* createdAt = [NSDate dateWithTimeIntervalSince1970:bb];
-    NSDateComponents *nowComponents = [calendar components:unitFlags fromDate:[NSDate date]];
-    NSDateComponents *createdAtComponents = [calendar components:unitFlags fromDate:createdAt];
-    if([nowComponents year] == [createdAtComponents year] &&
-       [nowComponents month] == [createdAtComponents month] &&
-       [nowComponents day] == [createdAtComponents day])
-    {//今天
-        [dateFormatter setDateFormat:@"'今天 'HH:mm"];
-        
-        time = [dateFormatter stringFromDate:createdAt];
-        
-//        int time_long = [createdAt timeIntervalSinceNow];
-//        
-//        if (time_long <= 0 && time_long >-60*60) {//一小时之内
-//            int min = -time_long/60;
-//            if (min == 0) {
-//                min = 1;
-//            }
-//            //            time = [[NSString alloc]initWithFormat:loadMuLanguage(@"%d分钟前",@""),min];
-//            if (min <= 1) {
-//                //time = [NSString stringWithFormat:@" %d秒前",abs(time_long)];
-//                time = [NSString stringWithFormat:@"刚刚"];
-//            } else {
-//                time = [NSString stringWithFormat:@" %d分钟前",min];
-//            }
-//        }else if (time_long > 0) {
-//            time = [NSString stringWithFormat:@" %d分钟前",1];
-//            
-//        } else {
-//            [dateFormatter setDateFormat:@"'今天 'HH:mm"];
-//            
-//            time = [dateFormatter stringFromDate:createdAt];
-//        }
-    }else if([self isDateThisWeek:createdAt]){
-//        NSLog(@"在本周，如果昨天就不按照周几来");
-        NSDateComponents *_comps = [[NSDateComponents alloc] init];
-        [_comps setDay:[createdAtComponents day]];
-        [_comps setMonth:[createdAtComponents month]];
-        [_comps setYear:[createdAtComponents year]];
-        NSCalendar *gregorian = [[NSCalendar alloc]
-                                 initWithCalendarIdentifier:NSGregorianCalendar];
-        NSDate *_date = [gregorian dateFromComponents:_comps];
-        NSDateComponents *weekdayComponents =
-        [gregorian components:NSWeekdayCalendarUnit fromDate:_date];
-        int _weekday = (int)[weekdayComponents weekday];
-        if ([nowComponents day] - [nowComponents day] == 1) {
-            // 昨天
-            [dateFormatter setDateFormat:@"'昨天 'HH:mm"];
-            
-            time = [dateFormatter stringFromDate:createdAt];
-        }else if ([nowComponents day] - [nowComponents day] == 2){
-            // 前天
-            [dateFormatter setDateFormat:@"'前天 'HH:mm"];
-            
-            time = [dateFormatter stringFromDate:createdAt];
-        }else{
-            switch (_weekday) {
-                case 1:
-                {
-                    [dateFormatter setDateFormat:@"'星期二 'HH:mm"];
-                    
-                    time = [dateFormatter stringFromDate:createdAt];
-                }
-                    break;
-                case 2:
-                {
-                    [dateFormatter setDateFormat:@"'星期三 'HH:mm"];
-                    
-                    time = [dateFormatter stringFromDate:createdAt];
-                }
-                    break;
-                case 3:
-                {
-                    [dateFormatter setDateFormat:@"'星期四 'HH:mm"];
-                    
-                    time = [dateFormatter stringFromDate:createdAt];
-                }
-                    break;
-                case 4:
-                {
-                    [dateFormatter setDateFormat:@"'星期五 'HH:mm"];
-                    
-                    time = [dateFormatter stringFromDate:createdAt];
-                }
-                    break;
-                case 5:
-                {
-                    [dateFormatter setDateFormat:@"'星期六 'HH:mm"];
-                    
-                    time = [dateFormatter stringFromDate:createdAt];
-                }
-                    break;
-                case 6:
-                {
-                    [dateFormatter setDateFormat:@"'星期日 'HH:mm"];
-                    
-                    time = [dateFormatter stringFromDate:createdAt];
-                }
-                    break;
-                case 7:
-                {
-                    [dateFormatter setDateFormat:@"'星期一 'HH:mm"];
-                    
-                    time = [dateFormatter stringFromDate:createdAt];
-                }
-                    break;
-                    
-                default:
-                    break;
+    NSString *Str = [NSString stringWithFormat:@"%@",createdAt];
+    NSString *subString = [Str substringWithRange:NSMakeRange(0, 19)];
+    NSDate *lastDate = [NSDate dateFromString:subString withFormat:@"yyyy-MM-dd HH:mm:ss"];
+    NSTimeZone *zone = [NSTimeZone systemTimeZone];
+    NSInteger interval = [zone secondsFromGMTForDate:lastDate];
+    lastDate = [lastDate dateByAddingTimeInterval:interval];
+    
+    NSString *dateStr;  //年月日
+    NSString *period;   //时间段
+    NSString *hour;     //时
+    
+    if ([lastDate year]==[[NSDate date] year]) {
+        NSInteger days = [NSDate daysOffsetBetweenStartDate:lastDate endDate:[NSDate date]];
+        if (days <= 2) {
+            dateStr = [lastDate stringYearMonthDayCompareToday];
+            if ([lastDate hour]>=5 && [lastDate hour]<12) {
+                period = @"上午";
+                hour = [NSString stringWithFormat:@"%02d",(int)[lastDate hour]];
+            }else if ([lastDate hour]>=12 && [lastDate hour]<=18){
+                period = @"下午";
+                hour = [NSString stringWithFormat:@"%02d",(int)[lastDate hour]-12];
+            }else if ([lastDate hour]>18 && [lastDate hour]<=23){
+                period = @"晚上";
+                hour = [NSString stringWithFormat:@"%02d",(int)[lastDate hour]-12];
+            }else{
+                period = @"早上";
+                hour = [NSString stringWithFormat:@"%02d",(int)[lastDate hour]];
             }
+            return [NSString stringWithFormat:@"%@ %@ %@:%02d",dateStr,period,hour,(int)[lastDate minute]];
+            
+        }else{
+            dateStr = [lastDate stringMonthDay];
         }
+    }else{
+        dateStr = [lastDate stringYearMonthDay];
     }
     
-    else if ([nowComponents year] == [createdAtComponents year]) {
-        // 设置区域
-        NSLocale *cnLocale = [[NSLocale alloc] initWithLocaleIdentifier:@"zh_CN"];
-        [dateFormatter setLocale:cnLocale];
-        [dateFormatter setDateFormat:@"YY/MM/dd' 'HH:mm"];
-        time = [dateFormatter stringFromDate:createdAt];
-    } else {//去年
-        NSLocale *cnLocale = [[NSLocale alloc] initWithLocaleIdentifier:@"zh_CN"];
-        [dateFormatter setLocale:cnLocale];
-        [dateFormatter setDateFormat:@"YY-MM-dd' 'HH:mm"];
-        time = [dateFormatter stringFromDate:createdAt];
-    }
-    
-    return time;
+    return [NSString stringWithFormat:@"%@ %@:%02d",dateStr,hour,(int)[lastDate minute]];
 }
 // 得到时间戳
 - (long)timeTransformationTimestamp
@@ -201,7 +108,6 @@ static TimeManager *timeManger = nil;
     //时间戳转时间的方法:
     NSDate *confromTimesp = [NSDate dateWithTimeIntervalSince1970:bb];
     return [confromTimesp description];
-    //return [formatter stringFromDate:confromTimesp];
 }
 
 //判断date_是否在当前星期

@@ -13,11 +13,12 @@
 #define ISIPADMainList 320   // 列表的宽度
 #define VideoParViewHeight 260
 #define TalkPannelWidth 340
-#define ShearUrl @"http://115.28.70.232/share_meetingRoom/"
+#define ShearUrl @"http://www.teameeting.cn/share_meetingRoom/"
 #define ShareMettingNotification @"ShareMettingNotification"
 #define NotificationEntNotification @"NotificationEntNotification"
 //#define requesturlid  @"http://192.168.7.49:8055"
 #define requesturlid  @"http://123.59.68.21:8055"
-//#define TMMessageUrl @"192.168.7.61"
+//#define TMMessageUrl @"192.168.7.43"
 #define TMMessageUrl @"180.150.179.128"
+//#define TMMessageUrl @"message.anyrtc.io"
 #endif /* Common_h */

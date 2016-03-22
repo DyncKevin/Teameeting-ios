@@ -8,11 +8,15 @@
 
 #import <Foundation/Foundation.h>
 #import "AppDelegate.h"
+#import "MainViewController.h"
 
 @interface RoomApp : NSObject
 
 +(RoomApp*)shead;
 
 @property (nonatomic, strong) AppDelegate *appDelgate;
+@property (nonatomic, strong) MainViewController *mainViewController;
+
+- (BOOL)canSendLocalNotificationWithRoomID:(NSString *)roomID;
 
 @end

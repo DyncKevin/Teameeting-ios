@@ -34,7 +34,6 @@
 #import "WXApi.h"
 
 
-
 static NSString *kRoomCellID = @"RoomCell";
 
 #define IPADLISTWIDTH 320
@@ -180,6 +179,9 @@ static NSString *kRoomCellID = @"RoomCell";
         if (self.netAlertView) {
             [self.netAlertView updateFrame];
         }
+        if (self.reNameAlertView) {
+            [self.reNameAlertView updateFrame];
+        }
     }
     if (self.oldInterface == self.interfaceOrientation || !ISIPAD) {
         return;
@@ -319,12 +321,11 @@ static NSString *kRoomCellID = @"RoomCell";
 - (void)initUser
 {
     UIView *initView = [[UIView alloc] initWithFrame:CGRectZero];
-    initView.backgroundColor = [UIColor clearColor];
+    initView.backgroundColor = [UIColor redColor];
     initView.tag = 400;
 
     AppDelegate *apple = [RoomApp shead].appDelgate;
     [apple.window.rootViewController.view addSubview:initView];
-    
     UIImageView *initViewBg = [UIImageView new];
     initViewBg.tag = 401;
     [initView addSubview:initViewBg];
@@ -372,7 +373,9 @@ static NSString *kRoomCellID = @"RoomCell";
                     
                 }
             }else{
-                
+                UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"" message:@"请检查网络" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+                alertView.tag = 901;
+                [alertView show];
             }
         }];
     });
@@ -387,6 +390,9 @@ static NSString *kRoomCellID = @"RoomCell";
             if ([[dict objectForKey:@"code"] integerValue] == 200) {
                 RoomVO *roomVO = [[RoomVO alloc] initWithParams:[dict objectForKey:@"meetingList"]];
                 if (roomVO.deviceItemsList.count!=0) {
+                    if (weakSelf.dataArray.count != 0) {
+                        [weakSelf.dataArray removeAllObjects];
+                    }
                     [weakSelf.dataArray addObjectsFromArray:roomVO.deviceItemsList];
                 }
                 [weakSelf.roomList reloadData];
@@ -400,17 +406,20 @@ static NSString *kRoomCellID = @"RoomCell";
                 if ([ToolUtils shead].notificationObject != nil) {
                     [weakSelf gotoVideoWithNotification:[ToolUtils shead].notificationObject];
                 }
-                // get not read message num
-                [weakSelf getNotReadMessageNum];
-                AppDelegate *apple = [RoomApp shead].appDelgate;
-                UIView *initView = [apple.window.rootViewController.view viewWithTag:400];
-                if (initView) {
-                    [UIView animateWithDuration:0.3 animations:^{
-                        initView.alpha = 0.0;
-                    }completion:^(BOOL finished) {
-                        [initView removeFromSuperview];
-                    }];
-                }
+               
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    
+                    AppDelegate *apple = [RoomApp shead].appDelgate;
+                    UIView *initView = [apple.window.rootViewController.view viewWithTag:400];
+                    if (initView) {
+                        [UIView animateWithDuration:0.3 animations:^{
+                            initView.alpha = 0.0;
+                        }completion:^(BOOL finished) {
+                            [initView removeFromSuperview];
+                        }];
+                    }
+                });
+               // [initView removeFromSuperview];
                 // judge is first start app
                 if (![SvUDIDTools shead].notFirstStart) {
                     if (weakSelf.reNameAlertView) {
@@ -420,6 +429,9 @@ static NSString *kRoomCellID = @"RoomCell";
                     weakSelf.reNameAlertView = [[RoomAlertView alloc] initType:AlertViewModifyNameType withDelegate:self];
                     [weakSelf.reNameAlertView show];
                 }
+                
+                // get not read message num
+                [weakSelf getNotReadMessageNum];
             }
         }
     }];
@@ -513,7 +525,7 @@ static NSString *kRoomCellID = @"RoomCell";
     
     MFMessageComposeViewController *picker = [[MFMessageComposeViewController alloc] init];
     picker.messageComposeDelegate =self;
-    NSString *smsBody =[NSString stringWithFormat:@"让我们在会议中见!👉 %@#%@",ShearUrl,roomID];
+    NSString *smsBody =[NSString stringWithFormat:@"让我们在会议中见!👉 %@#/%@",ShearUrl,roomID];
     
     picker.body=smsBody;
     
@@ -948,7 +960,7 @@ static NSString *kRoomCellID = @"RoomCell";
 - (void)addItemAndEnterMettingWithID:(NSString*)meeting
 {
     dispatch_async(dispatch_get_main_queue(), ^{
-        NSString* number=@"^\\d{12}$";
+        NSString* number=@"^\\d{10}$";
         NSPredicate *numberPre = [NSPredicate predicateWithFormat:@"SELF MATCHES %@",number];
         BOOL isTrue = [numberPre evaluateWithObject:meeting];
         if (isTrue) {
@@ -1047,6 +1059,10 @@ static NSString *kRoomCellID = @"RoomCell";
             [self enterMeetingWithItem:tempRoomItem withIndex:-1];
         }
         tempRoomItem = nil;
+    }else if(alertView.tag == 901){
+        if ([[ServerVisit shead].authorization isEqualToString:@""]) {
+            [self deviceInit];
+        }
     }
 }
 
@@ -1174,7 +1190,8 @@ static NSString *kRoomCellID = @"RoomCell";
 - (void)pushViewInviteViaWeiXin:(RoomItem*)obj
 {
     if ([WXApi isWXAppInstalled]) {
-        [WXApiRequestHandler sendLinkURL:[NSString stringWithFormat:@"%@#%@",ShearUrl,obj.roomID]
+        NSLog(@"%@#/%@",ShearUrl,obj.roomID);
+        [WXApiRequestHandler sendLinkURL:[NSString stringWithFormat:@"%@#/%@",ShearUrl,obj.roomID]
                                  TagName:nil
                                    Title:@"Teameeting"
                              Description:@"视频邀请"
@@ -1191,7 +1208,7 @@ static NSString *kRoomCellID = @"RoomCell";
 - (void)pushViewInviteViaLink:(RoomItem*)obj
 {
     UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
-    pasteboard.string = [NSString stringWithFormat:@"%@#%@",ShearUrl,obj.roomID];
+    pasteboard.string = [NSString stringWithFormat:@"%@#/%@",ShearUrl,obj.roomID];
     [ASHUD showHUDWithCompleteStyleInView:self.view content:@"拷贝成功" icon:@"copy_scuess"];
 }
 

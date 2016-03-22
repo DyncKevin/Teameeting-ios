@@ -171,7 +171,7 @@
 // enter meeting
 - (void)enterButtonEvent:(UIButton*)button
 {
-    NSString* number=@"^\\d{12}$";
+    NSString* number=@"^\\d{10}$";
     NSPredicate *numberPre = [NSPredicate predicateWithFormat:@"SELF MATCHES %@",number];
     BOOL isTrue = [numberPre evaluateWithObject:enterTextField.text];
     if (isTrue) {

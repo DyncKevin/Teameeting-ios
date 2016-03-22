@@ -295,7 +295,7 @@
         }];
          [[NSNotificationCenter defaultCenter] postNotificationName:@"TALKCHAT_NOTIFICATION" object:[NSNumber numberWithBool:NO]];
         //weakSelf.talkNav.view.hidden = YES;
-        [weakSelf.navigationController setNavigationBarHidden:NO animated:YES];
+//        [weakSelf.navigationController setNavigationBarHidden:NO animated:YES];
         
         [weakSelf.rootView resginKeyBord];
         [weakSelf.rootView setReceiveMessageEnable:NO];
@@ -434,7 +434,7 @@
     [linkTitle setFrame:CGRectMake(0, 0, shareView.bounds.size.width - (isVertical ? 60 : 80), (isVertical ? 56 : 45))];
     linkTitle.lineBreakMode = NSLineBreakByTruncatingMiddle;
     [linkTitle setFont:[UIFont systemFontOfSize:14]];
-    linkTitle.text = [NSString stringWithFormat:@"%@%@",ShearUrl,self.roomItem.roomID];
+    linkTitle.text = [NSString stringWithFormat:@"%@#/%@",ShearUrl,self.roomItem.roomID];
     [linkTitle setTextColor:[UIColor grayColor]];
     [linkTitle setBackgroundColor:[UIColor clearColor]];
     [linkTitle setTextAlignment:NSTextAlignmentCenter];
@@ -521,7 +521,7 @@
         }];
         
     } else {
-        [self.navigationController setNavigationBarHidden:YES animated:NO];
+//        [self.navigationController setNavigationBarHidden:YES animated:YES];
         if ([[[UIDevice currentDevice] systemVersion] floatValue] < 8.0)
         {
             [self.talkNav setTransitioningDelegate:self.transDelegate];
@@ -666,7 +666,7 @@
     [_popver dismiss];
     if ([WXApi isWXAppInstalled]) {
         //判断是否有微信
-        [WXApiRequestHandler sendLinkURL:[NSString stringWithFormat:@"%@#%@",ShearUrl,self.roomItem.roomID]
+        [WXApiRequestHandler sendLinkURL:[NSString stringWithFormat:@"%@#/%@",ShearUrl,self.roomItem.roomID]
                                  TagName:nil
                                    Title:@"Teameeting"
                              Description:@"视频邀请"
@@ -688,7 +688,7 @@
         if ([messageClass canSendText]) {
             MFMessageComposeViewController *picker = [[MFMessageComposeViewController alloc] init];
             picker.messageComposeDelegate =self;
-            NSString *smsBody =[NSString stringWithFormat:@"让我们在会议中见!👉 %@#%@",ShearUrl,self.roomItem.roomID];
+            NSString *smsBody =[NSString stringWithFormat:@"让我们在会议中见!👉 %@#/%@",ShearUrl,self.roomItem.roomID];
             
             picker.body=smsBody;
             
@@ -708,7 +708,7 @@
 {
     [_popver dismiss];
     UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
-    pasteboard.string = [NSString stringWithFormat:@"%@#%@",ShearUrl,self.roomItem.roomID];
+    pasteboard.string = [NSString stringWithFormat:@"%@#/%@",ShearUrl,self.roomItem.roomID];
     [ASHUD showHUDWithCompleteStyleInView:self.view content:@"拷贝成功" icon:@"copy_scuess"];
 }
 

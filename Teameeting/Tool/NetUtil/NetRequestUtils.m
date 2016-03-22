@@ -11,7 +11,7 @@
 // 192.168.7.45
 #define ASRequestInstance [NetRequestUtils sharedInstance]
 
-#define REQUEST_TIME_OUT 60
+#define REQUEST_TIME_OUT 30
 #define REQUEST_SUCCESS 0
 
 @interface NetRequestUtils()
