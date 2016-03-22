@@ -321,12 +321,11 @@ static NSString *kRoomCellID = @"RoomCell";
 - (void)initUser
 {
     UIView *initView = [[UIView alloc] initWithFrame:CGRectZero];
-    initView.backgroundColor = [UIColor clearColor];
+    initView.backgroundColor = [UIColor redColor];
     initView.tag = 400;
 
     AppDelegate *apple = [RoomApp shead].appDelgate;
     [apple.window.rootViewController.view addSubview:initView];
-    
     UIImageView *initViewBg = [UIImageView new];
     initViewBg.tag = 401;
     [initView addSubview:initViewBg];
@@ -374,7 +373,9 @@ static NSString *kRoomCellID = @"RoomCell";
                     
                 }
             }else{
-                
+                UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"" message:@"请检查网络" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+                alertView.tag = 901;
+                [alertView show];
             }
         }];
     });
@@ -405,17 +406,20 @@ static NSString *kRoomCellID = @"RoomCell";
                 if ([ToolUtils shead].notificationObject != nil) {
                     [weakSelf gotoVideoWithNotification:[ToolUtils shead].notificationObject];
                 }
-                // get not read message num
-                [weakSelf getNotReadMessageNum];
-                AppDelegate *apple = [RoomApp shead].appDelgate;
-                UIView *initView = [apple.window.rootViewController.view viewWithTag:400];
-                if (initView) {
-                    [UIView animateWithDuration:0.3 animations:^{
-                        initView.alpha = 0.0;
-                    }completion:^(BOOL finished) {
-                        [initView removeFromSuperview];
-                    }];
-                }
+               
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    
+                    AppDelegate *apple = [RoomApp shead].appDelgate;
+                    UIView *initView = [apple.window.rootViewController.view viewWithTag:400];
+                    if (initView) {
+                        [UIView animateWithDuration:0.3 animations:^{
+                            initView.alpha = 0.0;
+                        }completion:^(BOOL finished) {
+                            [initView removeFromSuperview];
+                        }];
+                    }
+                });
+               // [initView removeFromSuperview];
                 // judge is first start app
                 if (![SvUDIDTools shead].notFirstStart) {
                     if (weakSelf.reNameAlertView) {
@@ -425,6 +429,9 @@ static NSString *kRoomCellID = @"RoomCell";
                     weakSelf.reNameAlertView = [[RoomAlertView alloc] initType:AlertViewModifyNameType withDelegate:self];
                     [weakSelf.reNameAlertView show];
                 }
+                
+                // get not read message num
+                [weakSelf getNotReadMessageNum];
             }
         }
     }];
@@ -1052,6 +1059,10 @@ static NSString *kRoomCellID = @"RoomCell";
             [self enterMeetingWithItem:tempRoomItem withIndex:-1];
         }
         tempRoomItem = nil;
+    }else if(alertView.tag == 901){
+        if ([[ServerVisit shead].authorization isEqualToString:@""]) {
+            [self deviceInit];
+        }
     }
 }
 

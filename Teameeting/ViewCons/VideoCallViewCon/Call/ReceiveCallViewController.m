@@ -111,7 +111,8 @@
     _audioOperateDict = [[NSMutableDictionary alloc] initWithCapacity:5];
     
     _dicRemoteVideoView = [[NSMutableDictionary alloc] initWithCapacity:5];
-    [AnyrtcMeet InitAnyRTC:@"mzw0001" andToken:@"defq34hj92mxxjhaxxgjfdqi1s332dd" andAESKey:@"d74TcmQDMB5nWx9zfJ5al7JdEg3XwySwCkhdB9lvnd1" andAppId:@"org.dync.app"];
+    [AnyrtcMeet InitAnyRTC:@"13103994" andToken:@"de095967d87cd6f9a51ec4e3ee9a0ab7" andAESKey:@"E7FCkvPeaRBWGIxtO+mTjoJqu+TmqEDRNyi9YyFu82o" andAppId:@"Teameeting"];
+    
     _client = [[AnyrtcMeet alloc] init];
     _client.proximityMonitoringEnabled = NO;
     _localVideoView = [[VideoShowItem alloc] init];
