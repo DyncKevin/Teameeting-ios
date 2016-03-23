@@ -13,7 +13,7 @@
 @protocol tmMessageReceive <NSObject>
 
 //for Chat
-- (void)messageDidReceiveWithContent:(NSString *)content messageTime:(NSString *)time withNickName:(NSString*)nickName;
+- (void)messageDidReceiveWithContent:(NSString *)content messageTime:(NSString *)time withNickName:(NSString*)nickName withRoomId:(NSString*)roomID;
 
 //for RoomList
 - (void)roomListMemberChangeWithRoomID:(NSString *)roomID changeState:(NSInteger)state;

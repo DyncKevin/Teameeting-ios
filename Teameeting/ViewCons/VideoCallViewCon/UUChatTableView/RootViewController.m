@@ -258,8 +258,11 @@
 
 #pragma mark - tmMessageReceive
 
-- (void)messageDidReceiveWithContent:(NSString *)content messageTime:(NSString *)time withNickName:(NSString*)nickName{
+- (void)messageDidReceiveWithContent:(NSString *)content messageTime:(NSString *)time withNickName:(NSString*)nickName withRoomId:(NSString *)roomID{
     
+    if (![_parentViewCon.roomItem.roomID isEqualToString:roomID]) {
+        return;
+    }
     NSDictionary *dic = @{@"strContent": content,
                           @"strName":nickName,
                           @"type": @(UUMessageTypeText)};

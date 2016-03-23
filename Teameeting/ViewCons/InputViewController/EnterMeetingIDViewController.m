@@ -65,7 +65,7 @@
     tishiLabel.textAlignment = NSTextAlignmentCenter;
     tishiLabel.textColor = [UIColor lightGrayColor];
     tishiLabel.font = [UIFont systemFontOfSize:14];
-    tishiLabel.text = @"会议ID是一串十二位的数字";
+    tishiLabel.text = @"会议ID是一串十位的数字";
     [self.view addSubview:tishiLabel];
     
     

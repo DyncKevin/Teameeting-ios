@@ -24,6 +24,9 @@ typedef NS_ENUM(NSInteger,NotificationType)
 +(ToolUtils*)shead;
 @property (nonatomic)BOOL isBack;  // in background
 @property (nonatomic, strong) NSString *meetingID;
+
+@property (nonatomic, strong) NSString *roomID;
+
 @property (nonatomic, strong) NotificationObject *notificationObject;
 // 是否允许推送
 + (BOOL)isAllowedNotification;

@@ -35,6 +35,8 @@
     
     BOOL isRightTran;
     
+    BOOL isChat;
+    
 }
 @property (nonatomic, strong) NSMutableDictionary *_dicRemoteVideoView;
 @property (nonatomic, strong) NSMutableDictionary *_audioOperateDict;
@@ -169,7 +171,7 @@
 // ios iphone notification
 - (void)chatViewNoti:(NSNotification*)noti
 {
-    BOOL isChat = [noti.object boolValue];
+    isChat = [noti.object boolValue];
     if (isChat) {
         [UIView animateWithDuration:0.2 animations:^{
             
@@ -325,7 +327,10 @@
             if (isRightTran) {
                 self.videosScrollView.frame = CGRectMake(self.videosScrollView.frame.origin.x, self.view.bounds.size.height - 100 - VideoParViewHeight, self.view.bounds.size.width-TalkPannelWidth, VideoParViewHeight);
             }else{
-                self.videosScrollView.frame = CGRectMake(0, self.view.bounds.size.height - 100 - VideoParViewHeight, self.view.bounds.size.width, VideoParViewHeight);
+                if (!isChat) {
+                     self.videosScrollView.frame = CGRectMake(0, self.view.bounds.size.height - 100 - VideoParViewHeight, self.view.bounds.size.width, VideoParViewHeight);
+                }
+               
             }
         }];
         if (_peerSelectedId) {

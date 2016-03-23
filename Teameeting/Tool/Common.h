@@ -16,6 +16,8 @@
 #define ShearUrl @"http://www.teameeting.cn/share_meetingRoom/"
 #define ShareMettingNotification @"ShareMettingNotification"
 #define NotificationEntNotification @"NotificationEntNotification"
+#define NotificationDismissMySelfNotification @"NotificationDismissMySelfNotification"
+
 //#define requesturlid  @"http://192.168.7.49:8055"
 #define requesturlid  @"http://123.59.68.21:8055"
 //#define TMMessageUrl @"192.168.7.43"

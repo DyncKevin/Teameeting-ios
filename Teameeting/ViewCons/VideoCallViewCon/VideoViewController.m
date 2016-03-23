@@ -17,6 +17,7 @@
 #import <MessageUI/MFMessageComposeViewController.h>
 #import "ASHUD.h"
 #import "TransitionDelegate.h"
+#import "ToolUtils.h"
 
 @implementation UINavigationController (Orientations)
 
@@ -49,14 +50,20 @@
 @property (nonatomic, assign) BOOL isFullScreen;
 @property (nonatomic, strong) TransitionDelegate *transDelegate;
 
+@property (nonatomic, assign) BOOL dimissByMe;
+
 @end
 
 @implementation VideoViewController
 
 - (void)dealloc
 {
-    
+    [ToolUtils shead].roomID = nil;
+    if (self.dimissByMe) {
+        [[NSNotificationCenter defaultCenter] postNotificationName:NotificationDismissMySelfNotification object:nil userInfo:nil];
+    }
 }
+
 
 - (void)viewWillAppear:(BOOL)animated
 {
@@ -69,6 +76,8 @@
     [[TMMessageManage sharedManager] tmRoomCmd:MCMeetCmdENTER roomid:self.roomItem.roomID withRoomName:self.roomItem.roomName remain:@""];
     self.navigationController.delegate = self;
     self.title = self.roomItem.roomName;
+    [ToolUtils shead].roomID = self.roomItem.roomID;
+    
     self.view.backgroundColor = [UIColor blackColor];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(openVideo) name:OPENVIDEO object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(remoteVideoChange:) name:@"REMOTEVIDEOCHANGE" object:nil];
@@ -222,11 +231,18 @@
 }
 - (void)dismissMyself
 {
+    if (self.talkNav) {
+        [self.talkNav dismissViewControllerAnimated:NO completion:nil];
+    }
+     self.dimissByMe = YES;
+    
     [self dismissViewControllerAnimated:YES completion:^{
         if (self.callViewCon) {
             [self.callViewCon hangeUp];
             [[TMMessageManage sharedManager] removeMessageListener:self.rootView];
         }
+       
+        
         if (self.DismissVideoViewController) {
             self.DismissVideoViewController();
         }
@@ -521,7 +537,6 @@
         }];
         
     } else {
-//        [self.navigationController setNavigationBarHidden:YES animated:YES];
         if ([[[UIDevice currentDevice] systemVersion] floatValue] < 8.0)
         {
             [self.talkNav setTransitioningDelegate:self.transDelegate];
@@ -811,14 +826,14 @@
     [super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
 }
 
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
-{
-    return (interfaceOrientation != UIInterfaceOrientationPortraitUpsideDown);
-}
+//- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
+//{
+//    return (interfaceOrientation != UIInterfaceOrientationPortraitUpsideDown);
+//}
 
 - (UIInterfaceOrientationMask)supportedInterfaceOrientations
 {
-    return UIInterfaceOrientationMaskAllButUpsideDown;
+    return UIInterfaceOrientationMaskAll;
 }
 
 - (BOOL)shouldAutorotate
