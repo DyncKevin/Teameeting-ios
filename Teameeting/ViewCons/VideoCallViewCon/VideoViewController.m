@@ -50,8 +50,6 @@
 @property (nonatomic, assign) BOOL isFullScreen;
 @property (nonatomic, strong) TransitionDelegate *transDelegate;
 
-@property (nonatomic, assign) BOOL dimissByMe;
-
 @end
 
 @implementation VideoViewController
@@ -59,9 +57,6 @@
 - (void)dealloc
 {
     [ToolUtils shead].roomID = nil;
-    if (self.dimissByMe) {
-        [[NSNotificationCenter defaultCenter] postNotificationName:NotificationDismissMySelfNotification object:nil userInfo:nil];
-    }
 }
 
 
@@ -234,15 +229,12 @@
     if (self.talkNav) {
         [self.talkNav dismissViewControllerAnimated:NO completion:nil];
     }
-     self.dimissByMe = YES;
     
-    [self dismissViewControllerAnimated:YES completion:^{
+    [self dismissViewControllerAnimated:NO completion:^{
         if (self.callViewCon) {
             [self.callViewCon hangeUp];
             [[TMMessageManage sharedManager] removeMessageListener:self.rootView];
         }
-       
-        
         if (self.DismissVideoViewController) {
             self.DismissVideoViewController();
         }

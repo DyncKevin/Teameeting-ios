@@ -201,6 +201,13 @@
 //发送消息（文字图片）
 - (void)sendMessage:(UIButton *)sender
 {
+    NSString *resultStr = [self.TextViewInput.text stringByReplacingOccurrencesOfString:@" " withString:@""];
+    
+    if (resultStr.length>0) {
+         [self.delegate UUInputFunctionView:self sendMessage:self.TextViewInput.text];
+    }
+    return;
+    
     if (self.isAbleToSendTextMessage) {
         NSString *resultStr = [self.TextViewInput.text stringByReplacingOccurrencesOfString:@"   " withString:@""];
         [self.delegate UUInputFunctionView:self sendMessage:resultStr];

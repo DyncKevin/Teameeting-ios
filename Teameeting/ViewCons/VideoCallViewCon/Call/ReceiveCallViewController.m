@@ -139,6 +139,13 @@
 
      [_client Join:roomItem.anyRtcID];
 }
+- (void)viewDidLayoutSubviews
+{
+    [super viewDidLayoutSubviews];
+    [self layoutSubView];
+}
+
+
 // setting pre operate to view
 - (void)settingMediaToViewOperate:(VideoShowItem*)item
 {
@@ -728,6 +735,7 @@
         }
     }
 }
+
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
