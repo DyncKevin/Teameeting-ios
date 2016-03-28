@@ -22,7 +22,11 @@ typedef NS_ENUM(NSInteger,NotificationType)
 @interface ToolUtils : NSObject
 
 +(ToolUtils*)shead;
+
 @property (nonatomic)BOOL isBack;  // in background
+
+@property (nonatomic) BOOL hasActivity;
+
 @property (nonatomic, strong) NSString *meetingID;
 
 @property (nonatomic, strong) NSString *roomID;

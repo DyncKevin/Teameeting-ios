@@ -13,7 +13,7 @@
 #define ISIPADMainList 320   // 列表的宽度
 #define VideoParViewHeight 260
 #define TalkPannelWidth 340
-#define ShearUrl @"http://www.teameeting.cn/share_meetingRoom/"
+#define ShearUrl @"https://www.teameeting.cn/share_meetingRoom/"
 #define ShareMettingNotification @"ShareMettingNotification"
 #define NotificationEntNotification @"NotificationEntNotification"
 

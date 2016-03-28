@@ -32,6 +32,7 @@
 #import "TMMessageManage.h"
 #import "WXApiRequestHandler.h"
 #import "WXApi.h"
+#import "SpotlightManager.h"
 
 
 static NSString *kRoomCellID = @"RoomCell";
@@ -638,6 +639,7 @@ static NSString *kRoomCellID = @"RoomCell";
         
         [dataArray replaceObjectAtIndex:0 withObject:roomItem];
         [self.roomList reloadData];
+        [[SpotlightManager shead] addSearchableWithItem:roomItem];
     });
 }
 #pragma mark - button events
@@ -770,6 +772,7 @@ static NSString *kRoomCellID = @"RoomCell";
             if (!error) {
                 if ([[dict objectForKey:@"code"] intValue]== 200) {
                     [[NtreatedDataManage sharedManager] removeData:data];
+                    [[SpotlightManager shead] updateSearchableItem:roomItem];
                     
                 }
             }
@@ -819,6 +822,7 @@ static NSString *kRoomCellID = @"RoomCell";
             if (!error) {
                 if ([[dict objectForKey:@"code"] intValue]== 200) {
                     [[NtreatedDataManage sharedManager] removeData:data];
+                    [[SpotlightManager shead] deleteSearchableItem:item];
                     
                 }
             }

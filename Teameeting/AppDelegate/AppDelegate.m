@@ -32,6 +32,7 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     
     //[application setApplicationIconBadgeNumber:0];
+    [ToolUtils shead].hasActivity = YES;
     
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
     NSDictionary *navbarTitleTextAttributes = @{NSForegroundColorAttributeName:[UIColor whiteColor]};
@@ -191,8 +192,58 @@
 - (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url {
     return  [WXApi handleOpenURL:url delegate:[WXApiManager sharedManager]];
 }
+- (BOOL)application:(UIApplication *)application continueUserActivity:(NSUserActivity *)userActivity restorationHandler:(void(^)(NSArray *restorableObjects))restorationHandler
+{
+    NSLog(@"%@",userActivity.activityType);
+    if([userActivity.activityType isEqualToString:@"NSUserActivityTypeBrowsingWeb"])
+    {
+        if ([self checkUrl:userActivity.webpageURL]) {
+            NSString *stringURL = [NSString stringWithFormat:@"%@",userActivity.webpageURL];
+            NSArray *meArr = [stringURL componentsSeparatedByString:@"#/"];
+            if (meArr.count == 2) {
+                NSString *meetID = [meArr objectAtIndex:1];
+                NSString* number=@"^\\d{10}$";
+                NSPredicate *numberPre = [NSPredicate predicateWithFormat:@"SELF MATCHES %@",number];
+                BOOL isTrue = [numberPre evaluateWithObject:meetID];
+                if (isTrue) {
+                    if ([ToolUtils shead].hasActivity) {
+                        // 用户还没有启动一种处理
+                        [[NSNotificationCenter defaultCenter] postNotificationName:ShareMettingNotification object:meetID userInfo:nil];
+                    }else{
+                        [ToolUtils shead].meetingID = meetID;
+                    }
+                }
 
-
+            }
+        }
+    }else if ([userActivity.activityType isEqualToString:@"com.apple.corespotlightitem"]){
+        NSString *meetID = [userActivity.userInfo objectForKey:@"kCSSearchableItemActivityIdentifier"];
+        if (meetID) {
+            NSString* number=@"^\\d{10}$";
+            NSPredicate *numberPre = [NSPredicate predicateWithFormat:@"SELF MATCHES %@",number];
+            BOOL isTrue = [numberPre evaluateWithObject:meetID];
+            if (isTrue) {
+                if ([ToolUtils shead].hasActivity) {
+                    // 用户还没有启动一种处理
+                    [[NSNotificationCenter defaultCenter] postNotificationName:ShareMettingNotification object:meetID userInfo:nil];
+                }else{
+                    [ToolUtils shead].meetingID = meetID;
+                 }
+            }
+        }
+    }
+    return YES;
+}
+- (BOOL)checkUrl:(NSURL*)url
+{
+    NSURLComponents *components = [NSURLComponents componentsWithURL:url resolvingAgainstBaseURL:YES];
+    NSString *host = components.host;
+    if ([host isEqualToString:@"www.teameeting.cn"]) {
+        return YES;
+    }
+    
+    return NO;
+}
 - (void)applicationWillResignActive:(UIApplication *)application {
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
     // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
