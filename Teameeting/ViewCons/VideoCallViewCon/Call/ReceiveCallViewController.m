@@ -139,12 +139,6 @@
 
      [_client Join:roomItem.anyRtcID];
 }
-- (void)viewDidLayoutSubviews
-{
-    [super viewDidLayoutSubviews];
-    [self layoutSubView];
-}
-
 
 // setting pre operate to view
 - (void)settingMediaToViewOperate:(VideoShowItem*)item
@@ -561,7 +555,7 @@
     // 像变大(先看是不是点中的)
     UIView  *view = (UIView*)[gesture view];
     // 如果得到的是小图的，变为大图
-    if (CGRectGetWidth(view.frame) < self.view.bounds.size.width) {
+    if (CGRectGetWidth(view.frame) < self.view.bounds.size.width/2) {
         for (id key in [_dicRemoteVideoView allKeys]) {
             VideoShowItem *item = [_dicRemoteVideoView objectForKey:key];
          
@@ -572,6 +566,10 @@
                 [self layoutSubView];
                 return;
             }
+        }
+    }else{
+        if (self.videoController) {
+            [self.videoController tapEvent:nil];
         }
     }
 }

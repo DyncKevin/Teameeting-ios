@@ -254,7 +254,7 @@
     }
     
     NSDateFormatter *formatter = [[NSDateFormatter alloc]init];
-    [formatter setDateFormat:@"MM.dd"];
+    [formatter setDateFormat:@"MM-dd"];
     NSString *str = [formatter stringFromDate:date];
     return str;
 }

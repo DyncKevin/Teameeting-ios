@@ -345,7 +345,7 @@ static NSString *kRoomCellID = @"RoomCell";
 - (void)initUser
 {
     UIView *initView = [[UIView alloc] initWithFrame:CGRectZero];
-    initView.backgroundColor = [UIColor redColor];
+    initView.backgroundColor = [UIColor blackColor];
     initView.tag = 400;
 
     AppDelegate *apple = [RoomApp shead].appDelgate;

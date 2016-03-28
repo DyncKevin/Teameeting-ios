@@ -1793,7 +1793,8 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Developer: yangyang wang (3VG6DLPKJ2)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: yangyang wang (3VG6DLPKJ2)";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -1815,6 +1816,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
+				PROVISIONING_PROFILE = "cc24f56e-ae13-41fc-9ff7-a2c9d08474f2";
 				SDKROOT = iphoneos;
 			};
 			name = Debug;
@@ -1836,7 +1838,8 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Shanghai Boyuan Electronic Technology Co. Ltd (5543CP4MRT)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Shanghai Boyuan Electronic Technology Co. Ltd (5543CP4MRT)";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
@@ -1851,6 +1854,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
+				PROVISIONING_PROFILE = "8befe097-a10c-42f2-99f6-162138ef8ed5";
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
 			};
@@ -1908,7 +1912,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.dync.teameeting;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "b81a1991-c1a1-4f23-9b06-a241a4eff599";
+				PROVISIONING_PROFILE = "cc24f56e-ae13-41fc-9ff7-a2c9d08474f2";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -1965,7 +1969,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.dync.teameeting;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "4a7d2db1-4e0a-411f-aa3b-eda43e5d340e";
+				PROVISIONING_PROFILE = "8befe097-a10c-42f2-99f6-162138ef8ed5";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;

@@ -46,7 +46,7 @@
     {
       "orientation" : "portrait",
       "idiom" : "ipad",
-      "filename" : "Default-Portrait@2x~ipad.png",
+      "filename" : "Default-Portrait~ipad-1.png",
       "extent" : "full-screen",
       "minimum-system-version" : "7.0",
       "scale" : "1x"
@@ -62,7 +62,7 @@
     {
       "orientation" : "portrait",
       "idiom" : "ipad",
-      "filename" : "Default-Portrait~ipad.png",
+      "filename" : "Default-Portrait@2x~ipad.png",
       "extent" : "full-screen",
       "minimum-system-version" : "7.0",
       "scale" : "2x"
@@ -70,7 +70,7 @@
     {
       "orientation" : "landscape",
       "idiom" : "ipad",
-      "filename" : "Default-Landscape@2x~ipad.png",
+      "filename" : "LaunchImage-736h@3x.png",
       "extent" : "full-screen",
       "minimum-system-version" : "7.0",
       "scale" : "2x"

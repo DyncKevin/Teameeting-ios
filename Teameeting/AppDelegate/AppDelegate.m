@@ -67,6 +67,9 @@
     
     [JPUSHService setupWithOption:launchOptions appKey:appKey channel:channel apsForProduction:isProduction];
     
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(networkDidReceiveMessage:) name:kJPFNetworkDidLoginNotification object:nil];
+   
+    
     [WXApi registerApp:@"wx4d9fbaec0a4c368f" withDescription:@"demo 2.0"];
     MainViewController *mainViewController = [MainViewController new];
     UINavigationController *nai = [[UINavigationController alloc] initWithRootViewController:mainViewController];
@@ -112,6 +115,11 @@
     
     [JPUSHService registerDeviceToken:deviceToken];
     [JPUSHService setTags:[NSSet setWithObject:[SvUDIDTools shead].UUID] alias:[SvUDIDTools shead].UUID callbackSelector:nil object:nil];
+}
+- (void)networkDidReceiveMessage:(NSNotification*)notification
+{
+    NSString *registrationID = [JPUSHService registrationID];
+    NSLog(@"networkDidReceiveMessage:%@",registrationID);
 }
 
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo

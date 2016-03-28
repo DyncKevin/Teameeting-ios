@@ -104,6 +104,7 @@
     
     self.callViewCon = [[ReceiveCallViewController alloc] init];
     self.callViewCon.roomItem = self.roomItem;
+    self.callViewCon.videoController = self;
     self.menuView = [[LockerView alloc] initWithFrame:CGRectMake(0, self.view.bounds.size.height - 60, 300, 60)];
     self.menuView.backgroundColor = [UIColor clearColor];
     [self.menuView setCenter:CGPointMake(self.view.bounds.size.width/2, self.view.bounds.size.height - self.menuView.bounds.size.height)];
@@ -332,7 +333,7 @@
             
             [self.menuView setCenter:CGPointMake(self.menuView.center.x, (self.view.bounds.size.height - self.menuView.bounds.size.height))];
             
-            [self.noUserTip setCenter:CGPointMake(self.view.bounds.size.width/2, (CGRectGetMinY(self.menuView.frame) - self.noUserTip.bounds.size.height))];
+            [self.noUserTip setCenter:CGPointMake(self.noUserTip.center.x, (CGRectGetMinY(self.menuView.frame) - self.noUserTip.bounds.size.height))];
             
         }completion:^(BOOL finished) {
         }];
@@ -786,7 +787,6 @@
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch {
     NSLog(@"gestureRecognizer:%@",touch.view);
     Class class = NSClassFromString(@"UITableViewCellContentView");
-    
     if(touch.view.superview != self.rootView.view && ![touch.view isKindOfClass:class]){
         return YES;
     }else
@@ -813,6 +813,9 @@
          
      } completion:^(id<UIViewControllerTransitionCoordinatorContext> context)
      {
+         if (self.callViewCon) {
+             [self.callViewCon layoutSubView];
+         }
      }];
     
     [super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];

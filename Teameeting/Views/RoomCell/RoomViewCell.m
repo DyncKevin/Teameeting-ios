@@ -52,7 +52,7 @@
     
     self.timeLabel = [UILabel new];
     self.timeLabel.backgroundColor = [UIColor clearColor];
-    self.timeLabel.numberOfLines = 0;
+    self.timeLabel.numberOfLines = 1;
     self.timeLabel.lineBreakMode = NSLineBreakByTruncatingTail;
     self.timeLabel.font = [UIFont systemFontOfSize:13];
     self.timeLabel.textColor = [UIColor colorWithRed:186.0/255.0 green:180.0/255.0 blue:189.0/255.0 alpha:1.0];
@@ -117,7 +117,7 @@
     
     NSLayoutConstraint * constraint9 = [NSLayoutConstraint constraintWithItem:self.timeLabel attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:self.contentView attribute:NSLayoutAttributeLeft multiplier:1.0f constant:15.0f];
     
-    NSLayoutConstraint * constraint10 = [NSLayoutConstraint constraintWithItem:self.timeLabel attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:self.contentView attribute:NSLayoutAttributeWidth multiplier:0.5f constant:0.0f];
+    NSLayoutConstraint * constraint10 = [NSLayoutConstraint constraintWithItem:self.timeLabel attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:self.contentView attribute:NSLayoutAttributeWidth multiplier:0.6f constant:0.0f];
     
     NSLayoutConstraint * constraint11 = [NSLayoutConstraint constraintWithItem:self.timeLabel attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:self.contentView attribute:NSLayoutAttributeHeight multiplier:0.25f constant:0.f];
     
@@ -126,13 +126,13 @@
     
     NSLayoutConstraint * constraint13 = [NSLayoutConstraint constraintWithItem:self.activityIndicatorView attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:self.contentView attribute:NSLayoutAttributeCenterY multiplier:1.0f constant:0.f];
 
-    NSLayoutConstraint * constraint18 = [NSLayoutConstraint constraintWithItem:self.memberView attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0f constant:60.0f];
+    NSLayoutConstraint * constraint18 = [NSLayoutConstraint constraintWithItem:self.memberView attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0f constant:45.0f];
     
     NSLayoutConstraint * constraint19 = [NSLayoutConstraint constraintWithItem:self.memberView attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0f constant:25.0f];
     
     NSLayoutConstraint * constraint20 = [NSLayoutConstraint constraintWithItem:self.memberView attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:self.contentView attribute:NSLayoutAttributeCenterY multiplier:1.f constant:0.0f];
     
-    NSLayoutConstraint * constraint21 = [NSLayoutConstraint constraintWithItem:self.memberView attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:self.settingButton attribute:NSLayoutAttributeLeft multiplier:1.0f constant:-30.f];
+    NSLayoutConstraint * constraint21 = [NSLayoutConstraint constraintWithItem:self.memberView attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:self.settingButton attribute:NSLayoutAttributeLeft multiplier:1.0f constant:-15.f];
     
     [self.contentView addConstraint:constraint];
     [self.contentView addConstraint:constraint1];
@@ -180,7 +180,7 @@
     }else{
         if (item.messageNum!=0) {
             self.timeLabel.text = [NSString stringWithFormat:@"(%ld)新消息:%@",(long)item.messageNum,[[TimeManager shead] friendTimeWithTimesTampStr:item.lastMessagTime]];
-        }else{
+        }else{      
             if (item.jointime>item.createTime) {
                 self.timeLabel.text = [NSString stringWithFormat:@"加入:%@",[[TimeManager shead] friendTimeWithTimesTamp:item.jointime]];
             }else{
