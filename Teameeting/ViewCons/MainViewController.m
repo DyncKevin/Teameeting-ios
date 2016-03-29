@@ -42,7 +42,7 @@ static NSString *kRoomCellID = @"RoomCell";
 @interface MainViewController ()<UITableViewDelegate,UITableViewDataSource,RoomViewCellDelegate,GetRoomViewDelegate,PushViewDelegate,MFMessageComposeViewControllerDelegate,UIAlertViewDelegate,tmMessageReceive,RoomAlertViewDelegate>
 
 {
-    RoomItem *tempRoomItem;
+    
 }
 
 @property (nonatomic, strong) UIButton *getRoomButton;
@@ -566,7 +566,7 @@ static NSString *kRoomCellID = @"RoomCell";
         [alertView show];
         return;
     }
-    tempRoomItem = nil;
+
     __weak MainViewController *weakSelf = self;
     [ServerVisit getMeetingInfoWithId:item.roomID completion:^(AFHTTPRequestOperation *operation, id responseData, NSError *error) {
         if (!error) {
@@ -946,10 +946,21 @@ static NSString *kRoomCellID = @"RoomCell";
                 }
             }];
         }else{
-            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:@"该会议在列表中已经存在，是否直接进会" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
-            alertView.tag = 900;
-            tempRoomItem = item;
-            [alertView show];
+            // 先判断是否在会
+            if (self.videoViewController && ![self.videoViewController.roomItem.roomID isEqualToString:item.roomID]) {
+                [self.videoViewController dismissMyself];
+                [ASHUD showHUDWithStayLoadingStyleInView:self.view belowView:nil content:@""];
+                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                    
+                    [self enterMeetingWithItem:item withIndex:-1];
+                });
+                
+            }else if (self.videoViewController && [self.videoViewController.roomItem.roomID isEqualToString:item.roomID]){
+               // 不做处理
+            }else{
+                // 直接进入会议
+                [self enterMeetingWithItem:item withIndex:-1];
+            }
         }
 
     }
@@ -1091,26 +1102,7 @@ static NSString *kRoomCellID = @"RoomCell";
 #pragma mark - UIAlertViewDelegate
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
-    if (alertView.tag == 900) {
-        if (buttonIndex == 1) {
-            // 先判断是否在会
-            if (self.videoViewController) {
-                [self.videoViewController dismissMyself];
-                [ASHUD showHUDWithStayLoadingStyleInView:self.view belowView:nil content:@""];
-                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                    
-                    [self enterMeetingWithItem:tempRoomItem withIndex:-1];
-                });
-                
-
-            }else{
-                // 直接进入会议
-                [self enterMeetingWithItem:tempRoomItem withIndex:-1];
-            }
-         
-        }
-       
-    }else if(alertView.tag == 901){
+    if(alertView.tag == 901){
         if ([[ServerVisit shead].authorization isEqualToString:@""]) {
             [self deviceInit];
         }

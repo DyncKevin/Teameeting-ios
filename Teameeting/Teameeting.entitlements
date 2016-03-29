@@ -4,7 +4,6 @@
 <dict>
 	<key>com.apple.developer.associated-domains</key>
 	<array>
-		<string>applinks:www.teameeting.cn/share_meetingRoom/</string>
 		<string>applinks:www.teameeting.cn</string>
 	</array>
 </dict>

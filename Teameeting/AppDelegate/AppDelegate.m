@@ -175,8 +175,8 @@
     }
     
     NSString *mID = [URL substringFromIndex:rangeleft.location+rangeleft.length];
-    if (mID.length>12) {
-        mID = [mID substringToIndex:12];
+    if (mID.length>10) {
+        mID = [mID substringToIndex:10];
     }
     NSLog(@"meetingName:%@",mID);
     [[UIApplication sharedApplication] cancelAllLocalNotifications];

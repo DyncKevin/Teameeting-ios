@@ -27,11 +27,7 @@
     NSString *_peerOldSelectedId;
     
     // VIEW
-    UIView *_toolBarView;
-    UIButton *_videoButton;
-    UIButton *_muteButton;
-    UIButton *_cameraSwitchButton;
-    BOOL videoenable;
+    BOOL videoOldEnable;
     
     BOOL isRightTran;
     
@@ -138,6 +134,9 @@
      [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(chatViewNoti:) name:@"TALKCHAT_NOTIFICATION" object:nil];
 
      [_client Join:roomItem.anyRtcID];
+
+    videoOldEnable = NO;
+    
 }
 
 // setting pre operate to view
@@ -206,6 +205,11 @@
 #pragma mark - publish method
 - (void)videoEnable:(BOOL)enable
 {
+    if (!enable) {
+        videoOldEnable = YES;
+    }else{
+        videoOldEnable = NO;
+    }
     if (_client) {
          [_client setLocalVideoEnable:enable];
        
@@ -276,8 +280,7 @@
 // 程序进入后台时，停止视频
 - (void)applicationWillResignActive
 {
-    if (!_videoButton.selected) {
-        videoenable = YES;
+    if (!videoOldEnable) {
         [_client setLocalVideoEnable:NO];
     }
 }
@@ -285,8 +288,7 @@
 // 程序进入前台时，重启视频
 - (void)applicationDidBecomeActive
 {
-    if (videoenable) {
-        videoenable = NO;
+    if (!videoOldEnable) {
         [_client setLocalVideoEnable:YES];
     }
     [self layoutSubView];
