@@ -17,9 +17,13 @@
 #define ShareMettingNotification @"ShareMettingNotification"
 #define NotificationEntNotification @"NotificationEntNotification"
 
-//#define requesturlid  @"http://192.168.7.49:8055"
+#if 1
 #define requesturlid  @"http://123.59.68.21:8055"
-//#define TMMessageUrl @"192.168.7.43"
 #define TMMessageUrl @"180.150.179.128"
+#else
+#define requesturlid  @"http://192.168.7.49:8055"
+#define TMMessageUrl @"192.168.7.17"
+#endif
+
 //#define TMMessageUrl @"message.anyrtc.io"
 #endif /* Common_h */

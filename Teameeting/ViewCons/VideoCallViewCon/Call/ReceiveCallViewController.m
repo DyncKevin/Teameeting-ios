@@ -557,7 +557,7 @@
     // 像变大(先看是不是点中的)
     UIView  *view = (UIView*)[gesture view];
     // 如果得到的是小图的，变为大图
-    if (CGRectGetWidth(view.frame) < self.view.bounds.size.width/2) {
+    if (CGRectGetHeight(view.frame) < self.view.bounds.size.height/2) {
         for (id key in [_dicRemoteVideoView allKeys]) {
             VideoShowItem *item = [_dicRemoteVideoView objectForKey:key];
          
@@ -589,7 +589,7 @@
  */
 - (void) OnRtcJoinMeetOK:(NSString*) strAnyrtcId
 {
-    
+    NSLog(@"OnRtcJoinMeetOK:%@",strAnyrtcId);
 }
 
 /** 进会失败
@@ -599,7 +599,7 @@
  */
 - (void) OnRtcJoinMeetFailed:(NSString*) strAnyrtcId withCode:(int) code withReason:(NSString*) strReason
 {
-    
+    NSLog(@"OnRtcJoinMeetFailed:%@ withCode:%d withReason:%@",strAnyrtcId,code,strReason);
 }
 
 /** 离开会议
@@ -607,7 +607,7 @@
  */
 - (void) OnRtcLeaveMeet:(int) code
 {
-    
+    NSLog(@"OnRtcLeaveMeet:%d",code);
 }
 
 - (void) OnRtcVideoView:(UIView*)videoView didChangeVideoSize:(CGSize)size {

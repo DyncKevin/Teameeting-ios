@@ -18,6 +18,7 @@
 #import "ASHUD.h"
 #import "TransitionDelegate.h"
 #import "ToolUtils.h"
+#import "SvUDIDTools.h"
 
 @implementation UINavigationController (Orientations)
 
@@ -92,14 +93,34 @@
     self.badgeView .verticalAlignment = ASBadgeViewVerticalAlignmentTop;
     [self.badgeView  setFont:[UIFont systemFontOfSize:14]];
     [chatButton addSubview:self.badgeView ];
-   
+    
     if (self.roomItem.mettingState != 2) {
         UIButton *shareButton = [UIButton buttonWithType:UIButtonTypeCustom];
         [shareButton setImage:[UIImage imageNamed:@"share"] forState:UIControlStateNormal];
         [shareButton addTarget:self action:@selector(shareView) forControlEvents:UIControlEventTouchUpInside];
         shareButton.frame = CGRectMake(0, 0, 28, 28);
         UIBarButtonItem *groupButton1 =[[UIBarButtonItem alloc] initWithCustomView:shareButton];
-        self.navigationItem.rightBarButtonItem = groupButton1;
+        if ([self.roomItem.userID isEqualToString:[SvUDIDTools shead].UUID]) {
+            UIButton *callButton = [UIButton buttonWithType:UIButtonTypeCustom];
+            [callButton setImage:[UIImage imageNamed:@"MyCard_NoticeIcon"] forState:UIControlStateNormal];
+            [callButton addTarget:self action:@selector(callOthers) forControlEvents:UIControlEventTouchUpInside];
+            callButton.frame = CGRectMake(0, 0, 28, 28);
+            UIBarButtonItem *groupButton2 =[[UIBarButtonItem alloc] initWithCustomView:callButton];
+             self.navigationItem.rightBarButtonItems = @[groupButton1,groupButton2];
+        }else{
+             self.navigationItem.rightBarButtonItems = @[groupButton1];
+        }
+        
+    }else{
+        if ([self.roomItem.userID isEqualToString:[SvUDIDTools shead].UUID]) {
+            UIButton *callButton = [UIButton buttonWithType:UIButtonTypeCustom];
+            [callButton setImage:[UIImage imageNamed:@"MyCard_NoticeIcon"] forState:UIControlStateNormal];
+            [callButton addTarget:self action:@selector(callOthers) forControlEvents:UIControlEventTouchUpInside];
+            callButton.frame = CGRectMake(0, 0, 28, 28);
+            UIBarButtonItem *groupButton2 =[[UIBarButtonItem alloc] initWithCustomView:callButton];
+            self.navigationItem.rightBarButtonItem = groupButton2;
+        }
+       
     }
     
     self.callViewCon = [[ReceiveCallViewController alloc] init];
@@ -553,6 +574,11 @@
     }
 }
 
+- (void)callOthers
+{
+    NSLog(@"callOther");
+    [ASHUD showHUDWithCompleteStyleInView:self.view content:@"喊人进会啦！" icon:@"MyCard_NoticeIcon"];
+}
 
 #pragma mark - UISwipeGestureRecognizer method
 - (void)handleSwipes:(UISwipeGestureRecognizer*)gesture
