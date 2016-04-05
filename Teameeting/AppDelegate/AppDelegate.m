@@ -18,11 +18,13 @@
 #import "JPUSHService.h"
 #import "ToolUtils.h"
 #import "SvUDIDTools.h"
-
+#import "GuideViewController.h"
 #import "TMMessageManage.h"
 
 @interface AppDelegate () <UISplitViewControllerDelegate>
 
+
+@property(nonatomic,strong)GuideViewController *guideView;
 @end
 
 @implementation AppDelegate
@@ -30,6 +32,7 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     
     //[application setApplicationIconBadgeNumber:0];
+    [ToolUtils shead].hasActivity = YES;
     
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
     NSDictionary *navbarTitleTextAttributes = @{NSForegroundColorAttributeName:[UIColor whiteColor]};
@@ -39,7 +42,7 @@
     [[UIApplication sharedApplication] setIdleTimerDisabled:YES];
     [ASNetwork sharedNetwork];
     [SvUDIDTools shead];
-    [RoomApp shead].appDelgate = self;
+   
     // Override point for customization after application launch.
     if (launchOptions) {
         NSString *string =  [NSString stringWithFormat:@"%@",launchOptions[UIApplicationLaunchOptionsURLKey]];
@@ -65,13 +68,27 @@
     
     [JPUSHService setupWithOption:launchOptions appKey:appKey channel:channel apsForProduction:isProduction];
     
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(networkDidReceiveMessage:) name:kJPFNetworkDidLoginNotification object:nil];
+   
+    
     [WXApi registerApp:@"wx4d9fbaec0a4c368f" withDescription:@"demo 2.0"];
-    UINavigationController *nai = [[UINavigationController alloc] initWithRootViewController:[MainViewController new]];
+    MainViewController *mainViewController = [MainViewController new];
+    UINavigationController *nai = [[UINavigationController alloc] initWithRootViewController:mainViewController];
+    [RoomApp shead].appDelgate = self;
+    [RoomApp shead].mainViewController = mainViewController;
+    
     self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
     nai.navigationBarHidden = YES;
     [self.window setRootViewController:nai];
     self.window.backgroundColor = [UIColor whiteColor];
     [self.window makeKeyAndVisible];
+    if (![[NSUserDefaults standardUserDefaults] boolForKey:@"FirstLoad"]) {
+        
+        self.guideView = [[GuideViewController alloc] init];
+        [self.guideView.view setFrame:self.window.rootViewController.view.bounds];
+        [self.window addSubview:self.guideView.view];
+        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"FirstLoad"];
+    }
     return YES;
 }
 
@@ -99,6 +116,11 @@
     
     [JPUSHService registerDeviceToken:deviceToken];
     [JPUSHService setTags:[NSSet setWithObject:[SvUDIDTools shead].UUID] alias:[SvUDIDTools shead].UUID callbackSelector:nil object:nil];
+}
+- (void)networkDidReceiveMessage:(NSNotification*)notification
+{
+    NSString *registrationID = [JPUSHService registrationID];
+    NSLog(@"networkDidReceiveMessage:%@",registrationID);
 }
 
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo
@@ -153,8 +175,8 @@
     }
     
     NSString *mID = [URL substringFromIndex:rangeleft.location+rangeleft.length];
-    if (mID.length>12) {
-        mID = [mID substringToIndex:12];
+    if (mID.length>10) {
+        mID = [mID substringToIndex:10];
     }
     NSLog(@"meetingName:%@",mID);
     [[UIApplication sharedApplication] cancelAllLocalNotifications];
@@ -170,8 +192,58 @@
 - (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url {
     return  [WXApi handleOpenURL:url delegate:[WXApiManager sharedManager]];
 }
+- (BOOL)application:(UIApplication *)application continueUserActivity:(NSUserActivity *)userActivity restorationHandler:(void(^)(NSArray *restorableObjects))restorationHandler
+{
+    NSLog(@"%@",userActivity.activityType);
+    if([userActivity.activityType isEqualToString:@"NSUserActivityTypeBrowsingWeb"])
+    {
+        if ([self checkUrl:userActivity.webpageURL]) {
+            NSString *stringURL = [NSString stringWithFormat:@"%@",userActivity.webpageURL];
+            NSArray *meArr = [stringURL componentsSeparatedByString:@"#/"];
+            if (meArr.count == 2) {
+                NSString *meetID = [meArr objectAtIndex:1];
+                NSString* number=@"^\\d{10}$";
+                NSPredicate *numberPre = [NSPredicate predicateWithFormat:@"SELF MATCHES %@",number];
+                BOOL isTrue = [numberPre evaluateWithObject:meetID];
+                if (isTrue) {
+                    if ([ToolUtils shead].hasActivity) {
+                        // 用户还没有启动一种处理
+                        [[NSNotificationCenter defaultCenter] postNotificationName:ShareMettingNotification object:meetID userInfo:nil];
+                    }else{
+                        [ToolUtils shead].meetingID = meetID;
+                    }
+                }
 
-
+            }
+        }
+    }else if ([userActivity.activityType isEqualToString:@"com.apple.corespotlightitem"]){
+        NSString *meetID = [userActivity.userInfo objectForKey:@"kCSSearchableItemActivityIdentifier"];
+        if (meetID) {
+            NSString* number=@"^\\d{10}$";
+            NSPredicate *numberPre = [NSPredicate predicateWithFormat:@"SELF MATCHES %@",number];
+            BOOL isTrue = [numberPre evaluateWithObject:meetID];
+            if (isTrue) {
+                if ([ToolUtils shead].hasActivity) {
+                    // 用户还没有启动一种处理
+                    [[NSNotificationCenter defaultCenter] postNotificationName:ShareMettingNotification object:meetID userInfo:nil];
+                }else{
+                    [ToolUtils shead].meetingID = meetID;
+                 }
+            }
+        }
+    }
+    return YES;
+}
+- (BOOL)checkUrl:(NSURL*)url
+{
+    NSURLComponents *components = [NSURLComponents componentsWithURL:url resolvingAgainstBaseURL:YES];
+    NSString *host = components.host;
+    if ([host isEqualToString:@"www.teameeting.cn"]) {
+        return YES;
+    }
+    
+    return NO;
+}
 - (void)applicationWillResignActive:(UIApplication *)application {
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
     // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
@@ -201,6 +273,7 @@
     
     [ToolUtils shead].isBack = YES;
 }
+
 
 - (void)applicationWillEnterForeground:(UIApplication *)application {
     // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.

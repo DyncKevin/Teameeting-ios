@@ -13,6 +13,7 @@
 #import "ServerVisit.h"
 #import "ToolUtils.h"
 #import "JPUSHService.h"
+#import "RoomApp.h"
 
 @interface TMMessageManage() <MsgClientProtocol>
 
@@ -375,22 +376,7 @@
         NSDictionary *messageDic = [NSJSONSerialization JSONObjectWithData:[msg dataUsingEncoding:NSUTF8StringEncoding] options:NSJSONReadingMutableLeaves error:nil];
         if ([[messageDic objectForKey:@"tags"] intValue] == MCSendTagsTALK) {
             
-            BOOL searchTag = NO;
-            for (id<tmMessageReceive> object in self.messageListeners) {
-                
-                if ([object respondsToSelector:@selector(messageDidReceiveWithContent:messageTime:withNickName:)] && [object receiveMessageEnable]) {
-                    
-                    if (![[messageDic objectForKey:@"from"] isEqualToString:[SvUDIDTools shead].UUID]) {
-                        
-                        [object messageDidReceiveWithContent:[messageDic objectForKey:@"cont"] messageTime:[messageDic objectForKey:@"ntime"] withNickName:[messageDic objectForKey:@"nname"]];
-                    }
-                    
-                    searchTag = YES;
-                    break;
-                }
-
-            }
-            if (!searchTag && ![[messageDic objectForKey:@"from"] isEqualToString:[SvUDIDTools shead].UUID]) {
+            if (![[messageDic objectForKey:@"room"] isEqualToString:[ToolUtils shead].roomID]) {
                 
                 [[TMMessageManage sharedManager] insertMeeageDataWtihBelog:[messageDic objectForKey:@"room"] content:[messageDic objectForKey:@"cont"] messageTime:[messageDic objectForKey:@"ntime"]];
                 for ( id<tmMessageReceive> object in self.messageListeners) {
@@ -403,9 +389,26 @@
                         
                     }
                 }
+                
+            }else{
+                for (id<tmMessageReceive> object in self.messageListeners) {
+                    
+                    if ([object respondsToSelector:@selector(messageDidReceiveWithContent:messageTime:withNickName:withRoomId:)] && [object receiveMessageEnable]) {
+                        
+                        if (![[messageDic objectForKey:@"from"] isEqualToString:[SvUDIDTools shead].UUID]) {
+                            
+                            [object messageDidReceiveWithContent:[messageDic objectForKey:@"cont"] messageTime:[messageDic objectForKey:@"ntime"] withNickName:[messageDic objectForKey:@"nname"] withRoomId:[messageDic objectForKey:@"room"]];
+                        }
+                        break;
+                    }
+                    
+                }
+                
             }
             if ([ToolUtils shead].isBack) {
-                
+                if (![[RoomApp shead] canSendLocalNotificationWithRoomID:[messageDic objectForKey:@"room"]]) {
+                    return;
+                }
                 UILocalNotification *notification = [[UILocalNotification alloc] init];
                 NSDate *pushDate = [NSDate dateWithTimeIntervalSinceNow:1];
                 if (notification != nil) {
@@ -428,19 +431,13 @@
                 }
                 
             }
-
             
         } else if ([[messageDic objectForKey:@"tags"] intValue] == MCSendTagsENTER || [[messageDic objectForKey:@"tags"] intValue] == MCSendTagsLEAVE) {
         
             for (id<tmMessageReceive> object in self.messageListeners) {
                 
                 if ([object respondsToSelector:@selector(roomListMemberChangeWithRoomID:changeState:)] && [object receiveMessageEnable]) {
-                    
-                   // if (![[messageDic objectForKey:@"from"] isEqualToString:[SvUDIDTools UDID]]) {
-                        
                         [object roomListMemberChangeWithRoomID:[messageDic objectForKey:@"room"] changeState:[[messageDic objectForKey:@"nmem"] intValue]];
-                   // }
-                    
                 }
             }
             

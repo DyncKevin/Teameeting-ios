@@ -65,7 +65,7 @@
     tishiLabel.textAlignment = NSTextAlignmentCenter;
     tishiLabel.textColor = [UIColor lightGrayColor];
     tishiLabel.font = [UIFont systemFontOfSize:14];
-    tishiLabel.text = @"会议ID是一串十二位的数字";
+    tishiLabel.text = @"会议ID是一串十位的数字";
     [self.view addSubview:tishiLabel];
     
     
@@ -171,7 +171,7 @@
 // enter meeting
 - (void)enterButtonEvent:(UIButton*)button
 {
-    NSString* number=@"^\\d{12}$";
+    NSString* number=@"^\\d{10}$";
     NSPredicate *numberPre = [NSPredicate predicateWithFormat:@"SELF MATCHES %@",number];
     BOOL isTrue = [numberPre evaluateWithObject:enterTextField.text];
     if (isTrue) {

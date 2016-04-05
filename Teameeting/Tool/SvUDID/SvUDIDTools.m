@@ -8,7 +8,8 @@
 
 #import "SvUDIDTools.h"
 #import <Security/Security.h>
-#import "SSKeychain.h"
+#import "A0SimpleKeychain.h"
+
 
 static NSString *const kSSKeychainServiceName = @"TeameetingService";
 static NSString *const kSSKeychainAccountName = @"TeameetingAccount";
@@ -31,9 +32,11 @@ static SvUDIDTools *uuidTool = nil;
     self = [super init];
     if (self) {
          NSError *error;
-         _UUID = [SSKeychain passwordForService:kSSKeychainServiceName account:kSSKeychainAccountName error:&error];
+         //_UUID = [SSKeychain passwordForService:kSSKeychainServiceName account:kSSKeychainAccountName error:&error];
+        _UUID = [[A0SimpleKeychain keychain] stringForKey:kSSKeychainServiceName];
         if (!_UUID) {
-             _UUID = [SSKeychain passwordForService:kSSKeychainServiceName account:kSSKeychainAccountName error:&error];
+//             _UUID = [A0SimpleKeychain passwordForService:kSSKeychainServiceName account:kSSKeychainAccountName error:&error];
+             _UUID = [[A0SimpleKeychain keychain] stringForKey:kSSKeychainServiceName];
         }
        self.notFirstStart = [[[NSUserDefaults standardUserDefaults] objectForKey:@"isUpateNickName"] boolValue];
         if (!_UUID) {
@@ -42,8 +45,10 @@ static SvUDIDTools *uuidTool = nil;
             CFStringRef uuidStr = CFUUIDCreateString(NULL, uuid);
             _UUID = [[NSString stringWithFormat:@"%@",uuidStr] lowercaseString];
             _UUID = [_UUID stringByReplacingOccurrencesOfString:@"-" withString:@""];
-            [SSKeychain setPassword: _UUID
-                         forService:kSSKeychainServiceName account:kSSKeychainAccountName error:&error];
+            //[SSKeychain setPassword: _UUID forService:kSSKeychainServiceName account:kSSKeychainAccountName error:&error];
+            [[A0SimpleKeychain keychain] setString:_UUID forKey:kSSKeychainServiceName];
+            CFRelease(uuid);
+            CFRelease(uuidStr);
            
             if (error) {
                 NSLog(@"SSKeychain Faile");

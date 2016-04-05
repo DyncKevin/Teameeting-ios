@@ -73,6 +73,7 @@
         //self.TextViewInput.layer.cornerRadius = 4;
         //self.TextViewInput.layer.masksToBounds = YES;
         self.TextViewInput.delegate = self;
+        self.TextViewInput.font = [UIFont systemFontOfSize:14];
         //self.TextViewInput.layer.borderWidth = 1;
         //self.TextViewInput.layer.borderColor = [[[UIColor lightGrayColor] colorWithAlphaComponent:0.4] CGColor];
         [self addSubview:self.TextViewInput];
@@ -81,7 +82,7 @@
         placeHold = [[UILabel alloc]initWithFrame:CGRectMake(10, 0, 200, 30)];
         placeHold.backgroundColor = [UIColor clearColor];
         placeHold.text = @"发送消息";
-        placeHold.font = [UIFont systemFontOfSize:13];
+        placeHold.font = [UIFont systemFontOfSize:14];
         placeHold.textColor = [[UIColor lightGrayColor] colorWithAlphaComponent:0.8];
         [self.TextViewInput addSubview:placeHold];
 
@@ -200,6 +201,13 @@
 //发送消息（文字图片）
 - (void)sendMessage:(UIButton *)sender
 {
+    NSString *resultStr = [self.TextViewInput.text stringByReplacingOccurrencesOfString:@" " withString:@""];
+    
+    if (resultStr.length>0) {
+         [self.delegate UUInputFunctionView:self sendMessage:self.TextViewInput.text];
+    }
+    return;
+    
     if (self.isAbleToSendTextMessage) {
         NSString *resultStr = [self.TextViewInput.text stringByReplacingOccurrencesOfString:@"   " withString:@""];
         [self.delegate UUInputFunctionView:self sendMessage:resultStr];
@@ -221,8 +229,15 @@
 
 - (void)textViewDidChange:(UITextView *)textView
 {
+    if (textView.text.length > 256) {
+        textView.text = [textView.text substringToIndex:256];
+    }
+    
     [self changeSendBtnWithPhoto:textView.text.length>0?NO:YES];
     placeHold.hidden = textView.text.length>0;
+    
+
+    
 }
 
 - (void)changeSendBtnWithPhoto:(BOOL)isPhoto

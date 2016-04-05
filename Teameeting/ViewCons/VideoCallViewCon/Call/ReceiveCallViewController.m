@@ -27,13 +27,11 @@
     NSString *_peerOldSelectedId;
     
     // VIEW
-    UIView *_toolBarView;
-    UIButton *_videoButton;
-    UIButton *_muteButton;
-    UIButton *_cameraSwitchButton;
-    BOOL videoenable;
+    BOOL videoOldEnable;
     
     BOOL isRightTran;
+    
+    BOOL isChat;
     
 }
 @property (nonatomic, strong) NSMutableDictionary *_dicRemoteVideoView;
@@ -111,8 +109,10 @@
     _audioOperateDict = [[NSMutableDictionary alloc] initWithCapacity:5];
     
     _dicRemoteVideoView = [[NSMutableDictionary alloc] initWithCapacity:5];
-    [AnyrtcMeet InitAnyRTC:@"mzw0001" andToken:@"defq34hj92mxxjhaxxgjfdqi1s332dd" andAESKey:@"d74TcmQDMB5nWx9zfJ5al7JdEg3XwySwCkhdB9lvnd1" andAppId:@"org.dync.app"];
+    [AnyrtcMeet InitAnyRTC:@"13103994" andToken:@"de095967d87cd6f9a51ec4e3ee9a0ab7" andAESKey:@"E7FCkvPeaRBWGIxtO+mTjoJqu+TmqEDRNyi9YyFu82o" andAppId:@"Teameeting"];
+    
     _client = [[AnyrtcMeet alloc] init];
+    _client.proximityMonitoringEnabled = NO;
     _localVideoView = [[VideoShowItem alloc] init];
     [_localVideoView setFullScreen:NO];
     UIView *local = [[UIView alloc] initWithFrame:self.view.frame];
@@ -134,7 +134,11 @@
      [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(chatViewNoti:) name:@"TALKCHAT_NOTIFICATION" object:nil];
 
      [_client Join:roomItem.anyRtcID];
+
+    videoOldEnable = NO;
+    
 }
+
 // setting pre operate to view
 - (void)settingMediaToViewOperate:(VideoShowItem*)item
 {
@@ -167,7 +171,7 @@
 // ios iphone notification
 - (void)chatViewNoti:(NSNotification*)noti
 {
-    BOOL isChat = [noti.object boolValue];
+    isChat = [noti.object boolValue];
     if (isChat) {
         [UIView animateWithDuration:0.2 animations:^{
             
@@ -201,6 +205,11 @@
 #pragma mark - publish method
 - (void)videoEnable:(BOOL)enable
 {
+    if (!enable) {
+        videoOldEnable = YES;
+    }else{
+        videoOldEnable = NO;
+    }
     if (_client) {
          [_client setLocalVideoEnable:enable];
        
@@ -271,8 +280,7 @@
 // 程序进入后台时，停止视频
 - (void)applicationWillResignActive
 {
-    if (!_videoButton.selected) {
-        videoenable = YES;
+    if (!videoOldEnable) {
         [_client setLocalVideoEnable:NO];
     }
 }
@@ -280,8 +288,7 @@
 // 程序进入前台时，重启视频
 - (void)applicationDidBecomeActive
 {
-    if (videoenable) {
-        videoenable = NO;
+    if (!videoOldEnable) {
         [_client setLocalVideoEnable:YES];
     }
     [self layoutSubView];
@@ -323,7 +330,10 @@
             if (isRightTran) {
                 self.videosScrollView.frame = CGRectMake(self.videosScrollView.frame.origin.x, self.view.bounds.size.height - 100 - VideoParViewHeight, self.view.bounds.size.width-TalkPannelWidth, VideoParViewHeight);
             }else{
-                self.videosScrollView.frame = CGRectMake(0, self.view.bounds.size.height - 100 - VideoParViewHeight, self.view.bounds.size.width, VideoParViewHeight);
+                if (!isChat) {
+                     self.videosScrollView.frame = CGRectMake(0, self.view.bounds.size.height - 100 - VideoParViewHeight, self.view.bounds.size.width, VideoParViewHeight);
+                }
+               
             }
         }];
         if (_peerSelectedId) {
@@ -547,7 +557,7 @@
     // 像变大(先看是不是点中的)
     UIView  *view = (UIView*)[gesture view];
     // 如果得到的是小图的，变为大图
-    if (CGRectGetWidth(view.frame) < self.view.bounds.size.width) {
+    if (CGRectGetWidth(view.frame) < self.view.bounds.size.width/2) {
         for (id key in [_dicRemoteVideoView allKeys]) {
             VideoShowItem *item = [_dicRemoteVideoView objectForKey:key];
          
@@ -558,6 +568,10 @@
                 [self layoutSubView];
                 return;
             }
+        }
+    }else{
+        if (self.videoController) {
+            [self.videoController tapEvent:nil];
         }
     }
 }
@@ -721,6 +735,7 @@
         }
     }
 }
+
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

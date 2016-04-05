@@ -17,6 +17,7 @@
 #import <MessageUI/MFMessageComposeViewController.h>
 #import "ASHUD.h"
 #import "TransitionDelegate.h"
+#import "ToolUtils.h"
 
 @implementation UINavigationController (Orientations)
 
@@ -55,8 +56,9 @@
 
 - (void)dealloc
 {
-    
+    [ToolUtils shead].roomID = nil;
 }
+
 
 - (void)viewWillAppear:(BOOL)animated
 {
@@ -69,6 +71,8 @@
     [[TMMessageManage sharedManager] tmRoomCmd:MCMeetCmdENTER roomid:self.roomItem.roomID withRoomName:self.roomItem.roomName remain:@""];
     self.navigationController.delegate = self;
     self.title = self.roomItem.roomName;
+    [ToolUtils shead].roomID = self.roomItem.roomID;
+    
     self.view.backgroundColor = [UIColor blackColor];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(openVideo) name:OPENVIDEO object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(remoteVideoChange:) name:@"REMOTEVIDEOCHANGE" object:nil];
@@ -100,6 +104,7 @@
     
     self.callViewCon = [[ReceiveCallViewController alloc] init];
     self.callViewCon.roomItem = self.roomItem;
+    self.callViewCon.videoController = self;
     self.menuView = [[LockerView alloc] initWithFrame:CGRectMake(0, self.view.bounds.size.height - 60, 300, 60)];
     self.menuView.backgroundColor = [UIColor clearColor];
     [self.menuView setCenter:CGPointMake(self.view.bounds.size.width/2, self.view.bounds.size.height - self.menuView.bounds.size.height)];
@@ -222,7 +227,11 @@
 }
 - (void)dismissMyself
 {
-    [self dismissViewControllerAnimated:YES completion:^{
+    if (self.talkNav) {
+        [self.talkNav dismissViewControllerAnimated:NO completion:nil];
+    }
+    
+    [self dismissViewControllerAnimated:NO completion:^{
         if (self.callViewCon) {
             [self.callViewCon hangeUp];
             [[TMMessageManage sharedManager] removeMessageListener:self.rootView];
@@ -295,7 +304,7 @@
         }];
          [[NSNotificationCenter defaultCenter] postNotificationName:@"TALKCHAT_NOTIFICATION" object:[NSNumber numberWithBool:NO]];
         //weakSelf.talkNav.view.hidden = YES;
-        [weakSelf.navigationController setNavigationBarHidden:NO animated:YES];
+//        [weakSelf.navigationController setNavigationBarHidden:NO animated:YES];
         
         [weakSelf.rootView resginKeyBord];
         [weakSelf.rootView setReceiveMessageEnable:NO];
@@ -324,7 +333,7 @@
             
             [self.menuView setCenter:CGPointMake(self.menuView.center.x, (self.view.bounds.size.height - self.menuView.bounds.size.height))];
             
-            [self.noUserTip setCenter:CGPointMake(self.view.bounds.size.width/2, (CGRectGetMinY(self.menuView.frame) - self.noUserTip.bounds.size.height))];
+            [self.noUserTip setCenter:CGPointMake(self.noUserTip.center.x, (CGRectGetMinY(self.menuView.frame) - self.noUserTip.bounds.size.height))];
             
         }completion:^(BOOL finished) {
         }];
@@ -434,7 +443,7 @@
     [linkTitle setFrame:CGRectMake(0, 0, shareView.bounds.size.width - (isVertical ? 60 : 80), (isVertical ? 56 : 45))];
     linkTitle.lineBreakMode = NSLineBreakByTruncatingMiddle;
     [linkTitle setFont:[UIFont systemFontOfSize:14]];
-    linkTitle.text = [NSString stringWithFormat:@"%@%@",ShearUrl,self.roomItem.roomID];
+    linkTitle.text = [NSString stringWithFormat:@"%@#/%@",ShearUrl,self.roomItem.roomID];
     [linkTitle setTextColor:[UIColor grayColor]];
     [linkTitle setBackgroundColor:[UIColor clearColor]];
     [linkTitle setTextAlignment:NSTextAlignmentCenter];
@@ -521,7 +530,6 @@
         }];
         
     } else {
-        [self.navigationController setNavigationBarHidden:YES animated:NO];
         if ([[[UIDevice currentDevice] systemVersion] floatValue] < 8.0)
         {
             [self.talkNav setTransitioningDelegate:self.transDelegate];
@@ -666,7 +674,7 @@
     [_popver dismiss];
     if ([WXApi isWXAppInstalled]) {
         //判断是否有微信
-        [WXApiRequestHandler sendLinkURL:[NSString stringWithFormat:@"%@#%@",ShearUrl,self.roomItem.roomID]
+        [WXApiRequestHandler sendLinkURL:[NSString stringWithFormat:@"%@#/%@",ShearUrl,self.roomItem.roomID]
                                  TagName:nil
                                    Title:@"Teameeting"
                              Description:@"视频邀请"
@@ -688,7 +696,7 @@
         if ([messageClass canSendText]) {
             MFMessageComposeViewController *picker = [[MFMessageComposeViewController alloc] init];
             picker.messageComposeDelegate =self;
-            NSString *smsBody =[NSString stringWithFormat:@"让我们在会议中见!👉 %@#%@",ShearUrl,self.roomItem.roomID];
+            NSString *smsBody =[NSString stringWithFormat:@"让我们在会议中见!👉 %@#/%@",ShearUrl,self.roomItem.roomID];
             
             picker.body=smsBody;
             
@@ -708,7 +716,7 @@
 {
     [_popver dismiss];
     UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
-    pasteboard.string = [NSString stringWithFormat:@"%@#%@",ShearUrl,self.roomItem.roomID];
+    pasteboard.string = [NSString stringWithFormat:@"%@#/%@",ShearUrl,self.roomItem.roomID];
     [ASHUD showHUDWithCompleteStyleInView:self.view content:@"拷贝成功" icon:@"copy_scuess"];
 }
 
@@ -779,7 +787,6 @@
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch {
     NSLog(@"gestureRecognizer:%@",touch.view);
     Class class = NSClassFromString(@"UITableViewCellContentView");
-    
     if(touch.view.superview != self.rootView.view && ![touch.view isKindOfClass:class]){
         return YES;
     }else
@@ -806,19 +813,22 @@
          
      } completion:^(id<UIViewControllerTransitionCoordinatorContext> context)
      {
+         if (self.callViewCon) {
+             [self.callViewCon layoutSubView];
+         }
      }];
     
     [super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
 }
 
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
-{
-    return (interfaceOrientation != UIInterfaceOrientationPortraitUpsideDown);
-}
+//- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
+//{
+//    return (interfaceOrientation != UIInterfaceOrientationPortraitUpsideDown);
+//}
 
 - (UIInterfaceOrientationMask)supportedInterfaceOrientations
 {
-    return UIInterfaceOrientationMaskAllButUpsideDown;
+    return UIInterfaceOrientationMaskAll;
 }
 
 - (BOOL)shouldAutorotate

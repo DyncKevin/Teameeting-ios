@@ -201,9 +201,23 @@
 		78C5ECC71C4E447600193322 /* weixin@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 78C5ECC51C4E447600193322 /* weixin@3x.png */; };
 		78C5ECCA1C4E45B300193322 /* copy_scuess@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 78C5ECC81C4E45B300193322 /* copy_scuess@2x.png */; };
 		78C5ECCB1C4E45B300193322 /* copy_scuess@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 78C5ECC91C4E45B300193322 /* copy_scuess@3x.png */; };
+		78F96E861CA91E480051B165 /* SpotlightManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 78F96E851CA91E480051B165 /* SpotlightManager.m */; };
+		78F96E881CA920CB0051B165 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 78F96E871CA920CB0051B165 /* MobileCoreServices.framework */; };
+		78F96E8A1CA920D20051B165 /* CoreSpotlight.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 78F96E891CA920D20051B165 /* CoreSpotlight.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		78FA86871C50731A00BAF72B /* VideoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 78FA86861C50731A00BAF72B /* VideoViewController.m */; };
+		78FD19181C9BD94B0080870A /* A0SimpleKeychain.m in Sources */ = {isa = PBXBuildFile; fileRef = 78FD19141C9BD94B0080870A /* A0SimpleKeychain.m */; };
+		78FD19191C9BD94B0080870A /* A0SimpleKeychain+KeyPair.m in Sources */ = {isa = PBXBuildFile; fileRef = 78FD19161C9BD94B0080870A /* A0SimpleKeychain+KeyPair.m */; };
 		EC157AD0B3A13035EAD046BB /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2E4CBCA8C81B4B1BFCC1872C /* libPods.a */; };
 		FC19C2D51C85B78B003419B2 /* GuideViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FC19C2D41C85B78B003419B2 /* GuideViewController.m */; };
+		FC56BB401C993C41001EAFF6 /* iphoneGuideFirst@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FC56BB3C1C993C41001EAFF6 /* iphoneGuideFirst@2x.png */; };
+		FC56BB421C993C41001EAFF6 /* iphoneGuideSecond@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FC56BB3E1C993C41001EAFF6 /* iphoneGuideSecond@2x.png */; };
+		FC56BB431C993C41001EAFF6 /* iphoneGuideThird@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FC56BB3F1C993C41001EAFF6 /* iphoneGuideThird@2x.png */; };
+		FC56BB471C99558F001EAFF6 /* ipadGuideFirstPortrait@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FC56BB441C99558F001EAFF6 /* ipadGuideFirstPortrait@2x.png */; };
+		FC56BB481C99558F001EAFF6 /* ipadGuideSecondPortrait@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FC56BB451C99558F001EAFF6 /* ipadGuideSecondPortrait@2x.png */; };
+		FC56BB491C99558F001EAFF6 /* ipadGuideThirdPortrait@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FC56BB461C99558F001EAFF6 /* ipadGuideThirdPortrait@2x.png */; };
+		FC56BB4D1C9957E9001EAFF6 /* ipadGuideFirstLandscape@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FC56BB4A1C9957E9001EAFF6 /* ipadGuideFirstLandscape@2x.png */; };
+		FC56BB4E1C9957E9001EAFF6 /* ipadGuideSecondLandscape@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FC56BB4B1C9957E9001EAFF6 /* ipadGuideSecondLandscape@2x.png */; };
+		FC56BB4F1C9957E9001EAFF6 /* ipadGuideThirdLandscape@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FC56BB4C1C9957E9001EAFF6 /* ipadGuideThirdLandscape@2x.png */; };
 		FC6A0F4A1C464B9400D8C56D /* TMessage.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = FC6A0F481C464B9400D8C56D /* TMessage.xcdatamodeld */; };
 		FCA8ADCC1C89968A00D28F01 /* homeBackGround@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FCA8ADC91C89968A00D28F01 /* homeBackGround@2x.png */; };
 		FCA8ADCD1C89968A00D28F01 /* homeBackGroundLandscape@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FCA8ADCA1C89968A00D28F01 /* homeBackGroundLandscape@2x.png */; };
@@ -507,17 +521,36 @@
 		785643E41C50D3EC00836850 /* AnimatedTransitioning.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AnimatedTransitioning.m; sourceTree = "<group>"; };
 		785643E51C50D3EC00836850 /* TransitionDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TransitionDelegate.h; sourceTree = "<group>"; };
 		785643E61C50D3EC00836850 /* TransitionDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TransitionDelegate.m; sourceTree = "<group>"; };
+		785FA1411CA9007C00661F84 /* Teameeting.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = Teameeting.entitlements; sourceTree = "<group>"; };
 		7861D0271C4F8E7200B2F30D /* VideoShowItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VideoShowItem.h; sourceTree = "<group>"; };
 		7861D0281C4F8E7200B2F30D /* VideoShowItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VideoShowItem.m; sourceTree = "<group>"; };
 		78C5ECC41C4E447600193322 /* weixin@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "weixin@2x.png"; sourceTree = "<group>"; };
 		78C5ECC51C4E447600193322 /* weixin@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "weixin@3x.png"; sourceTree = "<group>"; };
 		78C5ECC81C4E45B300193322 /* copy_scuess@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "copy_scuess@2x.png"; sourceTree = "<group>"; };
 		78C5ECC91C4E45B300193322 /* copy_scuess@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "copy_scuess@3x.png"; sourceTree = "<group>"; };
+		78F96E841CA91E480051B165 /* SpotlightManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpotlightManager.h; sourceTree = "<group>"; };
+		78F96E851CA91E480051B165 /* SpotlightManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SpotlightManager.m; sourceTree = "<group>"; };
+		78F96E871CA920CB0051B165 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
+		78F96E891CA920D20051B165 /* CoreSpotlight.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreSpotlight.framework; path = System/Library/Frameworks/CoreSpotlight.framework; sourceTree = SDKROOT; };
 		78FA86851C50731A00BAF72B /* VideoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VideoViewController.h; sourceTree = "<group>"; };
 		78FA86861C50731A00BAF72B /* VideoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VideoViewController.m; sourceTree = "<group>"; };
+		78FD19131C9BD94B0080870A /* A0SimpleKeychain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A0SimpleKeychain.h; sourceTree = "<group>"; };
+		78FD19141C9BD94B0080870A /* A0SimpleKeychain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A0SimpleKeychain.m; sourceTree = "<group>"; };
+		78FD19151C9BD94B0080870A /* A0SimpleKeychain+KeyPair.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "A0SimpleKeychain+KeyPair.h"; sourceTree = "<group>"; };
+		78FD19161C9BD94B0080870A /* A0SimpleKeychain+KeyPair.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "A0SimpleKeychain+KeyPair.m"; sourceTree = "<group>"; };
+		78FD19171C9BD94B0080870A /* SimpleKeychain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SimpleKeychain.h; sourceTree = "<group>"; };
 		DFBC29C224EA228C97676A8B /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		FC19C2D31C85B78B003419B2 /* GuideViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GuideViewController.h; sourceTree = "<group>"; };
 		FC19C2D41C85B78B003419B2 /* GuideViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GuideViewController.m; sourceTree = "<group>"; };
+		FC56BB3C1C993C41001EAFF6 /* iphoneGuideFirst@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "iphoneGuideFirst@2x.png"; sourceTree = "<group>"; };
+		FC56BB3E1C993C41001EAFF6 /* iphoneGuideSecond@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "iphoneGuideSecond@2x.png"; sourceTree = "<group>"; };
+		FC56BB3F1C993C41001EAFF6 /* iphoneGuideThird@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "iphoneGuideThird@2x.png"; sourceTree = "<group>"; };
+		FC56BB441C99558F001EAFF6 /* ipadGuideFirstPortrait@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ipadGuideFirstPortrait@2x.png"; sourceTree = "<group>"; };
+		FC56BB451C99558F001EAFF6 /* ipadGuideSecondPortrait@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ipadGuideSecondPortrait@2x.png"; sourceTree = "<group>"; };
+		FC56BB461C99558F001EAFF6 /* ipadGuideThirdPortrait@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ipadGuideThirdPortrait@2x.png"; sourceTree = "<group>"; };
+		FC56BB4A1C9957E9001EAFF6 /* ipadGuideFirstLandscape@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ipadGuideFirstLandscape@2x.png"; sourceTree = "<group>"; };
+		FC56BB4B1C9957E9001EAFF6 /* ipadGuideSecondLandscape@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ipadGuideSecondLandscape@2x.png"; sourceTree = "<group>"; };
+		FC56BB4C1C9957E9001EAFF6 /* ipadGuideThirdLandscape@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ipadGuideThirdLandscape@2x.png"; sourceTree = "<group>"; };
 		FC6A0F491C464B9400D8C56D /* TMessage.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = TMessage.xcdatamodel; sourceTree = "<group>"; };
 		FCA8ADC91C89968A00D28F01 /* homeBackGround@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "homeBackGround@2x.png"; sourceTree = "<group>"; };
 		FCA8ADCA1C89968A00D28F01 /* homeBackGroundLandscape@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "homeBackGroundLandscape@2x.png"; sourceTree = "<group>"; };
@@ -529,6 +562,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				78F96E8A1CA920D20051B165 /* CoreSpotlight.framework in Frameworks */,
+				78F96E881CA920CB0051B165 /* MobileCoreServices.framework in Frameworks */,
 				7837034D1C43E405006C80DE /* libicucore.tbd in Frameworks */,
 				7837034B1C43E3FC006C80DE /* libstdc++.6.0.9.tbd in Frameworks */,
 				783703491C43E3F5006C80DE /* libstdc++.tbd in Frameworks */,
@@ -604,6 +639,7 @@
 		783701331C43DDFB006C80DE /* Teameeting */ = {
 			isa = PBXGroup;
 			children = (
+				785FA1411CA9007C00661F84 /* Teameeting.entitlements */,
 				783701671C43DF64006C80DE /* AppDelegate */,
 				7837016D1C43DF64006C80DE /* Model */,
 				783701741C43DF64006C80DE /* Resources */,
@@ -680,6 +716,15 @@
 		783701741C43DF64006C80DE /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				FC56BB4A1C9957E9001EAFF6 /* ipadGuideFirstLandscape@2x.png */,
+				FC56BB4B1C9957E9001EAFF6 /* ipadGuideSecondLandscape@2x.png */,
+				FC56BB4C1C9957E9001EAFF6 /* ipadGuideThirdLandscape@2x.png */,
+				FC56BB441C99558F001EAFF6 /* ipadGuideFirstPortrait@2x.png */,
+				FC56BB451C99558F001EAFF6 /* ipadGuideSecondPortrait@2x.png */,
+				FC56BB461C99558F001EAFF6 /* ipadGuideThirdPortrait@2x.png */,
+				FC56BB3C1C993C41001EAFF6 /* iphoneGuideFirst@2x.png */,
+				FC56BB3E1C993C41001EAFF6 /* iphoneGuideSecond@2x.png */,
+				FC56BB3F1C993C41001EAFF6 /* iphoneGuideThird@2x.png */,
 				FCA8ADC91C89968A00D28F01 /* homeBackGround@2x.png */,
 				FCA8ADCA1C89968A00D28F01 /* homeBackGroundLandscape@2x.png */,
 				FCA8ADCB1C89968A00D28F01 /* homeBackGroundPortrait@2x.png */,
@@ -769,6 +814,7 @@
 		783701C01C43DF64006C80DE /* Tool */ = {
 			isa = PBXGroup;
 			children = (
+				78F96E831CA91E350051B165 /* Spotlight */,
 				78A893811C59AFB100C4CD49 /* JPush */,
 				785643E21C50D3EC00836850 /* TransitionDelegate */,
 				783701C11C43DF64006C80DE /* ASProgressHUD */,
@@ -904,6 +950,11 @@
 		783701FF1C43DF64006C80DE /* SvUDID */ = {
 			isa = PBXGroup;
 			children = (
+				78FD19131C9BD94B0080870A /* A0SimpleKeychain.h */,
+				78FD19141C9BD94B0080870A /* A0SimpleKeychain.m */,
+				78FD19151C9BD94B0080870A /* A0SimpleKeychain+KeyPair.h */,
+				78FD19161C9BD94B0080870A /* A0SimpleKeychain+KeyPair.m */,
+				78FD19171C9BD94B0080870A /* SimpleKeychain.h */,
 				783702001C43DF64006C80DE /* SvUDIDTools.h */,
 				783702011C43DF64006C80DE /* SvUDIDTools.m */,
 			);
@@ -1259,6 +1310,15 @@
 			path = JPush;
 			sourceTree = "<group>";
 		};
+		78F96E831CA91E350051B165 /* Spotlight */ = {
+			isa = PBXGroup;
+			children = (
+				78F96E841CA91E480051B165 /* SpotlightManager.h */,
+				78F96E851CA91E480051B165 /* SpotlightManager.m */,
+			);
+			path = Spotlight;
+			sourceTree = "<group>";
+		};
 		A8A98EB2C59EDD5F8E7C4717 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -1271,6 +1331,8 @@
 		D0E48B81E79BBF549FEB4C10 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				78F96E891CA920D20051B165 /* CoreSpotlight.framework */,
+				78F96E871CA920CB0051B165 /* MobileCoreServices.framework */,
 				7837034C1C43E405006C80DE /* libicucore.tbd */,
 				7837034A1C43E3FC006C80DE /* libstdc++.6.0.9.tbd */,
 				783703481C43E3F5006C80DE /* libstdc++.tbd */,
@@ -1383,6 +1445,9 @@
 							com.apple.BackgroundModes = {
 								enabled = 1;
 							};
+							com.apple.SafariKeychain = {
+								enabled = 1;
+							};
 						};
 					};
 					783701491C43DDFC006C80DE = {
@@ -1424,6 +1489,7 @@
 				780455C61C51FB11003ADDCC /* sharebackgroud@2x.png in Resources */,
 				78C5ECCA1C4E45B300193322 /* copy_scuess@2x.png in Resources */,
 				783702B11C43DF64006C80DE /* mailInvite@3x.png in Resources */,
+				FC56BB431C993C41001EAFF6 /* iphoneGuideThird@2x.png in Resources */,
 				7837028F1C43DF64006C80DE /* cancelChat@2x.png in Resources */,
 				783701441C43DDFB006C80DE /* LaunchScreen.storyboard in Resources */,
 				783702C91C43DF64006C80DE /* notification_not_main@3x.png in Resources */,
@@ -1432,14 +1498,17 @@
 				783703221C43DF64006C80DE /* RootViewController.xib in Resources */,
 				783702B01C43DF64006C80DE /* mailInvite@2x.png in Resources */,
 				783702961C43DF64006C80DE /* close_enter@2x.png in Resources */,
+				FC56BB471C99558F001EAFF6 /* ipadGuideFirstPortrait@2x.png in Resources */,
 				781F6E101C44A33F00026160 /* meeting_private@2x.png in Resources */,
 				783703151C43DF64006C80DE /* 0.jpeg in Resources */,
 				783702AF1C43DF64006C80DE /* mail_main@3x.png in Resources */,
 				783702A41C43DF64006C80DE /* enter_go@3x.png in Resources */,
+				FC56BB4F1C9957E9001EAFF6 /* ipadGuideThirdLandscape@2x.png in Resources */,
 				783703091C43DF64006C80DE /* chat_animation_white1.png in Resources */,
 				783703141C43DF64006C80DE /* chatto_bg_normal.png in Resources */,
 				783702BC1C43DF64006C80DE /* micState@2x.png in Resources */,
 				7837030B1C43DF64006C80DE /* chat_animation_white3.png in Resources */,
+				FC56BB491C99558F001EAFF6 /* ipadGuideThirdPortrait@2x.png in Resources */,
 				783702B71C43DF64006C80DE /* messageInvite@3x.png in Resources */,
 				783702D31C43DF64006C80DE /* videoBackgroud.png in Resources */,
 				783702C81C43DF64006C80DE /* notification_not_main@2x.png in Resources */,
@@ -1456,6 +1525,7 @@
 				783702A71C43DF64006C80DE /* hangup@2x.png in Resources */,
 				783702AD1C43DF64006C80DE /* link_main@3x.png in Resources */,
 				783702BE1C43DF64006C80DE /* no_net_alert@2x.png in Resources */,
+				FC56BB421C993C41001EAFF6 /* iphoneGuideSecond@2x.png in Resources */,
 				783703061C43DF64006C80DE /* chat_animation1.png in Resources */,
 				783702AE1C43DF64006C80DE /* mail_main@2x.png in Resources */,
 				783703161C43DF64006C80DE /* 1.jpeg in Resources */,
@@ -1466,6 +1536,7 @@
 				783702C01C43DF64006C80DE /* no_room@2x.png in Resources */,
 				783702BB1C43DF64006C80DE /* micselect@3x.png in Resources */,
 				783702D21C43DF64006C80DE /* video@3x.png in Resources */,
+				FC56BB4D1C9957E9001EAFF6 /* ipadGuideFirstLandscape@2x.png in Resources */,
 				783702C71C43DF64006C80DE /* notification_line_main@3x.png in Resources */,
 				783702941C43DF64006C80DE /* chat@2x.png in Resources */,
 				783702B41C43DF64006C80DE /* message_main@2x.png in Resources */,
@@ -1477,10 +1548,12 @@
 				781F6E1A1C44DA5300026160 /* metting_nonotification@2x.png in Resources */,
 				783702D11C43DF64006C80DE /* video@2x.png in Resources */,
 				7810F7F11C5A073C00B77955 /* nick_close@3x.png in Resources */,
+				FC56BB401C993C41001EAFF6 /* iphoneGuideFirst@2x.png in Resources */,
 				FCA8ADCD1C89968A00D28F01 /* homeBackGroundLandscape@2x.png in Resources */,
 				782807A41C463AED0061D6CD /* Icon-1@2x.png in Resources */,
 				783703081C43DF64006C80DE /* chat_animation3.png in Resources */,
 				783702B21C43DF64006C80DE /* menucancel@2x.png in Resources */,
+				FC56BB4E1C9957E9001EAFF6 /* ipadGuideSecondLandscape@2x.png in Resources */,
 				783702CD1C43DF64006C80DE /* setting_main_point@3x.png in Resources */,
 				783702BD1C43DF64006C80DE /* micState@3x.png in Resources */,
 				783702931C43DF64006C80DE /* changeVideo@3x.png in Resources */,
@@ -1493,6 +1566,7 @@
 				7837030A1C43DF64006C80DE /* chat_animation_white2.png in Resources */,
 				781F6E0E1C44A33F00026160 /* meeting_num@2x.png in Resources */,
 				783702D41C43DF64006C80DE /* weixin_main@2x.png in Resources */,
+				FC56BB481C99558F001EAFF6 /* ipadGuideSecondPortrait@2x.png in Resources */,
 				783702B81C43DF64006C80DE /* mic@2x.png in Resources */,
 				783702A61C43DF64006C80DE /* enter_main@3x.png in Resources */,
 				783702CB1C43DF64006C80DE /* rename_main@3x.png in Resources */,
@@ -1614,6 +1688,7 @@
 				7837031D1C43DF64006C80DE /* UUMessageContentButton.m in Sources */,
 				7837031B1C43DF64006C80DE /* UUMessage.m in Sources */,
 				7837031E1C43DF64006C80DE /* UUMessageFrame.m in Sources */,
+				78FD19181C9BD94B0080870A /* A0SimpleKeychain.m in Sources */,
 				78FA86871C50731A00BAF72B /* VideoViewController.m in Sources */,
 				783702E31C43DF64006C80DE /* ErrorUtil.m in Sources */,
 				783703041C43DF64006C80DE /* MessageView.m in Sources */,
@@ -1661,10 +1736,12 @@
 				783702F41C43DF64006C80DE /* WXApiResponseHandler.m in Sources */,
 				FC6A0F4A1C464B9400D8C56D /* TMessage.xcdatamodeld in Sources */,
 				783703211C43DF64006C80DE /* RootViewController.m in Sources */,
+				78F96E861CA91E480051B165 /* SpotlightManager.m in Sources */,
 				783702E51C43DF64006C80DE /* ASNetwork.m in Sources */,
 				7837031F1C43DF64006C80DE /* UUProgressHUD.m in Sources */,
 				783702E21C43DF64006C80DE /* FORScrollViewEmptyAssistant.m in Sources */,
 				781F6E171C44CCA600026160 /* NSString+Category.m in Sources */,
+				78FD19191C9BD94B0080870A /* A0SimpleKeychain+KeyPair.m in Sources */,
 				783702F21C43DF64006C80DE /* WXApiManager.m in Sources */,
 				781F6E141C44C5E200026160 /* RoomNameView.m in Sources */,
 				783703291C43DF64006C80DE /* NavView.m in Sources */,
@@ -1743,7 +1820,8 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Developer: yangyang wang (3VG6DLPKJ2)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: yangyang wang (3VG6DLPKJ2)";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -1762,9 +1840,10 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
+				PROVISIONING_PROFILE = "99a75c5e-975c-4382-91c0-4437d788735b";
 				SDKROOT = iphoneos;
 			};
 			name = Debug;
@@ -1786,7 +1865,8 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Shanghai Boyuan Electronic Technology Co. Ltd (5543CP4MRT)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Shanghai Boyuan Electronic Technology Co. Ltd (5543CP4MRT)";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
@@ -1799,8 +1879,9 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
+				PROVISIONING_PROFILE = "3ccc0362-43de-4468-bcec-2bb735a6c77b";
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
 			};
@@ -1812,7 +1893,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_ENTITLEMENTS = "";
+				CODE_SIGN_ENTITLEMENTS = Teameeting/Teameeting.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer: yangyang wang (3VG6DLPKJ2)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: yangyang wang (3VG6DLPKJ2)";
 				ENABLE_BITCODE = NO;
@@ -1858,7 +1939,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.dync.teameeting;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "b81a1991-c1a1-4f23-9b06-a241a4eff599";
+				PROVISIONING_PROFILE = "99a75c5e-975c-4382-91c0-4437d788735b";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -1869,7 +1950,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_ENTITLEMENTS = "";
+				CODE_SIGN_ENTITLEMENTS = Teameeting/Teameeting.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution: Shanghai Boyuan Electronic Technology Co. Ltd (5543CP4MRT)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Shanghai Boyuan Electronic Technology Co. Ltd (5543CP4MRT)";
 				ENABLE_BITCODE = NO;
@@ -1915,7 +1996,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.dync.teameeting;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "4a7d2db1-4e0a-411f-aa3b-eda43e5d340e";
+				PROVISIONING_PROFILE = "3ccc0362-43de-4468-bcec-2bb735a6c77b";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
