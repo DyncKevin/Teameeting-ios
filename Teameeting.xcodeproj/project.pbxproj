@@ -194,6 +194,8 @@
 		783703491C43E3F5006C80DE /* libstdc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 783703481C43E3F5006C80DE /* libstdc++.tbd */; };
 		7837034B1C43E3FC006C80DE /* libstdc++.6.0.9.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 7837034A1C43E3FC006C80DE /* libstdc++.6.0.9.tbd */; };
 		7837034D1C43E405006C80DE /* libicucore.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 7837034C1C43E405006C80DE /* libicucore.tbd */; };
+		7837904E1CAE34F400B5920A /* ring.caf in Resources */ = {isa = PBXBuildFile; fileRef = 7837904D1CAE34F400B5920A /* ring.caf */; };
+		783790501CAE4A0200B5920A /* MyCard_NoticeIcon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7837904F1CAE4A0200B5920A /* MyCard_NoticeIcon@2x.png */; };
 		785643E71C50D3EC00836850 /* AnimatedTransitioning.m in Sources */ = {isa = PBXBuildFile; fileRef = 785643E41C50D3EC00836850 /* AnimatedTransitioning.m */; };
 		785643E81C50D3EC00836850 /* TransitionDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 785643E61C50D3EC00836850 /* TransitionDelegate.m */; };
 		7861D0291C4F8E7200B2F30D /* VideoShowItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 7861D0281C4F8E7200B2F30D /* VideoShowItem.m */; };
@@ -517,6 +519,8 @@
 		783703481C43E3F5006C80DE /* libstdc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libstdc++.tbd"; path = "usr/lib/libstdc++.tbd"; sourceTree = SDKROOT; };
 		7837034A1C43E3FC006C80DE /* libstdc++.6.0.9.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libstdc++.6.0.9.tbd"; path = "usr/lib/libstdc++.6.0.9.tbd"; sourceTree = SDKROOT; };
 		7837034C1C43E405006C80DE /* libicucore.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libicucore.tbd; path = usr/lib/libicucore.tbd; sourceTree = SDKROOT; };
+		7837904D1CAE34F400B5920A /* ring.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = ring.caf; sourceTree = "<group>"; };
+		7837904F1CAE4A0200B5920A /* MyCard_NoticeIcon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "MyCard_NoticeIcon@2x.png"; sourceTree = "<group>"; };
 		785643E31C50D3EC00836850 /* AnimatedTransitioning.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AnimatedTransitioning.h; sourceTree = "<group>"; };
 		785643E41C50D3EC00836850 /* AnimatedTransitioning.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AnimatedTransitioning.m; sourceTree = "<group>"; };
 		785643E51C50D3EC00836850 /* TransitionDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TransitionDelegate.h; sourceTree = "<group>"; };
@@ -716,6 +720,8 @@
 		783701741C43DF64006C80DE /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				7837904F1CAE4A0200B5920A /* MyCard_NoticeIcon@2x.png */,
+				7837904D1CAE34F400B5920A /* ring.caf */,
 				FC56BB4A1C9957E9001EAFF6 /* ipadGuideFirstLandscape@2x.png */,
 				FC56BB4B1C9957E9001EAFF6 /* ipadGuideSecondLandscape@2x.png */,
 				FC56BB4C1C9957E9001EAFF6 /* ipadGuideThirdLandscape@2x.png */,
@@ -1485,6 +1491,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7837904E1CAE34F400B5920A /* ring.caf in Resources */,
 				783702B61C43DF64006C80DE /* messageInvite@2x.png in Resources */,
 				780455C61C51FB11003ADDCC /* sharebackgroud@2x.png in Resources */,
 				78C5ECCA1C4E45B300193322 /* copy_scuess@2x.png in Resources */,
@@ -1564,6 +1571,7 @@
 				781F6E111C44A33F00026160 /* meeting_private@3x.png in Resources */,
 				7837030E1C43DF64006C80DE /* Chat_record_circle.png in Resources */,
 				7837030A1C43DF64006C80DE /* chat_animation_white2.png in Resources */,
+				783790501CAE4A0200B5920A /* MyCard_NoticeIcon@2x.png in Resources */,
 				781F6E0E1C44A33F00026160 /* meeting_num@2x.png in Resources */,
 				783702D41C43DF64006C80DE /* weixin_main@2x.png in Resources */,
 				FC56BB481C99558F001EAFF6 /* ipadGuideSecondPortrait@2x.png in Resources */,
