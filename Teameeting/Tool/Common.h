@@ -19,7 +19,8 @@
 
 #if 1
 #define requesturlid  @"http://123.59.68.21:8055"
-#define TMMessageUrl @"180.150.179.128"
+//#define TMMessageUrl @"180.150.179.128"
+#define TMMessageUrl @"message.anyrtc.io"
 #else
 #define requesturlid  @"http://192.168.7.49:8055"
 #define TMMessageUrl @"192.168.7.17"
